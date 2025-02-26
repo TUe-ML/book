@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Numerical Optimization &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Convex Optimization" href="optimization_convex.html" />
+    <link rel="prev" title="Optimization Problems" href="optimization_problems.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_n_larger_p.html">
+     Regression When
+     <span class="math notranslate nohighlight">
+      \(p&gt;n\)
+     </span>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Foptimization_numerical.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/optimization_numerical.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/optimization_numerical.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#coordinate-descent">
+   Coordinate descent
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gradient-descent">
+   Gradient Descent
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Numerical Optimization</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#coordinate-descent">
+   Coordinate descent
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gradient-descent">
+   Gradient Descent
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="numerical-optimization">
+<h1>Numerical Optimization<a class="headerlink" href="#numerical-optimization" title="Permalink to this headline">#</a></h1>
+<p>We have seen some strategies to find a solution to optimization objectives by means of solving a system of equations. These strategies work usually fine for simple objectives, but if I have a lot of valleys and hills in my optimization objective, then solving this system of equations analytically will not always be possible. What can we do then?</p>
+<p>If the minimizers can not be computed directly/analytically, then numerical optimization can come to the rescue. The idea is that I start somewhere in my hilly landscape and then try to walk to a valley with a specified strategy. For those types of methods it’s good to know how good the strategy is. Important is for example to ask whether I will ever arrive at my minimum if I just walk long enough, or if I have to wonder endlessly around in a bad case. And what happens if I just walk a few steps, would I then have improved upon my starting position or might I not have descended at all? We state here two very popular numerical optimization methods: coordinate descent and gradient descent. Both are presented for the optimization of an unconstrained objective, but they do have extensions to incorporate constraints as well. This is beyond of the scope of this course, though.<br />
+The general scheme of numerical optimization methods is typically</p>
+<div class="proof algorithm admonition" id="algorithm-0">
+<p class="admonition-title"><span class="caption-number">Algorithm 1 </span> (Numerical Optimization)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Input</strong>: the function <span class="math notranslate nohighlight">\(f\)</span> to minimize, the maximum number of steps <span class="math notranslate nohighlight">\(t_{max}\)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(\vvec{x}_0\gets\)</span> <code class="docutils literal notranslate"><span class="pre">Initialize</span></code>(<span class="math notranslate nohighlight">\(\vvec{x}_0\)</span>)</p></li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(t\in\{1,\ldots,t_{max}-1\}\)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(\vvec{x}_{t+1}\gets \)</span><code class="docutils literal notranslate"><span class="pre">Update</span></code>(<span class="math notranslate nohighlight">\(\vvec{x}_t,f\)</span>)</p></li>
+</ol>
+</li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\(\vvec{x}_{t_{max}}\)</span></p></li>
+</ol>
+</section>
+</div><section id="coordinate-descent">
+<h2>Coordinate descent<a class="headerlink" href="#coordinate-descent" title="Permalink to this headline">#</a></h2>
+<p>The coordinate descent method is promising if we can not determine the minimum to the function analytically, but the minimum in a coordinate direction. The update is performed by cycling over all coordinates and walking to the minimum subject to that coordinate in each step.</p>
+<div class="proof algorithm admonition" id="algorithm-1">
+<p class="admonition-title"><span class="caption-number">Algorithm 2 </span> (Coordinate Descent)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Input</strong>: the function <span class="math notranslate nohighlight">\(f\)</span> to minimize</p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(\vvec{x}_0\gets\)</span> <code class="docutils literal notranslate"><span class="pre">Initialize</span></code>(<span class="math notranslate nohighlight">\(\vvec{x}_0\)</span>)</p></li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(t\in\{1,\ldots,t_{max}-1\}\)</span></p>
+<ol class="simple">
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(i\in\{1,\ldots d\}\)</span> do</p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(\displaystyle {x_i}^{(t+1)}\leftarrow \argmin_{x_i} f({x_1}^{(t+1)},\ldots ,{x_{i-1}}^{(t+1)}, x_i,{x_{i+1}}^{(t)},\ldots ,{x_d}^{(t)})\)</span></p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\(\vvec{x}_{t_{max}}\)</span></p></li>
+</ol>
+</section>
+</div><p>The figure below shows the level set of a function, where every ring indicates the points in the domain of the function that have a specified function value <span class="math notranslate nohighlight">\(\{\vvec{x}\mid f(\vvec{x})=c\}\)</span>. The plotted function has a minimum at the center of the ellipses. We start at <span class="math notranslate nohighlight">\(\vvec{x}_0\)</span> and then move to the minimum in direction of the vertical coordinate. That is, we move to the smallest ellipse (smallest diameter) we can touch in direction of the vertical coordinate. Then we move to the minimum in direction of the horizontal coordinate and we are already at our minimum where the method stops.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-2ffa0468edea151e341ce269697eefcfba9bfc7c.svg" alt="Figure made with TikZ" /></p>
+</div><p>Coordinate descent minimizes the function value in every step:
+<div class="math notranslate nohighlight">
+\[ f(\vvec{x}^{(0)})\geq f(\vvec{x}^{(1)})\geq f(\vvec{x}^{(2)})\geq\ldots\]</div>
+</p>
+<div class="proof example admonition" id="example-2">
+<p class="admonition-title"><span class="caption-number">Example 10 </span> (Coordinate descent of the Rosenbrock function)</p>
+<section class="example-content" id="proof-content">
+<figure class="align-right" id="coord-desc-rosen">
+<a class="reference internal image-reference" href="_images/coordinateDescentRosenbrock.png"><img alt="_images/coordinateDescentRosenbrock.png" src="_images/coordinateDescentRosenbrock.png" style="height: 200px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Coordinate descent updates</span><a class="headerlink" href="#coord-desc-rosen" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Let’s try to apply coordinate descent to find the minimum of the Rosenbrock function. From <a class="reference internal" href="optimization_problems.html#expl_fonc">Example 9</a> we know the partial derivatives of the function</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    f(\vvec{x})&amp;= 100(x_2-x_1^2)^2 +(1-x_1)^2.\\
+    \frac{\partial}{\partial x_1}f(\vvec{x})&amp;= 400x_1(x_1^2-x_2) +2(x_1-1)\\
+    \frac{\partial}{\partial x_2}f(\vvec{x})&amp;= 200(x_2-x_1^2).
+\end{align*}\]</div>
+<p>We compute the minima of the function in direction of the coordinates by means of FONC. The derivatives subject to each coordinate are exactly given by the partial derivatives, hence we set them equal to zero:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+      \frac{\partial}{\partial x_1}f\begin{pmatrix}x_1\\x_1^2\end{pmatrix}&amp;= 2(x_1-1) =0 
+      &amp;\Leftrightarrow x_1=1\\
+      \frac{\partial}{\partial x_2}f(\vvec{x})&amp;=200(x_2-x_1^2)=0
+      &amp;\Leftrightarrow x_2 =x_1^2
+\end{align*}\]</div>
+<p>We have here only one minimizer candidate for each coordinate, and since we know from <a class="reference internal" href="optimization_problems.html#expl_fonc">Example 9</a> that the function has only one minimizer (and no other maximizer or such), we know that the coordinate-wise minimizer candidates actually minimize the function in each coordinate. From this, we derive our update rules:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \argmin_{x_1\in\mathbb{R}} f(x_1,x_2) =1 \\
+    \argmin_{x_2\in\mathbb{R}} f(x_1,x_2) =x_1^2
+\end{align*}\]</div>
+<p><a class="reference internal" href="#coord-desc-rosen"><span class="std std-numref">Fig. 2</span></a> shows the result of these update rules when starting at <span class="math notranslate nohighlight">\((-2,2)\)</span>. We see that the minimum is quickly reached after one cycle of updating each coordinate.</p>
+</section>
+</div></section>
+<section id="gradient-descent">
+<h2>Gradient Descent<a class="headerlink" href="#gradient-descent" title="Permalink to this headline">#</a></h2>
+<p>If we can’t solve the system of equations given by FONC, also no coordinate-wise, but the function is differentiable, then we can apply gradient descent. Gradient descent is a strategy according to which you take a step in the direction which goes down the most steeply from where you stand.</p>
+<div class="proof algorithm admonition" id="algorithm-3">
+<p class="admonition-title"><span class="caption-number">Algorithm 3 </span> (Gradient Descent)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Input</strong>: the function <span class="math notranslate nohighlight">\(f\)</span> to minimize, step-size <span class="math notranslate nohighlight">\(\eta\)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(\vvec{x}_0\gets\)</span> <code class="docutils literal notranslate"><span class="pre">Initialize</span></code>(<span class="math notranslate nohighlight">\(\vvec{x}_0\)</span>)</p></li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(t\in\{1,\ldots,t_{max}-1\}\)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(\vvec{x}_{t+1}\leftarrow \vvec{x}_t - \eta \nabla f(\vvec{x}_t)\)</span></p></li>
+</ol>
+</li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\(\vvec{x}_{t_{max}}\)</span></p></li>
+</ol>
+</section>
+</div><p>The parameter <span class="math notranslate nohighlight">\(\eta\)</span> doesn’t have to be a constant, it might also be a function that returns the <em>step size</em> depending on the amount of steps that have already performed. Setting the step size well is often a difficult task. The figure below shows how gradient descent makes the updates based on the local information.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-5972504c6df478ebb90fa0820a2c0184eb988125.svg" alt="Figure made with TikZ" /></p>
+</div><p>The negative gradient points into the direction of steepest descent. Hence, for a small enough step size we will go down each step:
+<div class="math notranslate nohighlight">
+\[f(\vvec{x}_0)\geq f(\vvec{x}_1)\geq f(\vvec{x}_2)\geq\ldots\]</div>
+
+However, decreasing the function value in every step is in practice not neccessarily desirable. In particular in the beginning of the optimization, it’s useful to take larger steps to survey the landscape before converging to a local minimum.</p>
+<div class="proof example admonition" id="example-4">
+<p class="admonition-title"><span class="caption-number">Example 11 </span> (Gradient Descent on the Rosenbrock Function)</p>
+<section class="example-content" id="proof-content">
+<p>We illustrate the effect of the step-size by means of the Rosenbrock function. <a class="reference internal" href="#grad-desc-smallstep"><span class="std std-numref">Fig. 3</span></a> shows the trajectory when using a small step-size, <a class="reference internal" href="#grad-desc-goodstep"><span class="std std-numref">Fig. 4</span></a> shows a moderate step size and <a class="reference internal" href="#grad-desc-bigstep"><span class="std std-numref">Fig. 5</span></a> shows a larger step-size. We observe that all three step-sizes result in a sequence that converges to the minimim <span class="math notranslate nohighlight">\((1,1)\)</span>. However, in particular the very small step-size results in a trajectory that requires many many steps. The fastest convergence has the larger step-size, but even this one needs approximately 800 iterations. In comparison to coordinate descent, that just required to update each coordinate once, gradient descent is much more inefficient. We also observe that the trajectory for the larger step-size is already zig-zagging, which often indicates that the step-size is actually too large, since it overshoots in each step. Hence, this function is not very efficiently optimizable with gradient descent. But feel free to try it yourself.</p>
+<figure class="align-default" id="grad-desc-smallstep">
+<a class="reference internal image-reference" href="_images/gradientDescentRosenbrockSmall.png"><img alt="_images/gradientDescentRosenbrockSmall.png" src="_images/gradientDescentRosenbrockSmall.png" style="height: 220px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Gradient Descent with <span class="math notranslate nohighlight">\(\eta=0.0005\)</span> on the Rosenbrock Function</span><a class="headerlink" href="#grad-desc-smallstep" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="grad-desc-goodstep">
+<a class="reference internal image-reference" href="_images/gradientDescentRosenbrock.png"><img alt="_images/gradientDescentRosenbrock.png" src="_images/gradientDescentRosenbrock.png" style="height: 220px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Gradient Descent with <span class="math notranslate nohighlight">\(\eta=0.00125\)</span> on the Rosenbrock Function</span><a class="headerlink" href="#grad-desc-goodstep" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="grad-desc-bigstep">
+<a class="reference internal image-reference" href="_images/gradientDescentRosenbrockLarge.png"><img alt="_images/gradientDescentRosenbrockLarge.png" src="_images/gradientDescentRosenbrockLarge.png" style="height: 220px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Gradient Descent with <span class="math notranslate nohighlight">\(\eta=0.0016\)</span> on the Rosenbrock Function</span><a class="headerlink" href="#grad-desc-bigstep" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="optimization_problems.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Optimization Problems</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="optimization_convex.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Convex Optimization</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

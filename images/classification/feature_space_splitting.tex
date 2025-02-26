@@ -1,0 +1,50 @@
+\documentclass[crop,tikz,convert={outext=.svg,command=\unexpanded{pdf2svg \infile\space\outfile}},multi=false]{standalone}[2012/04/13]
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{pgfplots}
+
+
+%-------------------------------------
+% Tikz and pgf options & definitions
+%-------------------------------------
+\pgfplotsset{compat=1.15}
+\pgfmathsetseed{1}
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes}
+\usetikzlibrary{backgrounds, fit}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{matrix}
+
+\def\colorvector at (#1,#2,#3){
+\coordinate (A) at (#1, #2);
+\filldraw[draw=black,fill=test!!+] (A)++(0,0) rectangle ++(0.25,0.25) node (A0) {};
+\filldraw[draw=black,fill=test!!+] (A)++(0.3,0) rectangle ++(0.25,0.25) node (A1) {};
+\filldraw[draw=black,fill=test!!+] (A)++(0.6,0) rectangle ++(0.25,0.25) node (A2) {};
+\node[right=of A2, xshift=-7.5ex, yshift=-0.75ex] {$\ldots$};
+\filldraw[draw=black,fill=test!!+] (A)++(1.5,0) rectangle ++(0.25,0.25) node (A4) {};
+\node[left=of A1, xshift=4.4ex, yshift=-0.75ex] (BEG\i) {$#3=[$};
+\node[right=of A4, xshift=-8ex, yshift=-0.75ex] (END\i) {$]^{T}$};
+}
+
+\begin{document}
+\tikzset{every loop/.style={min distance=15mm,looseness=10}}
+\begin{tikzpicture}
+\path [fill=green!10] (0,0) rectangle (1.5,5) ;
+\path [fill=blue!10] (1.5,0) rectangle (3.5,2);
+\path [fill=red!10] (1.5,2) rectangle (3.5,5);
+\path [fill=yellow!10] (3.5,0) rectangle (5,5);
+\draw[->,thick] (0,0)--(5.1,0) node[right]{$ x_{1} $};
+\draw[->,thick] (0,0)--(0,5.1) node[above]{$ x_{2} $};
+\draw[-,dashed] (1.5,-0.1) node[below]{$ t_{1} $} --(1.5,5.1);
+\draw[-,dashed] (3.5,-0.1) node[below]{$ t_{2} $} --(3.54,5.1);
+\draw[-,dashed] (-0.1,2)  node[left]{$ t_{3} $} --(5.1,2);
+\node[] at (0.75,2.5) {$ P_{\left( 0 \right)}(y) $} ;
+\node[] at (2.5,1) {$ P_{\left( 1, 0, 0 \right)}(y) $} ;
+\node[] at (2.5,3.5) {$ P_{\left( 1, 0, 1 \right)}(y) $} ;
+\node[] at (4.3,2.5) {$ P_{\left( 1, 1 \right)}(y) $} ;
+\node[circle, fill=black,inner sep=2pt, label=right:$\check{\bf x}$] at (2.5,4.5) {} ;
+\end{tikzpicture}
+\end{document}

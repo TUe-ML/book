@@ -1,0 +1,73 @@
+\documentclass[crop,tikz,convert={outext=.svg,command=\unexpanded{pdf2svg \infile\space\outfile}},multi=false]{standalone}[2012/04/13]
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{pgfplots}
+
+
+%-------------------------------------
+% Tikz and pgf options & definitions
+%-------------------------------------
+\pgfplotsset{compat=1.15}
+\pgfmathsetseed{1}
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes}
+\usetikzlibrary{backgrounds, fit}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{matrix}
+
+\def\colorvector at (#1,#2,#3){
+\coordinate (A) at (#1, #2);
+\filldraw[draw=black,fill=test!!+] (A)++(0,0) rectangle ++(0.25,0.25) node (A0) {};
+\filldraw[draw=black,fill=test!!+] (A)++(0.3,0) rectangle ++(0.25,0.25) node (A1) {};
+\filldraw[draw=black,fill=test!!+] (A)++(0.6,0) rectangle ++(0.25,0.25) node (A2) {};
+\node[right=of A2, xshift=-7.5ex, yshift=-0.75ex] {$\ldots$};
+\filldraw[draw=black,fill=test!!+] (A)++(1.5,0) rectangle ++(0.25,0.25) node (A4) {};
+\node[left=of A1, xshift=4.4ex, yshift=-0.75ex] (BEG\i) {$#3=[$};
+\node[right=of A4, xshift=-8ex, yshift=-0.75ex] (END\i) {$]^{T}$};
+}
+
+\begin{document}
+\begin{tikzpicture}[
+edge from parent/.style={draw,-latex},
+level distance=15mm,
+level 1/.style={sibling distance=50mm},
+level 2/.style={sibling distance=30mm},
+level 3/.style={sibling distance=15mm},
+level 4/.style={sibling distance=15mm}
+]
+
+\usetikzlibrary{shapes}
+\tikzstyle{c} = [draw, shape=circle]
+\tikzstyle{r} = [draw, shape=rectangle,minimum width=10mm]
+\tikzstyle{tr} = [draw,isosceles triangle, shape border rotate=90, anchor=north]
+\node[c]{100}[edge from parent]
+    child {node[c] {40}
+        edge from parent coordinate (ea);
+    }
+    child {node[c]{60}
+        child {node[c]{25}
+            edge from parent coordinate (e25);
+        }
+        child {node[c]{35}
+            child{node[c]{15}
+                edge from parent coordinate (e14);
+            }
+            child{node[c]{20}
+                edge from parent coordinate (e16);
+            }
+            edge from parent coordinate (e30);
+        }
+        edge from parent coordinate (e55);
+    };
+% code labels
+\node at([yshift=2mm]ea)  {0};
+\node at([yshift=2mm]e55) {1};
+\node at([xshift=-2mm,yshift=2mm]e25) {0};
+\node at([xshift=2mm,yshift=2mm]e30) {1};
+\node at([xshift=-2mm,yshift=1mm]e14) {0};
+\node at([xshift=2mm,yshift=1mm]e16) {1};
+\end{tikzpicture}
+\end{document}

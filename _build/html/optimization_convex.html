@@ -1,0 +1,842 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Convex Optimization &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Matrix Derivatives" href="optimization_gradients.html" />
+    <link rel="prev" title="Numerical Optimization" href="optimization_numerical.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_n_larger_p.html">
+     Regression When
+     <span class="math notranslate nohighlight">
+      \(p&gt;n\)
+     </span>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Foptimization_convex.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/optimization_convex.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/optimization_convex.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#properties-of-convex-functions">
+   Properties of Convex Functions
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Convex Optimization</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#properties-of-convex-functions">
+   Properties of Convex Functions
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="convex-optimization">
+<h1>Convex Optimization<a class="headerlink" href="#convex-optimization" title="Permalink to this headline">#</a></h1>
+<p>Convex optimization represents a somewhat ideal scenario in optimization problems. With a convex objective, there is only one minimum to find, simplifying the task. Many optimization problems in machine learning are convex, or at least convex in certain coordinates when others are fixed. Knowing whether an objective is convex is valuable for understanding how to improve a model. If a model derived from minimizing the objective function performs poorly on other metrics, this may indicate that the objective does not fully capture what defines a good model. To establish convex optimization objectives, we first define convex sets and convex functions.</p>
+<div class="proof definition admonition" id="convex_set">
+<p class="admonition-title"><span class="caption-number">Definition 9 </span> (Convex set)</p>
+<section class="definition-content" id="proof-content">
+<p>A <strong>set</strong> <span class="math notranslate nohighlight">\(\mathcal{X}\subseteq \mathbb{R}^d\)</span> is <strong>convex</strong> if and only if the line segment between every pair of points in the set is in the set.
+That is, if for all <span class="math notranslate nohighlight">\(x,y\in \mathcal{X}\)</span> and <span class="math notranslate nohighlight">\(\alpha\in[0,1]\)</span> we have
+<div class="math notranslate nohighlight">
+\[\alpha \vvec{x}+(1-\alpha) \vvec{y}\in\mathcal{X}.\]</div>
+</p>
+</section>
+</div><p>The definition states that in a convex set you can connect any two dots within the set and you will never leave the set when drawing that connecting line. The set on the left is convex, and the set on the right is not convex.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-9f6a8c6cf8d54cc9a602dfa2ac2a7080c228fb47.svg" alt="Figure made with TikZ" /></p>
+</div><div class="proof definition admonition" id="convex_function">
+<p class="admonition-title"><span class="caption-number">Definition 10 </span> (Convex function)</p>
+<section class="definition-content" id="proof-content">
+<p>A function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> is <strong>convex</strong> if and only if for every <span class="math notranslate nohighlight">\(\alpha \in[0,1]\)</span>, and <span class="math notranslate nohighlight">\(\vvec{x},\vvec{y}\in\mathbb{R}^d\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5b3bcc8f-9bf7-4d9a-988c-499c511f4440">
+<span class="eqno">(3)<a class="headerlink" href="#equation-5b3bcc8f-9bf7-4d9a-988c-499c511f4440" title="Permalink to this equation">#</a></span>\[\begin{equation}
+ f(\alpha \vvec{x}+ (1-\alpha)\vvec{y})\leq\alpha f(\vvec{x})+(1-\alpha)f(\vvec{y})\nonumber
+\end{equation}\]</div>
+</section>
+</div><p>A convex function is a function whose graph is always below the line that connects two dots on the graph. Below you see an illustration of that property.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-e85bc54ebacb34fea0c46773f84f9685c4c4d545.svg" alt="Figure made with TikZ" /></p>
+</div><p>A convex optimization problem, or objective, is now characterized by two things: a convex objective function and a convex feasible set.</p>
+<div class="proof definition admonition" id="definition-2">
+<p class="admonition-title"><span class="caption-number">Definition 11 </span> (Convex optimization problem)</p>
+<section class="definition-content" id="proof-content">
+<p>Given a convex objective function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span> and a convex feasible set <span class="math notranslate nohighlight">\(\mathcal{C}\subseteq\mathbb{R}^d\)</span>
+then the objective of a <strong>convex optimization problem</strong> can be written in the following form:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \min_{\vvec{x}\in\mathbb{R}^d}&amp;\ f(\vvec{x}) &amp;
+    \text{s.t. } \vvec{x}\in\mathcal{C}
+\end{align*}\]</div>
+</section>
+</div><p>The fact that not only the objective function, but also the feasible set has to be convex might come here as a surprise. This is more easily understood if you transform the constrained optimization problem into an unconstrained one. By using the indicator function
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbb{1}_\mathcal{C}(\vvec{x})=\begin{cases}0 &amp; \text{if }\vvec{x}\in\mathcal{C}\\ \infty&amp; \text{if }\vvec{x}\notin\mathcal{C} \end{cases}\end{split}\]</div>
+
+we can write any constrained objective as the following unconstrained one:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\min_{\vvec{x}\in\mathbb{R}^d} f(\vvec{x}) +\mathbb{1}_\mathcal{C}(\vvec{x})
+\end{align*}\]</div>
+<p>Since the objective function above returns infinity for any <span class="math notranslate nohighlight">\(\vvec{x}\)</span> outside of the feasible set, any potential minimizer has to be feasible. If we now apply the definition of a convex function, then we require that the graph of the function is below the connecting line. However, if we have a nonconvex feasible set, then there exist two points in the feasible set whose connecting line is partially outside of the feasible set. On this part, where the connecting line is outside of the feasible set, the objective function returns infinity. Hence, the graph of the objective will not be under the connecting line. The example below illustrates this property further.</p>
+<div class="proof example admonition" id="example-3">
+<p class="admonition-title"><span class="caption-number">Example 12 </span></p>
+<section class="example-content" id="proof-content">
+<p>The figure below displays the function <span class="math notranslate nohighlight">\(f(x)=x^2 + \mathbb{1}_{\{\lvert x\rvert\geq 2\}}\)</span>. The feasible set <span class="math notranslate nohighlight">\(\{\lvert x\rvert\geq 2\}\)</span> is nonconvex, since the line connecting <span class="math notranslate nohighlight">\(x_1=-2.5\)</span> and <span class="math notranslate nohighlight">\(x_2=3.5\)</span> leaves the feasible set. We indicate domain where the function is returning infinity by the dashed vertical lines. If we now connect two function values as indicated by the red line, then the graph is above the line within the interval <span class="math notranslate nohighlight">\([-2,2]\)</span>. This shows that the function <span class="math notranslate nohighlight">\(f\)</span>, indicating an optimization objective with a convex objective function and a nonconvex feasible set is not a convex function.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-e85e81b8b20b55065b588139b2fabfce5f91a354.svg" alt="Figure made with TikZ" /></p>
+</div></section>
+</div><div class="proof theorem admonition" id="thm_convex">
+<p class="admonition-title"><span class="caption-number">Theorem 4 </span></p>
+<section class="theorem-content" id="proof-content">
+<p>If a function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> is convex, then every local minimizer <span class="math notranslate nohighlight">\(x^*\)</span> of <span class="math notranslate nohighlight">\(f\)</span> is a global minimizer.</p>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. Assume that a convex function <span class="math notranslate nohighlight">\(f\)</span> has a local minimizer <span class="math notranslate nohighlight">\(x_{loc}\)</span> which is not a global minimizer: <span class="math notranslate nohighlight">\(f(x_{loc})&gt;f(x^*)\)</span>. Then going towards <span class="math notranslate nohighlight">\(x^*\)</span> from <span class="math notranslate nohighlight">\(x_{loc}\)</span> minimizes the function value, because the graph is below the connecting line from <span class="math notranslate nohighlight">\(x_{loc}\)</span> to <span class="math notranslate nohighlight">\(x^*\)</span>. More formally, we have for any <span class="math notranslate nohighlight">\(\alpha&lt;1\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\alpha x_{loc} + (1-\alpha)x^*)&amp;\leq \alpha f(x_{loc}) + (1-\alpha)f(x^*)\\
+&amp;&lt; \alpha f(x_{loc}) + (1-\alpha)f(x_{loc})\\
+&amp; = f(x_{loc})
+\end{align*}\]</div>
+<p>where the first inequality stems from the definition of convex functions, and the second inequality from the fact that <span class="math notranslate nohighlight">\(f(x_{loc})&gt;f(x^*)\)</span>. As a result, we can find in any neighborhood of <span class="math notranslate nohighlight">\(x_{loc}\)</span> a point <span class="math notranslate nohighlight">\(v = \alpha x_{loc} + (1-\alpha)x^*\)</span>, by choosing <span class="math notranslate nohighlight">\(\alpha\)</span> close enough to one, such that <span class="math notranslate nohighlight">\(f(v)&lt;f(x_{loc})\)</span>.
+Hence <span class="math notranslate nohighlight">\(x_{loc}\)</span> is not a local minimizer.</p>
+</div>
+</div>
+<p>Since we can state any (constrained) optimization objective as an unconstrained objective by means of the indicator function as discussed above, we can apply <a class="reference internal" href="#thm_convex">Theorem 4</a> also to constrained optimization objectives and deduce that any local minimizer of a constrained objective is also a global one.</p>
+<p>Conversely, not every function with one global minimum has to be convex. An example of a nonconvex function that has just one local, and therewith also global minimum is the Rosenbrock function.</p>
+<section id="properties-of-convex-functions">
+<h2>Properties of Convex Functions<a class="headerlink" href="#properties-of-convex-functions" title="Permalink to this headline">#</a></h2>
+<p>We can show that a function is convex by applying the definition. However, in practice it’s useful to rely on a couple of properties that allow to quickly assess whether a function is convex. First of all, there are some very basic convex functions, like affine functions and norms.</p>
+<div class="proof lemma admonition" id="lemma-5">
+<p class="admonition-title"><span class="caption-number">Lemma 1 </span></p>
+<section class="lemma-content" id="proof-content">
+<p>Every norm <span class="math notranslate nohighlight">\(\lVert\cdot\rVert:\mathbb{R}^d\rightarrow \mathbb{R}_+\)</span> is a convex function.</p>
+</section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. For any <span class="math notranslate nohighlight">\(\vvec{x},\vvec{y}\in\mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha\in[0,1]\)</span> we have:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \lVert\alpha\vvec{x} +(1-\alpha)\vvec{y} \rVert &amp;\leq \lVert\alpha\vvec{x}\rVert +\lVert(1-\alpha)\vvec{y} \rVert &amp;\text{(triangle inequality)}\\
+    &amp;= \lvert\alpha\rvert\lVert\vvec{x}\rVert +\lvert1-\alpha\rvert\lVert\vvec{y} \rVert &amp;\text{(homogeneity)}\\
+    &amp;=\alpha\lVert\vvec{x}\rVert +(1-\alpha)\lVert\vvec{y} \rVert
+\end{align*}\]</div>
+</div>
+<p>The plot below shows the graphs of the <span class="math notranslate nohighlight">\(L_p\)</span> norm, which looks the same for <span class="math notranslate nohighlight">\(x\in\mathbb{R}\)</span>, regardless of <span class="math notranslate nohighlight">\(p\)</span> because <span class="math notranslate nohighlight">\(\lVert x\rVert = \sqrt[p]{\lvert x\rvert^p} = \lvert x\rvert\)</span>. We can clearly observe the typical convex function shape.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-afed38ba647c36263b9408adc9ed01f6d257edf2.svg" alt="Figure made with TikZ" /></p>
+</div><div class="proof lemma admonition" id="lemma-6">
+<p class="admonition-title"><span class="caption-number">Lemma 2 </span></p>
+<section class="lemma-content" id="proof-content">
+<p>Every linear function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> is convex and concave (that is -<span class="math notranslate nohighlight">\(f\)</span> is convex).</p>
+</section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. Linear functions mapping to real values are parametrized by a matrix (more specifically a row vector in this case) <span class="math notranslate nohighlight">\(A\in\mathbb{R}^{1\times d}\)</span>, having the form <span class="math notranslate nohighlight">\(f(\vvec{x})=A\vvec{x}\)</span>. This type of function is further characterized by the property that for any <span class="math notranslate nohighlight">\(\vvec{x},\vvec{y}\in\mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha\in[0,1]\)</span> we have:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    f(\alpha\vvec{x} +(1-\alpha)\vvec{y}) &amp;= \alpha f(\vvec{x}) +(1-\alpha)f(\vvec{y}).
+\end{align*}\]</div>
+<p>The equation above satisfies the inequality defining convex functions. This equality also applies to <span class="math notranslate nohighlight">\(-f\)</span>, hence showing that <span class="math notranslate nohighlight">\(f\)</span> is also concave.</p>
+</div>
+<p>The plot below shows the graph of a linear function. We can see how this is a special case, since any line connecting two function values lie exactly on the graph.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-0fe7078480b8292bcdbcd79f87ba42a61b124934.svg" alt="Figure made with TikZ" /></p>
+</div><p>Further, there are some specific compositions of functions that result in convex functions.</p>
+<div class="proof lemma admonition" id="lemma-7">
+<p class="admonition-title"><span class="caption-number">Lemma 3 </span></p>
+<section class="lemma-content" id="proof-content">
+<p>Nonnegative weighted sums of convex functions are convex:<br />
+for all <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_k\geq 0\)</span> and convex functions <span class="math notranslate nohighlight">\(f_1,\ldots,f_k\)</span> the function
+<div class="math notranslate nohighlight">
+\[f(\vvec{x}) = \lambda_1 f_1(\vvec{x})+\ldots + \lambda_k f_k(\vvec{x})\]</div>
+
+is convex.</p>
+</section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. Exercise</p>
+</div>
+<div class="proof lemma admonition" id="lemma-8">
+<p class="admonition-title"><span class="caption-number">Lemma 4 </span></p>
+<section class="lemma-content" id="proof-content">
+<p>If <span class="math notranslate nohighlight">\(g:\mathbb{R}^d\rightarrow \mathbb{R}^k\)</span> is an affine map (that is, <span class="math notranslate nohighlight">\(g\)</span> has the form <span class="math notranslate nohighlight">\(g(\vvec{x})=A\vvec{x}+\vvec{b}\)</span> for a matrix <span class="math notranslate nohighlight">\(A\)</span> and vector <span class="math notranslate nohighlight">\(\vvec{b}\)</span>), and <span class="math notranslate nohighlight">\(f:\mathbb{R}^k\rightarrow \mathbb{R}\)</span> is a convex function, then the composition
+<div class="math notranslate nohighlight">
+\[f(g(\vvec{x}))=f(A\vvec{x}+\vvec{b})\]</div>
+
+is a convex function.</p>
+</section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. Exercise</p>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="optimization_numerical.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Numerical Optimization</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="optimization_gradients.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Matrix Derivatives</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,944 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Classification Problem &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Evaluation" href="classification_evaluation.html" />
+    <link rel="prev" title="Classification" href="classification.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fclassification_problem.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/classification_problem.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/classification_problem.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#feature-space">
+   Feature space
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#class-labels">
+   Class labels
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training-examples">
+   Training examples
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#independent-and-identically-distributed-i-i-d">
+   Independent and identically distributed (i.i.d.)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#classifier-definition">
+   Classifier definition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#true-classification-error">
+   True classification error
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bayes-optimal-classifier">
+   Bayes optimal classifier
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Classification Problem</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#feature-space">
+   Feature space
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#class-labels">
+   Class labels
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training-examples">
+   Training examples
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#independent-and-identically-distributed-i-i-d">
+   Independent and identically distributed (i.i.d.)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#classifier-definition">
+   Classifier definition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#true-classification-error">
+   True classification error
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bayes-optimal-classifier">
+   Bayes optimal classifier
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="classification-problem">
+<h1>Classification Problem<a class="headerlink" href="#classification-problem" title="Permalink to this headline">#</a></h1>
+<p>This section describes the general classification problem and introduces then the Bayes optimal classifier.</p>
+<section id="feature-space">
+<h2>Feature space<a class="headerlink" href="#feature-space" title="Permalink to this headline">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\( {\bf x} \)</span> denote a feature vector residing in a multidimensional space <span class="math notranslate nohighlight">\( {\cal X} \)</span> comprising several  features. We describe the data items – i.e. the objects we are trying to classify – by feature vectors in <span class="math notranslate nohighlight">\( {\cal X} \)</span>. Note that the vector <span class="math notranslate nohighlight">\( {\bf x} \in {\cal X} \)</span> describing a given data item may comprise either continuous (e.g. length, height, weight) or discrete (e.g. color code) features.</p>
+<figure class="align-left" id="feature-space-fig">
+<a class="reference internal image-reference" href="images/classification/feature_space.svg"><img alt="images/classification/feature_space.svg" height="320px" src="images/classification/feature_space.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">A data item in the feature vector space. Feature values are represented by different colors.</span><a class="headerlink" href="#feature-space-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We denote vectors by boldfaced letters e.g. <span class="math notranslate nohighlight">\( {\bf a} \)</span> and scalars by regular letters e.g. <span class="math notranslate nohighlight">\( a \)</span>.</p>
+</div>
+</aside>
+</section>
+<section id="class-labels">
+<h2>Class labels<a class="headerlink" href="#class-labels" title="Permalink to this headline">#</a></h2>
+<p>Moreover, let <span class="math notranslate nohighlight">\( y \)</span> be a discrete variable indicating the class label (target) among the set of possible labels <span class="math notranslate nohighlight">\( {\cal Y} \)</span>, where <span class="math notranslate nohighlight">\( {\cal Y} \triangleq \lbrace \ell_{1}, \ell_{2}, \ldots, \ell_{L} \rbrace \)</span> is a finite set – a.k.a. alphabet – of <span class="math notranslate nohighlight">\( L \)</span> arbitrary labels. The variable <span class="math notranslate nohighlight">\( y \in {\cal Y} \)</span> indicates thus a class value (label) assigned to a data item. A label <span class="math notranslate nohighlight">\( \ell \)</span> can be either the class name or a unique identification number / code representing the class. However, for the sake of simplicity, the class labels are usually normalized as indexes spanning e.g. from <span class="math notranslate nohighlight">\( 0 \)</span> to <span class="math notranslate nohighlight">\( L-1 \)</span>.</p>
+<figure class="align-left" id="class-labels-fig">
+<a class="reference internal image-reference" href="images/classification/class_labels.svg"><img alt="images/classification/class_labels.svg" height="320px" src="images/classification/class_labels.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">An alphabet of arbitrary labels. Class values (labels) are represented by different colors.</span><a class="headerlink" href="#class-labels-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="proof remark admonition" id="remark-0">
+<p class="admonition-title"><span class="caption-number">Remark 1 </span></p>
+<section class="remark-content" id="proof-content">
+<p>We should pick up the set of features according to the particular classification problem we are trying to solve and also make sure that it really encloses sufficient information to help distinguishing data items / objects from different classes. Note therefore that the selection of classes and the selection of features are often entangled.</p>
+</section>
+</div></section>
+<section id="training-examples">
+<h2>Training examples<a class="headerlink" href="#training-examples" title="Permalink to this headline">#</a></h2>
+<p>Now let</p>
+<div class="amsmath math notranslate nohighlight" id="equation-965c4722-8bab-4df8-b00a-9282ae0709fd">
+<span class="eqno">(39)<a class="headerlink" href="#equation-965c4722-8bab-4df8-b00a-9282ae0709fd" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+{\cal D} &amp;\triangleq&amp; \bigcup_{i=1}^{N} \lbrace \left( {\bf x}_{i}, y_{i} \right) \rbrace \\
+&amp;\equiv&amp; \lbrace \left( {\bf x}_{1}, y_{1} \right), \left( {\bf x}_{2}, y_{2} \right), \ldots, \left( {\bf x}_{N}, y_{N} \right) \rbrace \nonumber
+\end{eqnarray}\]</div>
+<p>denote a dataset of <span class="math notranslate nohighlight">\( N \)</span> training examples, i.e. the data items for which we already know the true classification. Specifically, the <span class="math notranslate nohighlight">\( i \)</span>-th <em>known</em> training example is represented by a pair <span class="math notranslate nohighlight">\( {\cal D}_{i} \triangleq \left( {\bf x}_{i}, y_{i} \right) \)</span> including both the feature vector <span class="math notranslate nohighlight">\( {\bf x}_{i} \)</span> and the associated class label <span class="math notranslate nohighlight">\( y_{i} \)</span>. Note that <span class="math notranslate nohighlight">\( {\cal D} \subset {\cal X} \times {\cal Y} \)</span>, where <span class="math notranslate nohighlight">\( \times \)</span> denotes the Cartesian product. Note also that the dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> is often much smaller than its complement <span class="math notranslate nohighlight">\( \bar{\cal D} = ({\cal X} \times {\cal Y}) \setminus {\cal D} \)</span> w.r.t. <span class="math notranslate nohighlight">\( {\cal X} \times {\cal Y} \)</span>. The set difference operator is defined as <span class="math notranslate nohighlight">\( {\cal A} \setminus {\cal B} \triangleq \lbrace a \mid a \in {\cal A} \wedge a \notin {\cal B} \rbrace \)</span>.</p>
+<figure class="align-left" id="id1">
+<a class="reference internal image-reference" href="images/classification/training_dataset.svg"><img alt="images/classification/training_dataset.svg" height="320px" src="images/classification/training_dataset.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">The training dataset. The darkest shading area is often much smaller than the lightest area.</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="proof remark admonition" id="remark-1">
+<p class="admonition-title"><span class="caption-number">Remark 2 </span></p>
+<section class="remark-content" id="proof-content">
+<p>As we increase the number of features (more dimensions) or the granularity of the existing features (e.g. more values per discrete feature), the classifier might increase its ability to distinguish training examples from different classes. However, besides possibly increasing the computational burden to deal with all input features, the required number of training examples might significantly increase to prevent over fitting.</p>
+</section>
+</div></section>
+<section id="independent-and-identically-distributed-i-i-d">
+<h2>Independent and identically distributed (i.i.d.)<a class="headerlink" href="#independent-and-identically-distributed-i-i-d" title="Permalink to this headline">#</a></h2>
+<div class="proof property admonition" id="property-2">
+<p class="admonition-title"><span class="caption-number">Property 2 </span> (i.i.d. assumption)</p>
+<section class="property-content" id="proof-content">
+<p>The overall assumption is that training examples <span class="math notranslate nohighlight">\( \cup_{i=1}^{N} \lbrace {\cal D}_{i} \rbrace \equiv \cup_{i=1}^{N} \lbrace \left( {\bf x}_{i}, y_{i} \right) \rbrace \)</span> from training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> are <em>identically</em> distributed and were <em>independently</em> drawn from an <em>unknown</em> probability distribution <span class="math notranslate nohighlight">\( p^{\ast}({\bf x}, y) \)</span>, i.e.</p>
+<div class="math notranslate nohighlight" id="equation-iid-assumption">
+<span class="eqno">(40)<a class="headerlink" href="#equation-iid-assumption" title="Permalink to this equation">#</a></span>\[{\bf x}_{i}, y_{i} \sim  p^{\ast}({\bf x}, y), \forall i \in \lbrace 1, \ldots, N \rbrace.\]</div>
+</section>
+</div><aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We also assume that testing and validation samples follow the i.i.d. assumption. Nevertheless, this assumption is quite strong, i.e. it might be easily broken by real world data.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We denote random vectors by capitalized letters <span class="math notranslate nohighlight">\( {\bf X} \)</span> and samples of random variables / vectors by non-capitalized letters <span class="math notranslate nohighlight">\( {\bf x} \)</span>. The distinction between <span class="math notranslate nohighlight">\( {\bf X} \sim p({\bf x}) \equiv p_{\bf X}({\bf x}) \)</span> and <span class="math notranslate nohighlight">\( {\bf x} \sim p({\bf x}) \equiv p_{\bf X}({\bf x}) \)</span> is implied by the context.</p>
+</div>
+</aside>
+<div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. Let us assume that, <span class="math notranslate nohighlight">\( \forall i \in \lbrace 1, \ldots, N \rbrace \)</span>, <span class="math notranslate nohighlight">\( {\bf x}_{i} \in {\cal X} \)</span> and <span class="math notranslate nohighlight">\( y_{i} \in {\cal Y} \)</span> are realizations of a random vector <span class="math notranslate nohighlight">\( {\bf X}_{i} \)</span> and a random variable <span class="math notranslate nohighlight">\( Y_{i} \)</span>, respectively. Let us further assume that <span class="math notranslate nohighlight">\( {\bf X}_{i} \)</span> and <span class="math notranslate nohighlight">\( Y_{i} \)</span> are jointly distributed according to a <em>mixed</em> probability distribution <span class="math notranslate nohighlight">\( p_{{\bf X}_{i}, Y_{i}}({\bf x}_{i}, y_{i}) \)</span> or, more concisely, <span class="math notranslate nohighlight">\( p({\bf x}_{i}, y_{i}) \)</span>. Conversely, we can write <span class="math notranslate nohighlight">\( {\bf x}_{i}, y_{i} \sim p({\bf x}_{i}, y_{i}) \)</span> which means that the samples <span class="math notranslate nohighlight">\( {\bf x}_{i}, y_{i} \)</span> are drawn from the joint distribution <span class="math notranslate nohighlight">\( p({\bf x}_{i}, y_{i}) \)</span>. Note that we can also write <span class="math notranslate nohighlight">\( {\bf X}_{i}, Y_{i} \sim p({\bf x}_{i}, y_{i}) \)</span> meaning in this case that the random variables / vectors <span class="math notranslate nohighlight">\( {\bf X}_{i}, Y_{i} \)</span> are jointly distributed according to <span class="math notranslate nohighlight">\( p({\bf x}_{i}, y_{i}) \)</span>.</p>
+<p>We assume that the training samples <span class="math notranslate nohighlight">\( \cup_{i=1}^{N} \lbrace {\cal D}_{i} \rbrace \)</span> are <em>mutually independent</em> such that the following holds</p>
+<div class="math notranslate nohighlight" id="equation-mutually-independent-assumption">
+<span class="eqno">(41)<a class="headerlink" href="#equation-mutually-independent-assumption" title="Permalink to this equation">#</a></span>\[p({\bf x}_{1}, y_{1}, {\bf x}_{2}, y_{2}, \ldots, {\bf x}_{N}, y_{N}) \equiv p({\bf x}_{1}, y_{1}) \, p({\bf x}_{2}, y_{2}) \ldots p({\bf x}_{N}, y_{N}).\]</div>
+<p>Additionally, we assume that the training samples <span class="math notranslate nohighlight">\( \cup_{i=1}^{N} \lbrace {\cal D}_{i} \rbrace \)</span> are <em>identically</em> distributed according to an <em>unknown</em> probability distribution <span class="math notranslate nohighlight">\( p^{\ast}({\bf x}, y) \)</span> such that</p>
+<div class="math notranslate nohighlight" id="equation-identically-distributed-assumption">
+<span class="eqno">(42)<a class="headerlink" href="#equation-identically-distributed-assumption" title="Permalink to this equation">#</a></span>\[p({\bf x}_{i}, y_{i}) \equiv p^{\ast}({\bf x}, y), \forall i \in \lbrace 1, \ldots, N \rbrace.\]</div>
+<p>In summary, the overall assumption in <a class="reference internal" href="#equation-iid-assumption">(40)</a> follows from <a class="reference internal" href="#equation-mutually-independent-assumption">(41)</a> and <a class="reference internal" href="#equation-identically-distributed-assumption">(42)</a>. <span class="math notranslate nohighlight">\( \blacksquare \)</span></p>
+</div>
+</div>
+</section>
+<section id="classifier-definition">
+<h2>Classifier definition<a class="headerlink" href="#classifier-definition" title="Permalink to this headline">#</a></h2>
+<div class="proof definition admonition" id="classifier">
+<p class="admonition-title"><span class="caption-number">Definition 13 </span> (Classifier)</p>
+<section class="definition-content" id="proof-content">
+<p>A classifier is a function <span class="math notranslate nohighlight">\( h: {\cal X} \rightarrow {\cal Y} \)</span> mapping feature vectors <span class="math notranslate nohighlight">\( {\bf x} \)</span> to labels <span class="math notranslate nohighlight">\( y \)</span>. In particular, for a given <em>observed</em> sample <span class="math notranslate nohighlight">\( \check{\bf x} \)</span>, the classifier returns a <em>predicted</em> label <span class="math notranslate nohighlight">\( \hat{y} = h(\check{\bf x}) \)</span>. We use <span class="math notranslate nohighlight">\( \check{\bf x} \)</span> to denote an observed – or, equivalently, measured – realization of the random vector <span class="math notranslate nohighlight">\( {\bf X} \)</span> which was possibly not seen before to distinguish it from the data items within the training dataset. On the other hand, <span class="math notranslate nohighlight">\( \hat{y} \)</span> denotes an estimation of the random variable <span class="math notranslate nohighlight">\( Y \)</span>, in this case, the label predicted by the classifier.</p>
+</section>
+</div><figure class="align-left" id="classification-task-fig">
+<a class="reference internal image-reference" href="images/classification/classification_task.svg"><img alt="images/classification/classification_task.svg" height="320px" src="images/classification/classification_task.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">A classifier struggling to generalize. Typically the classifier maps multiple data items to the same class value (label), i.e. <span class="math notranslate nohighlight">\( \exists {\bf x}, {\bf x}' \in {\cal X} \mid {\bf x} \neq {\bf x}' \wedge h({\bf x}) = h({\bf x}') \)</span>.</span><a class="headerlink" href="#classification-task-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that in general <span class="math notranslate nohighlight">\( \check{\bf x} \)</span> has not been seen before, i.e. it is not in the training dataset – <span class="math notranslate nohighlight">\( \left( \check{\bf x}, \hat{y} \right) \notin {\cal D} \)</span>. The classifier’s ability to properly classify unseen samples is called <em>generalization</em>.</p>
+</div>
+</aside>
+</section>
+<section id="true-classification-error">
+<h2>True classification error<a class="headerlink" href="#true-classification-error" title="Permalink to this headline">#</a></h2>
+<div class="proof definition admonition" id="true_classifier_error">
+<p class="admonition-title"><span class="caption-number">Definition 14 </span> (True classification error)</p>
+<section class="definition-content" id="proof-content">
+<p>Let the function <span class="math notranslate nohighlight">\( h(\cdot) \)</span> be a classifier. Furthermore, let <span class="math notranslate nohighlight">\( Pr \lbrace A \rbrace \)</span> and <span class="math notranslate nohighlight">\( {E}_{{\bf Z} \sim p} \lbrace g({\bf Z}) \rbrace \)</span> denote respectively the probability of an event <span class="math notranslate nohighlight">\( A \)</span> occurring and the expected value of a function <span class="math notranslate nohighlight">\( g(\cdot) \)</span> of a random vector – or a variable, i.e. one-dimensional vector – <span class="math notranslate nohighlight">\( {\bf Z} \)</span> distributed according to a probability distribution <span class="math notranslate nohighlight">\( p({\bf z}) \equiv p_{\bf Z}({\bf z}) \)</span>, i.e. <span class="math notranslate nohighlight">\( {\bf Z} \sim p({\bf z}) \)</span>. We can then write the true classification error of <span class="math notranslate nohighlight">\( h \)</span> as</p>
+<div class="math notranslate nohighlight" id="equation-true-classification-error">
+<span class="eqno">(43)<a class="headerlink" href="#equation-true-classification-error" title="Permalink to this equation">#</a></span>\[Pr \lbrace Y \neq h({\bf X}) \rbrace \triangleq {E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right] \rbrace,\]</div>
+<p>where the Iverson bracket – which takes as an argument any logical proposition <span class="math notranslate nohighlight">\( \Psi \)</span> – is defined as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\left[ \Psi \right] = \left\lbrace
+\begin{matrix}
+1, &amp; \mbox{if } \Psi \mbox{ is true} \\
+0, &amp; \mbox{otherwise.}
+\end{matrix}
+\right. \nonumber\end{split}\]</div>
+<p>The difference to regular brackets is implied by the enclosed expression. For the Iverson bracket, must be a logical proposition that evaluates to true or false.</p>
+</section>
+</div><aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The probability of miss-classification <span class="math notranslate nohighlight">\( Pr \lbrace Y \neq h({\bf X}) \rbrace \)</span> is also known as the risk <span class="math notranslate nohighlight">\( R(h) \)</span> of the classifier <span class="math notranslate nohighlight">\( h \)</span>.</p>
+</div>
+</aside>
+</section>
+<section id="bayes-optimal-classifier">
+<h2>Bayes optimal classifier<a class="headerlink" href="#bayes-optimal-classifier" title="Permalink to this headline">#</a></h2>
+<div class="proof definition admonition" id="bayes_optimal_classifier">
+<p class="admonition-title"><span class="caption-number">Definition 15 </span> (Bayes optimal classifier)</p>
+<section class="definition-content" id="proof-content">
+<p>The classifier</p>
+<div class="math notranslate nohighlight" id="equation-final-estimator">
+<span class="eqno">(44)<a class="headerlink" href="#equation-final-estimator" title="Permalink to this equation">#</a></span>\[h^{\ast}({\bf x}) = \argmax_{y \in {\cal Y}} p^{\ast} ({\bf x}, y)\]</div>
+<p>is called Bayes optimal as it minimizes the classification risk, i.e. the true classification error. More precisely,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4d819635-0d78-4c6d-aef5-d3be9639b6b9">
+<span class="eqno">(45)<a class="headerlink" href="#equation-4d819635-0d78-4c6d-aef5-d3be9639b6b9" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+h^{\ast}({\bf x}) &amp;=&amp; \argmin_{h} R(h) \nonumber \\
+ &amp;=&amp; \argmin_{h} Pr \lbrace Y \neq h({\bf X}) \rbrace. \nonumber
+\end{eqnarray}\]</div>
+<p>However, Eq. <a class="reference internal" href="#equation-final-estimator">(44)</a> can not be used for obtaining the Bayes optimal classifier <span class="math notranslate nohighlight">\( h^{\ast} \)</span> since, again, the joint distribution <span class="math notranslate nohighlight">\( p^{\ast} \)</span> is unknown.</p>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. From <a class="reference internal" href="#equation-true-classification-error">(43)</a>, we can write</p>
+<div class="math notranslate nohighlight" id="equation-bayes-optimal-classifier">
+<span class="eqno">(46)<a class="headerlink" href="#equation-bayes-optimal-classifier" title="Permalink to this equation">#</a></span>\[h^{\ast}({\bf x}) = \argmin_{h} {E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right] \rbrace\]</div>
+<p>where the argument <span class="math notranslate nohighlight">\( h \)</span> resides on the space of arbitrary functions of the type <span class="math notranslate nohighlight">\( {\cal X} \rightarrow {\cal Y} \)</span>.</p>
+<p>We offer without proof that the solution to <a class="reference internal" href="#equation-bayes-optimal-classifier">(46)</a> is given by the maximum likelihood (ML) estimator</p>
+<div class="math notranslate nohighlight" id="equation-ml-estimator">
+<span class="eqno">(47)<a class="headerlink" href="#equation-ml-estimator" title="Permalink to this equation">#</a></span>\[h^{\ast}({\bf x}) = \argmax_{y \in {\cal Y}} p^{\ast} ( y \mid {\bf x}),\]</div>
+<p>where <span class="math notranslate nohighlight">\( p^{\ast} ( y \mid {\bf x}) \)</span> is the true likelihood function. In this case, it indicates how likely a particular label <span class="math notranslate nohighlight">\( y \)</span> represents the true class value given that a feature vector <span class="math notranslate nohighlight">\( {\bf x} \)</span> was observed.</p>
+<p>Note that we can multiply the right-hand side of <a class="reference internal" href="#equation-ml-estimator">(47)</a> by the true marginal distribution <span class="math notranslate nohighlight">\( p^{\ast}({\bf x}) \)</span> without affecting the result</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d2c57fba-de32-4b14-b219-4eb34d061f56">
+<span class="eqno">(48)<a class="headerlink" href="#equation-d2c57fba-de32-4b14-b219-4eb34d061f56" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+h^{\ast}({\bf x}) &amp;=&amp; \argmax_{y \in {\cal Y}} p^{\ast} ( y \mid {\bf x}) \, p^{\ast}({\bf x}) \nonumber \\
+&amp;=&amp; \argmax_{y \in {\cal Y}} p^{\ast} ({\bf x}, y) \nonumber
+\end{eqnarray}\]</div>
+<p>and finally write Eq. <a class="reference internal" href="#equation-final-estimator">(44)</a>. <span class="math notranslate nohighlight">\( \blacksquare \)</span></p>
+</div>
+</div>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As <span class="math notranslate nohighlight">\( p^{\ast} \)</span> is typically unknown in must practical applications, suitable learning algorithms must rely on different approaches aiming to minimize computable approximations to the true classification error and are therefore sub-optimal in a Bayesian sense.</p>
+</div>
+</aside>
+<div class="proof definition admonition" id="definition-6">
+<p class="admonition-title"><span class="caption-number">Definition 16 </span> (Excess risk)</p>
+<section class="definition-content" id="proof-content">
+<p>The excess risk of a given classifier <span class="math notranslate nohighlight">\( h \)</span> is given by <span class="math notranslate nohighlight">\( R(h) - R(h^{\ast}) \)</span>, where <span class="math notranslate nohighlight">\( R(h^{\ast}) \)</span> is the risk of the Bayes optimal classifier <span class="math notranslate nohighlight">\( h^{\ast} \)</span>. The excess risk of a consistent classifier <span class="math notranslate nohighlight">\( h \)</span> converges to zero as the number of training examples <span class="math notranslate nohighlight">\( N \)</span> grows unbounded, i.e. <span class="math notranslate nohighlight">\( N \rightarrow \infty \)</span>.</p>
+</section>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="classification.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Classification</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="classification_evaluation.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Evaluation</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

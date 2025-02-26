@@ -1,0 +1,765 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Function approximator &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Multi-Layer Perceptrons" href="neuralnets_mlps.html" />
+    <link rel="prev" title="Computational graphs" href="neuralnets_comp_graphs.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fneuralnets_func_approx.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/neuralnets_func_approx.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/neuralnets_func_approx.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Function approximator</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="function-approximator">
+<h1>Function approximator<a class="headerlink" href="#function-approximator" title="Permalink to this headline">#</a></h1>
+<p>What do we mean exactly by a <em>complex task</em>? ANNs build high-dimensional complex functions using simple modules – artificial neurons. However, like the brain, ANNs are black boxes and are hard to interpret, i.e. to clearly understand how they get their final output. Nevertheless, ANNs are universal approximators, they can approximate any function as indicated in the following theorem shown by Pinkus <span id="id1">[]</span>.</p>
+<div class="proof theorem admonition" id="approximator">
+<p class="admonition-title"><span class="caption-number">Theorem 13 </span> (Pinkus Theorem)</p>
+<section class="theorem-content" id="proof-content">
+<p>Any continuous function <span class="math notranslate nohighlight">\(f^{\ast} \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O}\)</span> can be arbitrarily well approximated (on any compact set) by a single layer neural network, for a wide range of non-linearities <span class="math notranslate nohighlight">\(\phi\)</span> (non-polynomials).</p>
+</section>
+</div><figure class="align-left" id="network-approximation">
+<a class="reference internal image-reference" href="images/neuralnets/network_approximation.svg"><img alt="images/neuralnets/network_approximation.svg" height="320px" src="images/neuralnets/network_approximation.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 43 </span><span class="caption-text">Network approximation <span class="math notranslate nohighlight">\( f \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O} \)</span> to a continuous function <span class="math notranslate nohighlight">\( f^{\ast} \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O} \)</span>. For a given observed feature vector <span class="math notranslate nohighlight">\( \check{\bf x} \in \mathbb{R}^{D} \)</span>, the network estimates the output as <span class="math notranslate nohighlight">\( \hat{\bf y} = f(\check{\bf x}) \in \mathbb{R}^{O} \)</span> as opposed to the true output <span class="math notranslate nohighlight">\( {\bf y} = f^{\ast}(\check{\bf x}) \in \mathbb{R}^{O} \)</span> that would be obtained by the approximated function <span class="math notranslate nohighlight">\( f^{\ast} \)</span>. Lastly, note that the network task represented by the function <span class="math notranslate nohighlight">\(f^{\ast}\)</span> can be arbitrarily complex e.g. convert speech-to-text.</span><a class="headerlink" href="#network-approximation" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Note that we need to employ a non-linear activation function <span class="math notranslate nohighlight">\(\phi \colon \mathbb{R} \rightarrow \mathbb{R} \)</span>. <a class="reference internal" href="#activation-functions"><span class="std std-numref">Fig. 44</span></a> illustrates some widespread activation functions in machine learning literature. Common activation functions in traditional machine learning are the sigmoid</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1704e5ce-6317-41c7-9b66-f4888ed92bc6">
+<span class="eqno">(183)<a class="headerlink" href="#equation-1704e5ce-6317-41c7-9b66-f4888ed92bc6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\phi(x) = \frac{1}{1+e^{-x}}
+\end{equation}\]</div>
+<p>and hyperbolic tangent</p>
+<div class="amsmath math notranslate nohighlight" id="equation-e91e4c53-a80d-4340-ad04-7e5094869d5e">
+<span class="eqno">(184)<a class="headerlink" href="#equation-e91e4c53-a80d-4340-ad04-7e5094869d5e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\phi(x) = \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}.
+\end{equation}\]</div>
+<p>However, modern deep learning methods typically use unbounded, non-linear activation functions such as the rectified linear unit (ReLU)</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ec2280b8-c032-4dba-ac90-ef74574f6257">
+<span class="eqno">(185)<a class="headerlink" href="#equation-ec2280b8-c032-4dba-ac90-ef74574f6257" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\phi(x) = \max(0, x),
+\end{equation}\]</div>
+<p>the leaky ReLU</p>
+<div class="amsmath math notranslate nohighlight" id="equation-73ec376c-a067-4a2c-a871-99814db0c123">
+<span class="eqno">(186)<a class="headerlink" href="#equation-73ec376c-a067-4a2c-a871-99814db0c123" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\phi(x) = \max(\alpha x, x)
+\end{equation}\]</div>
+<p>or the exponential linear unit (LU)</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7ad4b2f9-05b8-42a0-90af-cdf9bf731f4d">
+<span class="eqno">(187)<a class="headerlink" href="#equation-7ad4b2f9-05b8-42a0-90af-cdf9bf731f4d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\phi(x) = \left\lbrace 
+\begin{matrix}
+x, &amp; x \geq 0 \\
+\alpha \left( e^{x}-1 \right), &amp; \mbox{otherwise}
+\end{matrix}
+\right.
+\end{equation}\]</div>
+<p>in which <span class="math notranslate nohighlight">\( \alpha \geq 0 \)</span> is a small constant e.g. <span class="math notranslate nohighlight">\( \alpha = 0.1 \)</span>.</p>
+<p>Activation functions are carefully designed such that their derivatives are available in closed form and can be computed very efficiently. For example, for the sigmoid and ReLU activation functions, the derivatives are straightforwardly computed respectively as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4802ba03-ca13-4937-a95f-5bd971f4faec">
+<span class="eqno">(188)<a class="headerlink" href="#equation-4802ba03-ca13-4937-a95f-5bd971f4faec" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\phi'(x) =  \frac{\partial \phi(x)}{\partial x} =  \phi(x) \, \phi(-x)
+\end{equation}\]</div>
+<p>and</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ac81ce55-2a65-4c80-8a07-55f2d8c228f2">
+<span class="eqno">(189)<a class="headerlink" href="#equation-ac81ce55-2a65-4c80-8a07-55f2d8c228f2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\phi'(x) =  \frac{\partial \phi(x)}{\partial x} =  \left[ x \geq 0 \right],
+\end{equation}\]</div>
+<p>where the Iverson bracket <span class="math notranslate nohighlight">\( \left[ \Psi \right] \)</span> yields <span class="math notranslate nohighlight">\( 1 \)</span> if the logical proposition <span class="math notranslate nohighlight">\( \Psi \)</span> is true or <span class="math notranslate nohighlight">\( 0 \)</span>, otherwise.</p>
+<figure class="align-left" id="activation-functions">
+<a class="reference internal image-reference" href="_images/activation_functions.png"><img alt="_images/activation_functions.png" src="_images/activation_functions.png" style="height: 480px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 44 </span><span class="caption-text">Common non-linear activation functions (borrowed from <span id="id2">[]</span>). In contrast to traditional ones, modern activation functions are typically unbounded and can be computed very efficiently.</span><a class="headerlink" href="#activation-functions" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Modern activation functions are unbounded such that their output values do not saturate and their derivatives do not collapse to zero for larger activation values (see <a class="reference internal" href="#sigmoid-function"><span class="std std-numref">Fig. 45</span></a> and <a class="reference internal" href="#relu-function"><span class="std std-numref">Fig. 46</span></a>). This is paramount in deep neural networks, since the activation values might become bigger and bigger as the feed input features <span class="math notranslate nohighlight">\( \lbrace x_{i} \rbrace \)</span> are forwarded over the network. Moreover, unbounded activation functions – with non-zero derivatives – are crucial for the deep learning itself. As we will see shortly (in the backpropagation procedure), the network weights are updated in order to minimize some loss function <span class="math notranslate nohighlight">\( L(y,\hat{y}) \)</span>. Specifically, each weight is updated using the back propagated derivatives of the loss function in respect to the weight itself. To accomplish this, the chain rule of calculus is applied several times over potentially long branches of the associated computational graph linking the parameter to the network outputs. Additionally, the product of chained derivatives might become smaller and smaller as derivatives are back propagated through the network. Note though that, when the activation function saturates, its derivative becomes close to zero. Thus, if that happens in all paths between a network parameter and the network outputs, this parameter will become insensitive to the improvements in the loss function and will not be updated anymore, i.e. the network will not learn to perform its task based on this parameter.</p>
+<p><a class="reference internal" href="#sigmoid-function"><span class="std std-numref">Fig. 45</span></a> and <a class="reference internal" href="#relu-function"><span class="std std-numref">Fig. 46</span></a> show respectively the sigmoid and ReLU activation functions and their derivatives.</p>
+<figure class="align-left" id="sigmoid-function">
+<a class="reference internal image-reference" href="_images/sigmoid_d.png"><img alt="_images/sigmoid_d.png" src="_images/sigmoid_d.png" style="height: 320px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 45 </span><span class="caption-text">Sigmoid activation function. The sigmoid derivative collapses to zero for large absolute values of the activation.</span><a class="headerlink" href="#sigmoid-function" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-left" id="relu-function">
+<a class="reference internal image-reference" href="_images/relu_d.png"><img alt="_images/relu_d.png" src="_images/relu_d.png" style="height: 320px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 46 </span><span class="caption-text">ReLU activation function. The ReLU function derivative remains constant for large positive activation values.</span><a class="headerlink" href="#relu-function" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="proof example admonition" id="example-1">
+<p class="admonition-title"><span class="caption-number">Example 24 </span></p>
+<section class="example-content" id="proof-content">
+<p>Suppose a linear activation function of the type <span class="math notranslate nohighlight">\( \phi(a) = \kappa a \)</span>. It can be shown that the resulting network can be actually reduced to a single linear neuron unit with properly adjusted weights <span class="math notranslate nohighlight">\( \tilde{\bf w} = \begin{bmatrix} \tilde{w}_{0} \equiv \tilde{b} &amp; \tilde{w}_{1} &amp; \ldots &amp; \tilde{w}_{D} \end{bmatrix} \)</span>, i.e. the network will not be able to approximate any function more complex than an affine transform <span class="math notranslate nohighlight">\( \hat{y} = f({\bf x}) = \tilde{\bf w}^{T} {\bf x} \)</span> of its inputs <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} {x}_{0} \equiv 1 &amp; {x}_{1} &amp; \ldots &amp; {x}_{D} \end{bmatrix} \)</span>. Thus, a non-linear activation function is required for the network to approximate more complex functions.</p>
+<p><a class="reference internal" href="#computational-graph4"><span class="std std-numref">Fig. 47</span></a> shows an example of a linear network with activation function <span class="math notranslate nohighlight">\( \phi(a) = a \)</span>.</p>
+<figure class="align-left" id="computational-graph4">
+<a class="reference internal image-reference" href="_images/example_ANN_linear_02.png"><img alt="_images/example_ANN_linear_02.png" src="_images/example_ANN_linear_02.png" style="height: 320px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 47 </span><span class="caption-text">The need for non-linearity. Computational graph comprising three linear neuron units on the left is equivalently to a single linear unit on the right.</span><a class="headerlink" href="#computational-graph4" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Note that in this case we have</p>
+<div class="amsmath math notranslate nohighlight" id="equation-76be6523-497e-4f4d-8718-a7bead6c1dfb">
+<span class="eqno">(190)<a class="headerlink" href="#equation-76be6523-497e-4f4d-8718-a7bead6c1dfb" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+\hat{y} &amp;=&amp; w_{0,1}^{2} + \sum_{j=1}^2 w^{2}_{j,1} \left( \sum_{i=0}^D w^{1}_{i,j} x_{i} \right) \nonumber \\
+&amp;=&amp; \sum_{i=0}^D \tilde{w}_{i} x_{i}. \nonumber
+\end{eqnarray}\]</div>
+<p>Thus, the network is equivalent to a single unit with weights <div class="math notranslate nohighlight">
+\[ \tilde{w}_{0} = {w^{2}_{0,1}} + w^{1}_{0,1} \, w^{2}_{1,1} +  w^{1}_{0,2} \, w^{2}_{2,1} \]</div>
+ and <div class="math notranslate nohighlight">
+\[ \tilde{w}_{i} = w^{1}_{i,1} \, w^{2}_{1,1} +  w^{1}_{i,2} \, w^{2}_{2,1}, \,\,\, \forall i \in \lbrace 1, \ldots, D \rbrace. \]</div>
+</p>
+</section>
+</div></section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="neuralnets_comp_graphs.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Computational graphs</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="neuralnets_mlps.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Multi-Layer Perceptrons</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

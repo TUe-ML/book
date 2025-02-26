@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Evaluation &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="K-Nearest Neighbor" href="classification_knn.html" />
+    <link rel="prev" title="Classification Problem" href="classification_problem.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fclassification_evaluation.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/classification_evaluation.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/classification_evaluation.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimating-the-true-classification-error">
+   Estimating the true classification error
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#typical-machine-learning-ml-workflow">
+   Typical Machine Learning (ML) workflow
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#confusion-matrix">
+   Confusion matrix
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Evaluation</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimating-the-true-classification-error">
+   Estimating the true classification error
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#typical-machine-learning-ml-workflow">
+   Typical Machine Learning (ML) workflow
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#confusion-matrix">
+   Confusion matrix
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="evaluation">
+<h1>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">#</a></h1>
+<p>This sections deals with practical issues regarding the evaluation of classifiers.</p>
+<section id="estimating-the-true-classification-error">
+<h2>Estimating the true classification error<a class="headerlink" href="#estimating-the-true-classification-error" title="Permalink to this headline">#</a></h2>
+<p>Recall that the true classification error of a classifier <span class="math notranslate nohighlight">\( h \)</span> is defined as</p>
+<div class="math notranslate nohighlight" id="equation-true-classification-error2a">
+<span class="eqno">(49)<a class="headerlink" href="#equation-true-classification-error2a" title="Permalink to this equation">#</a></span>\[CE_{true} = Pr \lbrace Y \neq h({\bf X}) \rbrace.\]</div>
+<p>By definition <span class="math notranslate nohighlight">\( Pr \lbrace Y \neq h({\bf X}) \rbrace \triangleq {E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right] \rbrace \)</span>. Thus, we can rewrite <a class="reference internal" href="#equation-true-classification-error2a">(49)</a> as</p>
+<div class="math notranslate nohighlight" id="equation-true-classification-error2b">
+<span class="eqno">(50)<a class="headerlink" href="#equation-true-classification-error2b" title="Permalink to this equation">#</a></span>\[CE_{true} = {E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right].\]</div>
+<p>Without loss of generality, let us assume that the multidimensional feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span> includes only continuous-valued features. Therefore, the expected value of the function <span class="math notranslate nohighlight">\( \left[ Y \neq h(\bf X) \right] \)</span> of <span class="math notranslate nohighlight">\( {\bf X},Y \)</span> w.r.t. the <em>mixed</em> probability distribution <span class="math notranslate nohighlight">\( p^{\ast} \)</span> can be written as</p>
+<div class="math notranslate nohighlight" id="equation-expected-value">
+<span class="eqno">(51)<a class="headerlink" href="#equation-expected-value" title="Permalink to this equation">#</a></span>\[{E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right] \rbrace = \sum_{y \in {\cal Y}} \int_{{\bf x} \in {\cal X}} \left[ y \neq h({\bf x}) \right] p^{\ast} ({\bf x}, y) d {\bf x}.\]</div>
+<p>Note, however, that the underlying distribution <span class="math notranslate nohighlight">\( p^{\ast} \)</span> is <em>unknown</em>. Thus, in general, the true classification error can not be computed exactly as in <a class="reference internal" href="#equation-true-classification-error2b">(50)</a>. Even if we knew the true distribution <span class="math notranslate nohighlight">\( p^{\ast} \)</span>, the integrals / summations in <a class="reference internal" href="#equation-expected-value">(51)</a> have often no closed form solution.</p>
+<p>In practice, we approximate the true classification error by computing a Monte Carlo approximation of the integrals /summations on the right-hand side of <a class="reference internal" href="#equation-expected-value">(51)</a>. Specifically, let</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c2852ea1-09de-49da-a14c-12d3b1a9ae32">
+<span class="eqno">(52)<a class="headerlink" href="#equation-c2852ea1-09de-49da-a14c-12d3b1a9ae32" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+{\cal D}' &amp;\triangleq&amp; \bigcup_{i=1}^{M} \lbrace \left( \bar{\bf x}_{i}, \bar{y}_{i} \right) \rbrace \nonumber \\
+&amp;\equiv&amp; \lbrace \left( \bar{\bf x}_{1}, \bar{y}_{1} \right), \left( \bar{\bf x}_{2}, \bar{y}_{2} \right), \ldots, \left( \bar{\bf x}_{M}, \bar{y}_{M} \right) \rbrace \nonumber
+\end{eqnarray}\]</div>
+<p>be a dataset containing <span class="math notranslate nohighlight">\( M \)</span> <em>testing</em> or <em>validation</em> examples also drawn from the underlying distribution <span class="math notranslate nohighlight">\( p^{\ast} \)</span>. Note that we know the true label <span class="math notranslate nohighlight">\( \bar{y}_{i} \)</span> of each data item <span class="math notranslate nohighlight">\( \bar{\bf x}_{i} \)</span>. From the law of large numbers, the integrals/summations on the right-hand side of <a class="reference internal" href="#equation-expected-value">(51)</a> can be computed as</p>
+<div class="math notranslate nohighlight" id="equation-expected-value-approximation">
+<span class="eqno">(53)<a class="headerlink" href="#equation-expected-value-approximation" title="Permalink to this equation">#</a></span>\[\sum_{y \in {\cal Y}} \int_{{\bf x} \in {\cal X}} \left[ y \neq h(\bf x) \right] p^{\ast} ({\bf x}, y) d {\bf x} = \lim_{M \rightarrow \infty} \frac{1}{M} \sum_{i=1}^{M} \left[ \bar{y}_{i} \neq h(\bar{\bf x}_{i}) \right]\]</div>
+<p>with <span class="math notranslate nohighlight">\( \bar{\bf x}_{i}, \bar{y}_{i} \sim p^{\ast} ({\bf x}, y) \)</span>, <span class="math notranslate nohighlight">\( \forall M \in \lbrace 1, 2, 3, \ldots \rbrace \)</span>, since by definition <div class="math notranslate nohighlight">
+\[ \sum_{y \in {\cal Y}} \int_{{\bf x} \in {\cal X}} p^{\ast} ({\bf x}, y) d {\bf x} = 1. \]</div>
+</p>
+<p>Thus, for a finite number of samples <span class="math notranslate nohighlight">\( M \)</span>, the true classification error is typically approximated in a Monte Carlo sense using a very large <em>testing</em> or <em>validation</em> dataset <span class="math notranslate nohighlight">\( {\cal D}' \)</span> as</p>
+<div class="math notranslate nohighlight">
+\[CE_{true} \approx \frac{1}{M} \sum_{i=1}^{M} \left[ \bar{y}_{i} \neq \hat{y}_{i} \right]\]</div>
+<p>with <span class="math notranslate nohighlight">\( \hat{y}_{i} = h(\bar{\bf x}_{i}) \)</span>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Using the training dataset to estimate true estimation error can lead to over fitting. Specifically, using the <em>training</em> examples to estimate the true classification error is too optimistic. A small training error does not imply good generalization, as the classifier can still perform poorly on samples not seen during training. To avoid over-fitting, we reserve therefore examples in a <em>testing</em> dataset to estimate the true classification error after training. This procedure avoids over-fitting since the <em>testing</em> examples are new to the classifier, i.e. they were not used in training. In addition to this, we can also reserve examples in a <em>validation</em> dataset to estimate the true classification error and tune any hyper-parameters of the classifier during training. In general, we split the set of available samples into training, validating and testing datasets using some proportion (e.g. <span class="math notranslate nohighlight">\( 60 / 20 / 20 \)</span> or <span class="math notranslate nohighlight">\( 70/15/15 \)</span>).</p>
+<figure class="align-left" id="training-testing-fig">
+<a class="reference internal image-reference" href="images/classification/train_val_test_datasets.svg"><img alt="images/classification/train_val_test_datasets.svg" height="320px" src="images/classification/train_val_test_datasets.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Splitting the available samples into training, validation and testing datasets.</span><a class="headerlink" href="#training-testing-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Thus, for a given classifier <span class="math notranslate nohighlight">\( h(\cdot) \)</span>, we can estimate the training, validation and testing classification errors respectively as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c1b1fa41-fc2e-433b-bde3-984f2fd75a66">
+<span class="eqno">(54)<a class="headerlink" href="#equation-c1b1fa41-fc2e-433b-bde3-984f2fd75a66" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+CE_{train} &amp;=&amp; \frac{1}{|{\cal D}_{train}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{train} } \left[ \bar{y} \neq h(\bar{\bf x}) \right] \nonumber \\
+CE_{val} &amp;=&amp; \frac{1}{|{\cal D}_{val}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{val} } \left[ \bar{y} \neq h(\bar{\bf x}) \right] \nonumber \\
+CE_{test} &amp;=&amp; \frac{1}{|{\cal D}_{test}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{test} } \left[ \bar{y} \neq h(\bar{\bf x}) \right]. \nonumber 
+\end{eqnarray}\]</div>
+<p>Note however that the training error <span class="math notranslate nohighlight">\( CE_{train} \)</span> and validation error <span class="math notranslate nohighlight">\( CE_{val} \)</span> are often too optimistic - especially, the training error – whereas the testing error <span class="math notranslate nohighlight">\( CE_{test} \)</span> is a noisy estimation of the true classification error <span class="math notranslate nohighlight">\( CE_{true} \)</span> such that <span class="math notranslate nohighlight">\( CE_{test} \rightarrow CE_{true} \)</span> as the number of testing examples grows unbounded, i.e. <span class="math notranslate nohighlight">\( | CE_{test} | \rightarrow \infty \)</span>.</p>
+</div>
+<div class="proof remark admonition" id="remark-0">
+<p class="admonition-title"><span class="caption-number">Remark 3 </span></p>
+<section class="remark-content" id="proof-content">
+<p>Some works report the classification accuracy – opposite of error – instead of the classification error. The true accuracy is defined as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-29fabc15-33b2-407b-bad4-70f2c1a8a627">
+<span class="eqno">(55)<a class="headerlink" href="#equation-29fabc15-33b2-407b-bad4-70f2c1a8a627" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+ACC_{true} &amp;\triangleq&amp; Pr \lbrace Y = h({\bf X}) \rbrace \label{eq:true_classification_accuracy} \\
+&amp;\equiv&amp;  1 - CE_{true}. \nonumber
+\end{eqnarray}\]</div>
+<p>On the other hand, the training, validation and testing classification accuracies of a classifier <span class="math notranslate nohighlight">\( h(\cdot) \)</span> can be computed respectively as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-772513c1-805b-48cb-af9c-d81a2442a941">
+<span class="eqno">(56)<a class="headerlink" href="#equation-772513c1-805b-48cb-af9c-d81a2442a941" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+ACC_{train} &amp;=&amp; \frac{1}{|{\cal D}_{train}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{train} } \left[ \bar{y} = h(\bar{\bf x}) \right] \nonumber \\
+ACC_{val} &amp;=&amp; \frac{1}{|{\cal D}_{val}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{val} } \left[ \bar{y} = h(\bar{\bf x}) \right] \nonumber \\
+ACC_{test} &amp;=&amp; \frac{1}{|{\cal D}_{test}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{test} } \left[ \bar{y} = h(\bar{\bf x}) \right]. \nonumber 
+\end{eqnarray}\]</div>
+</section>
+</div></section>
+<section id="typical-machine-learning-ml-workflow">
+<h2>Typical Machine Learning (ML) workflow<a class="headerlink" href="#typical-machine-learning-ml-workflow" title="Permalink to this headline">#</a></h2>
+<p><a class="reference internal" href="#train-validate-test-02"><span class="std std-numref">Fig. 12</span></a> illustrates the typical procedure to learn a ML model. The training procedure under the <strong>Repeat</strong> rectangle is repeated over several training epochs considering different selections of the model hyper-parameters. Intermediate statistics – training and validation errors – are collected along the training epochs. Final statistics – the testing error – are computed for the model with the best validation error. Training and validation datasets may be also shuffled / randomized over the training epochs. The testing dataset in turn shall not play any role on the training procedure.</p>
+<figure class="align-left" id="train-validate-test-02">
+<a class="reference internal image-reference" href="_images/train_validate_test_02.png"><img alt="_images/train_validate_test_02.png" src="_images/train_validate_test_02.png" style="height: 320px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">A block diagram representing a typical ML workflow.</span><a class="headerlink" href="#train-validate-test-02" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>** Avoid human-in-the-loop!** Dot not adjust the model parameters or hyper-parameters by guessing based on the testing accuracy / error. Do not allow the information containing in the testing data set leak to the training procedure.</p>
+<figure class="align-left" id="train-validate-test-03">
+<a class="reference internal image-reference" href="_images/train_validate_test_03.png"><img alt="_images/train_validate_test_03.png" src="_images/train_validate_test_03.png" style="height: 320px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Human feedback plugging the testing dataset into the training procedure. A naive human – thirsty for good results – may change the model parameters / hyper-parameters to improve the training error. The resulting test error will therefore under estimate the true error leading to an over-confident model. Conversely, the model generalization ability to deal with unseen samples will be over-estimated.</span><a class="headerlink" href="#train-validate-test-03" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="confusion-matrix">
+<h2>Confusion matrix<a class="headerlink" href="#confusion-matrix" title="Permalink to this headline">#</a></h2>
+<p>Let</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4071a77b-4308-41d3-b56f-8056e3eac05e">
+<span class="eqno">(57)<a class="headerlink" href="#equation-4071a77b-4308-41d3-b56f-8056e3eac05e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+{\bf CM} = \begin{bmatrix}
+c_{1,1} &amp; c_{1,2} &amp; \ldots &amp; c_{1,L} \\
+c_{2,1} &amp; c_{2,2} &amp; \ldots &amp; c_{2,L} \\
+\vdots &amp;  \vdots &amp; &amp; \vdots \\
+c_{L,1} &amp; c_{L,2} &amp; \ldots &amp; c_{L,L}
+\end{bmatrix}
+\end{equation}\]</div>
+<p>define a <span class="math notranslate nohighlight">\(L \times L\)</span> confusion matrix such that, <span class="math notranslate nohighlight">\( \forall i,j \in \lbrace 1, 2, \ldots, L \rbrace \)</span>, <span class="math notranslate nohighlight">\( c_{i,j} \in {\cal Y} \triangleq \lbrace \ell_{1}, \ell_{2}, \ldots, \ell_{L} \rbrace \)</span> and</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f85251b5-081a-4fdc-8124-993f890231e0">
+<span class="eqno">(58)<a class="headerlink" href="#equation-f85251b5-081a-4fdc-8124-993f890231e0" title="Permalink to this equation">#</a></span>\[\begin{equation}
+c_{i,j} = \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}' } \left[ h(\bar{\bf x}) = \ell_{j} \wedge  \bar{y} = \ell_{i} \right]
+\end{equation}\]</div>
+<p>for some <em>validation</em> or <em>training</em> dataset <div class="math notranslate nohighlight">
+\[ {\cal D}' = \bigcup_{i=1}^{M} \lbrace \left( \bar{\bf x}_{i}, \bar{y}_{i} \right) \rbrace. \]</div>
+ The matrix element <span class="math notranslate nohighlight">\( c_{i,j} \)</span> indicates therefore how frequently the true class value associated with a data item <span class="math notranslate nohighlight">\( \bar{\bf x} \)</span> in <span class="math notranslate nohighlight">\( {\cal D}' \)</span> is <span class="math notranslate nohighlight">\( \bar{y} = \ell_{i} \)</span> while the classifier predicts <span class="math notranslate nohighlight">\( h(\bar{\bf x}) = \ell_{j} \)</span> with <span class="math notranslate nohighlight">\( \ell_{i}, \ell_{j} \in {\cal Y} \)</span>. Note that the diagonal elements <span class="math notranslate nohighlight">\( \lbrace c_{i,j} \rbrace \)</span>, <span class="math notranslate nohighlight">\( i = j \)</span>, correspond to accurate predictions while off-diagonal elements <span class="math notranslate nohighlight">\( \lbrace c_{i,j} \rbrace \)</span>, <span class="math notranslate nohighlight">\( i \neq j \)</span>, correspond to erroneous classifier predictions.</p>
+<p>Alternatively, the confusion matrix can be normalized such that, <span class="math notranslate nohighlight">\( \forall i \in \lbrace 1, 2, \ldots, L \rbrace \)</span>,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-3885d198-ae8d-4ac9-a0ed-836d07a64dad">
+<span class="eqno">(59)<a class="headerlink" href="#equation-3885d198-ae8d-4ac9-a0ed-836d07a64dad" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\sum_{j=1}^{L} c_{i,j} = 1. \nonumber
+\end{equation}\]</div>
+<p>In this case, each matrix element <span class="math notranslate nohighlight">\( c_{i,j} \)</span> stores an empirical approximation to the probability <span class="math notranslate nohighlight">\( Pr \left\lbrace h({\bf x}) = \ell_{j} \mid {y} = \ell_{i} \right\rbrace \)</span> of the classifier predicting <span class="math notranslate nohighlight">\( \ell_{j} \)</span> given that the true class value is <span class="math notranslate nohighlight">\( \ell_{i} \)</span>.</p>
+<div class="proof example admonition" id="example-1">
+<p class="admonition-title"><span class="caption-number">Example 20 </span></p>
+<section class="example-content" id="proof-content">
+<p>The confusion matrix is a convenient tool for a human to quickly evaluate a classifier performance by comparing its diagonal and off-diagonal elements.</p>
+<figure class="align-left" id="id1">
+<a class="reference internal image-reference" href="images/classification/confusion_matrix.svg"><img alt="images/classification/confusion_matrix.svg" height="320px" src="images/classification/confusion_matrix.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">A <span class="math notranslate nohighlight">\( 4 \times 4 \)</span> confusion matrix for a classifier <span class="math notranslate nohighlight">\( h:{\cal X} \rightarrow {\cal Y} \)</span> such that <span class="math notranslate nohighlight">\( {\cal Y} = \lbrace \ell_{1}, \ell_{2}, \ell_{3} , \ell_{4} \rbrace \)</span>. The <span class="math notranslate nohighlight">\(i\)</span>-th row stores either frequencies or approximations to the empirical probabilities <span class="math notranslate nohighlight">\( \lbrace Pr \left\lbrace h({\bf x}) = \ell_{j} \mid y = \ell_{i} \right\rbrace \rbrace \)</span>, <span class="math notranslate nohighlight">\( j \in \lbrace 1, 2, 3, 4 \rbrace \)</span>. Note that <span class="math notranslate nohighlight">\( Pr \left\lbrace h({\bf x}) = \ell_{j} \mid y = \ell_{i} \right\rbrace \)</span> is the probability of the classifier <span class="math notranslate nohighlight">\( h(\cdot) \)</span> returning <span class="math notranslate nohighlight">\( \ell_{j} \)</span> given that the true class value is <span class="math notranslate nohighlight">\( \ell_{i} \)</span> and <span class="math notranslate nohighlight">\( \sum_{j=1}^{4} Pr \left\lbrace h({\bf x}) = \ell_{j} \mid y = \ell_{i} \right\rbrace = 1\)</span>, <span class="math notranslate nohighlight">\( \forall i \in \lbrace 1, 2, 3, 4 \rbrace \)</span>.</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="classification_problem.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Classification Problem</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="classification_knn.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">K-Nearest Neighbor</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

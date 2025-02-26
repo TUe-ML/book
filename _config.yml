@@ -1,0 +1,91 @@
+# Book settings
+# Learn more at https://jupyterbook.org/customize/config.html
+
+title: Data Mining and Machine Learning Jupyter Book
+author: Sibylle Hess and Stiven Dias
+copyright: "2022. Eindhoven University of Technology" 
+logo: logo.png
+
+# Force re-execution of notebooks on each build.
+# See https://jupyterbook.org/content/execute.html
+execute:
+  execute_notebooks: force
+
+# Define the name of the latex output file for PDF builds
+latex:
+  latex_documents:
+    targetname: book.tex
+
+# Add a bibtex file so that we can create citations
+bibtex_bibfiles:
+  - references.bib
+
+# Information about where the book exists on the web
+repository:
+  url: https://gitlab.tue.nl/20214358/dmml  # Online location of your book
+  path_to_book: ""  # Optional path to your book, relative to the repository root
+  branch: master  # Which branch of the repository should be used when creating links (optional)
+
+# Add GitHub buttons to your book
+# See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
+html:
+  use_issues_button: true
+  use_repository_button: true
+  use_edit_page_button: true
+
+launch_buttons:
+  notebook_interface        : jupyterlab  # The interface interactive links will activate ["classic", "jupyterlab"]
+  binderhub_url             : "https://mybinder.org/v2/git/https%3A%2F%2Fgitlab.tue.nl%2F20214358%2Fdmml.git/HEAD"  # The URL of the BinderHub (e.g., https://mybinder.org)
+  # jupyterhub_url            : ""  # The URL of the JupyterHub (e.g., https://datahub.berkeley.edu)
+  thebe                     : true  # Add a thebe button to pages (requires the repository to run on Binder)
+  # colab_url                 : "" # The URL of Google Colab (https://colab.research.google.com)
+
+theme: jekyll-theme-minimal
+
+parse:
+  myst_enable_extensions:
+    # don't forget to list any other extensions you want enabled,
+    # including those that are enabled by default!
+    - amsmath
+    - dollarmath
+    - colon_fence
+  #myst_dmath_double_inline: true  # Allow display math ($$) within an inline context
+
+sphinx:
+  config:
+    myst_dmath_double_inline: true  # Allow display math ($$) within an inline context
+    mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+    mathjax3_config:
+      tex:
+        macros:
+          "diag": "\\mathrm{diag}"
+          "tr": "\\mathrm{tr}"
+          "argmin": "\\mathrm{arg\\,min}"
+          "argmax": "\\mathrm{arg\\,max}"
+          "minimize": "\\mathrm{minimize}"
+          "maximize": "\\mathrm{maximize}"
+          "sgn": "\\mathrm{sgn}"
+          "softmax": "\\mathrm{softmax}"
+          "vvec": ["\\mathbf{#1}",1]
+          "bm": ["{\\boldsymbol #1}",1]
+          "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"
+        preamble: \usepackage{arydshln}
+    tikz_tikzlibraries: calc, angles, intersections, arrows.meta, matrix, decorations.pathreplacing, positioning, shapes.geometric, fit
+    tikz_latex_preamble: \usepackage{pgfplotstable}
+  extra_extensions:
+    - sphinx_proof
+    - sphinxcontrib.tikz
+    - sphinx_togglebutton
+    
+proof:
+  classes:
+    - theorem
+    - lemma
+    - corollary
+    - proposition
+    - definition
+    - example
+    - remark
+    - assumption
+
+  

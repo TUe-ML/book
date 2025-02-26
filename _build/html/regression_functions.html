@@ -1,0 +1,927 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Regression Functions &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Minimizing the RSS" href="regression_optimization.html" />
+    <link rel="prev" title="Regression Objective" href="regression_objective.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_n_larger_p.html">
+     Regression When
+     <span class="math notranslate nohighlight">
+      \(p&gt;n\)
+     </span>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fregression_functions.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/regression_functions.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/regression_functions.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#affine-functions">
+   Affine Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#polynomials">
+   Polynomials
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gaussian-functions">
+   Gaussian Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Regression Functions</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#affine-functions">
+   Affine Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#polynomials">
+   Polynomials
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gaussian-functions">
+   Gaussian Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="regression-functions">
+<h1>Regression Functions<a class="headerlink" href="#regression-functions" title="Permalink to this headline">#</a></h1>
+<p>The possibilities to select a class of functions that are suited to model a given regression task are numerous. Typical function choices are exponential, logarithmic, polynomial functions or any composition of those. How can we make a machine learn which function would be best when we have so many choices?</p>
+<p>The trick which is used in regression is to learn a linear combiation of predefined functions. For example, if we are unsure if the feature-target relation is exponential or logarithmic, then we can define our regression function as a weighted sum of exponential and logarithmic functions:</p>
+<div class="math notranslate nohighlight" id="equation-eq-regression-f">
+<span class="eqno">(7)<a class="headerlink" href="#equation-eq-regression-f" title="Permalink to this equation">#</a></span>\[f(x) = \beta_1 \log(x) + \beta_2 \exp(x) \]</div>
+<p>This formalization allows us to learn a function <span class="math notranslate nohighlight">\(f\)</span> by means of the parameters <span class="math notranslate nohighlight">\(\beta_1\)</span> and <span class="math notranslate nohighlight">\(\beta_2\)</span>. Those parameters can then be optimized after we define a loss function for the regression task <span class="math notranslate nohighlight">\(\ell(f(x),y)\)</span>. The functions which we use to compose our function <span class="math notranslate nohighlight">\(f\)</span> (here <span class="math notranslate nohighlight">\(\log(x)\)</span> and <span class="math notranslate nohighlight">\(\exp(x)\)</span>) are called <strong>basis functions</strong>.</p>
+<p>The  main insight (which we will discuss in the following for various basis functions) is that nonlinear functions such as <span class="math notranslate nohighlight">\(f(x)\)</span> in Eq. <a class="reference internal" href="#equation-eq-regression-f">(7)</a> can be represented as linear functions in a <em>transformed feature space</em>. Linear functions <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span> have the form
+<div class="math notranslate nohighlight">
+\[f(\vvec{x}) = \beta_d x_d + \ldots + \beta_1x = \bm\beta^\top \vvec{x},\]</div>
+
+that is, they are defined by an inner product of the weights <span class="math notranslate nohighlight">\(\bm\beta\)</span> and the feature vector <span class="math notranslate nohighlight">\(\vvec{x}\)</span>.</p>
+<section id="affine-functions">
+<h2>Affine Functions<a class="headerlink" href="#affine-functions" title="Permalink to this headline">#</a></h2>
+<p>We start with a simple function class: the affine functions. Affine functions are linear functions with a bias term.</p>
+<div class="proof example admonition" id="example-0">
+<p class="admonition-title"><span class="caption-number">Example 13 </span> (Affine functions in two dimensions)</p>
+<section class="example-content" id="proof-content">
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-4df6b99598b6845bce1ae9fe5a73a499b2c3c359.svg" alt="Figure made with TikZ" /></p>
+</div><p>An affine function <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R}, f(x)= \beta_1x+\beta_0\)</span> has a slope <span class="math notranslate nohighlight">\(\beta_1\)</span> and a bias term <span class="math notranslate nohighlight">\(\beta_0\)</span>. The slope is visible in the graph: if we move one to the right on the horizontal axis, then we go the slope value up (or down, if the slope is negative). The bias term indicates the value where the graph meets the vertical axis. We can write an affine function mapping from the real values as a linear function mapping from the <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    f(x)&amp;= \beta_1x+\beta_0 
+    = \begin{pmatrix}1&amp; x\end{pmatrix}
+    \begin{pmatrix}\beta_0  \\ \beta_1
+    \end{pmatrix}
+    = \bm{\phi}(x)^\top\bm{\beta} 
+\end{align*}\]</div>
+<p>The function <span class="math notranslate nohighlight">\(\bm{\phi}(x)=\begin{pmatrix}1\\x\end{pmatrix}\)</span> is called a feature transformation, the vector <span class="math notranslate nohighlight">\(\bm\beta\in\mathbb{R}^{2}\)</span> determines the parameters of the function.</p>
+</section>
+</div><div class="proof example admonition" id="example-1">
+<p class="admonition-title"><span class="caption-number">Example 14 </span> (Affine Functions in Three Dimensions (d=2))</p>
+<section class="example-content" id="proof-content">
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-56e1bba04900b49bd092c78a15e868da416fe634.svg" alt="Figure made with TikZ" /></p>
+</div><p>An affine function <span class="math notranslate nohighlight">\(f:\mathbb{R}^2\rightarrow\mathbb{R}, f(\vvec{x})= \beta_2x_2+\beta_1x_1+\beta_0\)</span> has two slopes <span class="math notranslate nohighlight">\(\beta_1,\beta_2\)</span> and a bias term <span class="math notranslate nohighlight">\(\beta_0\)</span>. In direction of the <span class="math notranslate nohighlight">\(x_1\)</span> coordinate, the function has slope <span class="math notranslate nohighlight">\(\beta_1\)</span> and in direction of the <span class="math notranslate nohighlight">\(x_2\)</span> coordinate it has the slope <span class="math notranslate nohighlight">\(\beta_2\)</span>. As a result, an affine function in two variables looks like a flat surface. The bias term incates again the value where the graph meets the horizontal axis. We can write an affine function mapping from <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span> as a linear function mapping from the <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    f(\vvec{x})&amp;= \beta_2x_2+\beta_1x_1+\beta_0 
+    =\begin{pmatrix}
+    1&amp; x_1&amp;x_2\end{pmatrix}
+    \begin{pmatrix}
+    \beta_0 \\ \beta_1 \\ \beta_2\end{pmatrix}
+    =\bm{\phi}(\vvec{x})^\top\bm{\beta},
+\end{align*}\]</div>
+<p>where the feature transformation is defined as
+<span class="math notranslate nohighlight">\(\bm{\phi}(\vvec{x})=\begin{pmatrix}1\\x_1\\x_2\end{pmatrix}\)</span> and the parameters are given by <span class="math notranslate nohighlight">\(\bm\beta\in\mathbb{R}^{3}\)</span>.</p>
+</section>
+</div><p>From the examples, we can see how to generalize the feature transformation <span class="math notranslate nohighlight">\(\bm\phi\)</span> to any affine function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \bm{\phi}_{aff}(\vvec{x}) = \begin{pmatrix}
+    1\\\vvec{x}
+    \end{pmatrix}\in\mathbb{R}^{d+1}
+\end{align*}\]</div>
+<p>As a result, we get a parametrization of the function class of affine functions as the inner product of the feature transformation vector and the parameter vector, which indicates a linear function:
+<div class="math notranslate nohighlight">
+\[\mathcal{F}_{aff}=\left\{f:\mathbb{R}^d\rightarrow \mathbb{R}, f(\vvec{x})= \bm{\phi}_{aff}(\vvec{x})^\top\bm{\beta}\middle\vert \bm{\beta}\in\mathbb{R}^{d+1}\right\}
+\]</div>
+</p>
+</section>
+<section id="polynomials">
+<h2>Polynomials<a class="headerlink" href="#polynomials" title="Permalink to this headline">#</a></h2>
+<p>Functions that contain curvature can be modelled as a linear function in a transformed function space. Here we explore the function class of polynomials.</p>
+<div class="proof example admonition" id="example-2">
+<p class="admonition-title"><span class="caption-number">Example 15 </span> (Polynomials of Degree k=2 (d=1))</p>
+<section class="example-content" id="proof-content">
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-84b02abc6b3263fe5526455c7c4adc90a65234fc.svg" alt="Figure made with TikZ" /></p>
+</div><p>A function <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R},\ f(x)= a(x-b)^2+c\)</span>, mapping a real value to a polynomial of degree two, is defined over three parameters <span class="math notranslate nohighlight">\((a,b,c)\)</span>. The minimizer is given by the point <span class="math notranslate nohighlight">\((b,c)\)</span> and the value of <span class="math notranslate nohighlight">\(a\)</span> determines how narrow or wide the parabola is. We can write this function as a linear function in a three-dimensional transformed feature space.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*} 
+    f(x)&amp;= a(x-b)^2+c\\
+    &amp;=ax^2 -2abx+ab^2+c\\
+    &amp;=\beta_2x^2+\beta_1x+ \beta_0\\
+    &amp;= 
+    \begin{pmatrix} 
+        1&amp;x&amp; x^2
+    \end{pmatrix}
+    \begin{pmatrix}
+        \beta_0 \\ \beta_1 \\ \beta_2
+    \end{pmatrix}= \bm{\phi}(x)^\top\bm{\beta}.
+\end{align*}\]</div>
+<p>The feature transformation <span class="math notranslate nohighlight">\(\bm{\phi}(x)=\begin{pmatrix}1\\ x\\ x^2\end{pmatrix}\)</span> maps to three basis functions <span class="math notranslate nohighlight">\(f_1(x)=1\)</span>, <span class="math notranslate nohighlight">\(f_2(x)=x\)</span> and <span class="math notranslate nohighlight">\(f_3(x)=x^2\)</span>. A weighted sum of these basis functions defines then the parabola, where the parameters are given by the vector <span class="math notranslate nohighlight">\(\bm\beta\in\mathbb{R}^{3}\)</span>. Note that we can’t directly read the properties of the parabola from the <span class="math notranslate nohighlight">\(\beta\)</span>-parameters as we did with the parameters <span class="math notranslate nohighlight">\((a,b,c)\)</span>. If needed, we could compute the original parameters from <span class="math notranslate nohighlight">\(\beta\)</span> though.</p>
+</section>
+</div><div class="proof example admonition" id="example-3">
+<p class="admonition-title"><span class="caption-number">Example 16 </span> (Polynomials of Degree k (d=1))</p>
+<section class="example-content" id="proof-content">
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-8972d0b4e06d1fb897f3589abab997f4b05254f0.svg" alt="Figure made with TikZ" /></p>
+</div><p>The parametrization of a parabola over the linear product of the basis functions and a weight vector <span class="math notranslate nohighlight">\(\bm\beta\)</span> is easily generalizable to the parametrization of a polynomial of degree <span class="math notranslate nohighlight">\(k\)</span>. We consider here still only functions <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R}\)</span>, mapping from the one-dimensional space.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    f(x)&amp;=\beta_kx^k+\ldots+\beta_1x+ \beta_0\\
+    &amp;= \begin{pmatrix}
+    1&amp;\ldots &amp; x^k\end{pmatrix}
+    \begin{pmatrix} \beta_0 \\ \vdots \\ \beta_k
+    \end{pmatrix}= \bm{\phi}(x)^\top\bm{\beta}
+\end{align*}\]</div>
+<p>The feature transformation is here <span class="math notranslate nohighlight">\(\bm{\phi}(x)=\begin{pmatrix}1\\ x\\\vdots\\x^k\end{pmatrix}\)</span>, and the parameter vector is <span class="math notranslate nohighlight">\(\bm\beta\in\mathbb{R}^{k+1}\)</span>.</p>
+</section>
+</div><div class="proof example admonition" id="example-4">
+<p class="admonition-title"><span class="caption-number">Example 17 </span> (Multivariate Polynomials of Degree k (d=2))</p>
+<section class="example-content" id="proof-content">
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-04bbde9d4f437f91c7870b7d84c028161ff07990.svg" alt="Figure made with TikZ" /></p>
+</div><p>We discuss now a degree <span class="math notranslate nohighlight">\(k\)</span> polynomial <span class="math notranslate nohighlight">\(f:\mathbb{R}^2\rightarrow \mathbb{R}\)</span> mapping from the two-dimensional space <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span>. There are actually various ways to define the polynomial in a vector space. A popular way to define a polynomial in more than two variables is over a weighted sum of all combinations of the one-dimensional basis functions. Using now a multi index, a polynomial in two variables is defined as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    f(\vvec{x})&amp;=\sum_{i_1=0}^k\sum_{i_2=0}^k\beta_{i_1i_2}x_1^{i_1}x_2^{i_2}\\
+    &amp;= \underbrace{\begin{pmatrix}1 &amp;  \ldots &amp; x_1^{k}x_2^{k-1}&amp;x_1^kx_2^k\end{pmatrix}}_{=:\bm\phi(\vvec{x})^\top}
+    \begin{pmatrix}\beta_{00} \\ \\\vdots \\ 
+    \beta_{k(k-1)}\\
+    \beta_{kk}
+    \end{pmatrix}= \bm{\phi}(\vvec{x})^\top\bm{\beta},
+\end{align*}\]</div>
+<p>where the feature transformation maps now to a <span class="math notranslate nohighlight">\((k+1)^2\)</span>-dimensional vector space, <span class="math notranslate nohighlight">\(\bm\phi(\vvec{x}),\bm\beta\in\mathbb{R}^{(k+1)^2}\)</span>. The basis functions are here the set of <span class="math notranslate nohighlight">\(\{x_{i_1}x_{i_2}\mid 1\leq i_1,i_2\leq k\}\)</span>.</p>
+</section>
+</div><p>We generalize now the defintion of polynomials of degree <span class="math notranslate nohighlight">\(k\)</span> as a linear function by the multiplication of all possible one-dimensional basis functions:
+<div class="math notranslate nohighlight">
+\[\bm{\phi}_{pk}(\vvec{x}) = (x_1^{i_1}\cdot \ldots \cdot x_d^{i_d})_{1\leq i_1\ldots i_d\leq k} \in\mathbb{R}^{(k+1)^d}, \text{ for }\vvec{x}\in\mathbb{R}^d\]</div>
+
+Hence, our function class of polynomial functions in a <span class="math notranslate nohighlight">\(d\)</span>-dimensional vector space is given as:
+<div class="math notranslate nohighlight">
+\[\mathcal{F}_{pk}=\left\{f:\mathbb{R}^d\rightarrow \mathbb{R},f(\vvec{x})=\bm{\phi}_{pk}(\vvec{x})^\top \bm{\beta} \middle\vert 
+ \bm{\beta}\in\mathbb{R}^{(k+1)^d} 
+\right\}
+\]</div>
+
+Another definition of polynomials multiplies only basis functions such that the sum of all exponents is at most <span class="math notranslate nohighlight">\(k\)</span>. In this case we get the following feature transformation, called <span class="math notranslate nohighlight">\(\bm{\phi}_{pka}\)</span>, where the <em>a</em> stands for alternative:
+<div class="math notranslate nohighlight">
+\[\bm{\phi}_{pka}(\vvec{x}) = (x_1^{i_1}\cdot \ldots \cdot x_d^{i_d})_{i_1+\ldots +i_d\leq k}.\]</div>
+
+The sklearn function to obtain polynomial features uses this definition. This feature transformation maps to a lower-dimensional transformed feature space than <span class="math notranslate nohighlight">\(\bm{\phi}_pk\)</span>, but a general issue is that the dimensionality of the transformed feature space increases vastly in the degree or the amount of features.</p>
+</section>
+<section id="gaussian-functions">
+<h2>Gaussian Functions<a class="headerlink" href="#gaussian-functions" title="Permalink to this headline">#</a></h2>
+<p>We introduce now a third way to define a function class for the regression task. This method has the advantage that the dimensionality of the transformed feature space is easy to adjust. The idea is to use Gaussian functions as basis functions.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-d549fda1dd1b1d23a3896c2c56de0e8c8ba1adef.svg" alt="Figure made with TikZ" /></p>
+</div><p>The Gaussian radial functions are parametrized by a scaling factor <span class="math notranslate nohighlight">\(\gamma\)</span> and the mid point <span class="math notranslate nohighlight">\(\bm\mu\)</span>.<br />
+<div class="math notranslate nohighlight">
+\[
+    \kappa(\mathbf{x})=\exp\left(-\gamma\lVert\mathbf{x}-\bm\mu\rVert^2\right)
+\]</div>
+
+Those parameters (<span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\bm\mu\)</span>) have to be set by the user. We can’t learn them in the linear regression framework, since we can only learn coefficients of the basis functions. The parameters <span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\bm\mu\)</span> are however within the exponential term.</p>
+<div class="proof example admonition" id="example-5">
+<p class="admonition-title"><span class="caption-number">Example 18 </span> (Local Gaussian Radial Basis Functions)</p>
+<section class="example-content" id="proof-content">
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-2c0ebadeb461fde3859af19f1970f8dbdde5a447.svg" alt="Figure made with TikZ" /></p>
+</div><p>The plot above shows the graph that we get when defining our function as <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R}, \ f(x)=0.5\exp(-(x-0.5)^2) + \exp(-(x-3)^2)\)</span>. The graph of the added Gaussians has two maxima. Approximating a graph with a polynomial that has two maximizers requires a degree of four, which translates to five basis functions. With Gaussian basis functions, we need only two.</p>
+</section>
+</div><p>The sum of weighted Gaussian basis functions is modelled by a linear function as follows:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    f(x)&amp;=\sum_{i=1}^k\beta_i\exp\left(-\frac{\lVert x-\mu_i\rVert^2}{2\sigma^2}\right)\\
+    &amp;= \begin{pmatrix}\kappa_1(x)&amp;\ldots &amp; \kappa_k(x)\end{pmatrix}
+    \begin{pmatrix}\beta_1 \\ \vdots \\ \beta_k
+    \end{pmatrix}\\
+    &amp;= \bm{\phi}(x)^\top\bm{\beta},
+\end{align*}\]</div>
+<p>The feature transformation <span class="math notranslate nohighlight">\(\bm{\phi}(x)\)</span> has a dimensionality equal to the number of selected basis functions.
+We define the function class of a sum of <span class="math notranslate nohighlight">\(k\)</span> Gaussians as:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \bm{\phi}_{Gk}(\vvec{x}) = \begin{pmatrix}\exp(-\gamma\lVert\mathbf{x}-\bm\mu_1\rVert^2)\ldots \exp(-\gamma\lVert\mathbf{x}-\bm\mu_k\rVert^2)\end{pmatrix} 
+\end{align*}\]</div>
+<p>The drawback of using Gaussian radial basis functions is that we need to determine the mean values beforehand. A popular strategy is to select a subset of the training data points as the mean values or a predefined grid of  points.</p>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">#</a></h2>
+<p>In summary, we have defined three function classes:</p>
+<ol class="simple">
+<li><p>Affine functions:
+<div class="math notranslate nohighlight">
+\[\mathcal{F}_{aff}=\left\{f:\mathbb{R}^d\rightarrow \mathbb{R}, f(\vvec{x})= \bm{\phi}_{aff}(\vvec{x})^\top\bm{\beta}\middle\vert \bm{\beta}\in\mathbb{R}^{d+1}\right\}
+\]</div>
+</p></li>
+<li><p>Polynomials of degree <span class="math notranslate nohighlight">\(k\)</span>:
+<div class="math notranslate nohighlight">
+\[\mathcal{F}_{pk}=\left\{f:\mathbb{R}^d\rightarrow \mathbb{R},f(\vvec{x})=\bm{\phi}_{pk}(\vvec{x})^\top \bm{\beta} \middle\vert 
+\bm{\beta}\in\mathbb{R}^{(k+1)^d} 
+\right\}
+\]</div>
+</p></li>
+<li><p>Sum of <span class="math notranslate nohighlight">\(k\)</span> Gaussians:
+<div class="math notranslate nohighlight">
+\[
+\mathcal{F}_{Gk}=\left\{f:\mathbb{R}^d\rightarrow\mathbb{R},f(\vvec{x})=\bm{\phi}_{Gk}(\vvec{x})^\top\bm{\beta}\middle\vert \bm{\beta}\in\mathbb{R}^k\right\}
+\]</div>
+</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="regression_objective.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Regression Objective</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="regression_optimization.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Minimizing the RSS</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,1014 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Exercises &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Regression" href="regression.html" />
+    <link rel="prev" title="Matrix Derivatives" href="optimization_gradients.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_n_larger_p.html">
+     Regression When
+     <span class="math notranslate nohighlight">
+      \(p&gt;n\)
+     </span>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Foptimization_exercises.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/optimization_exercises.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/optimization_exercises.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convex-functions">
+   Convex Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#numerical-optimization">
+   Numerical Optimization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#computing-the-gradients">
+   Computing the Gradients
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Exercises</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convex-functions">
+   Convex Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#numerical-optimization">
+   Numerical Optimization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#computing-the-gradients">
+   Computing the Gradients
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="exercises">
+<h1>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">#</a></h1>
+<section id="convex-functions">
+<h2>Convex Functions<a class="headerlink" href="#convex-functions" title="Permalink to this headline">#</a></h2>
+<ol>
+<li><p>Show that nonnegative weighted sums of convex functions are convex. That is, show
+for all <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_k\geq 0\)</span> and convex functions <span class="math notranslate nohighlight">\(f_1,\ldots,f_k:\mathcal{X}\rightarrow \mathbb{R}\)</span>, that the function
+<div class="math notranslate nohighlight">
+\[f(\vvec{x}) = \lambda_1 f_1(\vvec{x})+\ldots + \lambda_k f_k(\vvec{x})\]</div>
+
+is convex.</p>
+<div class="toggle docutils container">
+<p>Let
+<div class="math notranslate nohighlight">
+\[f(\vvec{x}) = \lambda_1 f_1(\vvec{x})+\ldots + \lambda_k f_k(\vvec{x})\]</div>
+
+for <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_k\geq 0\)</span> and <span class="math notranslate nohighlight">\(f_1,\ldots,f_k:\mathcal{X}\rightarrow \mathbb{R}\)</span> be convex functions. Let <span class="math notranslate nohighlight">\(\alpha\in[0,1]\)</span> and <span class="math notranslate nohighlight">\(\vvec{x},\vvec{y}\in\mathcal{X}\)</span>. Then we have to show according to the definition of convex functions that
+<div class="math notranslate nohighlight">
+\[f(\alpha\vvec{x}+(1-\alpha)\vvec{y})\leq \alpha f(\vvec{x})+(1-\alpha)f(\vvec{y}).\]</div>
+
+According to the definition of <span class="math notranslate nohighlight">\(f\)</span>, we have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    f(\alpha\vvec{x}+(1-\alpha)\vvec{y}) &amp;= \lambda_1 f_1(\alpha\vvec{x}+(1-\alpha)\vvec{y})+\ldots + \lambda_k f_k(\alpha\vvec{x}+(1-\alpha)\vvec{y})
+\end{align*}\]</div>
+<p>Since <span class="math notranslate nohighlight">\(f_i\)</span> is convex for <span class="math notranslate nohighlight">\(1\leq i\leq k\)</span>, for the functions <span class="math notranslate nohighlight">\(f_i\)</span> holds that
+<div class="math notranslate nohighlight">
+\[f_i(\alpha\vvec{x}+(1-\alpha)\vvec{y})\leq \alpha f_i(\vvec{x})+(1-\alpha)f_i(\vvec{y}).\]</div>
+
+Now we multiply the inequality above with the nonnegative value <span class="math notranslate nohighlight">\(\lambda_i\)</span>. Note that here it becomes obvious why the coefficients have to be nonnegative. Multiplying an inequality with a negative value changes the direction of the inequality, that is a <span class="math notranslate nohighlight">\(\leq\)</span> becomes a <span class="math notranslate nohighlight">\(\geq\)</span> and vice versa. However, here we have only nonnegative values <span class="math notranslate nohighlight">\(\lambda_i\)</span> and thus, multiplying with the coefficient keeps the inequality intact:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-adc1a387-8bbf-4ebe-9892-a62abfb06c69">
+<span class="eqno">(4)<a class="headerlink" href="#equation-adc1a387-8bbf-4ebe-9892-a62abfb06c69" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \lambda_if_i(\alpha\vvec{x}+(1-\alpha)\vvec{y})&amp;\leq \lambda_i(\alpha f_i(\vvec{x})+(1-\alpha)f_i(\vvec{y}))\nonumber\\ 
+    &amp;= \alpha \lambda_i f_i(\vvec{x})+(1-\alpha)\lambda_i f_i(\vvec{y}).\label{eq:ficonv}
+\end{align}\]</div>
+<p>We can now put these inequalities together to derive the convexity of the function <span class="math notranslate nohighlight">\(f\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\alpha\vvec{x}+(1-\alpha)\vvec{y}) &amp;= \lambda_1 f_1(\alpha\vvec{x}+(1-\alpha)\vvec{y})+\ldots + \lambda_k f_k(\alpha\vvec{x}+(1-\alpha)\vvec{y})\\
+&amp;= \sum_{i=1}^k \lambda_i f_i(\alpha\vvec{x}+(1-\alpha)\vvec{y})\\
+&amp;\leq 
+\sum_{i=1}^k \alpha \lambda_i f_i(\vvec{x})+(1-\alpha)\lambda_i f_i(\vvec{y})&amp;\text{apply Eq.~\eqref{eq:ficonv}}\\
+&amp;=
+\alpha \sum_{i=1}^k \lambda_i f_i(\vvec{x})+(1-\alpha)\sum_{i=1}^k\lambda_i f_i(\vvec{y})\\
+&amp;=\alpha f(\vvec{x}) + (1-\alpha)f(\vvec{y}).&amp;\text{apply definition of $f$}
+\end{align*}\]</div>
+<p>This concludes what we wanted to show.</p>
+</div>
+</li>
+<li><p>If <span class="math notranslate nohighlight">\(g:\mathbb{R}^d\rightarrow \mathbb{R}^k\)</span>, <span class="math notranslate nohighlight">\(g(\vvec{x})=A\vvec{x}+\vvec{b}\)</span> is an affine map, and <span class="math notranslate nohighlight">\(f:\mathbb{R}^k\rightarrow \mathbb{R}\)</span> is a convex function, then the composition
+<div class="math notranslate nohighlight">
+\[f(g(\vvec{x}))=f(A\vvec{x}+\vvec{b})\]</div>
+
+is a convex function.</p>
+<div class="toggle docutils container">
+<p>Let <span class="math notranslate nohighlight">\(g:\mathbb{R}^d\rightarrow \mathbb{R}^k\)</span>, <span class="math notranslate nohighlight">\(g(\vvec{x})=A\vvec{x}+\vvec{b}\)</span> be an affine map, and let <span class="math notranslate nohighlight">\(f:\mathbb{R}^k\rightarrow \mathbb{R}\)</span> be a convex function.
+Then we have to show according to the definition of convex functions that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    f(g(\alpha\vvec{x}+(1-\alpha)\vvec{y}))&amp;\leq \alpha f(g(\vvec{x}))+(1-\alpha)f(g(\vvec{y}))\\
+    \Leftrightarrow f(A(\alpha\vvec{x}+(1-\alpha)\vvec{y})+\vvec{b})&amp;\leq\alpha f(A\vvec{x}+\vvec{b})+(1-\alpha)f(A\vvec{y}+\vvec{b}).
+\end{align*}\]</div>
+<p>We might see already that the term on the right could be derived from the convexity of <span class="math notranslate nohighlight">\(f\)</span>. To do so, we first need to put the argument of <span class="math notranslate nohighlight">\(f\)</span> on the left into the form <span class="math notranslate nohighlight">\(\alpha (A\vvec{x}+\vvec{b})+(1-\alpha)(A\vvec{y}+\vvec{b}\)</span>. This, we can actually achieve like this:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    A(\alpha\vvec{x}+(1-\alpha)\vvec{y})+\vvec{b} &amp;= \alpha A\vvec{x}+(1-\alpha)A\vvec{y}+\vvec{b} &amp; \text{(linearity)} \\
+    &amp;= \alpha A\vvec{x}+(1-\alpha)A\vvec{y}+(\alpha + 1-\alpha)\vvec{b}\\
+    &amp;=\alpha A\vvec{x}+(1-\alpha)A\vvec{y}+\alpha\vvec{b} + (1-\alpha)\vvec{b}\\
+    &amp;=\alpha (A\vvec{x}+\vvec{b})+(1-\alpha)(A\vvec{y}+\vvec{b})
+\end{align*}\]</div>
+<p>As a result, we get with respect to <span class="math notranslate nohighlight">\(g\)</span> that:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    g(\alpha\vvec{x}+(1-\alpha)\vvec{y}) &amp;=
+    A(\alpha\vvec{x}+(1-\alpha)\vvec{y})+\vvec{b}\\
+    &amp;=\alpha (A\vvec{x}+\vvec{b})+(1-\alpha)(A\vvec{y}+\vvec{b})\\
+    &amp;= \alpha g(\vvec{x}) + (1-\alpha)g(\vvec{y}).
+\end{align*}\]</div>
+<p>If we apply now the function <span class="math notranslate nohighlight">\(f\)</span> to the equality above and use the convexity of <span class="math notranslate nohighlight">\(f\)</span>, then we can conclude what we wanted to show:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    f(g(\alpha\vvec{x}+(1-\alpha)\vvec{y}))&amp;= f\left(\alpha g(\vvec{x}) + (1-\alpha)g(\vvec{y})\right)\\
+    &amp;\leq \alpha f\left( g(\vvec{x})\right) + (1-\alpha) f\left(g(\vvec{y})\right).
+\end{align*}\]</div>
+</div>
+</li>
+</ol>
+</section>
+<section id="numerical-optimization">
+<h2>Numerical Optimization<a class="headerlink" href="#numerical-optimization" title="Permalink to this headline">#</a></h2>
+<ol>
+<li><p>Compute three gradient descent steps for the following objective:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}\min (x-2)^2 + 1 \quad\text{ s.t. }x\in\mathbb{R}\end{align*}\]</div>
+<p>Try the following combinations of initalizations and step sizes:</p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_0=4\)</span>, step size <span class="math notranslate nohighlight">\(\eta=\frac14\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(x_0=4\)</span>, step size <span class="math notranslate nohighlight">\(\eta=1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(x_0=3\)</span>, step size <span class="math notranslate nohighlight">\(\eta=\frac54\)</span></p></li>
+</ol>
+<p>Mark the iterates <span class="math notranslate nohighlight">\(x_1\)</span>, <span class="math notranslate nohighlight">\(x_2\)</span> and <span class="math notranslate nohighlight">\(x_3\)</span> in a plot of the objective function. What do you observe regarding the convergence of gradient descent methods? Does gradient descent always “descent” from an iterate?</p>
+<div class="toggle docutils container">
+<p>In order to conduct gradient descent, we need the derivative:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(x) &amp;= (x-2)^2 +1\\
+f'(x)&amp;= 2(x-2)
+\end{align*}\]</div>
+<p>The gradient descent update rules are defined as
+<div class="math notranslate nohighlight">
+\[x_{t+1}=x_t-\eta f'(x_t).\]</div>
+
+We conduct now two gradient descent steps for the stated scenarios:</p>
+<ol>
+<li><p><span class="math notranslate nohighlight">\(x_0=4\)</span>, step size <span class="math notranslate nohighlight">\(\eta=\frac14\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    x_1 &amp;= x_0 -\eta f'(x_0) = 4 - \frac14 4 = 3\\
+    x_2 &amp; = x_1 -\eta f'(x_1)= 3 -\frac14 2 = 2.5\\
+    x_3 &amp; = x_2 -\eta f'(x_2)= 2.5 -\frac14 = 2.25
+    \end{align*}\]</div>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-ea98f3190fd05f4932466f5f2e738d6795c73259.svg" alt="Figure made with TikZ" /></p>
+</div><p>The iterates are slowly converging to the minimum <span class="math notranslate nohighlight">\(x^*=2\)</span>.</p>
+</li>
+<li><p><span class="math notranslate nohighlight">\(x_0=4\)</span>, step size <span class="math notranslate nohighlight">\(\eta=1\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    x_1 &amp;= x_0 -\eta f'(x_0) = 4 -  4 = 0\\
+    x_2 &amp; = x_1 -\eta f'(x_1)= 0 - (-4) = 4\\
+    x_3 &amp; = x_2 -\eta f'(x_2)= 4 -  4 = 0
+    \end{align*}\]</div>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-5c9c32d94367c05d9e953cdea333f0f4ccf9317a.svg" alt="Figure made with TikZ" /></p>
+</div><p>The iterates are oscilliating between the values <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(4\)</span>. Hence, the iterates will never converge when using a step-size of <span class="math notranslate nohighlight">\(\eta =1\)</span>. The step-size is too large.</p>
+</li>
+<li><p><span class="math notranslate nohighlight">\(x_0=3\)</span>, step size <span class="math notranslate nohighlight">\(\eta=\frac54\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    x_1 &amp;= x_0 -\eta f'(x_0) = 3 - \frac54 2 = \frac12\\
+    x_2 &amp; = x_1 -\eta f'(x_1)= \frac12 -\frac54 (-3) = 4.25\\
+    x_3 &amp; = x_2 -\eta f'(x_2)= 4.25 -\frac54 4.5 = -1.375
+    \end{align*}\]</div>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-21fd702016cec681f26071740d0b646fdac1bcf2.svg" alt="Figure made with TikZ" /></p>
+</div><p>The iterates are oscilliating and the function values are diverging (going to infinity). Every gradient step is actually increasing the objective function since the step size is far too large.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</section>
+<section id="computing-the-gradients">
+<span id="opt-exercises-gradients"></span><h2>Computing the Gradients<a class="headerlink" href="#computing-the-gradients" title="Permalink to this headline">#</a></h2>
+<ol>
+<li><p>What is the Jacobian of the squared Euclidean norm <span class="math notranslate nohighlight">\(f(\vvec{x})=\lVert\vvec{x}\rVert^2\)</span>?</p>
+<div class="toggle docutils container">
+<p>Given a vector <span class="math notranslate nohighlight">\(\vvec{x}\in\mathbb{R}^d\)</span>, then the squared Euclidean norm is defined as:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \lVert\vvec{x}\rVert^2 = \sum_{i=1}^d x_i^2.
+\end{align*}\]</div>
+<p>We compute the partial derivative with respect to <span class="math notranslate nohighlight">\(x_k\)</span>, treating the terms <span class="math notranslate nohighlight">\(x_i\)</span> as constants for <span class="math notranslate nohighlight">\(i\neq k\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \frac{\partial}{\partial x_k} \lVert\vvec{x}\rVert^2 &amp; = \frac{\partial}{\partial x_k} \sum_{i=1}^d x_i^2 = \frac{\partial}{\partial x_k} x_k^2  = 2x_k. 
+\end{align*}\]</div>
+<p>Hence, the Jacobian is given by
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial \vvec{x}}\lVert\vvec{x}\rVert^2 = \begin{pmatrix} 2x_1&amp;\ldots &amp; 2x_d\end{pmatrix} = 2\vvec{x}^\top.\]</div>
+
+Correspondingly, we can denote the gradient now as the transposed of the Jacobian:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \nabla \lVert\vvec{x}\rVert^2 = 2\vvec{x}.
+\end{align*}\]</div>
+</div>
+</li>
+<li><p>What is the Jacobian of the function <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow \mathbb{R}^n\)</span>, <span class="math notranslate nohighlight">\(f(x) = \vvec{b}-\vvec{a}x\)</span> for vectors <span class="math notranslate nohighlight">\(\vvec{a},\vvec{b}\in\mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(x\in\mathbb{R}\)</span>?</p>
+<div class="toggle docutils container">
+<p>We write the function <span class="math notranslate nohighlight">\(f\)</span> as a vector of one-dimensional functions:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(x) = \vvec{b}-\vvec{a}x = \begin{pmatrix}f_1(x)\\\vdots\\f_n(x)\end{pmatrix} = \begin{pmatrix}b_1 - a_1x\\\vdots\\b_n-a_nx\end{pmatrix}.
+\end{align*}\]</div>
+<p>The derivative of the one-dimensional functions <span class="math notranslate nohighlight">\(f_i\)</span> is given by</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial}{\partial x}f_i(x)
+= \frac{\partial}{\partial x}(b_i-a_ix)
+=-a_i.
+\end{align*}\]</div>
+<p>Hence, the Jacobian of <span class="math notranslate nohighlight">\(f\)</span> is equal to the vector
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial x}f(x) 
+= -\vvec{a}.\]</div>
+</p>
+</div>
+</li>
+<li><p>What is the Jacobian of the function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}^n\)</span>,
+<span class="math notranslate nohighlight">\(f(\vvec{x}) = \vvec{b} -A\vvec{x}\)</span>, (A is an <span class="math notranslate nohighlight">\((n\times d)\)</span> matrix)?</p>
+<div class="toggle docutils container">
+<p>There are multiple ways to derive the Jacobian of this function. I believe the shortest, but not necessarily most obvious way is to use here the result from the exercise above and to employ the matrix product definition given by the outer-product in the column-times-row scheme:
+<div class="math notranslate nohighlight">
+\[ A\vvec{x} = A_{\cdot 1}x_1 + \ldots + A_{\cdot d}x_d.\]</div>
+
+Now we can apply the linearity of the partial derivative of <span class="math notranslate nohighlight">\(f\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \frac{\partial}{\partial x_k} f(\vvec{x}) 
+    &amp;= \frac{\partial}{\partial x_k} (\vvec{b} - A\vvec{x})
+    = \frac{\partial}{\partial x_k} \vvec{b} - \frac{\partial}{\partial x_k}A\vvec{x}
+    =  \vvec{0} - \frac{\partial}{\partial x_k}(A_{\cdot 1}x_1 + \ldots + A_{\cdot d}x_d)\\
+    &amp;= - \frac{\partial}{\partial x_k}A_{\cdot 1}x_1 - \ldots - \frac{\partial}{\partial x_k} A_{\cdot k}x_k-\ldots - \frac{\partial}{\partial x_k}A_{\cdot d}x_d\\
+    &amp;=-\frac{\partial}{\partial x_k} A_{\cdot k}x_k\\
+    &amp;= -A_{\cdot k},
+\end{align*}\]</div>
+<p>where we applied for the partial derivatives the rule which we derived in the previous exercise for the Jacobian of a function from a scalar to a vector.</p>
+<p>Now the question is how we have to arrange the partial derivatives to form the Jacobian. We can either look up in the slides how that goes, or we remember from the lecture that the dimensionality of the Jacobian is swapping the dimensionality from the input- and output space. Our function <span class="math notranslate nohighlight">\(f\)</span> maps from the <span class="math notranslate nohighlight">\(d\)</span>-dimensional space to the <span class="math notranslate nohighlight">\(n\)</span>-dimensional space. Hence, the dimensionality of the Jacobian is <span class="math notranslate nohighlight">\((n\times d)\)</span>, the same like our matrix <span class="math notranslate nohighlight">\(A\)</span>. Thus, the <span class="math notranslate nohighlight">\(n\)</span>-dimensional partial derivatives have to be concatenated horizontally:
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial \vvec{x}} f(\vvec{x}) =  \begin{pmatrix} -A_{\cdot 1}&amp;\ldots&amp; -A_{\cdot d}\end{pmatrix} = -A.\]</div>
+</p>
+</div>
+</li>
+<li><p>What is the gradient of the function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x}) = \lVert \vvec{b}-A\vvec{x}\rVert^2 \)</span>?</p>
+<div class="toggle docutils container">
+<p>Here, we can apply now the chainrule to the inner function <span class="math notranslate nohighlight">\(g(\vvec{x})= \vvec{b}-A\vvec{x}\)</span> and the outer function <span class="math notranslate nohighlight">\(h(\vvec{y})=\lVert \vvec{y}\rVert^2\)</span>. From the exercises before, we know the gradients of both functions:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \nabla_\vvec{x} g(\vvec{x}) 
+    &amp;= \left(\frac{\partial}{\partial \vvec{x}}(\vvec{b}-A\vvec{x})\right)^\top = (-A)^\top = -A^\top\\
+    \nabla_\vvec{y} h(\vvec{y}) 
+    &amp;= \left(\frac{\partial}{\partial \vvec{y}}\lVert\vvec{y}\rVert^2\right)^\top=2\vvec{y}
+\end{align*}\]</div>
+<p>In the chain rule, the inner and outer gradients are multiplied. You can either look up the definition or deduce how the gradients have to be multiplied from the dimensionalities. The gradient of a function to the real values has the same dimensionality like the input space. Hence, we have a look how we can multiply the inner and outer gradients such that we get a <span class="math notranslate nohighlight">\(d\)</span>-dimensional vector. This is only the case if we multiply the gradient of the inner function with the gradient of the outer function. Therewith, we get:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \nabla_\vvec{x} h(g(\vvec{x}))
+    &amp;= \nabla_\vvec{x} g(\vvec{x})\cdot \nabla_{g(\vvec{x})}h(g(\vvec{x}))\\
+    &amp;= -A^\top(2(\vvec{b}-A\vvec{x}))\\
+    &amp;= -2A^\top(\vvec{b}-A\vvec{x}).
+\end{align*}\]</div>
+</div>
+</li>
+<li><p>What is the gradient of the function <span class="math notranslate nohighlight">\(f:\mathbb{R}^{d\times r}\rightarrow \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(X)=\lVert D - YX^\top\rVert^2\)</span>, where <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}, Y\in\mathbb{R}^{n\times r}\)</span>?</p>
+<div class="toggle docutils container">
+<p>Let’s have first a look at the dimensionality of the resulting gradient. Since the function <span class="math notranslate nohighlight">\(f\)</span> is mapping to the real values, the dimensionality of the gradient is the same as the one of the input space: <span class="math notranslate nohighlight">\((n\times r)\)</span>. Since we do not know any gradients subject to matrices yet, we divide the problem and compute the gradient row-wise. Every row of <span class="math notranslate nohighlight">\(X\)</span> is mapped to the corresponding row of the gradient:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-266b54ec-3bed-4f00-97a7-c1d514093aeb">
+<span class="eqno">(5)<a class="headerlink" href="#equation-266b54ec-3bed-4f00-97a7-c1d514093aeb" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \nabla_Xf(X) = \begin{pmatrix}
+- &amp;\nabla_{X_{1\cdot }}f(X) &amp;-\\&amp;\vdots&amp;\\-&amp;\nabla_{X_{d\cdot }}f(X)&amp;-\end{pmatrix}.\label{eq:gradX}
+\end{align}\]</div>
+<p>The gradient with regard to  row <span class="math notranslate nohighlight">\(X_{ k\cdot}\)</span> of the function <span class="math notranslate nohighlight">\(f\)</span> is equal to</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f022230a-d5d3-49bb-8cec-cb8b008622ac">
+<span class="eqno">(6)<a class="headerlink" href="#equation-f022230a-d5d3-49bb-8cec-cb8b008622ac" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \nabla_{X_{k \cdot }f(X)} &amp;= \nabla_{X_{k \cdot }}\lVert D-YX^\top\rVert^2\nonumber\\
+    &amp;= \nabla_{X_{k\cdot }}\sum_{i=1}^d\lVert D_{\cdot i}-YX_{i\cdot }^\top\rVert^2\label{eq:normdecomp}\\ 
+    &amp;= \nabla_{X_{k\cdot }}\lVert D_{\cdot k}-YX_{k\cdot }^\top\rVert^2, \label{eq:lingrad}
+\end{align}\]</div>
+<p>where Eq.~\eqref{eq:lingrad}  derives from the linearity of the gradient. Eq.~\eqref{eq:normdecomp} follows from the fact that the squared Frobenius norm (matrix <span class="math notranslate nohighlight">\(L_2\)</span>-norm) is the sum of the squared Euclidean norms over all column- or row-vectors of a matrix. That is for any matrix <span class="math notranslate nohighlight">\(A\in\mathbb{R}^{n\times d}\)</span> we have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \lVert A\rVert^2 =\sum_{i=1}^d\sum_{j=1}^n A_{ji}^2 
+    = \sum_{i=1}^d\lVert A_{\cdot i}\rVert^2 
+    = \sum_{j=1}^n\lVert A_{j\cdot}\rVert^2. 
+\end{align*}\]</div>
+<p>We can denote the gradient of the term in Eq.~\eqref{eq:lingrad}, as we have derived it in the previous exercise. We only have to keep in mind that we derived the gradient in the previous exercise subject to a column-vector and here we have the gradient with regard to the row vector <span class="math notranslate nohighlight">\(X_{k\cdot}\)</span>. Hence, we have to transpose the result from the previous exercise to get the gradient for our row-vector:
+<div class="math notranslate nohighlight">
+\[\nabla_{X_{k\cdot}}\lVert D_{\cdot k}-YX_{k\cdot}^\top\rVert^2
+=(-2Y^\top(D_{\cdot k}-YX_{k\cdot}^\top))^\top
+= -2 (D_{\cdot k}-YX_{k\cdot}^\top)^\top Y.\]</div>
+
+We insert this result now in Eq.~\eqref{eq:gradX} and obtain the final result:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \nabla_Xf(X) &amp;= \begin{pmatrix}
+- &amp;\nabla_{X_{1\cdot }}f(X) &amp;-\\&amp;\vdots&amp;\\-&amp;\nabla_{X_{d\cdot }}f(X)&amp;-\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+-2 (D_{\cdot 1}-YX_{1\cdot}^\top)^\top Y \\\vdots\\
+-2 (D_{\cdot d}-YX_{d\cdot}^\top)^\top Y\end{pmatrix}\\
+&amp;=-2\begin{pmatrix}
+ (D_{\cdot 1}-YX_{1\cdot}^\top)^\top  \\\vdots\\
+ (D_{\cdot d}-YX_{d\cdot}^\top)^\top \end{pmatrix}Y\\
+ &amp;=-2 (D-YX^\top)^\top Y.
+\end{align*}\]</div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="optimization_gradients.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Matrix Derivatives</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="regression.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Regression</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

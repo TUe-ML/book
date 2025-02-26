@@ -1,0 +1,1332 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Low Rank Matrix Factorization &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Matrix Completion" href="dim_reduction_matrix_completion.html" />
+    <link rel="prev" title="Dimensionality Reduction Techniques" href="dim_reduction.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fdim_reduction_mf.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/dim_reduction_mf.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/dim_reduction_mf.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#formal-problem-definition">
+   Formal Problem Definition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimization">
+   Optimization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementation-of-a-recommender-system">
+   Implementation of a Recommender System
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#interpretation-of-the-factorization">
+   Interpretation of the Factorization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-happens-when-we-increase-the-rank">
+   What Happens When We Increase the Rank?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#towards-a-more-advanced-recommender-system">
+   Towards a More Advanced Recommender System
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Low Rank Matrix Factorization</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#formal-problem-definition">
+   Formal Problem Definition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimization">
+   Optimization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementation-of-a-recommender-system">
+   Implementation of a Recommender System
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#interpretation-of-the-factorization">
+   Interpretation of the Factorization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-happens-when-we-increase-the-rank">
+   What Happens When We Increase the Rank?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#towards-a-more-advanced-recommender-system">
+   Towards a More Advanced Recommender System
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="low-rank-matrix-factorization">
+<h1>Low Rank Matrix Factorization<a class="headerlink" href="#low-rank-matrix-factorization" title="Permalink to this headline">#</a></h1>
+<figure class="align-center" id="netflix">
+<a class="reference internal image-reference" href="_images/Netflix_Screenshot.png"><img alt="_images/Netflix_Screenshot.png" src="_images/Netflix_Screenshot.png" style="height: 300px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 63 </span><span class="caption-text">Low rank matrix factorization can be used for recommender systems like Netflix</span><a class="headerlink" href="#netflix" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Netflix gained its big popularity back in the days because it focused on its recommender system strength. They personalized content discovery, ensuring users stayed engaged by always having something new to watch. The task of <em>recommendation</em> is unsupervised, we don’t know the ground truth recommendations, as opposed to supervised tasks, where we have a label or target variable.  All we have are past user ratings, from which we try to derive common patterns that allow us to provide recommendations.</p>
+<p>Let’s go through an example to get a clearer understanding of the recommender task. Imagine we represent all users and movies in a matrix, where each entry corresponds to a user’s rating for a movie. Then we get a massive, sparse matrix (since most users have only rated a small fraction of available movies). The challenge is to predict the missing ratings so that Netflix can suggest movies that a user is likely to enjoy. For example, the user-movie matrix could look like that:</p>
+<style>
+.custom-table-container th {
+    writing-mode: vertical-lr;
+    vertical-align: bottom;
+    width: 20%;
+}
+</style>
+<div class="custom-table-container">
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>User</p></th>
+<th class="head"><p>Star Wars</p></th>
+<th class="head"><p>Interstellar</p></th>
+<th class="head"><p>Blade Runner</p></th>
+<th class="head"><p>Tron</p></th>
+<th class="head"><p>2001: Space O.</p></th>
+<th class="head"><p>Mars Attacks</p></th>
+<th class="head"><p>Dune</p></th>
+<th class="head"><p>Matrix</p></th>
+<th class="head"><p>Robo Cop</p></th>
+<th class="head"><p>Aliens</p></th>
+<th class="head"><p>Terminator</p></th>
+<th class="head"><p>Solaris</p></th>
+<th class="head"><p>Avatar</p></th>
+<th class="head"><p>12 Monkeys</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Grace</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p>🙈</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Carol</p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+</tr>
+<tr class="row-even"><td><p>Alice</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p>🙈</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Bob</p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Eve</p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p>🙈</p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Chuck</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p>🤩</p></td>
+<td><p>🤩</p></td>
+<td><p></p></td>
+<td><p>🙈</p></td>
+<td><p>🤩</p></td>
+</tr>
+</tbody>
+</table>
+</div><p>We have six users and 14 movies, that are rated either as <em>I like it</em> (🤩) or <em>not for me</em> (🙈). If no emoji is indicated, then the corresponding user has not seen the movie yet. This example matrix of user-movie preferences exhibits two patterns of preferences. The first pattern consists of the movies <em>Star Wars, Interstellar, Blade Runner, Tron, 2001: Space Odyssey, Matrix, Solaris,</em> and <em>12 Monkeys</em>. This set of movies is popular in the user group of Carol, Alice and Chuck: every movie of the set is liked at least by two of the three users. Hence, we might consider to recommend each person of that group a movie from this set that the person has not watched yet. For example, we could recommend to Carol to watch <em>2001: Space Odyssey</em>.
+Likewise, we identify a second pattern of movies that is popular among the group of Grace, Bob, Eve and Chuck. This pattern encompasses the movies <em>Star Wars, Mars Attacks, Matrix, Robo Cop, Aliens, Terminator</em>, and <em>Avatar</em>.</p>
+<p>Let’s visualize the model that we are looking for as a matrix. Below you see the abstract representation of the groups of users and movies as a matrix. The first group of users (Carol, Alice and Chuck) and their corresponding set of (largely) liked movies is visualized in blue, and the second set of users (Grace, Bob, Eve and Chuck) and their set of movies are visualized in red.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 sd-d-flex-row sd-align-major-center docutils">
+<div class="sd-row sd-g-1 sd-g-xs-1 sd-g-sm-1 sd-g-md-1 sd-g-lg-1 docutils">
+<div class="sd-col sd-d-flex-column sd-col-auto sd-col-xs-auto sd-col-sm-auto sd-col-md-auto sd-col-lg-auto sd-align-major-center docutils">
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-af253f8d53856b1690458eb7bfcf4a46fa3ff074.svg" alt="Figure made with TikZ" /></p>
+</div></div>
+</div>
+</div>
+<p>The matrix above reflects the positive movie indications (🤩) by the nonzero cells, that are the ones that are colored. The last row reflects Chuck, who adheres to both movie patterns, that overlap in the movies <em>Star Wars</em> and <em>Matrix</em>. Hence, we see two cells in the last row with overlapping colors. The user-movie matrix can be decomposed into the sum of two matrices, where each matrix reflects one user-movie group.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 sd-d-flex-row sd-align-major-center docutils">
+<div class="sd-row sd-g-0 sd-g-xs-0 sd-g-sm-0 sd-g-md-0 sd-g-lg-0 docutils">
+<div class="sd-col sd-d-flex-column sd-col-auto sd-col-xs-auto sd-col-sm-auto sd-col-md-auto sd-col-lg-auto sd-align-major-center docutils">
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-72923ba1e222095f38264a363b9dc78570f93b13.svg" alt="Figure made with TikZ" /></p>
+</div></div>
+<div class="sd-col sd-d-flex-column sd-col-auto sd-col-xs-auto sd-col-sm-auto sd-col-md-auto sd-col-lg-auto sd-align-major-center docutils">
+<p><span class="math notranslate nohighlight">\(+\)</span></p>
+</div>
+<div class="sd-col sd-d-flex-column sd-col-auto sd-col-xs-auto sd-col-sm-auto sd-col-md-auto sd-col-lg-auto sd-align-major-center docutils">
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-956cc3350ff20d9115ffb6160869fed6cd98f51b.svg" alt="Figure made with TikZ" /></p>
+</div></div>
+</div>
+</div>
+<p>Furthermore, each of the single user-group matrices can be represented by an outer product of a user- and a user-vector. And the sum of outer product matrices reflects a low-dimensional matrix product. In this casse, we have a product of two dimensionality two – one for each user-movie matrix.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 sd-d-flex-row sd-align-major-center docutils">
+<div class="sd-row sd-g-0 sd-g-xs-0 sd-g-sm-0 sd-g-md-0 sd-g-lg-0 docutils">
+<div class="sd-col sd-d-flex-column sd-col-auto sd-col-xs-auto sd-col-sm-auto sd-col-md-auto sd-col-lg-auto sd-align-major-center docutils">
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-1863ac78ab9dd75305fbc4494ff2c8dbe5ce8a39.svg" alt="Figure made with TikZ" /></p>
+</div></div>
+<div class="sd-col sd-d-flex-column sd-col-auto sd-col-xs-auto sd-col-sm-auto sd-col-md-auto sd-col-lg-auto sd-align-major-center docutils">
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-40e85b57642ae1bbc40c34298b8b03a52db0f3dc.svg" alt="Figure made with TikZ" /></p>
+</div></div>
+</div>
+</div>
+<p>The low-dimensional matrix product describing our user-movie preferences is now represented by two user-vectors (the columns of the left matrix) and two movie-vectors (the rows of the right matrix). Each pair of user- and movie-vectors indicates a group, exhibiting the same movie preferences. Note, that the original <span class="math notranslate nohighlight">\(6\times 14\)</span> matrix is now compressed into a <span class="math notranslate nohighlight">\(6\times 2\)</span>-matrix and a <span class="math notranslate nohighlight">\(2\times 14\)</span> matrix. While the original matrix contains <span class="math notranslate nohighlight">\(6\cdot 14 = 84\)</span> elements, the low-dimensional product needs only <span class="math notranslate nohighlight">\(2\cdot 6 + 2\cdot 14 = 40\)</span> elememts to be stored. That is roughly the idea of recommender systems: using reoccurences in the behaviour or similarities among users and movies to compress the data, and to use the compressed data representation to make recommendations.</p>
+<section id="formal-problem-definition">
+<h2>Formal Problem Definition<a class="headerlink" href="#formal-problem-definition" title="Permalink to this headline">#</a></h2>
+<div class="tip admonition">
+<p class="admonition-title">Task (Rank-r Matrix Factorization)</p>
+<p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> and a rank <span class="math notranslate nohighlight">\(r&lt;\min\{n,d\}\)</span>.</p>
+<p><strong>Find</strong> matrices <span class="math notranslate nohighlight">\(X\in \mathbb{R}^{d\times r}\)</span> and <span class="math notranslate nohighlight">\(Y\in\mathbb{R}^{n\times r}\)</span> whose product approximates the data matrix:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c617076d-9129-4b27-a451-feb022c7ddee">
+<span class="eqno">(221)<a class="headerlink" href="#equation-c617076d-9129-4b27-a451-feb022c7ddee" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \min_{X,Y}&amp;\lVert D- YX^\top\rVert^2 &amp; \text{s.t. } X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}
+\end{align}\]</div>
+<p><strong>Return</strong> the low-dimensional approximation of the data <span class="math notranslate nohighlight">\((X,Y)\)</span>.</p>
+</div>
+</section>
+<section id="optimization">
+<h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
+<div class="proof theorem admonition" id="theorem-0">
+<p class="admonition-title"><span class="caption-number">Theorem 14 </span></p>
+<section class="theorem-content" id="proof-content">
+<p>The rank-<span class="math notranslate nohighlight">\(r\)</span> matrix factorization problem, defined for a matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\neq\mathbf{0}\)</span> and a rank <span class="math notranslate nohighlight">\(1\leq r&lt;\min\{n,d\}\)</span> as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b47109be-52d4-4298-997a-dc13aea49638">
+<span class="eqno">(222)<a class="headerlink" href="#equation-b47109be-52d4-4298-997a-dc13aea49638" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \min_{X,Y}&amp; RSS(X,Y)=\lVert D- YX^\top\rVert^2 &amp; \text{s.t. } X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}
+\end{align}\]</div>
+<p>is a <strong>nonconvex optimization problem</strong>.</p>
+</section>
+</div><p>The proof follows from the fact that the set of global minimizers is not a convex set.</p>
+<div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. We show that the <span class="math notranslate nohighlight">\(RSS(X,Y)\)</span> is not a convex function. Therefore we assume first that the <span class="math notranslate nohighlight">\(RSS(X,Y)\)</span> is a convex function and show then that this assumption leads to a contradiction. Assuming that the <span class="math notranslate nohighlight">\(RSS(X,Y)\)</span> is a convex function means that the following inequality has to hold for all matrices <span class="math notranslate nohighlight">\(X_1,X_2\in\mathbb{R}^{d\times r}\)</span> and <span class="math notranslate nohighlight">\(Y_1,Y_2\in\mathbb{R}^{n\times r}\)</span> and <span class="math notranslate nohighlight">\(\alpha\in[0,1]\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d5f86429-961c-47ad-94b5-b01431ee54f1">
+<span class="eqno">(223)<a class="headerlink" href="#equation-d5f86429-961c-47ad-94b5-b01431ee54f1" title="Permalink to this equation">#</a></span>\[\begin{align}
+        RSS(\alpha X_1+ (1-\alpha)X_2,\alpha Y_1 + (1-\alpha)Y_2) \leq \alpha RSS(X_1,Y_1) + (1-\alpha)RSS(X_2,Y_2).
+\end{align}\]</div>
+<p>For any global minimizer <span class="math notranslate nohighlight">\((X,Y)\)</span> of the rank-<span class="math notranslate nohighlight">\(r\)</span> MF problem, <span class="math notranslate nohighlight">\((\gamma X, \frac{1}{\gamma} Y)\)</span> is also a global minimizer for <span class="math notranslate nohighlight">\(\gamma\neq 0\)</span>.
+However, for <span class="math notranslate nohighlight">\(\alpha=1/2\)</span> the convex combination attains a function value of</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    RSS(\alpha X + (1-\alpha) (\gamma X), \alpha Y+(1-\alpha)(\tfrac1\gamma Y)) &amp;=RSS\left(\tfrac12 X + \tfrac12 (\gamma X), \tfrac12 Y+\tfrac12(\tfrac1\gamma Y)\right)\\
+    &amp;= RSS\left(\tfrac12(1+\gamma) X, \tfrac12(1+ \tfrac1\gamma) Y\right)\\
+    &amp;=\lVert D-\tfrac14(1+\gamma)(1+\tfrac1\gamma)YX^\top\rVert^2.
+\end{align*}\]</div>
+<p>We observe that the approximation error in the last equation goes to infinity if <span class="math notranslate nohighlight">\(\gamma\rightarrow \infty\)</span>. Hence, there exists multiple <span class="math notranslate nohighlight">\(\gamma&gt;0\)</span> for which the <span class="math notranslate nohighlight">\(RSS\)</span> of the convex combination of two global miinimizers is larger than zero. This contradicts the assumption that the <span class="math notranslate nohighlight">\(RSS(X,Y)\)</span> is convex.</p>
+</div>
+</div>
+<div class="proof example admonition" id="example-1">
+<p class="admonition-title"><span class="caption-number">Example 26 </span> (One-dimensional matrix factorization    )</p>
+<section class="example-content" id="proof-content">
+<p><span class="math notranslate nohighlight">\(f(x_1,x_2) = (1-x_1x_2)^2\)</span></p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-45670078ba803e5565a688bca001f93d08bf6397.svg" alt="Figure made with TikZ" /></p>
+</div></section>
+</div><p>The rank-<span class="math notranslate nohighlight">\(r\)</span> MF problem is nonconvex. Does that mean that we can only determine local minimizers?
+No, the global minimum is given by truncated SVD.</p>
+<div class="proof theorem admonition" id="theorem-2">
+<p class="admonition-title"><span class="caption-number">Theorem 15 </span> (Truncated SVD)</p>
+<section class="theorem-content" id="proof-content">
+<p>Let <span class="math notranslate nohighlight">\(D=U\Sigma V^\top\in\mathbb{R}^{n\times d}\)</span> be the singular decomposition of <span class="math notranslate nohighlight">\(D\)</span>. Then the global minimizers <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>  of the rank-<span class="math notranslate nohighlight">\(r\)</span> MF problem</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d967bf38-2787-45c3-a344-291d211f5bbb">
+<span class="eqno">(224)<a class="headerlink" href="#equation-d967bf38-2787-45c3-a344-291d211f5bbb" title="Permalink to this equation">#</a></span>\[\begin{align}
+\min_{X,Y}\lVert D-YX^\top\rVert^2 \text{s.t. } X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}.
+\end{align}\]</div>
+<p>satisfy</p>
+<div class="amsmath math notranslate nohighlight" id="equation-88c1fd27-86b3-46e9-b567-91246a076a53">
+<span class="eqno">(225)<a class="headerlink" href="#equation-88c1fd27-86b3-46e9-b567-91246a076a53" title="Permalink to this equation">#</a></span>\[\begin{align} 
+YX^\top = U_{\cdot \mathcal{R}}\Sigma_{\mathcal{R}\mathcal{R}}V_{\cdot \mathcal{R}}^\top, \text{ where }\mathcal{R}=\{1,\ldots, r\}.
+\end{align}\]</div>
+</section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. The proof follows from
+the orthogonal invariance of the Frobenius norm, yielding:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-3651d694-c587-497d-b7ea-ed46d894a6cf">
+<span class="eqno">(226)<a class="headerlink" href="#equation-3651d694-c587-497d-b7ea-ed46d894a6cf" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \min_{X,Y}&amp;\lVert D-YX^\top\rVert^2 = \lVert \Sigma - U^\top YX^\top V\rVert^2 
+\end{align}\]</div>
+</div>
+</section>
+<section id="implementation-of-a-recommender-system">
+<h2>Implementation of a Recommender System<a class="headerlink" href="#implementation-of-a-recommender-system" title="Permalink to this headline">#</a></h2>
+<p>Ok, so the truncated SVD solves the task to determine a low-rank approximation of my data.
+How can we apply the low-rank approximation to provide recommendations?
+Fill missing values with the mean value and compute the truncated SVD.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Id</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(A\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(B\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(C\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(D\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>★★★★★</p></td>
+<td><p>?</p></td>
+<td><p>★★☆☆☆</p></td>
+<td><p>★☆☆☆☆</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>?</p></td>
+<td><p>★☆☆☆☆</p></td>
+<td><p>★★★★★</p></td>
+<td><p>?</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>★★★★★</p></td>
+<td><p>★☆☆☆☆</p></td>
+<td><p>★★★★★</p></td>
+<td><p>★★☆☆☆</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>★★★★★</p></td>
+<td><p>?</p></td>
+<td><p>★★★★★</p></td>
+<td><p>★★★☆☆</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>★★★★★</p></td>
+<td><p>★★★★★</p></td>
+<td><p>?</p></td>
+<td><p>?</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>?</p></td>
+<td><p>★★★★☆</p></td>
+<td><p>★★★★★</p></td>
+<td><p>★★★☆☆</p></td>
+</tr>
+</tbody>
+</table>
+<p>Can we fill the question marks with the rating which would be given by the user if they had seen the movie?</p>
+<p>Quick hack: we replace the unobserved entries with the mean rating <span class="math notranslate nohighlight">\(\mu=\frac{1+2+3+4+5}{5}=3\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">]])</span>
+<span class="n">D</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[5, 3, 1, 1],
+       [3, 1, 5, 3],
+       [2, 1, 5, 3],
+       [4, 3, 4, 2],
+       [5, 5, 3, 1],
+       [3, 1, 5, 3]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="s1">&#39;PiYG&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/dim_reduction_mf_16_0.png" src="_images/dim_reduction_mf_16_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vᵀ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">full_matrices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We get a rank-2 approximation of <span class="math notranslate nohighlight">\(D\)</span> by the truncated SVD <span class="math notranslate nohighlight">\(D\approx U_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}V_{\cdot \{1,2\}}^\top\)</span>. This tri-factorization can be expressed as a factorization into two matrices by setting <span class="math notranslate nohighlight">\(Y=U_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}^{1/2}\)</span> and <span class="math notranslate nohighlight">\(X=V_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}^{1/2}\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The matrix <span class="math notranslate nohighlight">\(A^{1/2}\)</span> is defined as the matrix that satisfies the equation <span class="math notranslate nohighlight">\(A^{1/2}A^{1/2}=A\)</span>. Not for all matrices <span class="math notranslate nohighlight">\(A\)</span> exists such a matrix <span class="math notranslate nohighlight">\(A^{1/2}\)</span>. However, for nonnegative, diagonal matrices <span class="math notranslate nohighlight">\(\Sigma\)</span>, the matrix <span class="math notranslate nohighlight">\(\Sigma^{1/2}=\diag(\sqrt{\sigma_1},\ldots, \sqrt{\sigma_r})\)</span> exists.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">Y</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-1.3 ,  1.26],
+       [-1.61, -0.85],
+       [-1.46, -1.04],
+       [-1.71,  0.21],
+       [-1.81,  1.27],
+       [-1.61, -0.85]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">Vᵀ</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">X</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-2.3 ,  1.08],
+       [-1.49,  1.38],
+       [-2.43, -1.36],
+       [-1.35, -0.92]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The low rank approximation can be used to give recommendations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span><span class="nd">@X</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[4.34, 3.68, 1.43, 0.59],
+       [2.78, 1.23, 5.08, 2.97],
+       [2.23, 0.75, 4.97, 2.93],
+       [4.16, 2.84, 3.88, 2.13],
+       [5.53, 4.46, 2.68, 1.28],
+       [2.78, 1.23, 5.08, 2.97]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="amsmath math notranslate nohighlight" id="equation-604b7dfb-7ab8-4331-8d5e-31e1d8484596">
+<span class="eqno">(227)<a class="headerlink" href="#equation-604b7dfb-7ab8-4331-8d5e-31e1d8484596" title="Permalink to this equation">#</a></span>\[\begin{align}
+  \begin{pmatrix}
+    5 &amp; \mu &amp; 1 &amp; 1 \\
+    \mu &amp; 1 &amp; 5 &amp; \mu  \\\
+    2 &amp; 1 &amp; 5 &amp; 3 \\
+    4 &amp; \mu &amp; 4 &amp; 2\\
+    5 &amp; 5 &amp; \mu &amp; 1 \\
+    \mu &amp; 1 &amp; 5 &amp; 3 \\
+  \end{pmatrix}
+  &amp;\approx
+  \begin{pmatrix}
+    4.3 &amp; 3.7 &amp; 1.4 &amp; 0.6\\
+    2.8 &amp; 1.2 &amp; 5.1 &amp; 3.0\\
+    2.2 &amp; 0.7 &amp; 5.0 &amp; 2.9\\
+    4.2 &amp; 2.8 &amp; 3.9 &amp; 2.1\\
+    5.5 &amp; 4.5 &amp; 2.7 &amp; 1.3\\
+    2.8 &amp; 1.2 &amp; 5.1 &amp; 3.0
+  \end{pmatrix}
+\end{align}\]</div>
+</section>
+<section id="interpretation-of-the-factorization">
+<h2>Interpretation of the Factorization<a class="headerlink" href="#interpretation-of-the-factorization" title="Permalink to this headline">#</a></h2>
+<p>The approximation matrix represented by the matrix product is composed by the two outer products (because the factorization rank is two). We visualize here the matrix decomposition by means of colors. The more saturated the color, the  higher is the absolute value of the corresponding element in the matrix. Positive values are green and negative values are pink.<br />
+The visualization makes the grid structure apparent which is induced by the outer product.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-28b9b20d-f39b-4f2f-a72f-fdcf70f2b43a">
+<span class="eqno">(228)<a class="headerlink" href="#equation-28b9b20d-f39b-4f2f-a72f-fdcf70f2b43a" title="Permalink to this equation">#</a></span>\[\begin{align}
+  \begin{pmatrix}
+    5 &amp; \mu &amp; 1 &amp; 1 \\
+    \mu &amp; 1 &amp; 5 &amp; \mu  \\\
+    2 &amp; 1 &amp; 5 &amp; 3 \\
+    4 &amp; \mu &amp; 4 &amp; 2\\
+    5 &amp; 5 &amp; \mu &amp; 1 \\
+    \mu &amp; 1 &amp; 5 &amp; 3 \\
+  \end{pmatrix}
+  &amp;\approx
+  \begin{pmatrix}
+    -0.3 &amp; 0.5\\
+    -0.4 &amp; -0.4\\
+    -0.4 &amp; -0.4\\
+    -0.4 &amp; 0.1\\
+    -0.5 &amp; 0.5\\
+    -0.4 &amp; -0.4\\
+  \end{pmatrix}
+  \begin{pmatrix}
+    -9.0 &amp; -5.8 &amp; -9.5 &amp; -5.3\\
+    2.6 &amp; 3.3 &amp; -3.3 &amp; -2.2\\
+  \end{pmatrix}
+\end{align}\]</div>
+<p>Every user’s preferences are approximated by a linear combination of the rows in the second matrix:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-930bfab0-eeca-4df3-ace7-75e71d369276">
+<span class="eqno">(229)<a class="headerlink" href="#equation-930bfab0-eeca-4df3-ace7-75e71d369276" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \begin{pmatrix}
+        5 &amp; \mu &amp; 1 &amp; 1 
+    \end{pmatrix}
+    \approx&amp;
+    -0.3\cdot 
+    \begin{pmatrix}
+        -9.0 &amp; -5.8 &amp; -9.5 &amp; -5.3
+    \end{pmatrix}
+    +0.5\cdot
+    \begin{pmatrix}
+        2.6 &amp; 3.3 &amp; -3.3 &amp; -2.2
+    \end{pmatrix}    
+\end{align}\]</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="c1">#--------------</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Y</span><span class="nd">@X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;YXᵀ&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]),</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Y_1X_1ᵀ&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Y_2X_2ᵀ&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/dim_reduction_mf_26_0.png" src="_images/dim_reduction_mf_26_0.png" />
+</div>
+</div>
+</section>
+<section id="what-happens-when-we-increase-the-rank">
+<h2>What Happens When We Increase the Rank?<a class="headerlink" href="#what-happens-when-we-increase-the-rank" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">Vᵀ</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="c1">#--------------</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Y</span><span class="nd">@X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;YXᵀ&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="s1">&#39;PiYG&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]),</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Y_1X_1ᵀ&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Y_2X_2ᵀ&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]),</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Y_3X_3ᵀ&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/dim_reduction_mf_29_0.png" src="_images/dim_reduction_mf_29_0.png" />
+</div>
+</div>
+<p>The approximating data matrix, visualized by the matrix on the left above, is given as:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span><span class="nd">@X</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[5.02, 2.97, 1.03, 0.94],
+       [2.98, 1.03, 4.97, 3.07],
+       [2.05, 0.93, 5.08, 2.84],
+       [3.99, 3.02, 3.98, 2.04],
+       [5.  , 5.01, 2.99, 1.01],
+       [2.98, 1.03, 4.97, 3.07]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="towards-a-more-advanced-recommender-system">
+<h2>Towards a More Advanced Recommender System<a class="headerlink" href="#towards-a-more-advanced-recommender-system" title="Permalink to this headline">#</a></h2>
+<p>How can we prevent the approximation to the inserted mean values?</p>
+<p>Adapt the objective to approximate only observed entries.
+The following approach has been used in the Netflix Price 2009 competition and made it to the top-3:</p>
+<div class="tip admonition">
+<p class="admonition-title">Task (Rank-r Matrix Factorization with Missing Values)</p>
+<p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> having observed entries <span class="math notranslate nohighlight">\(D_{ik}\)</span> for <span class="math notranslate nohighlight">\((i,k)\in\mathcal{O}\subseteq \{1,\ldots,n\}\times \{1,\ldots d\}\)</span> the set of observed matrix entries, and a rank <span class="math notranslate nohighlight">\(r&lt;\min\{n,d\}\)</span>.</p>
+<p><strong>Find</strong> matrices <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{d\times r}\)</span> and <span class="math notranslate nohighlight">\(Y\in\mathbb{R}^{n\times r}\)</span> whose product approximates the data matrix only on observed entries, indicated by <span class="math notranslate nohighlight">\(\mathbb{1}_{\mathcal{O}}\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-51d9c6e1-2c9b-4dfd-8b03-55d6bbd402eb">
+<span class="eqno">(230)<a class="headerlink" href="#equation-51d9c6e1-2c9b-4dfd-8b03-55d6bbd402eb" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \min_{X,Y}&amp;\lVert \mathbb{1}_{\mathcal{O}}\circ(D- YX^\top)\rVert^2 =\sum_{(i,k)\in\mathcal{O}}(D_{ik}-Y_{i\cdot}X_{k\cdot}^\top)^2\\ 
+    \text{s.t. }&amp; X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}
+\end{align}\]</div>
+<p><strong>Return</strong> the low-dimensional approximation of the data <span class="math notranslate nohighlight">\((X,Y)\)</span>.</p>
+</div>
+<p>We can optimze this objective with coordinate descent. We will not go through this approach in detail, but you can try to implement this for yourself.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="dim_reduction.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Dimensionality Reduction Techniques</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="dim_reduction_matrix_completion.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Matrix Completion</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

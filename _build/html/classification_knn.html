@@ -1,0 +1,837 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>K-Nearest Neighbor &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Naïve Bayes" href="classification_naive_bayes.html" />
+    <link rel="prev" title="Evaluation" href="classification_evaluation.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fclassification_knn.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/classification_knn.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/classification_knn.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#nearest-neighbor-nn-classifier">
+   Nearest Neighbor (NN) classifier
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#k-nearest-neighbor-knn-classifier">
+   K-Nearest Neighbor (KNN) classifier
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#knn-for-regression">
+   KNN for regression
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>K-Nearest Neighbor</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#nearest-neighbor-nn-classifier">
+   Nearest Neighbor (NN) classifier
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#k-nearest-neighbor-knn-classifier">
+   K-Nearest Neighbor (KNN) classifier
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#knn-for-regression">
+   KNN for regression
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="k-nearest-neighbor">
+<h1>K-Nearest Neighbor<a class="headerlink" href="#k-nearest-neighbor" title="Permalink to this headline">#</a></h1>
+<p>In this section, we introduce first the Nearest Neighbor (NN) classifier to better motivate the K-Nearest Neighbor (KNN) classifier. In particular, we illustrate how the KNN overcomes some of the NN limitations by means of a particular classification task.</p>
+<section id="nearest-neighbor-nn-classifier">
+<h2>Nearest Neighbor (NN) classifier<a class="headerlink" href="#nearest-neighbor-nn-classifier" title="Permalink to this headline">#</a></h2>
+<p>For a given observed data item <span class="math notranslate nohighlight">\( \check{\bf x} \)</span>, the predicted class value <span class="math notranslate nohighlight">\( \hat{y} \)</span> is the label <span class="math notranslate nohighlight">\( y_{c} \)</span> associated with the closest data item <span class="math notranslate nohighlight">\( {\bf x}_{c} \)</span> – the nearest neighbor – within the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>. In precise mathematical terms, for an arbitrary data item <span class="math notranslate nohighlight">\( {\bf x} \in {\cal X} \)</span>, the NN classifier can be written as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2c9cd8f7-4c7e-4a8a-a6bb-a51816fd528c">
+<span class="eqno">(60)<a class="headerlink" href="#equation-2c9cd8f7-4c7e-4a8a-a6bb-a51816fd528c" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+h_{NN}({\bf x}) &amp;=&amp; y_{c} \nonumber \\
+\left( {\bf x}_{c},  y_{c} \right) &amp;=&amp; \argmin_{ \left( {\bf x}',  y' \right) \in {\cal D}} || {\bf x}' - {\bf x} ||, \nonumber
+\end{eqnarray}\]</div>
+<p>where the operator <span class="math notranslate nohighlight">\( ||\cdot|| \)</span> stands for a suitable distance metric, e.g.</p>
+<ul class="simple">
+<li><p>the Manhattan distance (<span class="math notranslate nohighlight">\( L_{1} \)</span> norm),</p></li>
+<li><p>the Euclidean distance (<span class="math notranslate nohighlight">\( L_{2} \)</span> norm),</p></li>
+<li><p>the Hamming distance for binary feature vectors or</p></li>
+<li><p>any user-defined distance metric satisfying the triangular inequality <span class="math notranslate nohighlight">\( || {\bf x} + {\bf x}' || \leq || {\bf x} || + || {\bf x}' || \)</span>, <span class="math notranslate nohighlight">\( \forall {\bf x}, {\bf x}' \in {\cal X} \)</span>.</p></li>
+</ul>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Pros:</strong> The NN classifier is non-parametric, i.e. there are no additional parameters to learn besides the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> itself.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Cons:</strong> We need to store the full data set <span class="math notranslate nohighlight">\( {\cal D} \)</span>. The prediction has cost <span class="math notranslate nohighlight">\( {\cal O}(N) \)</span>. The NN classifier is also very sensitive to outliers / noise within the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>.</p>
+</div>
+</aside>
+<figure class="align-left" id="nn-classifier-fig">
+<a class="reference internal image-reference" href="images/classification/nn_classifier.svg"><img alt="images/classification/nn_classifier.svg" height="320px" src="images/classification/nn_classifier.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">The NN classifier being fooled by an outlier. Data items are colored according to their corresponding class values (<span style="color: red;">red</span> and <span style="color: blue;">blue</span> labels). The dashed straight line indicates a possible linear decision boundary between the two classes – not the decision boundary produced by the NN classifier itself. The observed data item <span class="math notranslate nohighlight">\( \check{\bf x} \)</span> is classified according to the label (in this case, <span style="color: blue;">blue</span>) of the closest data item <span class="math notranslate nohighlight">\( {\bf x}_{c} \)</span> from the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>. Something looks odd…</span><a class="headerlink" href="#nn-classifier-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="k-nearest-neighbor-knn-classifier">
+<h2>K-Nearest Neighbor (KNN) classifier<a class="headerlink" href="#k-nearest-neighbor-knn-classifier" title="Permalink to this headline">#</a></h2>
+<p>Find the <span class="math notranslate nohighlight">\( K \)</span> nearest neighbors of the observed data item <span class="math notranslate nohighlight">\( \check{\bf x} \)</span> within the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> and let them vote to predict the label <span class="math notranslate nohighlight">\( \hat{y} \)</span>. Specifically, let the set</p>
+<div class="amsmath math notranslate nohighlight" id="equation-135f48d3-b356-4bf8-8b4d-fc0ce6ca3f0f">
+<span class="eqno">(61)<a class="headerlink" href="#equation-135f48d3-b356-4bf8-8b4d-fc0ce6ca3f0f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+{\cal D}_{K}({\bf x}) \triangleq \bigcup_{i=1}^{K} \lbrace \left( {\bf x}_{i}', y_{i}' \right) \rbrace \subseteq {\cal D}
+\end{equation}\]</div>
+<p>collect the <span class="math notranslate nohighlight">\( K \)</span> nearest neighbors in <span class="math notranslate nohighlight">\( {\cal D} \)</span> of an arbitrary <span class="math notranslate nohighlight">\( {\bf x} \in {\cal X} \)</span> such that <div class="math notranslate nohighlight">
+\[ || {\bf x} - {\bf x}_{i}' || \leq || {\bf x} - {\bf x}' ||, \]</div>
+ <span class="math notranslate nohighlight">\( \forall \left( {\bf x}_{i}', y_{i}' \right) \in {\cal D}_{K}({\bf x}) \)</span> and <span class="math notranslate nohighlight">\( \forall \left( {\bf x}', y' \right) \in {\cal D} \setminus {\cal D}_{K}({\bf x}) \)</span>.</p>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 17 </span></p>
+<section class="definition-content" id="proof-content">
+<p>We define the KNN classifier as</p>
+<div class="math notranslate nohighlight" id="equation-knn">
+<span class="eqno">(62)<a class="headerlink" href="#equation-knn" title="Permalink to this equation">#</a></span>\[h_{KNN} ({\bf x}) = \argmax_{y \in {\cal Y}} F(y;{\cal D}_{K}({\bf x})),\]</div>
+<p>where the function</p>
+<div class="math notranslate nohighlight" id="equation-freq-labels">
+<span class="eqno">(63)<a class="headerlink" href="#equation-freq-labels" title="Permalink to this equation">#</a></span>\[F(y;{\cal D}_{K}({\bf x})) = \sum_{i=1}^{K} \left[ y_{i}' = y \right]\]</div>
+<p>indicates the frequency of the label <span class="math notranslate nohighlight">\( y \)</span> within <span class="math notranslate nohighlight">\( {\cal D}_{K}({\bf x}) \)</span>.</p>
+</section>
+</div><aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that the set <span class="math notranslate nohighlight">\( \lbrace \left( y, F(y;{\cal D}_{K}({\bf x})) \right) \mid y \in {\cal Y} \rbrace \)</span> defines a histogram with the frequency of each class value <span class="math notranslate nohighlight">\( y \in {\cal Y} \)</span> in <span class="math notranslate nohighlight">\( {\cal D}_{K}({\bf x}) \)</span>. The KNN prediction is the mode among the class values collected by <span class="math notranslate nohighlight">\( {\cal D}_{K}({\bf x}) \)</span>.</p>
+</div>
+</aside>
+<figure class="align-left" id="knn-classifier-fig">
+<a class="reference internal image-reference" href="images/classification/knn_classifier.svg"><img alt="images/classification/knn_classifier.svg" height="320px" src="images/classification/knn_classifier.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">The KNN classifier dealing with an outlier. The observed data item <span class="math notranslate nohighlight">\( \check{\bf x} \)</span> is classified according to the most often label (in this case, <span style="color: red;">red</span>) in <span class="math notranslate nohighlight">\( {\cal D}_{K}(\check{\bf x}) \)</span> associated with the <span class="math notranslate nohighlight">\( K = 5 \)</span> nearest data items within the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>. Outliers are properly filtered out by allowing neighbors to vote. Again, the dashed straight line illustrates a possible linear decision boundary between the two classes. Note however that the boundary produced by the KNN classifier is typically non-linear as it is governed by the spread of the training samples over the feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span>.</span><a class="headerlink" href="#knn-classifier-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For binary classification, it is important to employ an odd number of <span class="math notranslate nohighlight">\( K \)</span> nearest neighbors to prevent a voting tie between the two classes.</p>
+</div>
+</aside>
+<div class="proof remark admonition" id="remark-1">
+<p class="admonition-title"><span class="caption-number">Remark 4 </span></p>
+<section class="remark-content" id="proof-content">
+<p><strong>Pros:</strong> The KNN classifier is simple (majority vote) and is non-parametric. Training is trivially achieved by storing the full dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>. The KNN classifier is also Bayes consistent, i.e. the <span class="math notranslate nohighlight">\( R(h_{KNN}) - R(h^{\ast}) \rightarrow 0 \)</span> as both the number of training examples <span class="math notranslate nohighlight">\( N \rightarrow \infty \)</span> and the number of neighbors <span class="math notranslate nohighlight">\( K \rightarrow \infty \)</span>, but <span class="math notranslate nohighlight">\( N \)</span> grows faster than <span class="math notranslate nohighlight">\( K \)</span>, i.e <span class="math notranslate nohighlight">\( \frac{K}{N} \rightarrow 0 \)</span>.</p>
+<p><strong>Cons:</strong> We need to store the full dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>. Moreover, a naive implementation of KNN which checks all <span class="math notranslate nohighlight">\( N \)</span> training samples has cost <span class="math notranslate nohighlight">\( \Theta(N) \)</span>. However, we can improve its computational complexity by storing the training samples into some computational structure – e.g. kd-tree – to efficiently retrieve the <span class="math notranslate nohighlight">\( K \)</span> nearest data items to an observed sample <span class="math notranslate nohighlight">\( \check{\bf x} \)</span>.</p>
+</section>
+</div></section>
+<section id="knn-for-regression">
+<h2>KNN for regression<a class="headerlink" href="#knn-for-regression" title="Permalink to this headline">#</a></h2>
+<p>We can straightforwardly change the KNN classifier to perform regression by storing continuous values <span class="math notranslate nohighlight">\( z \in {\cal Z} \subseteq \mathbb{R} \)</span> instead of labels. In this case, the training dataset can be rewritten in this case as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-79f7b8ec-79a7-46e9-8dd4-523baf501555">
+<span class="eqno">(64)<a class="headerlink" href="#equation-79f7b8ec-79a7-46e9-8dd4-523baf501555" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+{\cal D} &amp;=&amp; \bigcup_{i=1}^{N} \lbrace \left( {\bf x}_{i}, {z}_{i} \right) \rbrace \nonumber \\
+&amp;\equiv&amp; \lbrace \left( {\bf x}_{1}, {z}_{1} \right), \left( {\bf x}_{2}, {z}_{2} \right), \ldots, \left( {\bf x}_{N}, {z}_{N} \right) \rbrace \nonumber
+\end{eqnarray}\]</div>
+<p>with <span class="math notranslate nohighlight">\( {\bf x}_{i} \in {\cal X} \)</span> and <span class="math notranslate nohighlight">\( z_{i} \in {\cal Z} \)</span>, <span class="math notranslate nohighlight">\( \forall i \in \lbrace 1, 2, \ldots, N \rbrace \)</span>.</p>
+<p>Next, let the set</p>
+<div class="amsmath math notranslate nohighlight" id="equation-dccc96cf-3387-415f-b462-ec2263b30c0b">
+<span class="eqno">(65)<a class="headerlink" href="#equation-dccc96cf-3387-415f-b462-ec2263b30c0b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+{\cal D}_{K}({\bf x}) \triangleq \bigcup_{i=1}^{K} \lbrace \left( {\bf x}_{i}', z_{i}' \right) \rbrace \subseteq {\cal D} 
+\end{equation}\]</div>
+<p>collect the <span class="math notranslate nohighlight">\( K \)</span> nearest neighbors in <span class="math notranslate nohighlight">\( {\cal D} \)</span> of a given data item <span class="math notranslate nohighlight">\( {\bf x} \)</span> such that <div class="math notranslate nohighlight">
+\[ || {\bf x} - {\bf x}_{i}' || \leq || {\bf x} - {\bf x}' ||, \]</div>
+ <span class="math notranslate nohighlight">\( \forall \left( {\bf x}_{i}', z_{i}' \right) \in {\cal D}_{K}({\bf x}) \)</span> and <span class="math notranslate nohighlight">\( \forall \left( {\bf x}', z' \right) \in {\cal D} \setminus {\cal D}_{K}({\bf x}) \)</span>.</p>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note though that the characteristics of the particular regression problem – i.e. the function we are trying to approximate – will drive the selection of the best interpolation method.</p>
+</div>
+</aside>
+<p>The values in <span class="math notranslate nohighlight">\( {\cal D}_{K}({\bf x}) \)</span> can be used then to predict the class value by means e.g. of a convex linear combination</p>
+<div class="amsmath math notranslate nohighlight" id="equation-38b8de61-3872-4b67-ad01-22dd928c4ade">
+<span class="eqno">(66)<a class="headerlink" href="#equation-38b8de61-3872-4b67-ad01-22dd928c4ade" title="Permalink to this equation">#</a></span>\[\begin{equation}
+h_{KNN}({\bf x}) = \sum_{i=1}^{K} \alpha_{i}({\bf x}; {\bf x}_{i}') \, z_{i}',
+\end{equation}\]</div>
+<p>where the <span class="math notranslate nohighlight">\(i\)</span>-th coefficient / weight – parameterized by <span class="math notranslate nohighlight">\( {\bf x}_{i}' \)</span> – is <span class="math notranslate nohighlight">\( \alpha_{i}({\bf x}; {\bf x}_{i}') \propto || {\bf x} - {\bf x}_{i}' || \)</span> and the coefficients / weights are properly normalized such that <div class="math notranslate nohighlight">
+\[ \sum_{i=1}^{K} \alpha_{i}({\bf x}; {\bf x}_{i}') = 1. \]</div>
+</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="classification_evaluation.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Evaluation</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="classification_naive_bayes.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Naïve Bayes</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,59 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+chapters:
+- file: notation
+- file: linalg
+  sections:
+  - file: linalg_spaces
+  - file: linalg_normed_vs
+  - file: linalg_exercises
+- file: optimization
+  sections:
+  - file: optimization_problems
+  - file: optimization_numerical
+  - file: optimization_convex
+  - file: optimization_gradients
+  - file: optimization_exercises
+- file: regression
+  sections:
+  - file: regression_objective
+  - file: regression_functions
+  - file: regression_optimization
+  - file: regression_bias_var
+  - file: regression_sparse
+  - file: regression_ridge
+  - file: regression_lasso
+  - file: regression_L1vsL2
+  - file: regression_exercises
+- file: classification
+  sections :
+  - file: classification_problem
+  - file: classification_evaluation
+  - file: classification_knn
+  - file: classification_naive_bayes
+  - file: classification_decision_trees
+  - file: classification_random_forests
+  - file: classification_svms
+- file: neuralnets
+  sections:
+  - file: neuralnets_intro
+  - file: neuralnets_comp_graphs
+  - file: neuralnets_func_approx
+  - file: neuralnets_mlps
+  - file: neuralnets_backprop
+- file: dim_reduction
+  sections:
+  - file: dim_reduction_mf
+  - file: dim_reduction_matrix_completion
+  - file: dim_reduction_pca
+  - file: dim_reduction_exercises
+- file: clustering
+  sections:
+  - file: clustering_k_means
+  - file: clustering_k_means_mf
+  - file: clustering_kernel_kmeans
+  - file: clustering_spectral
+  - file: clustering_exercises

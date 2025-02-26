@@ -1,0 +1,51 @@
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/homebrew/Cellar/python@3.9/3.9.13_1/Frameworks/Python.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 647, in run_until_complete
+    return future.result()
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from scipy import sparse
+epsilon=0.00
+D, labels = datasets.make_blobs(n_samples=50,centers=2, cluster_std=[epsilon + 0.5, epsilon + 0.8],random_state=3)
+
+A=D@D.T
+A = A/ np.max(A)/2
+A *= np.tri(*A.shape)
+A*= (A>0)
+sA = sparse.csr_matrix(A)
+segments = np.concatenate([D[sA.nonzero()[0],:].reshape(-1, 1, 2),D[sA.nonzero()[1],:].reshape(-1, 1, 2)],axis=1)
+lc = LineCollection(segments, linewidths=np.array(sA[sA.nonzero()])[0],color='orange')
+fig,ax = plt.subplots()
+
+ax.add_collection(lc)
+ax.scatter(D[:, 0], D[:, 1],  zorder=10)
+ax.set_xlim(np.min(D[:,0])-1, np.max(D[:,0])+1)
+ax.set_ylim(np.min(D[:,1])-1, np.max(D[:,1])+1)
+ax.set_aspect("equal") 
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mNameError[0m                                 Traceback (most recent call last)
+Input [0;32mIn [3][0m, in [0;36m<cell line: 11>[0;34m()[0m
+[1;32m      9[0m sA [38;5;241m=[39m sparse[38;5;241m.[39mcsr_matrix(A)
+[1;32m     10[0m segments [38;5;241m=[39m np[38;5;241m.[39mconcatenate([D[sA[38;5;241m.[39mnonzero()[[38;5;241m0[39m],:][38;5;241m.[39mreshape([38;5;241m-[39m[38;5;241m1[39m, [38;5;241m1[39m, [38;5;241m2[39m),D[sA[38;5;241m.[39mnonzero()[[38;5;241m1[39m],:][38;5;241m.[39mreshape([38;5;241m-[39m[38;5;241m1[39m, [38;5;241m1[39m, [38;5;241m2[39m)],axis[38;5;241m=[39m[38;5;241m1[39m)
+[0;32m---> 11[0m lc [38;5;241m=[39m [43mLineCollection[49m(segments, linewidths[38;5;241m=[39mnp[38;5;241m.[39marray(sA[sA[38;5;241m.[39mnonzero()])[[38;5;241m0[39m],color[38;5;241m=[39m[38;5;124m'[39m[38;5;124morange[39m[38;5;124m'[39m)
+[1;32m     12[0m fig,ax [38;5;241m=[39m plt[38;5;241m.[39msubplots()
+[1;32m     14[0m ax[38;5;241m.[39madd_collection(lc)
+
+[0;31mNameError[0m: name 'LineCollection' is not defined
+NameError: name 'LineCollection' is not defined
+

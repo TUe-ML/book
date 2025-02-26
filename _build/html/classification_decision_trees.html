@@ -1,0 +1,1135 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Decision Trees &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Random Forests" href="classification_random_forests.html" />
+    <link rel="prev" title="Naïve Bayes" href="classification_naive_bayes.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fclassification_decision_trees.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/classification_decision_trees.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/classification_decision_trees.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-word-on-tuples">
+   A word on tuples
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#directed-binary-trees">
+   Directed binary trees
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decision-tree-definition">
+   Decision tree definition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decision-tree-prediction">
+   Decision tree prediction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decision-tree-learning">
+   Decision tree learning
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Decision Trees</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-word-on-tuples">
+   A word on tuples
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#directed-binary-trees">
+   Directed binary trees
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decision-tree-definition">
+   Decision tree definition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decision-tree-prediction">
+   Decision tree prediction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decision-tree-learning">
+   Decision tree learning
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="decision-trees">
+<h1>Decision Trees<a class="headerlink" href="#decision-trees" title="Permalink to this headline">#</a></h1>
+<p>In this section, we first introduce some preliminary definitions on tuples and directed binary trees. Then, we formally introduce Decision Trees using these computational structures.</p>
+<section id="a-word-on-tuples">
+<h2>A word on tuples<a class="headerlink" href="#a-word-on-tuples" title="Permalink to this headline">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\( \boldsymbol{\alpha} = \left( \alpha_{1}, \alpha_{2}, \ldots, \alpha_{n} \right) \)</span> denote<a class="footnote-reference brackets" href="#footnote1" id="id1">1</a> a tuple with <span class="math notranslate nohighlight">\( | \boldsymbol{\alpha} | = n \)</span> elements. For now, we assume that the tuple <span class="math notranslate nohighlight">\( \boldsymbol{\alpha} \)</span> is homogeneous in the sense that all elements belong to the same set <span class="math notranslate nohighlight">\( \Omega \)</span>, i.e. <div class="math notranslate nohighlight">
+\[ \boldsymbol{\alpha}[k] \triangleq \alpha_{k} \in \Omega , \forall k \in \lbrace 1, \ldots, n \rbrace. \]</div>
+</p>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 23 </span></p>
+<section class="definition-content" id="proof-content">
+<p>Now, let <span class="math notranslate nohighlight">\( \boldsymbol{\beta} = \left( \beta_{1}, \beta_{2}, \ldots, \beta_{m} \right) \)</span> be another tuple with <span class="math notranslate nohighlight">\( | \boldsymbol{\beta} | = m \)</span> elements with <span class="math notranslate nohighlight">\( \beta_{k} \in \Omega \)</span>, <span class="math notranslate nohighlight">\( \forall k \in \lbrace 1, \ldots, m \rbrace \)</span>, we define the <em>concatenation</em> operator as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a28d4b9d-1061-4b00-aafd-a69cf5ab5305">
+<span class="eqno">(95)<a class="headerlink" href="#equation-a28d4b9d-1061-4b00-aafd-a69cf5ab5305" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\boldsymbol{\alpha} \concat \boldsymbol{\beta} \triangleq \left( \alpha_{1}, \alpha_{2}, \ldots, \alpha_{n}, \beta_{1}, \beta_{2}, \ldots, \beta_{m} \right)
+\end{equation}\]</div>
+<p>such that <span class="math notranslate nohighlight">\( | \boldsymbol{\alpha} \concat \boldsymbol{\beta} | = n + m \)</span>.</p>
+</section>
+</div><p>Note that the null tuple <span class="math notranslate nohighlight">\( \boldsymbol{\varnothing} \)</span><a class="footnote-reference brackets" href="#footnote2" id="id2">2</a> is such that <span class="math notranslate nohighlight">\( | \boldsymbol{\varnothing} | = 0 \)</span>, <span class="math notranslate nohighlight">\( \boldsymbol{\alpha} \concat \boldsymbol{\varnothing} \equiv \boldsymbol{\alpha} \)</span> and <span class="math notranslate nohighlight">\(  \boldsymbol{\varnothing} \concat \boldsymbol{\alpha} \equiv \boldsymbol{\alpha} \)</span>.</p>
+<div class="proof definition admonition" id="definition-1">
+<p class="admonition-title"><span class="caption-number">Definition 24 </span></p>
+<section class="definition-content" id="proof-content">
+<p>For any <span class="math notranslate nohighlight">\( a \in \Omega \)</span>, we can define then the <em>append</em> <span class="math notranslate nohighlight">\( \blacktriangleright \)</span> and <em>prepend</em> <span class="math notranslate nohighlight">\( \blacktriangleleft \)</span> operators respectively as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bfde7e15-49d1-44fa-a410-80e2b4a61ac5">
+<span class="eqno">(96)<a class="headerlink" href="#equation-bfde7e15-49d1-44fa-a410-80e2b4a61ac5" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+\boldsymbol{\alpha} \blacktriangleright a &amp;\triangleq&amp; \left( \alpha_{1}, \alpha_{2}, \ldots, \alpha_{n} \right) \concat \left( a \right)  \nonumber \\
+&amp;\equiv&amp; \left( \alpha_{1}, \alpha_{2}, \ldots, \alpha_{n}, a \right) \nonumber
+\end{eqnarray}\]</div>
+<p>and</p>
+<div class="amsmath math notranslate nohighlight" id="equation-e3a48614-48e2-43e1-a4f7-5f01b13abb4a">
+<span class="eqno">(97)<a class="headerlink" href="#equation-e3a48614-48e2-43e1-a4f7-5f01b13abb4a" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+a \blacktriangleleft \boldsymbol{\alpha} &amp;\triangleq&amp; \left( a \right) \concat \left( \alpha_{1}, \alpha_{2}, \ldots, \alpha_{n} \right) \nonumber \\
+&amp;\equiv&amp; \left( a, \alpha_{1}, \alpha_{2}, \ldots, \alpha_{n} \right). \nonumber
+\end{eqnarray}\]</div>
+</section>
+</div><p>Finally, for convenience, we define the following notation to get the first <span class="math notranslate nohighlight">\( k \)</span> elements of a tuple <span class="math notranslate nohighlight">\( \boldsymbol{\alpha} \)</span></p>
+<div class="amsmath math notranslate nohighlight" id="equation-a8c4b48d-4562-4a81-bf46-cd6a6d579518">
+<span class="eqno">(98)<a class="headerlink" href="#equation-a8c4b48d-4562-4a81-bf46-cd6a6d579518" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\boldsymbol{\alpha}[:\! k] \triangleq \left( \alpha_{1}, \alpha_{2}, \ldots, \alpha_{k} \right)
+\end{equation}\]</div>
+<p>with <span class="math notranslate nohighlight">\( k \in \lbrace 1, \ldots, | \boldsymbol{\alpha} | \rbrace \)</span>. By convention, we also assume that <span class="math notranslate nohighlight">\( \boldsymbol{\alpha}[0] \triangleq \boldsymbol{\varnothing} \)</span>.</p>
+<div class="proof remark admonition" id="remark-2">
+<p class="admonition-title"><span class="caption-number">Remark 11 </span></p>
+<section class="remark-content" id="proof-content">
+<p>We can also design an heterogeneous tuple such that it stores different types of objects e.g. other tuples, numbers and sets. In this case, <span class="math notranslate nohighlight">\( \boldsymbol{\alpha}[k] \in \Omega_{k} \)</span>, <span class="math notranslate nohighlight">\( \forall k \in \lbrace 1, \ldots, n \rbrace \)</span>, and <span class="math notranslate nohighlight">\( \exists k, k' \in \lbrace 1, \ldots, n \rbrace \mid \Omega_{k} \neq \Omega_{k'} \)</span> with <span class="math notranslate nohighlight">\( n = | \boldsymbol{\alpha} | \)</span>.</p>
+</section>
+</div></section>
+<section id="directed-binary-trees">
+<h2>Directed binary trees<a class="headerlink" href="#directed-binary-trees" title="Permalink to this headline">#</a></h2>
+<div class="proof definition admonition" id="definition-3">
+<p class="admonition-title"><span class="caption-number">Definition 25 </span></p>
+<section class="definition-content" id="proof-content">
+<p>Let the triplet</p>
+<div class="amsmath math notranslate nohighlight" id="equation-9746986a-636c-4494-8674-04407387fb62">
+<span class="eqno">(99)<a class="headerlink" href="#equation-9746986a-636c-4494-8674-04407387fb62" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+{\cal T}_{\boldsymbol{\eta}} &amp;\triangleq&amp; \left( {\cal C}_{\boldsymbol{\eta}}, {\cal T}_{\boldsymbol{\eta} \blacktriangleright 0}, {\cal T}_{\boldsymbol{\eta} \blacktriangleright 1} \right) \nonumber \\
+&amp;\equiv &amp; {\cal C}_{\boldsymbol{\eta}} \blacktriangleleft \left( {\cal T}_{\boldsymbol{\eta} \blacktriangleright 0}, {\cal T}_{\boldsymbol{\eta} \blacktriangleright 1} \right) \nonumber
+\end{eqnarray}\]</div>
+<p>define an arbitrary node of a binary tree which is uniquely addressed by a sequence of <span class="math notranslate nohighlight">\( 0 \)</span>‘s and <span class="math notranslate nohighlight">\( 1 \)</span>‘s stored in another tuple <span class="math notranslate nohighlight">\( \boldsymbol{\eta} \)</span>.</p>
+</section>
+</div><p>According to this notation, <span class="math notranslate nohighlight">\( {\cal C}_{\boldsymbol{\eta}} \)</span> stores the content of the node <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta}} \)</span> whereas the tuples <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta} \blacktriangleright 0} \)</span> and  <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta} \blacktriangleright 1} \)</span> denote respectively its left and right branches, or sub-trees. Alternatively, the numbers being appended to <span class="math notranslate nohighlight">\( \boldsymbol{\eta} \)</span> can also be thought as the indexes of the left (<span class="math notranslate nohighlight">\(0\)</span>) and right (<span class="math notranslate nohighlight">\(1\)</span>) edges emanating from <span class="math notranslate nohighlight">\({\cal T}_{\boldsymbol{\eta}} \)</span>.</p>
+<figure class="align-left" id="binary-tree-node-fig">
+<a class="reference internal image-reference" href="images/classification/binary_tree_node.svg"><img alt="images/classification/binary_tree_node.svg" height="320px" src="images/classification/binary_tree_node.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">A binary tree node <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta}} \)</span> with content <span class="math notranslate nohighlight">\( {\cal C}_{\boldsymbol{\eta}} \)</span> – e.g. another tuple, a set or a number – and its left and right sub-trees, respectively <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta} \blacktriangleright 0} \)</span> and  <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta} \blacktriangleright 1} \)</span>, illustrated by triangles. Note that <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta}} \)</span> is also a tree by itself (dotted triangle).</span><a class="headerlink" href="#binary-tree-node-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Additionally, the root node is defined as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bc8975cf-a76a-4a12-9a16-5de6dc06a07b">
+<span class="eqno">(100)<a class="headerlink" href="#equation-bc8975cf-a76a-4a12-9a16-5de6dc06a07b" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+{\cal T}_{\boldsymbol{\varnothing}} &amp;=&amp; \left( {\cal C}_{\boldsymbol{\varnothing}}, {\cal T}_{\left( 0 \right)}, {\cal T}_{\left( 1 \right)} \right) \nonumber \\
+&amp;\equiv&amp; {\cal C}_{\boldsymbol{\varnothing}} \blacktriangleleft \left( {\cal T}_{\left( 0 \right)}, {\cal T}_{\left( 1 \right)} \right) \nonumber .
+\end{eqnarray}\]</div>
+<p>On the other hand, a leaf node addressed by the sequence <span class="math notranslate nohighlight">\( {\boldsymbol{\ell}} \)</span> must satisfy the following restriction</p>
+<div class="amsmath math notranslate nohighlight" id="equation-3ac7e7bb-819c-48b5-badd-f7b69fac79de">
+<span class="eqno">(101)<a class="headerlink" href="#equation-3ac7e7bb-819c-48b5-badd-f7b69fac79de" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+{\cal T}_{\boldsymbol{\ell}} &amp;=&amp; \left( {\cal C}_{\boldsymbol{\ell}}, \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right) \nonumber \\
+&amp;\equiv&amp; {\cal C}_{\boldsymbol{\ell}} \blacktriangleleft \left( \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right). \nonumber
+\end{eqnarray}\]</div>
+<p>Note that we can simple denote a tree <span class="math notranslate nohighlight">\( {\cal T} \)</span> by referring to its root node <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\varnothing}} \)</span>, i.e. <span class="math notranslate nohighlight">\( {\cal T} \equiv {\cal T}_{\boldsymbol{\varnothing}} \)</span>. Finally, it is worth mentioning that the sequence of <span class="math notranslate nohighlight">\( 0 \)</span>‘s and <span class="math notranslate nohighlight">\( 1 \)</span>‘s in <span class="math notranslate nohighlight">\( \boldsymbol{\eta} \)</span> uniquely identifies the edges along the path from the root <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\varnothing}} \)</span> to node <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta}} \)</span>.</p>
+<div class="proof example admonition" id="example-4">
+<p class="admonition-title"><span class="caption-number">Example 21 </span></p>
+<section class="example-content" id="proof-content">
+<p>The adopted notation to represent binary trees is useful for theorem proofing and writing concise pseudo-codes which employ recursion. However, as illustrated in <a class="reference internal" href="#binary-tree1-fig"><span class="std std-numref">Fig. 19</span></a>, this notation is not suitable to explicitly express binary trees as it is not human friendly at all. Note though that there are alternative notations. Choose whichever notation you prefer, but make sure it is correct and you use it consistently, i.e. you use the same notation in our proofs and pseudo-codes.</p>
+<figure class="align-left" id="binary-tree1-fig">
+<a class="reference internal image-reference" href="images/classification/binary_tree1.svg"><img alt="images/classification/binary_tree1.svg" height="320px" src="images/classification/binary_tree1.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">A binary tree <span class="math notranslate nohighlight">\( {\cal T} = \left( 100, \left( 40, \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right), \left(60, \left( 25, \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right), \left( 35, \left( 15, \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right), \left(20, \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right) \right) \right) \right) \)</span>. Alternatively, <span class="math notranslate nohighlight">\( {\cal T} = 100 \blacktriangleleft \left(40 \blacktriangleleft \left( \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right), 60 \blacktriangleleft \left(  25 \blacktriangleleft \left( \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right), 35 \blacktriangleleft \left(  15 \blacktriangleleft \left( \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right), 20 \blacktriangleleft \left( \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right) \right) \right) \right) \)</span>. Note that the sequence <span class="math notranslate nohighlight">\( \boldsymbol{\ell} = \left( 1, 1, 0 \right) \)</span> uniquely identifies the path from root <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\varnothing}} \)</span> to the leaf <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\ell}} = 15 \blacktriangleleft \left( \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right) \)</span>.</span><a class="headerlink" href="#binary-tree1-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</div></section>
+<section id="decision-tree-definition">
+<h2>Decision tree definition<a class="headerlink" href="#decision-tree-definition" title="Permalink to this headline">#</a></h2>
+<p>Let us consider again a data item <span class="math notranslate nohighlight">\( {\bf x} \)</span> in a high-dimensional feature space <div class="math notranslate nohighlight">
+\[ {\cal X} \triangleq {\cal X}_{1} \times {\cal X}_{2} \times \ldots \times {\cal X}_{D} \]</div>
+ such that each feature <span class="math notranslate nohighlight">\( x_{d} \in {\cal X}_{d} \)</span>, <span class="math notranslate nohighlight">\( d \in \lbrace 1, \ldots, D \rbrace \)</span>, is either discrete or continuous.</p>
+<div class="proof definition admonition" id="definition-5">
+<p class="admonition-title"><span class="caption-number">Definition 26 </span></p>
+<section class="definition-content" id="proof-content">
+<p>A Decision Tree (DT) is a directed binary tree with two types of nodes</p>
+<ul class="simple">
+<li><p><strong>Decision nodes:</strong> internal (non-leaf) nodes apply decision rules to split the data based on feature values. More precisely, each decision node <span class="math notranslate nohighlight">\( \boldsymbol{\eta} \)</span> is associated with some feature <span class="math notranslate nohighlight">\( d_{\boldsymbol{\eta}} \)</span> and some boolean function <span class="math notranslate nohighlight">\( f_{\boldsymbol{\eta}} \)</span> which maps values along the <span class="math notranslate nohighlight">\( d_{\boldsymbol{\eta}} \)</span>-dimension of the feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span> into false (<span class="math notranslate nohighlight">\( 0 \)</span>) or true (<span class="math notranslate nohighlight">\( 1 \)</span>). More concisely, <span class="math notranslate nohighlight">\( f_{\boldsymbol{\eta}} : {\cal X}_{d_{\boldsymbol{\eta}}} \rightarrow \lbrace 0, 1 \rbrace \)</span>.</p></li>
+<li><p><strong>Prediction nodes:</strong> leaves store in turn what is needed for the prediction itself. In particular, each leaf node <span class="math notranslate nohighlight">\( \boldsymbol{\ell} \)</span> is associated with either a fixed label <span class="math notranslate nohighlight">\( y_{\boldsymbol{\ell}} \in {\cal Y} \)</span> or, more generically, a distribution <span class="math notranslate nohighlight">\( P_{\boldsymbol{\ell}} (y) \)</span> over possible labels <span class="math notranslate nohighlight">\( y \in {\cal Y} \)</span>, in this case a p.m.f. assigning probabilities to labels in <span class="math notranslate nohighlight">\( {\cal Y} \)</span>.</p></li>
+</ul>
+</section>
+</div><p>Therefore, we can write a decision node as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1e29d0fd-c4d0-4759-8a9c-35909749ad9e">
+<span class="eqno">(102)<a class="headerlink" href="#equation-1e29d0fd-c4d0-4759-8a9c-35909749ad9e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+{\cal T}_{\boldsymbol{\eta}} = \left( f_{\boldsymbol{\eta}}(\cdot), d_{\boldsymbol{\eta}} \right) \blacktriangleleft \left( {\cal T}_{\boldsymbol{\eta} \blacktriangleright 0}, {\cal T}_{\boldsymbol{\eta} \blacktriangleright 1} \right), \nonumber
+\end{equation}\]</div>
+<p>whereas a prediction node can be written as either</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c5f70885-c372-41b8-b462-6c269b3ef09c">
+<span class="eqno">(103)<a class="headerlink" href="#equation-c5f70885-c372-41b8-b462-6c269b3ef09c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+{\cal T}_{\boldsymbol{\ell}} = y_{\boldsymbol{\ell}}  \blacktriangleleft \left( \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right), \nonumber
+\end{equation}\]</div>
+<p>or, when the leaves store distributions over the class values, as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5f1105ba-7d80-43fb-9cda-4e11034fd034">
+<span class="eqno">(104)<a class="headerlink" href="#equation-5f1105ba-7d80-43fb-9cda-4e11034fd034" title="Permalink to this equation">#</a></span>\[\begin{equation}
+{\cal T}_{\boldsymbol{\ell}} = P_{\boldsymbol{\ell}}(\cdot) \blacktriangleleft \left( \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right). \nonumber
+\end{equation}\]</div>
+<p>Lastly, note that the root node has the form</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c076f500-7b26-43f7-9846-361566f5a0f7">
+<span class="eqno">(105)<a class="headerlink" href="#equation-c076f500-7b26-43f7-9846-361566f5a0f7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+{\cal T}_{\boldsymbol{\varnothing}} = \left( f_{\boldsymbol{\varnothing}}(\cdot), d_{\boldsymbol{\varnothing}} \right) \blacktriangleleft \left( {\cal T}_{\left(0\right)}, {\cal T}_{\left(1\right)} \right). \nonumber
+\end{equation}\]</div>
+</section>
+<section id="decision-tree-prediction">
+<h2>Decision tree prediction<a class="headerlink" href="#decision-tree-prediction" title="Permalink to this headline">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{1} &amp; \ldots &amp; x_{d} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> be an arbitrary feature vector in <span class="math notranslate nohighlight">\( {\cal X} \)</span> with <span class="math notranslate nohighlight">\( x_{d} \)</span> denoting the feature value at its <span class="math notranslate nohighlight">\( d \)</span>-dimension and <span class="math notranslate nohighlight">\( {\cal T} \equiv {\cal T}_{\boldsymbol{\varnothing}} \)</span> be a trained decision tree, the DT classifier can be written simple as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c1f615a4-8aea-49d6-88c2-65a0953bdb00">
+<span class="eqno">(106)<a class="headerlink" href="#equation-c1f615a4-8aea-49d6-88c2-65a0953bdb00" title="Permalink to this equation">#</a></span>\[\begin{equation}
+h_{DT}({\bf x}; {\cal T}) = y_{\boldsymbol{\ell}}, \nonumber 
+\end{equation}\]</div>
+<p>or, alternatively, as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-dfa013c8-48a1-4523-ba67-a2771edeedec">
+<span class="eqno">(107)<a class="headerlink" href="#equation-dfa013c8-48a1-4523-ba67-a2771edeedec" title="Permalink to this equation">#</a></span>\[\begin{equation}
+h_{DT}({\bf x}; {\cal T}) = \argmax_{y \in {\cal Y}} P_{\boldsymbol{\ell}} (y), \nonumber 
+\end{equation}\]</div>
+<p>where the leaf node <span class="math notranslate nohighlight">\( \boldsymbol{\ell} \)</span> is obtained through the recursion</p>
+<div class="amsmath math notranslate nohighlight" id="equation-450cb844-2b3d-46f5-b509-2ce5a0a2831b">
+<span class="eqno">(108)<a class="headerlink" href="#equation-450cb844-2b3d-46f5-b509-2ce5a0a2831b" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+\left( \left( f_{\boldsymbol{\eta}}(\cdot), d_{\boldsymbol{\eta}} \right), {\cal T}_{\boldsymbol{\eta} \blacktriangleright 0}, {\cal T}_{\boldsymbol{\eta} \blacktriangleright 1} \right) &amp;\gets&amp; {\cal T}_{\boldsymbol{\eta}} \\
+\boldsymbol{\eta} &amp;\gets&amp; \boldsymbol{\eta} \blacktriangleright f_{\boldsymbol{\eta}}(x_{d_{\boldsymbol{\eta}}})
+\end{eqnarray}\]</div>
+<p>with <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta} \blacktriangleright 0} \neq \boldsymbol{\varnothing} \wedge {\cal T}_{\boldsymbol{\eta} \blacktriangleright 1} \neq \boldsymbol{\varnothing} \)</span> and <span class="math notranslate nohighlight">\( f_{\boldsymbol{\eta}}(x_{d_{\boldsymbol{\eta}}}) \in \lbrace 0, 1 \rbrace \)</span> corresponding to the decision taken by node <span class="math notranslate nohighlight">\( \boldsymbol{\eta} \)</span>. This recursion is initialized with <span class="math notranslate nohighlight">\( \boldsymbol{\eta} \gets \boldsymbol{\varnothing} \)</span> and stops when a leaf is reached, i.e. when the following stop criteria is satisfied</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ebd1212d-6656-4971-a864-527de725cdb2">
+<span class="eqno">(109)<a class="headerlink" href="#equation-ebd1212d-6656-4971-a864-527de725cdb2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\left( y_{\boldsymbol{\eta}}, \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right) \gets {\cal T}_{\boldsymbol{\eta}}
+\end{equation}\]</div>
+<p>or, for leaves storing distributions over the class values,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-fd7a67b9-d0fe-4f68-b765-12231d7bd33d">
+<span class="eqno">(110)<a class="headerlink" href="#equation-fd7a67b9-d0fe-4f68-b765-12231d7bd33d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\left( P_{\boldsymbol{\eta}}(\cdot), \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right) \gets {\cal T}_{\boldsymbol{\eta}}.
+\end{equation}\]</div>
+<p>In this case, we just make <span class="math notranslate nohighlight">\( \boldsymbol{\ell} \gets \boldsymbol{\eta} \)</span>.</p>
+<p><a class="reference internal" href="#dt_classifier">Algorithm 6</a> summarizes how the DT classifier performs its prediction. We call it initially as <span class="math notranslate nohighlight">\( h_{DT}( {\bf x} \)</span>, <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\varnothing}}) \)</span> to obtain the predicted label. Note that the tree decision / branch selection at deep <span class="math notranslate nohighlight">\( | \boldsymbol{\eta} | \)</span> is obtained by evaluating the function <span class="math notranslate nohighlight">\( f_{\boldsymbol{\eta}}(\cdot) \)</span> at <span class="math notranslate nohighlight">\( d_{\boldsymbol{\eta}} \)</span>-th feature of the input vector <span class="math notranslate nohighlight">\( {\bf x} \)</span>. Specifically, we need to check whether <span class="math notranslate nohighlight">\( f_{\boldsymbol{\eta}}(x_{d_{\boldsymbol{\eta}}}) \)</span> is true (<span class="math notranslate nohighlight">\( 1 \)</span>) or false (<span class="math notranslate nohighlight">\(0\)</span>).</p>
+<div class="proof algorithm admonition" id="dt_classifier">
+<p class="admonition-title"><span class="caption-number">Algorithm 6 </span> (DT classifier)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Inputs</strong> The feature vector <span class="math notranslate nohighlight">\({\bf x} \)</span> and a trained DT <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta}} \)</span>.</p>
+<p><strong>Output</strong> The predicted label <span class="math notranslate nohighlight">\( \hat{y}_{\ell} \)</span></p>
+<p><strong>Function</strong> <span class="math notranslate nohighlight">\( h_{DT}({\bf x}; {\cal T}_{\boldsymbol{\eta}}) \)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\( \left( {\cal C}_{\boldsymbol{\eta}}, {\cal T}_{\boldsymbol{\eta} \blacktriangleright 0}, {\cal T}_{\boldsymbol{\eta} \blacktriangleright 1} \right) \gets {\cal T}_{\boldsymbol{\eta}} \)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta} \blacktriangleright 0} \neq \boldsymbol{\varnothing} \wedge {\cal T}_{\boldsymbol{\eta} \blacktriangleright 1} \neq \boldsymbol{\varnothing} \)</span> <em>(Check if a leaf was reached)</em></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\( \left( f_{\boldsymbol{\eta}}(\cdot), d_{\boldsymbol{\eta}} \right) \gets {\cal C}_{\boldsymbol{\eta}} \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( \boldsymbol{\eta}^{\prime} \gets \boldsymbol{\eta} \blacktriangleright f_{\boldsymbol{\eta}}(x_{d_{\boldsymbol{\eta}}}) \)</span></p></li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\(h_{DT} ({\bf x}; {\cal T}_{\boldsymbol{\eta}^{\prime}}) \)</span> <em>(Decision / branch selection)</em></p></li>
+</ol>
+</li>
+<li><p><strong>else</strong></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\( P_{\boldsymbol{\ell}} (\cdot) \gets {\cal C}_{\boldsymbol{\eta}} \)</span></p></li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\( \argmax_{y \in {\cal Y}} P_{\boldsymbol{\ell}} (y) \)</span> <em>(Compute prediction)</em></p></li>
+</ol>
+</li>
+</ol>
+</section>
+</div><aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In practice, we store categorical distributions at the leaves. In this case, the probability <span class="math notranslate nohighlight">\( P_{\boldsymbol{\ell}} (\hat{y}) \)</span> can be seen as a confidence measure of the prediction <span class="math notranslate nohighlight">\( \hat{y}_{\boldsymbol{\ell}} = h_{DT}(\check{\bf x}, {\cal T}_{\boldsymbol{\varnothing}}) \)</span> obtained from a leaf <span class="math notranslate nohighlight">\( \boldsymbol{\ell} \)</span> with associated p.m.f. <span class="math notranslate nohighlight">\( P_{\boldsymbol{\ell}}(\cdot) \)</span>.</p>
+</div>
+</aside>
+</section>
+<section id="decision-tree-learning">
+<h2>Decision tree learning<a class="headerlink" href="#decision-tree-learning" title="Permalink to this headline">#</a></h2>
+<p>Let the dataset partition</p>
+<div class="math notranslate nohighlight" id="equation-dataset-recursion">
+<span class="eqno">(111)<a class="headerlink" href="#equation-dataset-recursion" title="Permalink to this equation">#</a></span>\[{\cal D}_{\boldsymbol{\eta} \blacktriangleright a} \triangleq \lbrace \left( {\bf x}', y' \right) \in {\cal D}_{ \boldsymbol{\eta}} \mid f_{{\boldsymbol{\eta}}}({x}'_{d_{\boldsymbol{\eta}}}) = a \rbrace\]</div>
+<p>collect all training examples in <span class="math notranslate nohighlight">\( {\cal D}_{ \boldsymbol{\eta}} \)</span> that satisfies the test <span class="math notranslate nohighlight">\(  f_{{\boldsymbol{\eta}}}({\bf x}'_{d_{\boldsymbol{\eta}}}) = a \)</span> for some <span class="math notranslate nohighlight">\( a \in \lbrace 0, 1 \rbrace \)</span>. Note that we can recursively obtain the dataset partition <span class="math notranslate nohighlight">\( {\cal D}_{\boldsymbol{\ell}} \)</span> at a leaf <span class="math notranslate nohighlight">\( \boldsymbol{\ell} \)</span> from the full training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> by first assigning it to the root node, i.e. the recursion must be initialized with <span class="math notranslate nohighlight">\( {\cal D}_{\boldsymbol{\varnothing}} = {\cal D} \)</span>, and then by making <span class="math notranslate nohighlight">\( a = \boldsymbol{\ell}[k] \)</span> in <a class="reference internal" href="#equation-dataset-recursion">(111)</a> at each recursion iteration <span class="math notranslate nohighlight">\( k \in \lbrace 1, \ldots, | \boldsymbol{\ell} | \rbrace \)</span>. Therefore, the first recursion iteration (<span class="math notranslate nohighlight">\( k = 1 \)</span>) must computed as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5e194e6f-d714-431b-8962-739c7930d6db">
+<span class="eqno">(112)<a class="headerlink" href="#equation-5e194e6f-d714-431b-8962-739c7930d6db" title="Permalink to this equation">#</a></span>\[\begin{equation}
+{\cal D}_{\boldsymbol{\varnothing} \blacktriangleright \boldsymbol{\ell}[1]} = \lbrace \left( {\bf x}', y' \right) \in {\cal D}_{\boldsymbol{\varnothing}} \mid f_{\boldsymbol{\varnothing}}({x}'_{d_{\boldsymbol{\varnothing}}}) = \boldsymbol{\ell}[1] \rbrace. \nonumber
+\end{equation}\]</div>
+<p><a class="reference internal" href="#dt_training">Algorithm 7</a> summarizes the so-called Classification and Regression Tree (CART) algorithm <span id="id3">[]</span> – a greed learning algorithm for both classification and regression – with hyper-parameters <span class="math notranslate nohighlight">\( k_{max} \)</span>, <span class="math notranslate nohighlight">\( \delta_{min} \)</span> and <span class="math notranslate nohighlight">\( {\cal F} \)</span>. The DT is recursively created by splitting the dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> according to a cost function. Each split is performed considering feature values over some chosen dimension <span class="math notranslate nohighlight">\( d \in {\cal F} \)</span>. The subset <span class="math notranslate nohighlight">\( {\cal F} \subseteq \lbrace 1, \ldots, D \rbrace \)</span> contains the allowed dimensions for splitting. The recursion is stopped when the maximum number of iterations <span class="math notranslate nohighlight">\( k_{max} \)</span> is reached, i.e. the tree depth is bounded by <span class="math notranslate nohighlight">\( k_{max} \)</span>, or the cost improvement relative to the previous iteration is below a given threshold <span class="math notranslate nohighlight">\( \delta_{min} \)</span>.</p>
+<div class="proof algorithm admonition" id="dt_training">
+<p class="admonition-title"><span class="caption-number">Algorithm 7 </span> (Classification and Regression Tree)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Inputs</strong> The dataset partition <span class="math notranslate nohighlight">\({\cal D}_{\boldsymbol{\eta}} \)</span> assigned to the node <span class="math notranslate nohighlight">\( \boldsymbol{\eta} \)</span>, the current cost <span class="math notranslate nohighlight">\(c\)</span>; maximum number of iterations <span class="math notranslate nohighlight">\( k_{max} \)</span>; minimum cost improvement <span class="math notranslate nohighlight">\( \delta_{min} \)</span>; allowed features <span class="math notranslate nohighlight">\( {\cal F} \)</span>.</p>
+<p><strong>Output</strong> The decision tree <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta}} \)</span> corresponding to the node <span class="math notranslate nohighlight">\( \boldsymbol{\eta} \)</span>‘s branch</p>
+<p><strong>Function</strong> <span class="math notranslate nohighlight">\( CART({\cal D}_{\boldsymbol{\eta}}, c; k_{max}; \delta_{min} ; {\cal F}) \)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\( \left( f_{\boldsymbol{\eta}}(\cdot), d_{\boldsymbol{\eta}}, {\cal D}_{\boldsymbol{\eta} \blacktriangleright 0}, {\cal D}_{\boldsymbol{\eta} \blacktriangleright 1}, c' \right) \gets FindMinCostSplitDecision ({\cal D}_{\boldsymbol{\eta}};  {\cal F}) \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( k \gets | \boldsymbol{\eta} | + 1  \)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\( k \geq k_{max}\)</span> <span class="math notranslate nohighlight">\( \vee \)</span> <span class="math notranslate nohighlight">\( |c' - c| \leq \delta_{min} \)</span> <em>(Stop criteria)</em></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\( {\cal D}_{\boldsymbol{\ell}} \gets {\cal D}_{\boldsymbol{\eta}} \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( P_{\boldsymbol{\ell}} (y) \gets \frac{1}{|{\cal D}_{\boldsymbol{\ell}}|} \sum_{\left({\bf x}', y'\right) \in {\cal D}_{\boldsymbol{\ell}}} \left[ y' = y \right]\)</span>, for all <span class="math notranslate nohighlight">\( y \in {\cal Y} \)</span> <em>(Empirical leaf distribution)</em></p></li>
+<li><p><span class="math notranslate nohighlight">\( {\cal C}_{\boldsymbol{\ell}} \gets P_{\boldsymbol{\ell}} (\cdot) \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\ell}} \gets \left( {\cal C}_{\boldsymbol{\ell}}, \boldsymbol{\varnothing}, \boldsymbol{\varnothing} \right) \)</span> <em>(Create prediction node)</em></p></li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\ell}} \)</span></p></li>
+</ol>
+</li>
+<li><p><strong>else</strong></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\( {\cal C}_{\boldsymbol{\eta}} \gets \left( f_{\boldsymbol{\eta}}(\cdot), d_{\boldsymbol{\eta}} \right) \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta} \blacktriangleright 0} \gets CART({\cal D}_{\boldsymbol{\eta} \blacktriangleright 0}, c'; k_{max}; \delta_{min}; {\cal F}) \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta} \blacktriangleright 1} \gets CART({\cal D}_{\boldsymbol{\eta} \blacktriangleright 1} , c'; k_{max}; \delta_{min}; {\cal F}) \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta}} \gets \left( {\cal C}_{\boldsymbol{\eta}}, {\cal T}_{\boldsymbol{\eta} \blacktriangleright 0}, {\cal T}_{\boldsymbol{\eta} \blacktriangleright 1} \right) \)</span> <em>(Create decision node)</em></p></li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\( {\cal T}_{\boldsymbol{\eta}} \)</span></p></li>
+</ol>
+</li>
+</ol>
+</section>
+</div><p>The decision tree is built by calling the CART algorithm with the full training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> and the initial cost set to infinity, i.e. <div class="math notranslate nohighlight">
+\[ {\cal T} \gets CART({\cal D}, \infty; k_{max}; \delta_{min}; {\cal F}). \]</div>
+</p>
+<p>Now, let <span class="math notranslate nohighlight">\( {\cal S} \)</span> be some subset of the dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> and let the set <span class="math notranslate nohighlight">\( {\cal F}_{d}({\cal S}) \)</span> enclose all possible decisions of the type <span class="math notranslate nohighlight">\( f_{d}:{\cal X}_{d} \rightarrow \lbrace 0, 1 \rbrace \)</span> along the <span class="math notranslate nohighlight">\(d\)</span>-th dimension. Note that <span class="math notranslate nohighlight">\( {\cal F}_{d}({\cal S}) \)</span> is a function of <span class="math notranslate nohighlight">\( {\cal S} \)</span>. The cost of further splitting <span class="math notranslate nohighlight">\( {\cal S} \subseteq {\cal D}\)</span> into new disjoint partitions or splits <span class="math notranslate nohighlight">\({\cal S}_{0}\)</span> and <span class="math notranslate nohighlight">\({\cal S}_{1}\)</span> such that <span class="math notranslate nohighlight">\( {\cal S}_{0} \cup {\cal S}_{1} = {\cal S} \)</span> and <span class="math notranslate nohighlight">\( {\cal S}_{0} \cap {\cal S}_{1} = \emptyset \)</span> is then defined as</p>
+<div class="math notranslate nohighlight" id="equation-split-cost">
+<span class="eqno">(113)<a class="headerlink" href="#equation-split-cost" title="Permalink to this equation">#</a></span>\[Cost({\cal S}_{0}, {\cal S}_{1}) = \underbrace{\left\lbrace \frac{|{\cal S}_{0}|}{|{\cal S}|} Impurity({\cal S}_{0}) + \frac{|{\cal S}_{1}|}{|{\cal S}|} Impurity({\cal S}_{1}) \right\rbrace}_{\mbox{new combined impurity}} - \underbrace{Impurity({\cal S})}_{\mbox{previous impurity}},\]</div>
+<p>in which the function <span class="math notranslate nohighlight">\( Impurity(\cdot) \)</span> is a measure of the impurity of a dataset split based on its labels such that a split containing samples with the same label has minimum impurity and a split in which all labels are distinct has maximum impurity. The minimum cost split of <span class="math notranslate nohighlight">\( {\cal S} \)</span> according to a cost function <span class="math notranslate nohighlight">\( Cost(\cdot) \)</span> can be found as in <a class="reference internal" href="#find_min_cost_split_decision">Algorithm 8</a>.</p>
+<div class="proof algorithm admonition" id="find_min_cost_split_decision">
+<p class="admonition-title"><span class="caption-number">Algorithm 8 </span> (Find minimum cost split decision)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Inputs</strong> Subset of the dataset <span class="math notranslate nohighlight">\( {\cal S} \)</span>, allowed features <span class="math notranslate nohighlight">\( {\cal F} \)</span></p>
+<p><strong>Output</strong> The result <span class="math notranslate nohighlight">\( {\cal R}_{min} \)</span> containing the minimum cost split of <span class="math notranslate nohighlight">\( {\cal S} \)</span></p>
+<p><strong>Function</strong> <span class="math notranslate nohighlight">\( FindMinCostSplitDecision({\cal S}; {\cal F}) \)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\( c_{min} \gets \infty \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( {\cal R}_{min} \gets \boldsymbol{\varnothing} \)</span></p></li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\( d \in {\cal F} \subseteq \lbrace 1, \ldots, D \rbrace \)</span></p>
+<ol class="simple">
+<li><p><strong>for</strong>  <span class="math notranslate nohighlight">\( f_{d}(\cdot) \in  {\cal F}_{d}({\cal S})\)</span> <em>(Traverse all possible decisions over <span class="math notranslate nohighlight">\(d\)</span>-th dimension)</em></p></li>
+<li><p><span class="math notranslate nohighlight">\( {\cal S}_{0} \gets \lbrace \left( {\bf x}', y' \right) \in {\cal S}  \mid f_{d}({x}'_{d}) = 0 \rbrace \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( {\cal S}_{1} \gets \lbrace \left( {\bf x}', y' \right) \in {\cal S}  \mid f_{d}({x}'_{d}) = 1 \rbrace \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( c \gets  Cost({\cal S}_{0}, {\cal S}_{1}) \)</span> <em>(Compute split cost)</em></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\( c &lt; c_{min} \)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\( c_{min} \gets c \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( {\cal R}_{min} \gets \left( f_{d}(\cdot), d, {\cal S}_{0}, {\cal S}_{1}, c_{min} \right) \)</span> <em>(Store intermediate results)</em></p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\( {\cal R}_{min} \)</span> <em>(Return the minimum cost result)</em></p></li>
+</ol>
+</section>
+</div><p>The set <span class="math notranslate nohighlight">\( {\cal F}_{d}({\cal S}) \)</span> can be designed in many ways depending on whether the <span class="math notranslate nohighlight">\( d \)</span>-th feature takes discrete or continuous values. For example, for continuous features, the data items in <span class="math notranslate nohighlight">\( {\cal S} \)</span> are typically sorted along the <span class="math notranslate nohighlight">\( d \)</span>-th dimension and the average of consecutive sorted values are selected as possible decision thresholds. For one particular threshold <span class="math notranslate nohighlight">\( t_{d} \)</span> (out of the <span class="math notranslate nohighlight">\( |{\cal S}| - 1 \)</span> possible thresholds), we write <div class="math notranslate nohighlight">
+\[ f_{d}(x_{d}) = \left[ x_{d} &gt; t_{d} \right]. \]</div>
+ Alternatively, let us assume that the <span class="math notranslate nohighlight">\(d\)</span>-dimension of the feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span> corresponds to a finite discrete alphabet <span class="math notranslate nohighlight">\( {\cal X}_{d} \triangleq \lbrace \xi_{d}^{(1)}, \xi_{d}^{(2)}, \ldots, \xi_{D}^{(|{\cal X}_{d}|)} \rbrace \)</span>, i.e. <span class="math notranslate nohighlight">\( x_{d} \in {\cal X}_{d}\)</span>. Moreover, let the set <span class="math notranslate nohighlight">\( {\cal S}_{d} \triangleq \lbrace x_{d}^{(1)},  x_{d}^{(2)}, \ldots,  x_{d}^{(|{\cal S}|)} \rbrace \)</span> collect the discrete values along the <span class="math notranslate nohighlight">\(d\)</span>-th dimension of the data items in <span class="math notranslate nohighlight">\( {\cal S} \subseteq {\cal D} \)</span>. Note that the alphabet <span class="math notranslate nohighlight">\( {\cal X}_{d} \)</span> contains unique values, albeit the set <span class="math notranslate nohighlight">\( {\cal S}_{d} \)</span> may contain replicated values. Then, the set <span class="math notranslate nohighlight">\( {\cal S} \)</span> can be split according to one of the following criteria</p>
+<ul class="simple">
+<li><p><strong>One-versus-all:</strong> check all binary split decisions of the type
+<div class="math notranslate nohighlight">
+\[ {\cal S} \rightarrow \underbrace{\lbrace \left( {\bf x}', y' \right) \in {\cal S} \mid x'_{d} = \xi_d^{(i)} \rbrace}_{{\cal S}_{0}}, \underbrace{\lbrace \left( {\bf x}', y' \right) \in {\cal S} \mid x'_{d} \neq \xi_d^{(i)} \rbrace}_{{\cal S}_{1}}  \]</div>
+
+for <span class="math notranslate nohighlight">\( i \in \lbrace 1, 2, \ldots, |{\cal X}_{d}| \rbrace \)</span> and <span class="math notranslate nohighlight">\( x'_{d} \triangleq {\bf x}'[d] \)</span>.</p></li>
+<li><p><strong>Complete split:</strong> create a full split decisions of the type
+<div class="math notranslate nohighlight">
+\[ {\cal S} \rightarrow \underbrace{\lbrace \left( {\bf x}', y' \right) \in {\cal S} \mid x'_{d} = \xi_d^{(1)} \rbrace}_{{\cal S}_{1}}, \underbrace{\lbrace \left( {\bf x}', y' \right) \in {\cal S} \mid x'_{d} = \xi_d^{(2)} \rbrace}_{{\cal S}_{2}},\ldots, \underbrace{\lbrace \left( {\bf x}', y' \right) \in {\cal S} \mid x'_{d} = \xi_d^{(|{\cal X}_{d}|)} \rbrace}_{{\cal S}_{|{\cal X}_{d}|}}  \]</div>
+
+which leads to a non-binary decision tree; or</p></li>
+<li><p><strong>Arbitrary splits:</strong> check for arbitrary binary splits decisions such as
+<div class="math notranslate nohighlight">
+\[ {\cal S} \rightarrow \underbrace{\lbrace \left( {\bf x}', y' \right) \in {\cal S} \mid x'_{d} = \xi_d^{(1)} \vee x'_{d} = \xi_d^{(2)} \rbrace}_{{\cal S}_{0}}, \underbrace{\lbrace \left( {\bf x}', y' \right) \in {\cal S} \mid x'_{d} \neq \xi_d^{(1)} \wedge x'_{d} \neq \xi_d^{(2)} \rbrace}_{{\cal S}_{1}}. \]</div>
+</p></li>
+</ul>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Keep in mind that the decision tree structure – available branches from the root to the leaves – and its content – the particular set of decisions assigned to decision nodes and distributions assigned to prediction nodes – are highly dependent on the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Slightly different datasets may generate decision trees with significantly different performances, i.e. classification errors, when evaluated with non-training (validating or testing) data.</p>
+</div>
+</aside>
+<div class="proof remark admonition" id="remark-9">
+<p class="admonition-title"><span class="caption-number">Remark 12 </span></p>
+<section class="remark-content" id="proof-content">
+<p>Typically multiple training samples with different labels might reach the same leaf during training, i.e. the dataset split <span class="math notranslate nohighlight">\( {\cal D}_{\boldsymbol{\ell}} \)</span> associated with a leaf <span class="math notranslate nohighlight">\( \boldsymbol{\ell} \)</span> can be impure. Thus, the corresponding sub-space <span class="math notranslate nohighlight">\( {\cal X}_{\boldsymbol{\ell}} \)</span> can not be associated with a single class value in <span class="math notranslate nohighlight">\( {\cal Y} \)</span>. In this case, we store the empirical distribution</p>
+<div class="math notranslate nohighlight" id="equation-empirical-leaf-distribution">
+<span class="eqno">(114)<a class="headerlink" href="#equation-empirical-leaf-distribution" title="Permalink to this equation">#</a></span>\[P_{\boldsymbol{\ell}} (y) \gets \frac{1}{|{\cal D}_{\boldsymbol{\ell}}|} \sum_{\left({\bf x}', y'\right) \in {\cal D}_{\boldsymbol{\ell}}} \left[ y' = y \right], \forall y \in {\cal Y}\]</div>
+<p>at the leaf <span class="math notranslate nohighlight">\( \boldsymbol{\ell} \)</span> as indicated in <a class="reference internal" href="#dt_training">Algorithm 7</a>.</p>
+</section>
+</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">tree</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">resample</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.dpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
+
+<span class="c1"># Load the IRIS dataset</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">n_total_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+
+<span class="c1"># Create a DT classifier and fit it to the dataset</span>
+<span class="n">X1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.75</span><span class="o">*</span><span class="n">n_total_samples</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">clf1</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">clf1</span> <span class="o">=</span> <span class="n">clf1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span>
+
+<span class="c1"># Plot it nicely</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">plot_tree</span><span class="p">(</span><span class="n">clf1</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;DT1&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create another DT classifier and fit it to the shuffled dataset</span>
+<span class="n">X2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.75</span><span class="o">*</span><span class="n">n_total_samples</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">clf2</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">clf2</span> <span class="o">=</span> <span class="n">clf2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
+
+<span class="c1"># Plot it nicely</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">plot_tree</span><span class="p">(</span><span class="n">clf2</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;DT2&#39;</span><span class="p">)</span>
+
+<span class="c1"># Show all subplots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Different DT classifiers fitted to 75</span><span class="si">% r</span><span class="s2">andom samples from the IRIS dataset&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/classification_decision_trees_1_0.png" src="_images/classification_decision_trees_1_0.png" />
+</div>
+</div>
+<p>The decisions <span class="math notranslate nohighlight">\( \lbrace \left( f_{\boldsymbol{\eta}}(\cdot), d_{\boldsymbol{\eta}} \right) \rbrace \)</span> at the decision nodes <span class="math notranslate nohighlight">\( \lbrace \boldsymbol{\eta} \rbrace \)</span> are designed such that the resulting DT splits the feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span> into multiple disjoint sub-spaces <span class="math notranslate nohighlight">\( \lbrace {\cal X}_{\boldsymbol{\ell}} \rbrace \)</span> associated with the prediction nodes <span class="math notranslate nohighlight">\( \lbrace \boldsymbol{\ell} \rbrace \)</span> such that</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bbbe376c-0be9-4570-872a-8edeab2c4e47">
+<span class="eqno">(115)<a class="headerlink" href="#equation-bbbe376c-0be9-4570-872a-8edeab2c4e47" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+\bigcup_{\boldsymbol{\ell}}  {\cal X}_{\boldsymbol{\ell} }&amp;=&amp; {\cal X} \nonumber \\
+\bigcap_{\boldsymbol{\ell}}  {\cal X}_{\boldsymbol{\ell}} &amp;=&amp; \emptyset. \nonumber
+\end{eqnarray}\]</div>
+<figure class="align-left" id="binary-tree2-fig">
+<a class="reference internal image-reference" href="images/classification/binary_tree2.svg"><img alt="images/classification/binary_tree2.svg" height="320px" src="images/classification/binary_tree2.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 20 </span><span class="caption-text">Decision tree.</span><a class="headerlink" href="#binary-tree2-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-left" id="feature-space-splitting-fig">
+<a class="reference internal image-reference" href="images/classification/feature_space_splitting.svg"><img alt="images/classification/feature_space_splitting.svg" height="320px" src="images/classification/feature_space_splitting.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Feature space splitting</span><a class="headerlink" href="#feature-space-splitting-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>A DT recursively splitting a bi-dimensional feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span> with continuous features <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{1} &amp; x_{2} \end{bmatrix}^{T} \)</span> into disjoint sub-spaces <span class="math notranslate nohighlight">\( {\cal X}_{\left( 0 \right)} \)</span>, <span class="math notranslate nohighlight">\( {\cal X}_{\left( 1, 0, 0 \right)} \)</span>, <span class="math notranslate nohighlight">\( {\cal X}_{\left( 1, 0, 1 \right)} \)</span> and <span class="math notranslate nohighlight">\( {\cal X}_{\left( 1, 1 \right)} \)</span> according to selected thresholds <span class="math notranslate nohighlight">\( t_{1} \)</span>, <span class="math notranslate nohighlight">\( t_{2} \)</span> and <span class="math notranslate nohighlight">\( t_{3} \)</span>. In this example, decision nodes store functions of the type <span class="math notranslate nohighlight">\( f_{d}(x_{d}; t) = \left[ x_{d} &gt; t_{d} \right] \)</span>, in which <span class="math notranslate nohighlight">\( d \)</span> and <span class="math notranslate nohighlight">\( t_{d} \)</span> are the selected feature-space dimension and the decision threshold, respectively. Note that the DT assigns different distributions <span class="math notranslate nohighlight">\(  P_{\left( 0 \right)}(y) \)</span>, <span class="math notranslate nohighlight">\(  P_{\left( 1, 0, 0 \right)}(y) \)</span>, <span class="math notranslate nohighlight">\(  P_{\left( 1, 0, 1 \right)}(y) \)</span> and <span class="math notranslate nohighlight">\(  P_{\left( 1, 1 \right)}(y) \)</span>, <span class="math notranslate nohighlight">\( y \in {\cal Y} \)</span>, over the partitions of the feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span>. For a particular observation <span class="math notranslate nohighlight">\( \check{\bf x} \in {\cal X}_{\left( 1, 0, 1 \right)} \)</span>, the prediction is computed using the corresponding distribution as <span class="math notranslate nohighlight">\( \hat{y} = \argmax_{y \in {\cal Y}} P_{\left( 1, 0, 1 \right)}(y) \)</span>.</p>
+<div class="proof remark admonition" id="remark-10">
+<p class="admonition-title"><span class="caption-number">Remark 13 </span></p>
+<section class="remark-content" id="proof-content">
+<p>Multiple definitions of impurity can be used. Let <span class="math notranslate nohighlight">\( P_{\cal S}(y) \)</span> denote the empirical distribution of the class labels in the dataset split <span class="math notranslate nohighlight">\( {\cal S} \)</span>, i.e.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d6aa243f-b4c1-4bc6-9ed4-8af66bab03a9">
+<span class="eqno">(116)<a class="headerlink" href="#equation-d6aa243f-b4c1-4bc6-9ed4-8af66bab03a9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+P_{\cal S} (y) \gets \frac{1}{|{\cal S}|} \sum_{\left({\bf x}', y'\right) \in {\cal S}} \left[ y' = y \right], \forall y \in {\cal Y}. 
+\end{equation}\]</div>
+<p>We can define <span class="math notranslate nohighlight">\( Impurity(\cdot) \)</span> in <a class="reference internal" href="#equation-split-cost">(113)</a> as the Gini’s impurity</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bb3d41f8-1dfc-4d0a-894e-1877fec60ba2">
+<span class="eqno">(117)<a class="headerlink" href="#equation-bb3d41f8-1dfc-4d0a-894e-1877fec60ba2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+G({\cal S}) \triangleq 1 - \sum_{y \in {\cal Y}} P_{\cal S}(y)^{2},
+\end{equation}\]</div>
+<p>as the entropy</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7999e05a-d0d9-49f5-bedf-0fbe877640a1">
+<span class="eqno">(118)<a class="headerlink" href="#equation-7999e05a-d0d9-49f5-bedf-0fbe877640a1" title="Permalink to this equation">#</a></span>\[\begin{equation}
+E({\cal S}) \triangleq - \sum_{y \in {\cal Y}} P_{\cal S}(y) \log P_{\cal S}(y),
+\end{equation}\]</div>
+<p>or, alternatively, as the self classification error</p>
+<div class="amsmath math notranslate nohighlight" id="equation-cbbc9ceb-254d-4b20-90fc-e74a4caf329f">
+<span class="eqno">(119)<a class="headerlink" href="#equation-cbbc9ceb-254d-4b20-90fc-e74a4caf329f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+C({\cal S}) \triangleq 1 - \max_{y \in {\cal Y}} P_{\cal S}(y).
+\end{equation}\]</div>
+</section>
+</div><hr class="footnotes docutils" />
+<dl class="footnote brackets">
+<dt class="label" id="footnote1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Whenever possible we use boldface Greek letters to denote tuples to distinguish them from vectors. However, the distinction might be implied in the context.</p>
+</dd>
+<dt class="label" id="footnote2"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>We use the bold symbol <span class="math notranslate nohighlight">\( \boldsymbol{\varnothing} \)</span> to distinguish the null tuple from the empty set <span class="math notranslate nohighlight">\( \emptyset \)</span>.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="classification_naive_bayes.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Naïve Bayes</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="classification_random_forests.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Random Forests</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

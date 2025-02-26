@@ -1,0 +1,960 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Spectral Clustering &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Exercises" href="clustering_exercises.html" />
+    <link rel="prev" title="Kernel k-means" href="clustering_kernel_kmeans.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fclustering_spectral.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/clustering_spectral.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/clustering_spectral.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#formal-problem-definition">
+   Formal Problem Definition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimization">
+   Optimization
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Spectral Clustering</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#formal-problem-definition">
+   Formal Problem Definition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimization">
+   Optimization
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="spectral-clustering">
+<h1>Spectral Clustering<a class="headerlink" href="#spectral-clustering" title="Permalink to this headline">#</a></h1>
+<figure class="align-center" id="social-graph">
+<a class="reference internal image-reference" href="_images/facebook.jpg"><img alt="_images/facebook.jpg" src="_images/facebook.jpg" style="height: 300px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 66 </span><span class="caption-text">Graph clustering is relevant for example in social relation analysis</span><a class="headerlink" href="#social-graph" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Interpretation of data as a graph. Every data point is a node. The weight of an edge reflects the similarity between connected nodes.<br />
+Epsilon neighborhood similarity:
+<div class="math notranslate nohighlight">
+\[\begin{split}W_{ij}= \begin{cases}1&amp; \text{if } \lVert D_{i\cdot}-D_{j\cdot}\rVert&lt;\epsilon\\
+0&amp; \text{otherwise}\end{cases}\end{split}\]</div>
+</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/clustering_spectral_1_0.png" src="_images/clustering_spectral_1_0.png" />
+</div>
+</div>
+<p>k-nearest neighbor similarity:
+<div class="math notranslate nohighlight">
+\[\begin{split}N_{ij}= \begin{cases}1&amp; \text{if } D_{i\cdot} \in KNN(D_{j\cdot})\\
+0&amp; \text{otherwise}\end{cases},\quad W=\frac12(N+N^\top)\end{split}\]</div>
+</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/clustering_spectral_3_0.png" src="_images/clustering_spectral_3_0.png" />
+</div>
+</div>
+<section id="formal-problem-definition">
+<h2>Formal Problem Definition<a class="headerlink" href="#formal-problem-definition" title="Permalink to this headline">#</a></h2>
+<p>The similarity between points is given by a weighted adjacency matrix.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+W = \begin{pmatrix}
+0 &amp; 6 &amp; 0 &amp; 0 &amp; 5 &amp; 0\\
+6 &amp; 0 &amp; 1 &amp; 0 &amp; 7 &amp; 0\\
+0 &amp; 1 &amp; 0 &amp; 9 &amp; 8 &amp; 2\\
+0 &amp; 0 &amp; 9 &amp; 0 &amp; 4 &amp; 3\\
+5 &amp; 7 &amp; 8 &amp; 4 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 2 &amp; 3 &amp; 0 &amp; 0
+\end{pmatrix}
+\end{align*}\]</div>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-cbbe8e859691edb42482980a4be6e867ab91b285.svg" alt="Figure made with TikZ" /></p>
+</div><p>We compute the similarity within a cluster.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+Y_{\cdot s}^\top&amp;=\begin{pmatrix}
+1&amp; 1&amp; 0&amp; 0&amp;1 &amp;0
+\end{pmatrix}\\
+Y_{\cdot s}^\top WY_{\cdot s}
+&amp;= 2(5+6+7)
+\end{align*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+Sim(Y;W)&amp;=\tr(Y^\top W Y(Y^\top Y)^{-1})\\
+&amp;=\sum_{s=1}^r\frac{Y_{\cdot s}^\top W Y_{\cdot s}}{\lvert Y_{\cdot s}\rvert}
+=\sum_{s=1}^r\frac{1}{\lvert \mathcal{C}_{s}\rvert}\sum_{i,j\in\mathcal{C}_s} W_{ji}
+\end{align*}\]</div>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-272624caa14464cb9bcd576f5e8771e0b3252ddc.svg" alt="Figure made with TikZ" /></p>
+</div><p>We compute the cut of a cluster.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+Y_{\cdot s}^\top&amp;=\begin{pmatrix}
+1&amp; 1&amp; 0&amp; 0&amp;1 &amp;0
+\end{pmatrix}\\
+Y_{\cdot s}^\top W (\vvec{1}-Y_{\cdot s})
+&amp;= 1+8+4
+\end{align*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+Cut(Y;W)&amp;=\tr((\vvec{1}-Y)^\top W Y(Y^\top Y)^{-1}) \\
+&amp;= \sum_{s=1}^r\frac{(\vvec{1}-Y_{\cdot s})^\top WY_{\cdot s}}{\lvert Y_{\cdot s}\rvert} 
+= \sum_{s=1}^r\frac{1}{\lvert \mathcal{C}_s\rvert}\sum_{i\notin\mathcal{C}_s}\sum_{j\in\mathcal{C}_s}W_{ij}
+\end{align*}\]</div>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-5cc90d0122ddace51b473c92363780c14db6f748.svg" alt="Figure made with TikZ" /></p>
+</div><p>There are principally two ways to define clusters of graphs:</p>
+<ul class="simple">
+<li><p>maximize the sum of weights within clusters</p></li>
+<li><p>minimize the sum of weights between clusters</p></li>
+</ul>
+<div class="tip admonition">
+<p class="admonition-title">Task (Maximum Similarity Graph Clustering)</p>
+<p><strong>Given</strong> a graph indicated by a symmetric, nonnegative similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}_+^{n\times n}\)</span>, and the number of clusters <span class="math notranslate nohighlight">\(r\)</span>.<br />
+<strong>Find</strong> clusters indicated by the matrix <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span> which maximize the similarity of points within a cluster</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+ \max_Y Sim(Y;W)&amp;=\tr(Y^\top W Y(Y^\top Y)^{-1}) &amp;\text{s.t. } Y\in\mathbb{1}^{n\times r}
+\end{align*}\]</div>
+<p><strong>Return</strong> the clustering <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span></p>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Task (Minimum Cut Graph Clustering)</p>
+<p><strong>Given</strong> a graph indicated by a symmetric, nonnegative similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}_+^{n\times n}\)</span>, and the number of clusters <span class="math notranslate nohighlight">\(r\)</span>.<br />
+<strong>Find</strong> clusters indicated by the matrix <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span> which minimize the cut of all clusters</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+ \min_YCut(Y;W)&amp;=\tr((\vvec{1}-Y)^\top W Y(Y^\top Y)^{-1}) &amp;\text{s.t. } Y\in\mathbb{1}^{n\times r}
+\end{align*}\]</div>
+<p><strong>Return</strong> the clustering <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span></p>
+</div>
+</section>
+<section id="optimization">
+<h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 30 </span> (Degree Matrix and Graph Laplacian)</p>
+<section class="definition-content" id="proof-content">
+<p>Given a graph indicated by a weighted adjacency matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}_+^{n\times n}\)</span>.<br />
+The <strong>degree matrix</strong> is the diagonal matrix having the sum of all connecting edges for each node on the diagonal: <div class="math notranslate nohighlight">
+\[I_W = \mathrm{diag}\left(\sum_{i=1}^n W_{1i},\ldots,\sum_{i=1}^n W_{ni}\right).\]</div>
+<br />
+The <strong>graph Laplacian</strong> is the matrix <div class="math notranslate nohighlight">
+\[L=W-I_W\]</div>
+.</p>
+</section>
+</div><div class="proof example admonition" id="example-1">
+<p class="admonition-title"><span class="caption-number">Example 28 </span></p>
+<section class="example-content" id="proof-content">
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-cbbe8e859691edb42482980a4be6e867ab91b285.svg" alt="Figure made with TikZ" /></p>
+</div><div class="math notranslate nohighlight">
+\[\begin{split}I_W = 
+\begin{pmatrix}
+    11 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+    0 &amp; 14 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+    0 &amp; 0 &amp; 20 &amp; 0 &amp; 0 &amp; 0\\
+    0 &amp; 0 &amp; 0 &amp; 16 &amp; 0 &amp; 0\\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; 24 &amp; 0\\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 5
+\end{pmatrix}\end{split}\]</div>
+</section>
+</div><p>We have <span class="math notranslate nohighlight">\(Y_{\cdot s}^\top WY_{\cdot s}\leq Y_{\cdot s}I_WY_{\cdot s} \)</span> where <span class="math notranslate nohighlight">\(I_W\)</span> is the degree matrix.</p>
+<p><span class="math notranslate nohighlight">\(Y_{\cdot s}^\top WY_{\cdot s}=Y_{\cdot s}^\top I_WY_{\cdot s}\)</span> if and only if <span class="math notranslate nohighlight">\(Y_{\cdot s}\)</span> indicates a connected component. This is equivalent to
+<div class="math notranslate nohighlight">
+\[Y_{\cdot s}^\top \underbrace{(I_W - W)}_{=L}Y_{\cdot s }=0\]</div>
+</p>
+<div class="proof theorem admonition" id="theorem-2">
+<p class="admonition-title"><span class="caption-number">Theorem 25 </span> (Minimum Cut and Maximum Similarity Equivalences )</p>
+<section class="theorem-content" id="proof-content">
+<p>Given a symmetric similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, the degree matrix <span class="math notranslate nohighlight">\(I_W\)</span> and the Graph Laplacian <span class="math notranslate nohighlight">\(L=I_W-W\)</span>, then the following objectives are equivalent:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \min_YCut(Y;W)  &amp;= \tr((\vvec{1}-Y)^\top WY(Y^\top Y)^{-1}) &amp;\text{s.t }Y\in\mathbb{1}^{n\times r} \\
+    \max_Y Sim(Y;-L) &amp;= \tr(Y^\top (-L) Y(Y^\top Y)^{-1}) &amp;\text{s.t }Y\in\mathbb{1}^{n\times r}
+\end{align*}\]</div>
+</section>
+</div><p>The maximum similarity objective is equal to the kernel <span class="math notranslate nohighlight">\(k\)</span>-means objective. However, note that <span class="math notranslate nohighlight">\(-L\)</span> is not a kernel matrix (it’s negative semi-definite).</p>
+<div class="proof lemma admonition" id="lemma-3">
+<p class="admonition-title"><span class="caption-number">Lemma 7 </span> (Positive Definiteness of Laplacians)</p>
+<section class="lemma-content" id="proof-content">
+<p>Given a symmetric similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, the Laplacian <span class="math notranslate nohighlight">\(L=I_W -W\)</span> is positive semi-definite.</p>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. Let <span class="math notranslate nohighlight">\(0\neq v\in\mathbb{R}^n\)</span>, then</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+v^\top Lv &amp;= v^\top I_W v - v^\top W v 
+= \sum_{i=1}^n v_i^2 \lvert W_{i\cdot}\rvert -\sum_{1\leq i,j\leq n} v_iv_jW_{ij}\\
+&amp;= \frac{1}{2} \sum_{1\leq i,j \leq n} (v_i^2 W_{ij} -2 v_iv_jW_{ij} +v_j^2W_{ij}) \\
+&amp;= \frac{1}{2} \sum_{1\leq i,j \leq n} W_{ij} (v_i-v_j)^2 \geq 0.
+\end{align*}\]</div>
+</div>
+</div>
+<div class="proof theorem admonition" id="theorem-4">
+<p class="admonition-title"><span class="caption-number">Theorem 26 </span> (Connected Components and Eigenvectors)</p>
+<section class="theorem-content" id="proof-content">
+<p>Given a graph indicated by the symmetric matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, then the indicator vectors of the connected components are eigenvectors of the Laplacian <span class="math notranslate nohighlight">\(L=I_W-W\)</span> to the smallest eigenvalue <span class="math notranslate nohighlight">\(0\)</span>.</p>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. For every connected component there exists an order of columns and rows such that <span class="math notranslate nohighlight">\(W\)</span> has a block-diagonal form:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-73ff3157-29e4-469c-ba71-f12b54c5aeff">
+<span class="eqno">(259)<a class="headerlink" href="#equation-73ff3157-29e4-469c-ba71-f12b54c5aeff" title="Permalink to this equation">#</a></span>\[\begin{align} 
+Wv = 
+\left(
+\begin{array}{c:r}
+\begin{matrix}
+ W_{11}&amp;\ldots&amp;W_{1c}  \\
+ \vdots&amp;&amp;\vdots \\
+ W_{c1}&amp;\ldots&amp;W_{cc} \\
+\end{matrix}
+&amp; \mathbf{0}\\
+\mathbf{0} &amp; \widehat{W} \\
+\end{array}
+\right)
+\begin{pmatrix}
+ 1\\
+ \vdots\\
+ 1 \\
+ \mathbf{0} 
+\end{pmatrix}
+=
+\begin{pmatrix}
+ \lvert W_{1\cdot}\rvert\\
+ \vdots\\
+ \lvert W_{c\cdot}\rvert \\
+ \mathbf{0} 
+\end{pmatrix}
+=I_Wv.
+\end{align}\]</div>
+</div>
+</div>
+<p>The standard method to solve the minimum cut objective is called Spectral Clustering. The idea of Spectral Clustering is the same as of kernel <span class="math notranslate nohighlight">\(k\)</span>-means with few alterations. Instead of using the full eigendecomposition, Spectral Clustering uses only the first <span class="math notranslate nohighlight">\(r\)</span> meaningful eigenvectors which are not indicating the connected component.</p>
+<div class="proof algorithm admonition" id="algorithm-5">
+<p class="admonition-title"><span class="caption-number">Algorithm 14 </span> (spectral clustering)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Input</strong>: data matrix <span class="math notranslate nohighlight">\(D\)</span>, number of clusters <span class="math notranslate nohighlight">\(r\)</span>, similarity matrix <span class="math notranslate nohighlight">\(W\)</span><br />
+<strong>Require</strong>: the similarity matrix should indicate a connected graph</p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(L\gets I_W-W\)</span> <em>(Compute Graph Laplacian - other graph Laplacians are also possible)</em></p></li>
+<li><p><span class="math notranslate nohighlight">\((V,\Lambda) \gets\)</span> <code class="docutils literal notranslate"><span class="pre">TruncatedEigendecomposition</span></code><span class="math notranslate nohighlight">\((L,r+1)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(A\leftarrow V_{\cdot\{2,\ldots, r+1\}}\)</span> <em>(Remove connected component)</em></p></li>
+<li><p><span class="math notranslate nohighlight">\((X,Y)\gets\)</span><code class="docutils literal notranslate"><span class="pre">kMeans</span></code><span class="math notranslate nohighlight">\((A,r)\)</span></p></li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\(Y\)</span></p></li>
+</ol>
+</section>
+</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">rbf_kernel</span>
+
+<span class="n">D</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">make_circles</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mf">0.08</span><span class="p">)</span>
+<span class="n">W</span><span class="o">=</span> <span class="n">rbf_kernel</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">L</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">-</span><span class="n">W</span>
+<span class="n">lambdas</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">n_init</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">V</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">kmeans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">D</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/clustering_spectral_6_0.png" src="_images/clustering_spectral_6_0.png" />
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/clustering_spectral_7_0.png" src="_images/clustering_spectral_7_0.png" />
+</div>
+</div>
+<p>In practice, the weighted adjacency matrix is often normalized. The corresponding Graph Laplacian is often denoted by
+<div class="math notranslate nohighlight">
+\[ L_{sym}= I-I_W^{-1/2}WI_W^{-1/2}\]</div>
+</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="clustering_kernel_kmeans.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Kernel k-means</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="clustering_exercises.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Exercises</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

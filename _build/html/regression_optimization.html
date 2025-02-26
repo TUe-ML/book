@@ -1,0 +1,1142 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Minimizing the RSS &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The Bias-Variance Tradeoff" href="regression_bias_var.html" />
+    <link rel="prev" title="Regression Functions" href="regression_functions.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fregression_optimization.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/regression_optimization.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/regression_optimization.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convexity-of-the-rss">
+   Convexity of the RSS
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#minimizers-of-the-rss">
+   Minimizers of the RSS
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#getting-all-regression-solvers">
+   Getting all Regression Solvers
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#characterizing-the-set-of-regression-solvers-with-svd">
+     Characterizing the Set of Regression Solvers with SVD
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-determination-of-regression-solvers-by-svd">
+   Example Determination of Regression Solvers by SVD
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Minimizing the RSS</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convexity-of-the-rss">
+   Convexity of the RSS
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#minimizers-of-the-rss">
+   Minimizers of the RSS
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#getting-all-regression-solvers">
+   Getting all Regression Solvers
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#characterizing-the-set-of-regression-solvers-with-svd">
+     Characterizing the Set of Regression Solvers with SVD
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-determination-of-regression-solvers-by-svd">
+   Example Determination of Regression Solvers by SVD
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="minimizing-the-rss">
+<h1>Minimizing the RSS<a class="headerlink" href="#minimizing-the-rss" title="Permalink to this headline">#</a></h1>
+<p>Assuming that we have now selected a function class, and that it can be modelled as a linear function <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec(x))^\top\bm\beta\)</span>, we need to train the parameter vector <span class="math notranslate nohighlight">\(\bm\beta\)</span> to fit the dataset. For that reason, we need to define an objective function that is small if the model <span class="math notranslate nohighlight">\(f(\vvec{x})\)</span> is suitable. Since our goal is to approximate the target values, we can simly measure the distance of our prediction <span class="math notranslate nohighlight">\(f(\vvec{x})\)</span> and the target value <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-f8e2dfeda1c9373040248c745503458ec4568ad0.svg" alt="Figure made with TikZ" /></p>
+</div><p>The plot above shows a set of datapoints that are approximated by an affine model (blue). The distance to the target <span class="math notranslate nohighlight">\(y\)</span>, plotted on the vertical axis, is indicated by the red bars. The distance indicated by the red bars reflect the absolute values <span class="math notranslate nohighlight">\(\lvert y_i - f(\vvec{x}_i)\rvert\)</span>. However, the absolute value is not so easy to optimize, since it is non-differentiable at value zero. Instead, we can minimize the squared distances, which gives us a smooth objective function.</p>
+<p>The squared approximation error of a function <span class="math notranslate nohighlight">\(f\)</span> to the target values <span class="math notranslate nohighlight">\(y\)</span> can be compactly written as follows for a linear model <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec(x))^\top\bm\beta\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    RSS(\bm{\beta}) &amp;= \sum_{i=1}^n(y_i-f(D_{i\cdot}))^2\\
+    &amp;= \sum_{i=1}^n(y_i-\bm{\phi}(D_{i\cdot}^\top)^\top\bm{\beta})^2\\
+    &amp;= \sum_{i=1}^n(y_i-X_{i\cdot}\bm{\beta})^2\\
+    &amp;=\lVert \vvec{y}-X\bm{\beta}\rVert^2.
+\end{align*}\]</div>
+<p>The function <span class="math notranslate nohighlight">\(RSS(\bm{\beta})\)</span> is called the <strong>Residual Sum of Squares</strong>. We have defined above the matrix <span class="math notranslate nohighlight">\(X\)</span>, that gathers the transformed feature vectors <span class="math notranslate nohighlight">\(\bm{\phi}(D_{i\cdot}^\top)^\top = X_{i\cdot}\)</span> over its rows.
+The matrix <span class="math notranslate nohighlight">\(X\)</span> is called the <strong>design matrix</strong>. Likewise, we can gather the target values in the vector <span class="math notranslate nohighlight">\(\vvec{y}\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    X&amp;= 
+    \begin{pmatrix}
+    -- &amp; \bm{\phi}(D_{1\cdot}^\top)^\top &amp;--\\
+    &amp;\vdots&amp;\\
+    --&amp; \bm{\phi}(D_{n\cdot}^\top)^\top &amp;--
+    \end{pmatrix}
+    \in\mathbb{R}^{n\times p},&amp;
+    \vvec{y}&amp;=
+    \begin{pmatrix}
+    y_1\\ \vdots\\ y_n
+    \end{pmatrix}
+    \in\mathbb{R}^n
+\end{align*}\]</div>
+<p>We can now specify the linear regression task, using linear regression models and the squared Euclidean distance to measure the fit of the model.</p>
+<div class="tip admonition" id="regr-task">
+<p class="admonition-title">Task (Linear Regression with Basis Functions)</p>
+<p><strong>Given</strong> a dataset of <span class="math notranslate nohighlight">\(n\)</span> observations</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}\mathcal{D}=\left\{(D_{i\cdot},y_i)\vert D_{i\cdot}\in\mathbb{R}^{1\times d}, y_i\in\mathbb{R}, 1\leq i \leq n\right\}\end{equation*}\]</div>
+<p><strong>Choose</strong> a basis function <span class="math notranslate nohighlight">\(\bm\phi:\mathbb{R}^d\rightarrow \mathbb{R}^p\)</span>, and create the design matrix <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{n\times p}\)</span>, where <span class="math notranslate nohighlight">\(X_{i\cdot}=\bm\phi(D_{i\cdot}^\top)^\top\)</span><br />
+<strong>Find</strong> the regression vector <span class="math notranslate nohighlight">\(\bm\beta\)</span>, solving the following objective</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \min_{\bm\beta} \ RSS(\bm\beta) = \lVert \vvec{y}-X\bm\beta\rVert^2 &amp;\ 
+    \text{s.t. } \bm\beta\in\mathbb{R}^p.
+\end{align*}\]</div>
+<p><strong>Return</strong> the predictor function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec{x})^\top\bm\beta\)</span>.</p>
+</div>
+<section id="convexity-of-the-rss">
+<h2>Convexity of the RSS<a class="headerlink" href="#convexity-of-the-rss" title="Permalink to this headline">#</a></h2>
+<p>The RSS is a convex optimization objective. To see that, we show first that the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm is convex.</p>
+<div class="proof lemma admonition" id="lemma-0">
+<p class="admonition-title"><span class="caption-number">Lemma 5 </span></p>
+<section class="lemma-content" id="proof-content">
+<p>The squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x})=\lVert\vvec{x}\rVert^2\)</span> is convex.</p>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. Let <span class="math notranslate nohighlight">\(\vvec{x}_1,\vvec{x}_2\in\mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha\in[0,1]\)</span>. Then we have to show  that</p>
+<div class="math notranslate nohighlight" id="equation-eq-convex">
+<span class="eqno">(8)<a class="headerlink" href="#equation-eq-convex" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 \leq  \alpha\lVert\vvec{x}_1\rVert^2 + (1-\alpha)\lVert\vvec{x}_2\rVert^2
+\end{align}\]</div>
+<p>We apply the binomial formula for the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm, which derives directly from the definition of the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm by an inner product (see linear algebra lecture). Then we have:</p>
+<div class="math notranslate nohighlight" id="equation-eq-term">
+<span class="eqno">(9)<a class="headerlink" href="#equation-eq-term" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align}
+    \lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 &amp;=
+    \lVert\alpha\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +\lVert(1-\alpha)\vvec{x}_2\rVert^2\nonumber\\
+    &amp;=
+    \lvert\alpha\rvert^2\lVert\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +\lvert 1-\alpha\rvert^2\lVert\vvec{x}_2\rVert^2 &amp;\text{(homogenity of the norm)}\nonumber\\
+    &amp;=
+    \alpha^2\lVert\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +( 1-\alpha)^2\lVert\vvec{x}_2\rVert^2,
+\end{align}\end{split}\]</div>
+<p>where the last equation derives from the fact that the squared absolute value of a real value is equal to the  squared real value.</p>
+<p>What is standing above, is not yet what we want, and it is difficult to see which step has to be taken next to derive the Inequality <a class="reference internal" href="#equation-eq-convex">(8)</a>. Hence, we apply a trick. Instead of showing that  Inequality <a class="reference internal" href="#equation-eq-convex">(8)</a> holds as it stands, we show that an equivalent inequality holds:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 - \alpha\lVert\vvec{x}_1\rVert^2 - (1-\alpha)\lVert\vvec{x}_2\rVert^2\leq 0 
+\end{align*}\]</div>
+<p>We substitute now the result of Eq. <a class="reference internal" href="#equation-eq-term">(9)</a> into the term on the left of the inequality above:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    &amp;\lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 - \alpha\lVert\vvec{x}_1\rVert^2 - (1-\alpha)\lVert\vvec{x}_2\rVert^2\\ 
+     &amp;\quad=
+    \alpha^2\lVert\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +( 1-\alpha)^2\lVert\vvec{x}_2\rVert^2- \alpha\lVert\vvec{x}_1\rVert^2 - (1-\alpha)\lVert\vvec{x}_2\rVert^2
+    \\
+    &amp;\quad= -\alpha(1-\alpha)\lVert\vvec{x}_1\rVert^2  +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 -( 1-\alpha)(1-1+\alpha)\lVert\vvec{x}_2\rVert^2\\
+    &amp;\quad= - \alpha(1-\alpha) \lVert\vvec{x}_1-\vvec{x}_2\rVert^2&amp;\text{(binomial formula)}\\
+    &amp;\quad\leq 0
+\end{align*}\]</div>
+<p>This concludes what we wanted to show.</p>
+</div>
+</div>
+<p>We can now show that the RSS is convex as it is a composition of an affine function and a convex function, which is again convex.</p>
+<div class="proof theorem admonition" id="theorem-1">
+<p class="admonition-title"><span class="caption-number">Theorem 7 </span></p>
+<section class="theorem-content" id="proof-content">
+<p>The function <span class="math notranslate nohighlight">\(RSS(\bm\beta)=\lVert \vvec{y}-X\bm{\beta}\rVert^2\)</span> is convex.</p>
+</section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. We show that the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm <span class="math notranslate nohighlight">\(\lVert\cdot\rVert^2\)</span> is a convex function.</p>
+<p>The composition of the affine function <span class="math notranslate nohighlight">\(g(\bm{\beta})=\vvec{y}-X\bm{\beta}\)</span> with the convex function <span class="math notranslate nohighlight">\(\Vert\cdot\rVert^2\)</span>, given by the <span class="math notranslate nohighlight">\(RSS(\bm{\beta})=\lVert g(\bm{\beta})\rVert^2\)</span> is then also convex.</p>
+</div>
+<p>As a corollary, the linear regression optimization objective</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \min_{\bm{\beta}}&amp;\ RSS(\bm{\beta})&amp; \text{s.t. }\bm{\beta}\in\mathbb{R}^p
+\end{align*}\]</div>
+<p>is convex, since the feasible set is the vector space of <span class="math notranslate nohighlight">\(\mathbb{R}^p\)</span>, which is convex.
+So, we have an unconstrained convex optimization problem with a smooth objective function. That means that all stationary points must be minimizers. Let’s try to find all stationary points.</p>
+</section>
+<section id="minimizers-of-the-rss">
+<h2>Minimizers of the RSS<a class="headerlink" href="#minimizers-of-the-rss" title="Permalink to this headline">#</a></h2>
+<p>We compute the stationary points by setting the gradient to zero. The gradient of the <span class="math notranslate nohighlight">\(RSS(\bm{\beta}) = \lVert \vvec{y}-X\bm{\beta}\rVert^2=f(\vvec{g}(\bm{\beta}))\)</span> is computed by the chain rule, as discussed in <a class="reference internal" href="optimization_exercises.html#opt-exercises-gradients"><span class="std std-ref">Computing the Gradients</span></a>.</p>
+<div class="math notranslate nohighlight" id="equation-eq-minimizers">
+<span class="eqno">(10)<a class="headerlink" href="#equation-eq-minimizers" title="Permalink to this equation">#</a></span>\[\begin{align*}
+\nabla_{\bm{\beta}} RSS(\bm{\beta})= -2X^\top(\vvec{y}-X\bm{\beta}) =0 
+\quad \Leftrightarrow \quad
+     X^\top X{\bm{\beta}} = X^\top \vvec{y}
+\end{align*}\]</div>
+<p>According to FONC and convexity of the optimization objective, the global minimizers of the regression problem are given by the set of regression parameter vectors satisfying the equation above
+<div class="math notranslate nohighlight">
+\[\{\bm{\beta}\in\mathbb{R}^p\mid X^\top X\bm{\beta} =X^\top\vvec{y} \}.\]</div>
+</p>
+<p>If the matrix <span class="math notranslate nohighlight">\(X^\top X\)</span> is invertible, then there is only one minimizer. In this case we can solve the equation for <span class="math notranslate nohighlight">\(\bm{\beta}\)</span> by multiplying with <span class="math notranslate nohighlight">\((X^\top X)^{-1}\)</span>
+<div class="math notranslate nohighlight">
+\[\bm{\beta}= (X^\top X)^{-1}X^\top\vvec{y}.\]</div>
+</p>
+<p>However, there also might be <em>infinitely many</em> global minimizers of <span class="math notranslate nohighlight">\(RSS(\bm{\beta})\)</span>.</p>
+</section>
+<section id="getting-all-regression-solvers">
+<h2>Getting all Regression Solvers<a class="headerlink" href="#getting-all-regression-solvers" title="Permalink to this headline">#</a></h2>
+<p>If the matrix <span class="math notranslate nohighlight">\(X^\top X\)</span> is not invertible, then we have infinitely many regression solvers. This is particularly the case when <span class="math notranslate nohighlight">\(p&gt;n\)</span>.</p>
+<div class="proof example admonition" id="example_reg_p_larger_n">
+<p class="admonition-title"><span class="caption-number">Example 19 </span> (Regression with <span class="math notranslate nohighlight">\(p&gt;n\)</span>)</p>
+<section class="example-content" id="proof-content">
+<p>We consider a toy regression task, where the data is given by following three data points (observations) of one feature.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>D = np.array([5,3,1])
+y = np.array([2,5,3])
+pandas.DataFrame({&quot;F1&quot;:D,&quot;y&quot;:y})
+</pre></div>
+</div>
+<p>That is, our given data looks as follows:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(x\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(y\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>3</p></td>
+</tr>
+</tbody>
+</table>
+<p>We fit a polynomial of degree <span class="math notranslate nohighlight">\(k=3\)</span>. For polynomial regression functions <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R}\)</span> we have
+<div class="math notranslate nohighlight">
+\[f(x) = \beta_0 +\beta_1 x+ \beta_2x^2 + \beta_3x^3 = \phi(x)^\top\bm\beta,\]</div>
+
+where
+<div class="math notranslate nohighlight">
+\[\bm\phi(x)^\top=\begin{pmatrix}1&amp; x&amp; x^2&amp; x^3\end{pmatrix}.\]</div>
+
+The design matrix gathers the transposed feature vectors of the data matrix:
+<div class="math notranslate nohighlight">
+\[\begin{split}X = \begin{pmatrix} \phi^\top(5)\\ \phi^\top(3)\\ \phi^\top(1)\end{pmatrix} = \begin{pmatrix} 1 &amp; 5 &amp; 25 &amp; 125\\ 1 &amp; 3 &amp; 9 &amp; 27\\ 1 &amp; 1 &amp; 1 &amp; 1\end{pmatrix}\end{split}\]</div>
+
+We have <span class="math notranslate nohighlight">\(n=3\)</span> observations of <span class="math notranslate nohighlight">\(p=4\)</span> features in the design matrix, and hence, <span class="math notranslate nohighlight">\(p&gt;n\)</span>.</p>
+<p>We have to solve the system of equations given by <span class="math notranslate nohighlight">\(X^\top X \bm\beta = X^\top \vvec{y}\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\begin{pmatrix}
+3 &amp;     9 &amp;    35 &amp;   153\\
+9 &amp;    35 &amp;   153 &amp;   707\\
+35&amp;   153 &amp;   707 &amp;  3369\\
+153&amp;  707 &amp;  3369 &amp; 16355
+\end{pmatrix} \bm\beta = 
+\begin{pmatrix}
+10\\  28\\  98\\ 388
+\end{pmatrix}
+\end{align*}\]</div>
+<p>We can solve this system of equations by hand. There are multiple ways to do this. One is to transform the equations above into an upper triangle form. We detail the steps to do this in <a class="reference internal" href="regression_exercises.html#reg-exercises"><span class="std std-ref">Exercises</span></a>. As a solution set of regression solvers in dependence of <span class="math notranslate nohighlight">\(\beta_3\)</span>, we get
+<div class="math notranslate nohighlight">
+\[\begin{split}\left\{\beta = \begin{pmatrix}\frac{1}{8}-15\beta_3\\3.5 +23\beta_3\\-\frac{5}{8} -9\beta_3\\\beta_3 \end{pmatrix} \mid \beta_3\in\mathbb{R} \right\}.\end{split}\]</div>
+</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-532614e44d4afab51135ffa77938656db4c79a34.svg" alt="Figure made with TikZ" /></p>
+</div></section>
+</div><p>In the example above, we could compute the set of regression vectors by hand, but how can we compute the set of regression vectors when the dataset bigger? How can we numerically compute the set of all regression vectors?</p>
+<section id="characterizing-the-set-of-regression-solvers-with-svd">
+<h3>Characterizing the Set of Regression Solvers with SVD<a class="headerlink" href="#characterizing-the-set-of-regression-solvers-with-svd" title="Permalink to this headline">#</a></h3>
+<p>We derive now a general solution for the (set of) regression solvers.
+to do so, we have a look into the SVD of <span class="math notranslate nohighlight">\(X\)</span>, that gives us more insight into the regression equation when <span class="math notranslate nohighlight">\(X^\top X\)</span> is not invertible. You might remember from the linear algebra recap, that the invertibility of a matrix is determined by the singular values of the matrix: if all the singular values are larger than zero, then the matrix is invertible, otherwise not. The singular values of <span class="math notranslate nohighlight">\(X^\top X\)</span> are determined by the singular values of <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\)</span>, since we have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    X^\top X = V\Sigma^\top \underbrace{U^\top U}_{=I} \Sigma V^\top = V\Sigma^\top \Sigma V^\top.
+\end{align*}\]</div>
+<p>Given the singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span>, we can try to solve Eq. <a class="reference internal" href="#equation-eq-minimizers">(10)</a> for <span class="math notranslate nohighlight">\(\bm\beta\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b0df067b-6bb7-4b7d-8212-3b9d528ecbe4">
+<span class="eqno">(11)<a class="headerlink" href="#equation-b0df067b-6bb7-4b7d-8212-3b9d528ecbe4" title="Permalink to this equation">#</a></span>\[\begin{align}
+   X^\top X\bm{\beta} &amp;= X^\top \vvec{y} \quad 
+   \Leftrightarrow \quad V\Sigma^\top\Sigma V^\top \bm{\beta}= V\Sigma^\top U^\top\vvec{y}
+   \quad 
+   \Leftrightarrow \quad \Sigma^\top\Sigma V^\top \bm{\beta}= \Sigma^\top U^\top\vvec{y}, \label{eq:beta1}
+\end{align}\]</div>
+<p>where the last equality follows from multiplying with <span class="math notranslate nohighlight">\(V^\top\)</span> from the left.</p>
+<div class="proof observation admonition" id="observation-3">
+<p class="admonition-title"><span class="caption-number">Observation 1 </span> (Characterization of Regression solvers by SVD)</p>
+<section class="observation-content" id="proof-content">
+<p>The global minimizers <span class="math notranslate nohighlight">\(\bm{\beta}\)</span> to the <a class="reference internal" href="#regr-task"><span class="std std-ref">Linear Regression</span></a> task with design matrix <span class="math notranslate nohighlight">\(X\)</span>, having the SVD <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\)</span>, are given by
+<div class="math notranslate nohighlight">
+\[\{\bm{\beta}\in\mathbb{R}^p\mid \Sigma^\top\Sigma V^\top \bm{\beta}= \Sigma^\top U^\top\vvec{y} \}.\]</div>
+</p>
+</section>
+</div><p><span class="math notranslate nohighlight">\(\Sigma^\top\Sigma\in\mathbb{R}^{p\times p}\)</span> is a diagonal matrix, where not all elements on the diagonal are nonzero if <span class="math notranslate nohighlight">\(n&lt;p\)</span>. Hence, it does <strong>not</strong> have an inverse if <span class="math notranslate nohighlight">\(n&lt;p\)</span>. This becomes maye a bit more clear when we look at the following observation</p>
+<div class="proof observation admonition" id="observation-4">
+<span id="obs-sigma-r"></span><p class="admonition-title"><span class="caption-number">Observation 2 </span> (Singular value matrix of rank <span class="math notranslate nohighlight">\(r\)</span>)</p>
+<section class="observation-content" id="proof-content">
+<p>Let <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{n\times p}\)</span> be a matrix with rank <span class="math notranslate nohighlight">\(r\)</span>, meaning that <span class="math notranslate nohighlight">\(X\)</span> has only <span class="math notranslate nohighlight">\(r\)</span> nonzero singular values. Let <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\)</span> be the SVD of <span class="math notranslate nohighlight">\(X\)</span>, then the matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> looks as follows:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\Sigma= 
+\left(
+\begin{array}{c:r}
+\begin{matrix}
+\sigma_1 &amp; \ldots &amp; 0  \\
+\vdots  &amp; \ddots  &amp; \vdots \\
+0 &amp; \ldots   &amp; \sigma_r \\
+&amp; \vvec{0} &amp;
+\end{matrix} &amp; \vvec{0}
+\end{array}
+\right) 
+= \left(
+\begin{array}{c:r}
+\begin{matrix}\Sigma_r\\\vvec{0}\end{matrix} &amp; \vvec{0} \\ 
+\end{array}
+\right).
+\end{align*}\]</div>
+<p>The matrices <span class="math notranslate nohighlight">\(\vvec{0}\)</span> indicate here constant zero matrices whose dimensionalities are inferred from context. The constant zero matrix below <span class="math notranslate nohighlight">\(\Sigma_r\)</span> has a dimensionality of <span class="math notranslate nohighlight">\(n-r\times r\)</span> and the constant zero matrix on the right has a dimensionality of <span class="math notranslate nohighlight">\(n\times p-r\)</span>. Correspondingly, if <span class="math notranslate nohighlight">\(n=r\)</span>, then the lower zero matrix doesn’t exist and if <span class="math notranslate nohighlight">\(r=p\)</span>, then the zero matrix on the right doesn’t exist.</p>
+</section>
+</div><p>The notation of Observation <a class="reference internal" href="#obs-sigma-r"><span class="std std-ref"> (Singular value matrix of rank r)</span></a> helps us now to derive the set of all regression solvers.</p>
+<div class="proof theorem admonition" id="theorem-5">
+<p class="admonition-title"><span class="caption-number">Theorem 8 </span> (Set of all regression solvers)</p>
+<section class="theorem-content" id="proof-content">
+<p>Let <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\in\mathbb{R}^{n\times p}\)</span> be the SVD of the design matrix of the <a class="reference internal" href="#regr-task"><span class="std std-ref">Linear Regression</span></a> task. If only <span class="math notranslate nohighlight">\(r&lt;p\)</span> singular values of <span class="math notranslate nohighlight">\(X\)</span> are nonzero (<span class="math notranslate nohighlight">\(X\)</span> has a rank of <span class="math notranslate nohighlight">\(r\)</span>), then the set of global minimizers <span class="math notranslate nohighlight">\(\bm{\beta}\)</span> is given by
+<div class="math notranslate nohighlight">
+\[\begin{split}\left\{\bm{\beta}= V\begin{pmatrix}\Sigma_r^{-1} U_r^\top\vvec{y}\\z\end{pmatrix}\mid z\in\mathbb{R}^{p-r} \right\}.\end{split}\]</div>
+
+<span class="math notranslate nohighlight">\(\Sigma_r\)</span> denotes here the matrix containing only the first <span class="math notranslate nohighlight">\(r\)</span> rows and columns of the singular values matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> and <span class="math notranslate nohighlight">\(U_r\)</span> denotes the matrix containing the first <span class="math notranslate nohighlight">\(r\)</span> left singular vectors (the first <span class="math notranslate nohighlight">\(r\)</span> columns of <span class="math notranslate nohighlight">\(U\)</span>).</p>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. We start at the characterization of regression solvers by SVD (Observation):</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d9eee2b8-eda2-46e9-b07c-9e7b9237e550">
+<span class="eqno">(12)<a class="headerlink" href="#equation-d9eee2b8-eda2-46e9-b07c-9e7b9237e550" title="Permalink to this equation">#</a></span>\[\begin{align}
+\Sigma^\top\Sigma V^\top\bm\beta &amp;= \Sigma^\top U_r^\top y\\
+\Leftrightarrow
+\left(\begin{array}{cc}
+\begin{matrix}
+\Sigma_r&amp;\vvec{0}\end{matrix} \\\hdashline \vvec{0} 
+\end{array}\right)
+\left(
+\begin{array}{c:r}
+\begin{matrix}\Sigma_r\\\vvec{0}\end{matrix} &amp; \vvec{0} \\ 
+\end{array}
+\right)
+V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
+\begin{matrix}
+\Sigma_r&amp;\vvec{0}\end{matrix} \\\hdashline \vvec{0} 
+\end{array}\right) U_r^\top y
+\end{align}\]</div>
+<p>We see here that only the first <span class="math notranslate nohighlight">\(r\)</span> equations are relevant, the remaining equations <span class="math notranslate nohighlight">\(0=0\)</span> are evidently true. We further shorten the notation by setting <span class="math notranslate nohighlight">\(\hat{\bm\beta}=V^\top\bm\beta\)</span>. We have then</p>
+<div class="amsmath math notranslate nohighlight" id="equation-549e3995-154b-4050-8db5-69bb51219806">
+<span class="eqno">(13)<a class="headerlink" href="#equation-549e3995-154b-4050-8db5-69bb51219806" title="Permalink to this equation">#</a></span>\[\begin{align}
+\Sigma_r\begin{pmatrix} \Sigma_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= \Sigma_r U_r^\top y\\ 
+\Leftrightarrow
+\begin{pmatrix} \Sigma_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= U_r^\top y\\ 
+\Leftrightarrow
+\begin{pmatrix} I_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= \Sigma_r^{-1} U_r^\top y\\
+\Leftrightarrow
+\hat{\bm\beta}_{0:r} &amp;= \Sigma_r^{-1} U_r^\top y
+\end{align}\]</div>
+<p>We see that only the first <span class="math notranslate nohighlight">\(r\)</span> coordinates of <span class="math notranslate nohighlight">\(\hat{\bm\beta}\)</span> are determined by the given equation. What we have in the rest of the coordinates is free to choose and the equation will still hold. We model the coordinates that are free to choose with the vector <span class="math notranslate nohighlight">\(z\)</span>. Then we have</p>
+<div class="amsmath math notranslate nohighlight" id="equation-0fa2b6ca-49cc-4657-a436-e8995c596707">
+<span class="eqno">(14)<a class="headerlink" href="#equation-0fa2b6ca-49cc-4657-a436-e8995c596707" title="Permalink to this equation">#</a></span>\[\begin{align}
+\hat{\bm\beta} &amp;= \begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}\\
+\Leftrightarrow V^\top\bm\beta &amp;= \begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}\\
+\Leftrightarrow \bm\beta &amp;= V\begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}
+\end{align}\]</div>
+</div>
+</div>
+</section>
+</section>
+<section id="example-determination-of-regression-solvers-by-svd">
+<h2>Example Determination of Regression Solvers by SVD<a class="headerlink" href="#example-determination-of-regression-solvers-by-svd" title="Permalink to this headline">#</a></h2>
+<p>We consider again the data from <a class="reference internal" href="#example_reg_p_larger_n">Example 19</a>. Yet, instead of computing the solution by hand, we implement now a general scheme to obtain the set of regression vectors. First, we compute the SVD of the design matrix <span class="math notranslate nohighlight">\(X\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">ϕ</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">X</span><span class="o">=</span><span class="n">ϕ</span><span class="p">(</span><span class="n">D</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">U</span><span class="p">,</span><span class="n">σs</span><span class="p">,</span><span class="n">Vt</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">V</span><span class="o">=</span><span class="n">Vt</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>When we look at the singular values, then we have <span class="math notranslate nohighlight">\(r=3&lt;4=p\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">σs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([130.7 ,   4.2 ,   0.84])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Correspondingly, the matrix <span class="math notranslate nohighlight">\(\Sigma^\top\)</span> has a row of zeros at the bottom.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Σ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">σs</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+<span class="n">Σ</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[130.7 ,   0.  ,   0.  ],
+       [  0.  ,   4.2 ,   0.  ],
+       [  0.  ,   0.  ,   0.84],
+       [  0.  ,   0.  ,   0.  ]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Correspondingly, we see in the set of equations given by <span class="math notranslate nohighlight">\(\Sigma^\top \Sigma V^\top \beta = \Sigma^\top U \vvec{y}\)</span> that the last equation is always true (<span class="math notranslate nohighlight">\(0=0\)</span>).</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\begin{pmatrix}
+ 157.18 &amp;   724.22 &amp;  3445.93 &amp; 16714.05\\
+ -4.36  &amp;  -8.61  &amp; -14.36   &amp;  3.38\\
+ 0.58   &amp; 0.25   &amp; -0.32    &amp; 0.05\\
+ 0      &amp; 0      &amp; 0        &amp; 0
+\end{pmatrix}
+\beta &amp;= 
+\begin{pmatrix}
+415.45 \\ -21.56 \\ 1.04 \\   0
+\end{pmatrix}
+\end{align*}\]</div>
+<p>We have an underdetermined system. There are only 3 equations to determine 4 parameters of <span class="math notranslate nohighlight">\(\beta\)</span>. If you are going to solve this system by hand, then you will see that one parameter is always left over (it can’t be determined by the given equations). Setting this parameter to any number yields then one of the infinite solutions to the regression problem. For example, we can set <span class="math notranslate nohighlight">\(\beta_3=2\)</span>.</p>
+<p>We can now calculate a <span class="math notranslate nohighlight">\(\beta\)</span> in the set of global minimizers. If <code class="docutils literal notranslate"><span class="pre">random=True</span></code> then a random matrix replaces the zero rows in the pseudo inverse of <span class="math notranslate nohighlight">\(\Sigma^\top\Sigma\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_beta</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">Σ</span><span class="p">,</span><span class="n">V</span><span class="p">,</span><span class="n">random</span> <span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">Σ_pseudoinv</span> <span class="o">=</span> <span class="n">Σ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">Σ_pseudoinv</span><span class="p">[</span><span class="n">Σ</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">Σ</span><span class="p">[</span><span class="n">Σ</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">Σ_pseudoinv</span><span class="o">.</span><span class="n">T</span><span class="nd">@U</span><span class="o">.</span><span class="n">T</span><span class="nd">@y</span>
+    <span class="k">if</span> <span class="n">random</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">r</span><span class="o">=</span><span class="p">(</span><span class="n">Σ</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="c1"># the number of nonzero singular values</span>
+        <span class="n">w</span><span class="p">[</span><span class="n">r</span><span class="p">:</span><span class="n">p</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="n">r</span><span class="p">)</span><span class="o">*</span><span class="mi">50</span>
+    <span class="k">return</span> <span class="n">V</span><span class="nd">@w</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot it! The function resulting from setting <code class="docutils literal notranslate"><span class="pre">random=False</span></code> is the one in blue.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">β</span> <span class="o">=</span> <span class="n">get_beta</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">Σ</span><span class="p">,</span><span class="n">V</span><span class="p">,</span><span class="n">random</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">f_x</span> <span class="o">=</span> <span class="n">ϕ</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="nd">@β</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f_x</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;f_0&quot;</span><span class="o">+</span><span class="s2">&quot;, β[3]=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">β</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="mi">2</span><span class="p">)))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">β</span> <span class="o">=</span> <span class="n">get_beta</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">Σ</span><span class="p">,</span><span class="n">V</span><span class="p">)</span>
+    <span class="n">f_x</span> <span class="o">=</span> <span class="n">ϕ</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="nd">@β</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f_x</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;f_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;, β[3]=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">β</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/regression_optimization_25_0.png" src="_images/regression_optimization_25_0.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="regression_functions.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Regression Functions</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="regression_bias_var.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">The Bias-Variance Tradeoff</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

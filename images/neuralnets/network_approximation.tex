@@ -1,0 +1,54 @@
+\documentclass[crop,tikz,convert={outext=.svg,command=\unexpanded{pdf2svg \infile\space\outfile}},multi=false]{standalone}[2012/04/13]
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{pgfplots}
+
+%-------------------------------------
+% Tikz and pgf options & definitions
+%-------------------------------------
+\pgfplotsset{compat=1.15}
+\pgfmathsetseed{1}
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes}
+\usetikzlibrary{backgrounds, fit}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{matrix}
+
+\def\colorvector at (#1,#2,#3){
+\coordinate (A) at (#1, #2);
+\filldraw[draw=black,fill=test!!+] (A)++(0,0) rectangle ++(0.25,0.25) node (A0) {};
+\filldraw[draw=black,fill=test!!+] (A)++(0.3,0) rectangle ++(0.25,0.25) node (A1) {};
+\filldraw[draw=black,fill=test!!+] (A)++(0.6,0) rectangle ++(0.25,0.25) node (A2) {};
+\node[right=of A2, xshift=-7.5ex, yshift=-0.75ex] {$\ldots$};
+\filldraw[draw=black,fill=test!!+] (A)++(1.5,0) rectangle ++(0.25,0.25) node (A4) {};
+\node[left=of A1, xshift=4.4ex, yshift=-0.75ex] (BEG\i) {$#3=[$};
+\node[right=of A4, xshift=-8ex, yshift=-0.75ex] (END\i) {$]^{T}$};
+}
+
+\begin{document}
+\tikzset{->-/.style={thick,bend left=20,decoration={
+  markings,
+  mark=at position .5 with {\arrow{>}}},postaction={decorate}}}
+\centering
+\begin{tikzpicture}[
+    se/.style={draw,circle,fill=test!!++, minimum size=0.1cm}
+    ]
+\definecolorseries{test}{rgb}{step}[rgb]{.95,.85,.55}{.17,.47,.37}
+\resetcolorseries[35]{test}
+\node[label=center:$f: \mathbb{R}^{D} \rightarrow \mathbb{R}^{O} $] at (2.5, 1) {};
+\foreach \i in {0,1,...,4}{
+\node[se, label=left:$\check{\bf x}_{\i}$, yshift=0.75ex] at (0, -\i) (INPUT\i) {};
+\node[se, label=right:$\hat{\bf y}_{\i}$, yshift=0.75ex] at (5, -\i) (OUTPUT\i) {};
+\node[] (ORIG\i) [right=of INPUT\i,xshift=-5ex] {};
+\node[] (DEST\i) [left=of OUTPUT\i,xshift=5ex] {};
+\draw[->-] (ORIG\i) to (DEST\i);
+}
+\node[label=center:$\vdots$] (xdots) at (0, -5) {};
+\node[label=center:$\vdots$] (ydots) at (5, -5) {};
+\node[fit={(INPUT0)(xdots)},draw, ellipse, fill=gray, opacity = 0.1, minimum width=3cm,minimum height=7.5cm,label=above:{$\mathbb{R}^{D}$}](left){};
+\node[fit={(OUTPUT0)(ydots)},draw, ellipse, fill=gray, opacity = 0.1, minimum width=3cm,minimum height=7.5cm,label=above:{$\mathbb{R}^{O}$}](left){};    
+\end{tikzpicture}
+\end{document}

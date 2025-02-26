@@ -1,0 +1,990 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Naïve Bayes &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Decision Trees" href="classification_decision_trees.html" />
+    <link rel="prev" title="K-Nearest Neighbor" href="classification_knn.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fclassification_naive_bayes.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/classification_naive_bayes.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/classification_naive_bayes.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#marginalization">
+   Marginalization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conditional-probability-distribution">
+   Conditional probability distribution
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bayes-rule">
+   Bayes rule
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#back-to-the-classification-problem">
+   Back to the classification problem
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#naive-bayes-assumption">
+   Naive Bayes assumption
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#naive-bayes-classifier">
+   Naive Bayes classifier
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Naïve Bayes</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#marginalization">
+   Marginalization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conditional-probability-distribution">
+   Conditional probability distribution
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bayes-rule">
+   Bayes rule
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#back-to-the-classification-problem">
+   Back to the classification problem
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#naive-bayes-assumption">
+   Naive Bayes assumption
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#naive-bayes-classifier">
+   Naive Bayes classifier
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="naive-bayes">
+<h1>Naïve Bayes<a class="headerlink" href="#naive-bayes" title="Permalink to this headline">#</a></h1>
+<p>In this section, we recap some important concepts from probability theory. In the sequel, for the sake of simplicity, we introduce the Naive Bayes (NB) classifier assuming a space <span class="math notranslate nohighlight">\( {\cal X} \)</span> of discrete-valued features only. However, the results here can be promptly extended to a space <span class="math notranslate nohighlight">\( {\cal X} \)</span> containing continuous-valued features or a mix of continuous and discrete-valued features.</p>
+<section id="marginalization">
+<h2>Marginalization<a class="headerlink" href="#marginalization" title="Permalink to this headline">#</a></h2>
+<p>Let</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c020b981-85c2-485e-a04c-f0f1a8d5e9df">
+<span class="eqno">(67)<a class="headerlink" href="#equation-c020b981-85c2-485e-a04c-f0f1a8d5e9df" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+P({\bf a}, {\bf b}) &amp;\equiv&amp; P_{{\bf A},{\bf B}}({\bf a}, {\bf b}) \nonumber \\
+&amp;\triangleq&amp; Pr \lbrace {\bf A} = {\bf a} \wedge {\bf B} = {\bf b} \rbrace \nonumber
+\end{eqnarray}\]</div>
+<p>denote the joint probability mass function (p.m.f.)<a class="footnote-reference brackets" href="#footnote1" id="id1">1</a> of the random vectors <span class="math notranslate nohighlight">\( {\bf A} \)</span> and <span class="math notranslate nohighlight">\( {\bf B} \)</span>, i.e. <span class="math notranslate nohighlight">\( {\bf A}, {\bf B} \sim P({\bf a}, {\bf b}) \)</span>. Furthermore, we assume that the realizations <span class="math notranslate nohighlight">\( {\bf a} \)</span> and <span class="math notranslate nohighlight">\( {\bf b} \)</span> of the random vectors <span class="math notranslate nohighlight">\( {\bf A} \)</span> and <span class="math notranslate nohighlight">\( {\bf B} \)</span> take values in the discrete-valued vector spaces <span class="math notranslate nohighlight">\( \Omega_{a} \)</span> and <span class="math notranslate nohighlight">\( \Omega_{b} \)</span>, respectively.</p>
+<div class="proof definition admonition" id="marginalization">
+<p class="admonition-title"><span class="caption-number">Definition 18 </span> (Marginalization)</p>
+<section class="definition-content" id="proof-content">
+<p>Then, the marginal p.m.f.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-07ed9026-d2d7-4f62-82a1-b33b4ac4b210">
+<span class="eqno">(68)<a class="headerlink" href="#equation-07ed9026-d2d7-4f62-82a1-b33b4ac4b210" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+P({\bf a}) &amp;\equiv&amp; P_{{\bf A}}({\bf a}) \nonumber \\
+&amp;\triangleq&amp; Pr \lbrace {\bf A} = {\bf a} \rbrace  \nonumber
+\end{eqnarray}\]</div>
+<p>of the random vector <span class="math notranslate nohighlight">\( {\bf A} \)</span> can be computed from the joint p.m.f. <span class="math notranslate nohighlight">\( P({\bf a}, {\bf b}) \)</span> as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-cff3ce1e-aac6-4f58-863f-7ebfd2f925e4">
+<span class="eqno">(69)<a class="headerlink" href="#equation-cff3ce1e-aac6-4f58-863f-7ebfd2f925e4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+P({\bf a}) = \sum_{{\bf b} \in \Omega_{b}} P({\bf a}, {\bf b}).
+\end{equation}\]</div>
+<p>Analogously, the marginal p.m.f.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5edae753-fc90-483a-8823-744e20b712cd">
+<span class="eqno">(70)<a class="headerlink" href="#equation-5edae753-fc90-483a-8823-744e20b712cd" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+P({\bf b}) &amp;\equiv&amp; P_{\bf B}({\bf b}) \nonumber \\
+&amp;\triangleq&amp; Pr \lbrace {\bf B} = {\bf b} \rbrace \nonumber
+\end{eqnarray}\]</div>
+<p>of the random vector <span class="math notranslate nohighlight">\( {\bf B} \)</span> can be obtained by</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a5a12c0a-0de2-40b5-9748-5ef2381198fe">
+<span class="eqno">(71)<a class="headerlink" href="#equation-a5a12c0a-0de2-40b5-9748-5ef2381198fe" title="Permalink to this equation">#</a></span>\[\begin{equation}
+P({\bf b}) = \sum_{{\bf a} \in \Omega_{a}} P({\bf a}, {\bf b}).
+\end{equation}\]</div>
+</section>
+</div><div class="proof remark admonition" id="remark-1">
+<p class="admonition-title"><span class="caption-number">Remark 5 </span> (Valid distributions)</p>
+<section class="remark-content" id="proof-content">
+<p>Recap: a valid p.m.f. <span class="math notranslate nohighlight">\( P({\bf x}) \equiv P_{\bf X}({\bf x}) \)</span>, <span class="math notranslate nohighlight">\( {\bf x} \in \Omega_{x} \)</span>, must be non-negative and the sum over its support must be equals one, i.e. it must satisfy the following conditions</p>
+<div class="amsmath math notranslate nohighlight" id="equation-eec4648f-d75c-46ec-875d-9c7fd37c7dc8">
+<span class="eqno">(72)<a class="headerlink" href="#equation-eec4648f-d75c-46ec-875d-9c7fd37c7dc8" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+&amp;&amp; 0 \leq P({\bf x}) \leq 1, \forall {\bf x} \in \Omega_{x} \,\, \mbox{} \nonumber \\
+&amp;&amp; \sum_{{\bf x} \in \Omega_{x}} P({\bf x}) = 1. \nonumber \\
+\end{eqnarray}\]</div>
+</section>
+</div></section>
+<section id="conditional-probability-distribution">
+<h2>Conditional probability distribution<a class="headerlink" href="#conditional-probability-distribution" title="Permalink to this headline">#</a></h2>
+<div class="proof definition admonition" id="conditional_probability_distribution">
+<p class="admonition-title"><span class="caption-number">Definition 19 </span> (Conditional probability distributions)</p>
+<section class="definition-content" id="proof-content">
+<p>The p.m.f. <span class="math notranslate nohighlight">\( P({\bf a} \mid {\bf b}) \)</span> of the random vector <span class="math notranslate nohighlight">\( {\bf A} \)</span> conditioned on a particular realization <span class="math notranslate nohighlight">\( {\bf b} \)</span> of the random vector <span class="math notranslate nohighlight">\( {\bf B} \)</span> is defined as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f70ae0ea-bd94-4141-8ec1-f3c05cbeceb1">
+<span class="eqno">(73)<a class="headerlink" href="#equation-f70ae0ea-bd94-4141-8ec1-f3c05cbeceb1" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+P({\bf a} \mid {\bf b}) &amp;\equiv&amp; P_{{\bf A} \mid {\bf b}}({\bf a} \mid {\bf b}) \nonumber \\
+&amp;\triangleq&amp; Pr \lbrace {\bf A} = {\bf a} \mid {\bf B} = {\bf b} \rbrace \nonumber
+\end{eqnarray}\]</div>
+<p>and can be computed from the joint distribution <span class="math notranslate nohighlight">\( P({\bf a}, {\bf b}) \)</span> as</p>
+<div class="math notranslate nohighlight" id="equation-pab-cond">
+<span class="eqno">(74)<a class="headerlink" href="#equation-pab-cond" title="Permalink to this equation">#</a></span>\[P({\bf a} \mid {\bf b}) = \frac{P({\bf a}, {\bf b})}{P({\bf b})}.\]</div>
+</section>
+</div><p>Note that we can write <span class="math notranslate nohighlight">\( {\bf A} \mid {\bf b} \sim P({\bf a} \mid {\bf b}) \)</span> which indicates the distribution of the random vector <span class="math notranslate nohighlight">\( {\bf A} \)</span> given that the realization <span class="math notranslate nohighlight">\( {\bf b} \)</span> of <span class="math notranslate nohighlight">\( {\bf B} \)</span> has occurred. Conversely, the p.m.f. <span class="math notranslate nohighlight">\( P({\bf b} \mid {\bf a}) \)</span> of the random vector <span class="math notranslate nohighlight">\( {\bf B} \)</span> conditioned on a particular realization <span class="math notranslate nohighlight">\( {\bf a} \)</span> of the random vector <span class="math notranslate nohighlight">\( {\bf A} \)</span> is defined as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-3251638f-cfe2-46b7-93b5-a590a29e0e99">
+<span class="eqno">(75)<a class="headerlink" href="#equation-3251638f-cfe2-46b7-93b5-a590a29e0e99" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+P({\bf b} \mid {\bf a}) &amp;\equiv&amp; P_{{\bf B} \mid {\bf a}}({\bf b} \mid {\bf a}) \nonumber \\
+&amp;\triangleq&amp; Pr \lbrace {\bf B} = {\bf b} \mid {\bf A} = {\bf a} \rbrace, \nonumber
+\end{eqnarray}\]</div>
+<p>i.e. <span class="math notranslate nohighlight">\( {\bf B} \mid {\bf a} \sim P({\bf b} \mid {\bf a}) \)</span>, and is obtained from <span class="math notranslate nohighlight">\( P({\bf a}, {\bf b}) \)</span> by</p>
+<div class="math notranslate nohighlight" id="equation-pba-cond">
+<span class="eqno">(76)<a class="headerlink" href="#equation-pba-cond" title="Permalink to this equation">#</a></span>\[P({\bf b} \mid {\bf a}) = \frac{P({\bf a}, {\bf b})}{P({\bf a})}.\]</div>
+<p>Lastly, from Eqs. <a class="reference internal" href="#equation-pab-cond">(74)</a> and <a class="reference internal" href="#equation-pba-cond">(76)</a>, we can write</p>
+<div class="math notranslate nohighlight" id="equation-equiv">
+<span class="eqno">(77)<a class="headerlink" href="#equation-equiv" title="Permalink to this equation">#</a></span>\[P({\bf a}, {\bf b}) = P({\bf a} \mid {\bf b}) \, P({\bf b}) = P({\bf b} \mid {\bf a}) \, P({\bf a}).\]</div>
+</section>
+<section id="bayes-rule">
+<h2>Bayes rule<a class="headerlink" href="#bayes-rule" title="Permalink to this headline">#</a></h2>
+<p><strong>Goal:</strong> we seek to obtain the so-called <em>posterior</em> distribution <span class="math notranslate nohighlight">\( P({\bf a} \mid \check{\bf b}) \)</span> of the random vector <span class="math notranslate nohighlight">\( {\bf A} \)</span> provided that</p>
+<ul class="simple">
+<li><p>we have observed the realization <span class="math notranslate nohighlight">\( \check{\bf b} \)</span> of <span class="math notranslate nohighlight">\( {\bf B} \)</span>;</p></li>
+<li><p>we know the conditional distribution <span class="math notranslate nohighlight">\( P({\bf b} \mid {\bf a}) \)</span>, which models how likely it is to observe a given sample <span class="math notranslate nohighlight">\( {\bf b} \)</span> for each possibly value <span class="math notranslate nohighlight">\( {\bf a} \in \Omega_{a} \)</span>;</p></li>
+<li><p>we know the <em>prior</em> distribution <span class="math notranslate nohighlight">\( P({\bf a}) \)</span> of the random vector <span class="math notranslate nohighlight">\( {\bf A} \)</span>.</p></li>
+</ul>
+<p>Note that we can rewrite Eq. <a class="reference internal" href="#equation-equiv">(77)</a> as</p>
+<div class="math notranslate nohighlight" id="equation-bayes-rule1">
+<span class="eqno">(78)<a class="headerlink" href="#equation-bayes-rule1" title="Permalink to this equation">#</a></span>\[P({\bf a} \mid {\bf b}) = \frac{P({\bf b} \mid {\bf a}) \, P({\bf a})}{P({\bf b})}.\]</div>
+<p>By plugging the particular observation <span class="math notranslate nohighlight">\( \check{\bf b} \)</span> into <a class="reference internal" href="#equation-bayes-rule1">(78)</a>, we write</p>
+<div class="math notranslate nohighlight" id="equation-bayes-rule2a">
+<span class="eqno">(79)<a class="headerlink" href="#equation-bayes-rule2a" title="Permalink to this equation">#</a></span>\[P({\bf a} \mid \check{\bf b}) = \frac{P(\check{\bf b} \mid {\bf a}) \, P({\bf a})}{P(\check{\bf b})}\]</div>
+<p>and them</p>
+<div class="math notranslate nohighlight" id="equation-bayes-rule2b">
+<span class="eqno">(80)<a class="headerlink" href="#equation-bayes-rule2b" title="Permalink to this equation">#</a></span>\[P({\bf a} \mid \check{\bf b}) \propto  P(\check{\bf b} \mid {\bf a}) \, P({\bf a}),\]</div>
+<p>in which the denominator <span class="math notranslate nohighlight">\( P(\check{\bf b}) \)</span> on the right-hand side of <a class="reference internal" href="#equation-bayes-rule2a">(79)</a> was omitted in <a class="reference internal" href="#equation-bayes-rule2b">(80)</a> since it is a constant – it is the p.m.f. <span class="math notranslate nohighlight">\( P({\bf b}) \)</span> evaluated at the particular sample <span class="math notranslate nohighlight">\( \check{\bf b} \)</span>.</p>
+<div class="proof definition admonition" id="bayes_rule">
+<p class="admonition-title"><span class="caption-number">Definition 20 </span> (The glorious Bayes rule)</p>
+<section class="definition-content" id="proof-content">
+<p>Eq. <a class="reference internal" href="#equation-bayes-rule1">(78)</a>, i.e. <div class="math notranslate nohighlight">
+\[ P({\bf a} \mid {\bf b}) = \frac{P({\bf b} \mid {\bf a}) \, P({\bf a})}{P({\bf b})}, \]</div>
+ is called the Bayes rule – a.k.a. the probability inversion rule – and it is the basis for Bayesian inference. It tells us how the information contained in an observed sample <span class="math notranslate nohighlight">\( \check{\bf b} \)</span> can be assimilated through a model <span class="math notranslate nohighlight">\( P({\bf b} \mid {\bf a}) \)</span> to update a <em>prior</em> distribution <span class="math notranslate nohighlight">\( P({\bf a}) \)</span> and compute a <em>posterior</em> distribution <span class="math notranslate nohighlight">\( P({\bf a} \mid \check{\bf b}) \)</span> which incorporates the observed data <span class="math notranslate nohighlight">\( \check{\bf b} \)</span>.</p>
+</section>
+</div><div class="proof remark admonition" id="remark-4">
+<p class="admonition-title"><span class="caption-number">Remark 6 </span> (Evidence)</p>
+<section class="remark-content" id="proof-content">
+<p>The probability <span class="math notranslate nohighlight">\( P(\check{\bf b}) \)</span> of a sample <span class="math notranslate nohighlight">\( \check{\bf b} \)</span> being observed – independently of <span class="math notranslate nohighlight">\( {\bf A} \)</span> – is also called the evidence in <a class="reference internal" href="#equation-bayes-rule1">(78)</a> and can be easily computed from the known distributions <span class="math notranslate nohighlight">\( P({\bf a} \mid {\bf b}) \)</span> and <span class="math notranslate nohighlight">\( P({\bf a}) \)</span> as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-8dddcc03-7a20-4794-91cf-b3ec4c4d8773">
+<span class="eqno">(81)<a class="headerlink" href="#equation-8dddcc03-7a20-4794-91cf-b3ec4c4d8773" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+P(\check{\bf b}) &amp;=&amp; \sum_{{\bf a'} \in \Omega_{a}} P({\bf a}', \check{\bf b}) \nonumber \\
+&amp;\equiv&amp; \sum_{{\bf a'} \in \Omega_{a}} P({\bf a}' \mid \check{\bf b}) P({\bf a}'), \nonumber
+\end{eqnarray}\]</div>
+<p>in which the likelihood <span class="math notranslate nohighlight">\( P({\bf a} \mid {\bf b}) \)</span> is evaluated at <span class="math notranslate nohighlight">\( \check{\bf b} \)</span>.</p>
+</section>
+</div><aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In general, the <em>uncertainty</em> in the <em>prior</em> distribution <span class="math notranslate nohighlight">\( P({\bf a}) \)</span> is incrementally decreased in the <em>posterior</em> distribution <span class="math notranslate nohighlight">\( P({\bf a} \mid \check{\bf b}_{1}, \check{\bf b}_{2}, \ldots) \)</span> as we assimilate more and more data <span class="math notranslate nohighlight">\( \check{\bf b}_{1}, \check{\bf b}_{2}, \ldots \)</span> by means of the Bayes rule.</p>
+</div>
+</aside>
+<div class="proof remark admonition" id="remark-5">
+<p class="admonition-title"><span class="caption-number">Remark 7 </span> (Uncertainty as a measure of dispersion)</p>
+<section class="remark-content" id="proof-content">
+<p>Uncertainty can be thought of as a measure of the dispersion of a distribution. Let <span class="math notranslate nohighlight">\( | \Omega_{x} | \)</span> denote the cardinality – i.e. the number of elements – of a vector space <span class="math notranslate nohighlight">\( \Omega_{x} \)</span> with discrete-valued space dimensions. An uniform distribution over <span class="math notranslate nohighlight">\( \Omega_{x} \)</span></p>
+<div class="amsmath math notranslate nohighlight" id="equation-f9ff592e-0554-470e-ba9a-28bb821c9ee9">
+<span class="eqno">(82)<a class="headerlink" href="#equation-f9ff592e-0554-470e-ba9a-28bb821c9ee9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+U({\bf x}) = \frac{1}{|\Omega_{x}|}, \forall {\bf x} \in \Omega_{x} \nonumber
+\end{equation}\]</div>
+<p>is called <em>non-informative</em> p.m.f. since it does not provide any information on the most or less probable values of <span class="math notranslate nohighlight">\( {\bf X} \)</span>, i.e. all values are equiprobable. On the other hand, we can think of a deterministic vector <span class="math notranslate nohighlight">\( {\bf x}' \)</span> as being the realization of a random vector <span class="math notranslate nohighlight">\( {\bf X} \)</span> distributed according to a p.m.f.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ea5b7389-9715-4d93-88fb-f50874f574e1">
+<span class="eqno">(83)<a class="headerlink" href="#equation-ea5b7389-9715-4d93-88fb-f50874f574e1" title="Permalink to this equation">#</a></span>\[\begin{equation}
+P_{\bf X}({\bf x}) = \left[ {\bf x} = {\bf x}' \right] \nonumber
+\end{equation}\]</div>
+<p>with no uncertainty at all, i.e. all values have null probability except for the most probable value.</p>
+</section>
+</div></section>
+<section id="back-to-the-classification-problem">
+<h2>Back to the classification problem<a class="headerlink" href="#back-to-the-classification-problem" title="Permalink to this headline">#</a></h2>
+<p>Let us assume that the <span class="math notranslate nohighlight">\( {\cal X} \)</span> is a <span class="math notranslate nohighlight">\( D \)</span>-dimensional space comprising discrete-valued features only, i.e.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5c7809cd-73a5-4b13-bc23-8a9bae9aecb4">
+<span class="eqno">(84)<a class="headerlink" href="#equation-5c7809cd-73a5-4b13-bc23-8a9bae9aecb4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+{\cal X} = {\cal X}_{1} \times {\cal X}_{2} \times \ldots {\cal X}_{D},
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\( \lbrace {\cal X}_{d} \rbrace \)</span>, <span class="math notranslate nohighlight">\( d \in \lbrace 1, \ldots, D \rbrace \)</span>, are finite sets of discrete values or alphabets.</p>
+<p>The feature vector <span class="math notranslate nohighlight">\( {\bf x} \in {\cal X} \)</span> can be written in turn as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-9db5207e-fdc5-4768-b846-31f31fe12037">
+<span class="eqno">(85)<a class="headerlink" href="#equation-9db5207e-fdc5-4768-b846-31f31fe12037" title="Permalink to this equation">#</a></span>\[\begin{equation}
+{\bf x} = \begin{bmatrix} x_{1} &amp; x_{2} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T}
+\end{equation}\]</div>
+<p>with <span class="math notranslate nohighlight">\( x_{d} \in {\cal X}_{d} \)</span>, <span class="math notranslate nohighlight">\( \forall d \in \lbrace 1, \ldots, D \rbrace \)</span>.</p>
+<p>Remember that the optimal classifier is given by</p>
+<div class="math notranslate nohighlight" id="equation-nb-estimate1a">
+<span class="eqno">(86)<a class="headerlink" href="#equation-nb-estimate1a" title="Permalink to this equation">#</a></span>\[h^{\ast}({\bf x}) = \argmax_{y \in {\cal Y}} P^{\ast}(y \mid {\bf x}),\]</div>
+<p>where the <em>unknown</em> p.m.f. <span class="math notranslate nohighlight">\( P^{\ast}(y \mid {\bf x}) \)</span> can be rewritten using the Bayes rule as</p>
+<div class="math notranslate nohighlight" id="equation-bayes-rule3">
+<span class="eqno">(87)<a class="headerlink" href="#equation-bayes-rule3" title="Permalink to this equation">#</a></span>\[P^{\ast}(y \mid {\bf x}) \propto P^{\ast}({\bf x} \mid y) P^{\ast}(y).\]</div>
+<p>Thus, by plugging <a class="reference internal" href="#equation-bayes-rule3">(87)</a> into <a class="reference internal" href="#equation-nb-estimate1a">(86)</a>, we can write</p>
+<div class="math notranslate nohighlight" id="equation-nb-estimate1b">
+<span class="eqno">(88)<a class="headerlink" href="#equation-nb-estimate1b" title="Permalink to this equation">#</a></span>\[h^{\ast}({\bf x}) = \argmax_{y \in {\cal Y}} P^{\ast}({\bf x} \mid y) P^{\ast}(y),\]</div>
+<p>since the underlying proportionality constant in <a class="reference internal" href="#equation-bayes-rule3">(87)</a> – i.e. the reciprocal of <span class="math notranslate nohighlight">\( P^{\ast}({\bf x}) \)</span> – does not depend on <span class="math notranslate nohighlight">\( y \)</span>.</p>
+<p>Note that the prior p.m.f. <span class="math notranslate nohighlight">\( P^{\ast}(y) \)</span> can be approximated by computing the frequencies of each label in the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>, i.e.</p>
+<div class="math notranslate nohighlight" id="equation-freq-approx1">
+<span class="eqno">(89)<a class="headerlink" href="#equation-freq-approx1" title="Permalink to this equation">#</a></span>\[\begin{split}P^{\ast}(y) &amp;=&amp; Pr \lbrace Y = y \rbrace \nonumber \\
+&amp;\approx&amp; \frac{1}{N} \sum_{ \left( {\bf x}', y' \right) \in {\cal D}} \left[ y' = y \right]. \nonumber \\
+&amp;\triangleq P(y)\end{split}\]</div>
+<p>On the other hand, finding a suitable approximation for the true conditional p.m.f. <span class="math notranslate nohighlight">\( P^{\ast}({\bf x} \mid y) \)</span> – without further assumptions on its structure – can be a really trick task since <span class="math notranslate nohighlight">\( {\bf x} \)</span> resides in such high-dimensional feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span>.</p>
+</section>
+<section id="naive-bayes-assumption">
+<h2>Naive Bayes assumption<a class="headerlink" href="#naive-bayes-assumption" title="Permalink to this headline">#</a></h2>
+<div class="proof definition admonition" id="definition-6">
+<p class="admonition-title"><span class="caption-number">Definition 21 </span> (Naive Bayes assumption)</p>
+<section class="definition-content" id="proof-content">
+<p>Let us further assume that all features <span class="math notranslate nohighlight">\( \lbrace x_{d} \rbrace \)</span>, <span class="math notranslate nohighlight">\( d \in \lbrace 1, 2, \ldots, D \rbrace \)</span>, are conditionally independent. Thus, conditioned on a class value <span class="math notranslate nohighlight">\( y \)</span>, we can write</p>
+<div class="math notranslate nohighlight" id="equation-naive-assumption">
+<span class="eqno">(90)<a class="headerlink" href="#equation-naive-assumption" title="Permalink to this equation">#</a></span>\[P^{\ast}({\bf x} \mid y) = \prod_{d=1}^{D} P^{\ast}(x_{d} \mid y).\]</div>
+</section>
+</div><p>Let the dataset partition <span class="math notranslate nohighlight">\( {\cal D}_{y} \triangleq \lbrace \left( {\bf x}', y' \right) \in {\cal D} \mid  y' = y \rbrace \)</span> collect all training examples from the dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> with class value <span class="math notranslate nohighlight">\( y \)</span>. In this case, the true-class conditional distributions <span class="math notranslate nohighlight">\( P^{\ast}(x_{d} \mid y) \)</span> can be approximated as</p>
+<div class="math notranslate nohighlight" id="equation-freq-approx2">
+<span class="eqno">(91)<a class="headerlink" href="#equation-freq-approx2" title="Permalink to this equation">#</a></span>\[\begin{split}P^{\ast}(x_{d} \mid y) &amp;\approx&amp; \frac{1}{|{\cal D}_{y}|} \sum_{\left( {\bf x}', y' \right) \in {\cal D}_{y}} \left[ x_{d}' = x_{d} \right] \nonumber \\
+&amp;\triangleq&amp; P(x_{d} \mid y)\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\( {\bf x}' = \begin{bmatrix} x_{1}' &amp; \ldots &amp; x_{d}' &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span>.</p>
+<div class="proof remark admonition" id="remark-7">
+<p class="admonition-title"><span class="caption-number">Remark 8 </span> (Laplace smoothing)</p>
+<section class="remark-content" id="proof-content">
+<p>Note that <span class="math notranslate nohighlight">\( \sum_{y \in {\cal Y}} |{\cal D}_{y}| = |{\cal D}| = N \)</span>, however, some of the classes might be under represented in the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>. Thus, to avoid hard <span class="math notranslate nohighlight">\( 0 \)</span> or <span class="math notranslate nohighlight">\( 1 \)</span> probabilities, we use Laplace smoothing and rewrite <a class="reference internal" href="#equation-freq-approx2">(91)</a> as</p>
+<div class="math notranslate nohighlight" id="equation-freq-approx3">
+<span class="eqno">(92)<a class="headerlink" href="#equation-freq-approx3" title="Permalink to this equation">#</a></span>\[P(x_{d} \mid y) = \frac{\alpha + \sum_{\left( {\bf x}', y' \right) \in {\cal D}_{y}} \left[ x_{d}' = x_{d} \right]}{\alpha |\Omega_{d}| + |{\cal D}_{y}|},\]</div>
+<p>where <span class="math notranslate nohighlight">\( \alpha \geq 0 \)</span> is the smoothing parameter such that the approximated probability <span class="math notranslate nohighlight">\( P(x_{d} \mid y) \)</span> will be between the empirical probability as in <a class="reference internal" href="#equation-freq-approx2">(91)</a> (<span class="math notranslate nohighlight">\( \alpha = 0 \)</span>) and the uniform probability <span class="math notranslate nohighlight">\( \dfrac{1}{|\Omega_{d}|} \)</span> ( <span class="math notranslate nohighlight">\( \alpha \rightarrow \infty \)</span>).</p>
+</section>
+</div><div class="proof remark admonition" id="remark-8">
+<p class="admonition-title"><span class="caption-number">Remark 9 </span> (The naive assumption is quite strong)</p>
+<section class="remark-content" id="proof-content">
+<p>For example, let us suppose that the feature vector <div class="math notranslate nohighlight">
+\[ {\bf x} \in {\cal X} = {\cal X}_{1} \times \ldots \times {\cal X}_{D}, \]</div>
+ with <span class="math notranslate nohighlight">\( {\cal X}_{d} \triangleq \lbrace 0, 1, \ldots, 255 \rbrace \)</span>, <span class="math notranslate nohighlight">\( \forall d \in \lbrace 1, \ldots, D \rbrace \)</span>, collect the <span class="math notranslate nohighlight">\(8\)</span>-bit pixel values of a <span class="math notranslate nohighlight">\( 28 \times 28 \)</span> input image containing pictures of handwritten numbers <span class="math notranslate nohighlight">\( y \in {\cal Y} = \lbrace 0, 1, 2, \ldots, 9 \rbrace \)</span>. The training dataset has the type</p>
+<figure class="align-left" id="nb-assumption-fig">
+<a class="reference internal image-reference" href="images/classification/nb_assumption.svg"><img alt="images/classification/nb_assumption.svg" height="320px" src="images/classification/nb_assumption.svg" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">An image dataset with intrinsically spatially-correlated features. Note that nearby image pixels (features) are highly correlated by virtue of the underlying data generation process (handwriting).</span><a class="headerlink" href="#nb-assumption-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Note first that the number of dimensions is quite large <span class="math notranslate nohighlight">\( D = 28^{2} = 784 \)</span>. As the number of possible values along each dimension <span class="math notranslate nohighlight">\( d \)</span> is <span class="math notranslate nohighlight">\( |{\cal X}_{d}| = 2^{8} = 256 \)</span>, there are <span class="math notranslate nohighlight">\( |{\cal X}| = |{\cal X}_{1}| \times |{\cal X}_{2}| \times \ldots \times |{\cal X}_{784}| = 256^{784} \)</span> possible images. This is larger than the number of atoms in the universe <span class="math notranslate nohighlight">\( \approx 10^{82} \)</span>. On the other hand, the subset <span class="math notranslate nohighlight">\( {\cal X}' \subset {\cal X} \)</span> containing valid images of numerals is much smaller.</p>
+<p>Finally, as images of handwritten numbers, nearby pixels are intrinsically correlated – for instance, an image containing the handwriting of the number two still corresponding to the class label <span class="math notranslate nohighlight">\( y = 2 \)</span> after being rotated or slightly translated and scaled such that the handwritten number is still within image bounds. Thus, the conditionally independence assumption is not directly applicable to the feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span> as defined here. That is, conditioned on a class value <span class="math notranslate nohighlight">\( y \)</span>, the image pixels <span class="math notranslate nohighlight">\( \lbrace x_{d} \rbrace \)</span>, <span class="math notranslate nohighlight">\( d \in \lbrace 1, \ldots, D \rbrace \)</span>, are spatially correlated.</p>
+</section>
+</div></section>
+<section id="naive-bayes-classifier">
+<h2>Naive Bayes classifier<a class="headerlink" href="#naive-bayes-classifier" title="Permalink to this headline">#</a></h2>
+<div class="proof definition admonition" id="nb_classifier">
+<p class="admonition-title"><span class="caption-number">Definition 22 </span> (NB classifier)</p>
+<section class="definition-content" id="proof-content">
+<p>The NB classifier is defined as</p>
+<div class="math notranslate nohighlight" id="equation-nb-estimate2">
+<span class="eqno">(93)<a class="headerlink" href="#equation-nb-estimate2" title="Permalink to this equation">#</a></span>\[h_{NB}({\bf x}) = \argmax_{y \in {\cal Y}} \left\lbrace P(y) \prod_{d=1}^{D} P(x_{d} \mid y) \right\rbrace,\]</div>
+<p>where <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{1} &amp; \ldots &amp; x_{d} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span>.</p>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. By plugging <a class="reference internal" href="#equation-naive-assumption">(90)</a> into <a class="reference internal" href="#equation-nb-estimate1b">(88)</a> and substituting <span class="math notranslate nohighlight">\( P^{\ast}(y) \)</span> and <span class="math notranslate nohighlight">\( P^{\ast}(x_{d} \mid y) \)</span> by their frequentist approximations <span class="math notranslate nohighlight">\( P(y) \)</span> and <span class="math notranslate nohighlight">\( P(x_{d} \mid y) \)</span> given by <a class="reference internal" href="#equation-freq-approx1">(89)</a> and <a class="reference internal" href="#equation-freq-approx2">(91)</a>, respectively, we obtain the NB classifier as defined in <a class="reference internal" href="#equation-nb-estimate2">(93)</a>.</p>
+</div>
+</div>
+<div class="proof remark admonition" id="remark-10">
+<p class="admonition-title"><span class="caption-number">Remark 10 </span> (Switching to log odds)</p>
+<section class="remark-content" id="proof-content">
+<p>Note that the NB classifier as defined in <a class="reference internal" href="#equation-nb-estimate2">(93)</a> is numerically unstable since it requires the computation of the product of several conditional probabilities <span class="math notranslate nohighlight">\( P(x_{d} \mid y) \)</span>, <span class="math notranslate nohighlight">\( d \in \lbrace 1, \ldots, D \rbrace \)</span>, for a large dimensional feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span>. As computers use a limited number of bits to represent real numbers – using double-precision or single-precision float-point format –, even though a small fraction of these <span class="math notranslate nohighlight">\( D \)</span> probabilities are small, their product might easily collapse to zero. Thus, a typical workaround to avoid numerical instability is to rewrite <a class="reference internal" href="#equation-nb-estimate2">(93)</a> as</p>
+<div class="math notranslate nohighlight" id="equation-nb-estimate3">
+<span class="eqno">(94)<a class="headerlink" href="#equation-nb-estimate3" title="Permalink to this equation">#</a></span>\[\begin{split}h_{NB}({\bf x}) &amp;=&amp; \argmax_{y \in {\cal Y}} \left\lbrace \log \left( P(y) \prod_{d=1}^{D} P(x_{d} \mid y) \right) \right\rbrace \nonumber \\
+&amp;\equiv&amp; \argmax_{y \in {\cal Y}} \left\lbrace \log P(y) + \sum_{d=1}^{D} \log P(x_{d} \mid y) \right\rbrace,\end{split}\]</div>
+<p>since <span class="math notranslate nohighlight">\( \log(\cdot) \)</span> is a monotonic increasing function. In this case, the NB classifier is selecting the class value <span class="math notranslate nohighlight">\( y \)</span> which maximizes the log-likelihood function with the term <span class="math notranslate nohighlight">\( \log P(y) \)</span> representing the prior evidence of the class value <span class="math notranslate nohighlight">\( y \)</span> and the terms <span class="math notranslate nohighlight">\( \log P(x_{d} \mid y) \)</span> representing the contribution of each observed component <span class="math notranslate nohighlight">\( x_{d} \)</span> given the class value <span class="math notranslate nohighlight">\( y \)</span>. The contribution of the log function to numerical stability is two-folded:</p>
+<ul class="simple">
+<li><p>the summation in <a class="reference internal" href="#equation-nb-estimate3">(94)</a> avoids collapsing the joint likelihood function <span class="math notranslate nohighlight">\( P( {\bf x} \mid y) \ \equiv P(x_{1}, x_{2}, \ldots, x_{D} \mid y) \)</span> by multiplying several possible small likelihoods <span class="math notranslate nohighlight">\( P(x_{d} \mid y) &gt; 0 \)</span> and,</p></li>
+<li><p>albeit the logarithm of valid probabilities are upper bounded by <span class="math notranslate nohighlight">\( 0 \)</span>, near-zero probabilities / likelihoods are severely penalized since <span class="math notranslate nohighlight">\( \log(0^{+}) = -\infty \)</span>.</p></li>
+</ul>
+</section>
+</div><hr class="footnotes docutils" />
+<dl class="footnote brackets">
+<dt class="label" id="footnote1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>We use the uppercase notation <span class="math notranslate nohighlight">\( P(\cdot) \)</span> to distinguish p.m.f’s from continuous-valued and mixed distributions denoted by <span class="math notranslate nohighlight">\( p(\cdot) \)</span>.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="classification_knn.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">K-Nearest Neighbor</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="classification_decision_trees.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Decision Trees</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

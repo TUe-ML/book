@@ -1,0 +1,1085 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Exercises &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Clustering" href="clustering.html" />
+    <link rel="prev" title="Principal Component Analysis" href="dim_reduction_pca.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fdim_reduction_exercises.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/dim_reduction_exercises.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/dim_reduction_exercises.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#svd">
+   SVD
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pca">
+   PCA
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Exercises</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#svd">
+   SVD
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pca">
+   PCA
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="exercises">
+<h1>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">#</a></h1>
+<section id="svd">
+<h2>SVD<a class="headerlink" href="#svd" title="Permalink to this headline">#</a></h2>
+<ol>
+<li><p>Let’s have a look at a very simple movie ratings matrix of six users and four movies:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    D=\begin{pmatrix}
+        5 &amp; 5 &amp; 1 &amp; 1\\
+    5 &amp; 5 &amp; 1 &amp; 1\\
+    5 &amp; 5 &amp; 1 &amp; 1\\
+    1 &amp; 1 &amp; 5 &amp; 5\\
+    1 &amp; 1 &amp; 5 &amp; 5\\
+    5 &amp; 5 &amp; 5 &amp; 5
+    \end{pmatrix}
+    \end{align*}\]</div>
+<ol class="simple">
+<li><p>Which patterns of movie preferences can you detect in the matrix <span class="math notranslate nohighlight">\(D\)</span>?</p></li>
+<li><p>Can you denote a rank-2 factorization of <span class="math notranslate nohighlight">\(D\)</span> which reflects the assignment of users  to the patterns you found?</p></li>
+<li><p>Compute a rank-2 truncated SVD of <span class="math notranslate nohighlight">\(D\)</span>. Do the movie patterns denoted by the SVD  solution reflect the patterns you identified?</p></li>
+</ol>
+<div class="toggle docutils container">
+<p>The matrix has two obvious movie patterns. The first pattern is <span class="math notranslate nohighlight">\((5,5,1,1)\)</span>, indicating that movie 1 and 2 is liked (rated with 5/5 stars) and the last two movies are not liked (rated with 1 of 5 stars). The second pattern is <span class="math notranslate nohighlight">\((1,1,5,5)\)</span>,  indicating that the first two movies are not liked  and the last two are liked. The last user likes all movies, which could be understood like he belongs to  both patterns. In fact, we can write the matrix <span class="math notranslate nohighlight">\(D\)</span> as the following rank-2 MF:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-8aeb2cfa-3997-4edc-9226-1ae0fde079bc">
+<span class="eqno">(239)<a class="headerlink" href="#equation-8aeb2cfa-3997-4edc-9226-1ae0fde079bc" title="Permalink to this equation">#</a></span>\[\begin{align}
+D\approx\begin{pmatrix}
+    5 &amp; 5 &amp; 1 &amp; 1\\
+5 &amp; 5 &amp; 1 &amp; 1\\
+5 &amp; 5 &amp; 1 &amp; 1\\
+1 &amp; 1 &amp; 5 &amp; 5\\
+1 &amp; 1 &amp; 5 &amp; 5\\
+4.8 &amp; 4.8 &amp; 4.8 &amp; 4.8
+\end{pmatrix} = 
+\begin{pmatrix}
+    1 &amp; 0\\
+1 &amp; 0\\
+1 &amp; 0\\
+0 &amp; 1 \\
+0 &amp; 1 \\
+0.8 &amp; 0.8
+\end{pmatrix} 
+\begin{pmatrix}
+    5 &amp; 5 &amp; 1 &amp; 1\\
+1 &amp; 1 &amp; 5 &amp; 5
+\end{pmatrix}. \label{eq:patternDecomp}
+\end{align}\]</div>
+<p>This particular factorization will yet not be found by SVD, since the rows in the second factor matrix are  not  orthogonal.</p>
+<p>The truncated SVD yields:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+ U_{\cdot \{1,2\}} \Sigma_{\{1,2\}\{1,2\}} V_{\cdot \{1,2\}}^\top=
+\begin{pmatrix}
+0.4 &amp; -0.4\\
+0.4 &amp; -0.4\\
+0.4 &amp; -0.4\\
+0.3 &amp; 0.5\\
+0.3 &amp; 0.5\\
+0.6 &amp; 0.1
+\end{pmatrix}
+\begin{pmatrix}
+16.8 &amp; 0\\  
+0 &amp; 8.8
+\end{pmatrix}
+\begin{pmatrix}
+0.6 &amp; 0.6 &amp; 0.4 &amp; 0.4\\
+-0.4 &amp; -0.4 &amp; 0.6 &amp; 0.6
+\end{pmatrix}
+\end{align*}\]</div>
+<p>We  see that the decomposition of SVD is quite different  from the one in Eq.~\eqref{eq:patternDecomp}. The first pattern <span class="math notranslate nohighlight">\(V_{\cdot 1}\)</span> indicates more general information of the data, like movie popularity. Since there are more users who like movies 1 and 2 than users who like movies 3 and 4, movies 1 and 2 get a slightly higher score of 0.6 (vs. 0.4) in the first pattern <span class="math notranslate nohighlight">\(V_{\cdot 1}\)</span>. The second pattern <span class="math notranslate nohighlight">\(V_{\cdot 2}\)</span> indicates the duality in taste of movies  1,2 and 3,4 by the sign (-0.4 vs. 0.6). Likewise, we recognize the difference between users in the matrix <span class="math notranslate nohighlight">\(U\)</span>. There are three user patterns: <span class="math notranslate nohighlight">\((0.4, -0.4)\)</span>, <span class="math notranslate nohighlight">\((0.3,0.5)\)</span> and <span class="math notranslate nohighlight">\((0.6,0.1)\)</span>.</p>
+</div>
+</li>
+<li><p>Consider the movie recommendation matrix from the lecture, whose missing values are imputed with the mean value of <span class="math notranslate nohighlight">\(\mu=3\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+         D=\begin{pmatrix}
+        5 &amp; \mu &amp; 1 &amp; 1 \\
+        \mu &amp; 1 &amp; 5 &amp; \mu  \\\
+        2 &amp; 1 &amp; 5 &amp; 3 \\
+        4 &amp; \mu &amp; 4 &amp; 2\\
+        5 &amp; 5 &amp; \mu &amp; 1 \\
+        \mu &amp; 1 &amp; 5 &amp; 3 
+      \end{pmatrix}
+    \end{align*}\]</div>
+<p>In the example of the lecture, we have used a rank of 2. Try using a rank of 1, 3 and 4 and evaluate the obtained recommendations. Which rank would you choose?</p>
+<div class="toggle docutils container">
+<p>For this example, a rank of  2 is indeed the best fit. The rank-1 truncated SVD is given as follows:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+      U_1\Sigma_1V_1^\top  = \begin{pmatrix}
+        2.9 &amp; 2.0 &amp; 3.2 &amp; 1.8\\
+        3.3 &amp; 2.2 &amp; 3.6 &amp; 2.0\\
+        3.3 &amp; 2.2 &amp; 3.6 &amp; 2.0\\
+        3.8 &amp; 2.6 &amp; 4.2 &amp; 2.3\\
+        4.0 &amp; 2.8 &amp; 4.4 &amp; 2.5\\
+        3.6 &amp; 2.5 &amp; 4.0 &amp; 2.2
+    \end{pmatrix}.
+\end{align*}\]</div>
+<p>This factorization is not able to approximate the known movie preferences, and hence, we  can not derive suitable predictions from this model. The rank  2 factorization is known from the lecture and can be used to give recommendations:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+     U_2\Sigma_2V_2^\top  =\begin{pmatrix}
+    4.4 &amp; 3.7 &amp; 1.4 &amp; 0.6\\
+2.1 &amp; 0.9 &amp; 5.0 &amp; 2.9\\
+2.1 &amp; 0.9 &amp; 5.0 &amp; 2.9\\
+4.1 &amp; 2.9 &amp; 3.9 &amp; 2.1\\
+5.5 &amp; 4.4 &amp; 2.7 &amp; 1.3\\
+2.7 &amp; 1.4 &amp; 5.1 &amp; 3.0
+    \end{pmatrix}.
+\end{align*}\]</div>
+<p>The rank of 3 and 4 factorizations of the truncated SVD are adapting too well to the data. We have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+         U_3\Sigma_3V_3^\top  &amp;=\begin{pmatrix}
+   5.0 &amp; 3.0 &amp; 1.0 &amp; 0.9\\
+2.0 &amp; 1.0 &amp; 5.0 &amp; 2.9\\
+2.0 &amp; 1.0 &amp; 5.0 &amp; 2.9\\
+4.0 &amp; 3.0 &amp; 4.0 &amp; 2.1\\
+5.0 &amp; 5.0 &amp; 3.0 &amp; 1.0\\
+3.0 &amp; 1.1 &amp; 4.9 &amp; 3.1
+    \end{pmatrix}\\
+     U_4\Sigma_4V_4^\top  &amp;=\begin{pmatrix}
+    5.0 &amp; 3.0 &amp; 1.0 &amp; 1.0\\
+2.0 &amp; 1.0 &amp; 5.0 &amp; 3.0\\
+2.0 &amp; 1.0 &amp; 5.0 &amp; 3.0\\
+4.0 &amp; 3.0 &amp; 4.0 &amp; 2.0\\
+5.0 &amp; 5.0 &amp; 3.0 &amp; 1.0\\
+3.0 &amp; 1.0 &amp; 5.0 &amp; 3.0
+    \end{pmatrix}.
+\end{align*}\]</div>
+<p>The imputed mean values are almost perfectly approximated and can this factorization can hence not be used to provide recommendations.</p>
+</div>
+</li>
+<li><p>Show that the minimum approximation error of a rank-<span class="math notranslate nohighlight">\(r\)</span> matrix factorization of the data <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> is equal to the sum of the <span class="math notranslate nohighlight">\(\min\{n,d\}-r\)</span> smallest singular values of <span class="math notranslate nohighlight">\(D\)</span>:
+<div class="math notranslate nohighlight">
+\[\sigma^2_{r+1}+\ldots+\sigma^2_{\min\{n,d\}}=\min_{X,Y}\lVert D -YX^\top\rVert^2 \quad \text{s.t. } X\in\mathbb{R}^{d\times r},Y\in\mathbb{R}^{n\times r}.\]</div>
+</p>
+<div class="toggle docutils container">
+<p>We have seen in the lecture that the global minimizers <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> of the rank-<span class="math notranslate nohighlight">\(r\)</span> matrix factorization problem satisfy
+<div class="math notranslate nohighlight">
+\[YX^\top = U_{\cdot \mathcal{R}}\Sigma_{\mathcal{R}\mathcal{R}}V_{\cdot \mathcal{R}}^\top,\]</div>
+
+where <span class="math notranslate nohighlight">\(D=U\Sigma V^\top\)</span> is the singular value decomposition of <span class="math notranslate nohighlight">\(D\)</span> and <span class="math notranslate nohighlight">\(\mathcal{R}=\{1,\ldots,r\}\)</span>.
+We define the matrix
+<div class="math notranslate nohighlight">
+\[\begin{split}\Sigma_0 = \left(
+    \begin{array}{c;{2pt/2pt}r}
+    \Sigma_{\mathcal{R}\mathcal{R}} &amp; \vvec{0} \\
+    \vvec{0} &amp; \vvec{0}
+    \end{array}
+    \right) \in\mathbb{R}^{n\times d}.\end{split}\]</div>
+
+That is, we create the matrix <span class="math notranslate nohighlight">\(\Sigma_0\)</span> by attaching <span class="math notranslate nohighlight">\(n-r\)</span> constant-zero rows and <span class="math notranslate nohighlight">\(d-r\)</span> constant-zero columns. Then, we can write
+<div class="math notranslate nohighlight">
+\[YX^\top = U\Sigma_0V^\top.\]</div>
+
+Due to the orthogonal invariance of the Frobenius norm, we have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \lVert D -YX^\top\rVert^2 &amp;= \lVert U\Sigma V^\top -U\Sigma_0 V^\top \rVert^2\\
+    &amp;=\lVert U^\top(U\Sigma V^\top -U\Sigma_0 V^\top) V \rVert^2\\
+    &amp;=\lVert \Sigma - \Sigma_0  \rVert^2 \\
+    &amp;=\sigma^2_{r+1}+\ldots +\sigma^2_{\min\{n,d\}}
+    \end{align*}\]</div>
+</div>
+</li>
+</ol>
+</section>
+<section id="pca">
+<h2>PCA<a class="headerlink" href="#pca" title="Permalink to this headline">#</a></h2>
+<ol>
+<li><p>Show that the constraint <span class="math notranslate nohighlight">\(Z^\top Z=I\)</span> for <span class="math notranslate nohighlight">\(Z\in\mathbb{R}^{n\times r}\)</span>, <span class="math notranslate nohighlight">\(r&lt;n\)</span> which is imposed for the objective of PCA implies that <span class="math notranslate nohighlight">\(Z\)</span> has orthogonal columns which all have a Euclidean norm of one.</p>
+<div class="toggle docutils container">
+<p>The constraint <span class="math notranslate nohighlight">\(Z^\top Z=I\)</span> implies that the entry <span class="math notranslate nohighlight">\(s,t\)</span> for <span class="math notranslate nohighlight">\(1\leq s,t\leq r\)</span> of <span class="math notranslate nohighlight">\(Z^\top Z\)</span> is equal to zero if <span class="math notranslate nohighlight">\(s\neq t\)</span> and equal to one otherwise. We have</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b563ca01-5caf-4147-994f-d783251d1a76">
+<span class="eqno">(240)<a class="headerlink" href="#equation-b563ca01-5caf-4147-994f-d783251d1a76" title="Permalink to this equation">#</a></span>\[\begin{align}
+    Z^\top Z &amp;=I\nonumber\\
+    \Leftrightarrow (Z^\top Z)_{s,t}=Z_{\cdot s}^\top Z_{\cdot t}&amp;=\begin{cases}
+0&amp; \text{if } s\neq t\\
+1&amp; \text{otherwise}
+\end{cases}\nonumber\\
+Z_{\cdot s}^\top Z_{\cdot t}&amp;= 0 &amp;\text{for } 1\leq s\neq t\leq r \label{eq:ortho}\\
+Z_{\cdot s}^\top Z_{\cdot s} = \lVert Z_{\cdot s}\rVert^2 &amp;=1 &amp;\text{for }1\leq s\leq r \label{eq:unit}
+\end{align}\]</div>
+<p>From Eq.~\eqref{eq:ortho} follows that the columns of <span class="math notranslate nohighlight">\(Z\)</span> are orthogonal and from Eq.~\eqref{eq:unit} follows that the columns of <span class="math notranslate nohighlight">\(Z\)</span> have a Euclidean norm of one.</p>
+</div>
+</li>
+<li><p>We define a new feature <span class="math notranslate nohighlight">\(\mathtt{F}_3 = \mathtt{F}_1 + 2\mathtt{F}_2\)</span>, given the following data:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_1\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_2\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>-2</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>-2</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="simple">
+<li><p>Compute the sample variance of the new feature by computing the new feature values and then computing the variance of these values.</p></li>
+<li><p>Compute the sample variance of the new feature by means of the formula derived in the lecture: <span class="math notranslate nohighlight">\(\sigma_{\mathtt{F}_3}^2 = \frac1n\lVert (D-\mathbf{1}\mu_{\mathtt{F}}^\top )\alpha\rVert^2\)</span></p></li>
+<li><p>Plot the data points and the vector <span class="math notranslate nohighlight">\(\alpha\)</span> which defines the new feature <span class="math notranslate nohighlight">\(\mathtt{F}_3\)</span>. Does <span class="math notranslate nohighlight">\(\alpha\)</span> indicate a direction of high or low sample variance in the data? How can you compute the variance in the direction of <span class="math notranslate nohighlight">\(\alpha\)</span>?</p></li>
+<li><p>Compute the variance and direction of maximum variance in the data.</p></li>
+</ol>
+<div class="toggle docutils container">
+<ol>
+<li><p>We compute the new feature values <span class="math notranslate nohighlight">\(\mathtt{F}_3\)</span>, the mean <span class="math notranslate nohighlight">\(\mu_3=1\)</span>, and the centered feature values <span class="math notranslate nohighlight">\(\mathtt{F}_3-\mu_3\)</span>:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_1\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_2\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_3\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_3 - \mu_3\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>-2</p></td>
+<td><p>-2</p></td>
+<td><p>-3</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>3</p></td>
+<td><p>6</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>-2</p></td>
+<td><p>-3</p></td>
+<td><p>-4</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>3</p></td>
+<td><p>2</p></td>
+</tr>
+</tbody>
+</table>
+<p>The sample variance of the new feature <span class="math notranslate nohighlight">\(\mathtt{F}_3\)</span> is then given as the mean value of the samples <span class="math notranslate nohighlight">\((\mathtt{F}_3 - \mu_3)^2\)</span>, that is, we compute
+<div class="math notranslate nohighlight">
+\[\sigma_{\mathtt{F}_3}^2 = (3^2  + 5^2 + 4^2 +2^2)/4 = 13.5\]</div>
+</p>
+</li>
+<li><p>To compute the variance by means of the formula <span class="math notranslate nohighlight">\(\sigma_{\mathtt{F}_3}^2 = \frac1n\lVert (D-\mathbf{1}\mu_{\mathtt{F}}^\top )\alpha\rVert^2\)</span>, we compute first the mean values of the features (<span class="math notranslate nohighlight">\(\mu_1=1,\mu_2=0\)</span>) and then the centered data matrix <span class="math notranslate nohighlight">\(D-\mathbf{1}\mu_{\mathtt{F}}\)</span>:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_1\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_2\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_1 -\mu_1\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_2-\mu_2\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_3 -\mu_3 = \mathtt{F}_1 -\mu_1 +2(\mathtt{F}_2-\mu_2)\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>-2</p></td>
+<td><p>1</p></td>
+<td><p>-2</p></td>
+<td><p>-3</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>3</p></td>
+<td><p>-1</p></td>
+<td><p>3</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>-2</p></td>
+<td><p>0</p></td>
+<td><p>-2</p></td>
+<td><p>-4</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+</tr>
+</tbody>
+</table>
+<p>Now, the variance is given as the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm of the samples  <span class="math notranslate nohighlight">\(\mathtt{F}_3 -\mu_3\)</span>:
+<div class="math notranslate nohighlight">
+\[\sigma_{\mathtt{F}_3}^2 = (3^2  + 5^2 + 4^2 +2^2)/4 = 13.5\]</div>
+</p>
+</li>
+<li><p>We plot the data points and the vector <span class="math notranslate nohighlight">\(\alpha=(1,2)\)</span>.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-7ed2fc60a4ff61beea69e7debe82b849d421133c.svg" alt="Figure made with TikZ" /></p>
+</div><p>The variance in the direction of <span class="math notranslate nohighlight">\(\alpha\)</span> is not particularly high. Geometrically, the variance would be given by projecting the points on <span class="math notranslate nohighlight">\(\alpha\)</span> and then having a look how much the projected samples spread. We can compute the variance by normalizing the vector <span class="math notranslate nohighlight">\(\tilde{\alpha}=\alpha/\lVert \alpha\rVert = (1,2)/\sqrt{5}\)</span> and then compute the sample variance of the feature <span class="math notranslate nohighlight">\(\mathtt{F}_{\tilde{\alpha}} = \tilde{\alpha}_1\mathtt{F}_1 + \tilde{\alpha}_2\mathtt{F}_2\)</span>:
+<div class="math notranslate nohighlight">
+\[\sigma_{\mathtt{F}_3}^2 = \frac1n\lVert (D-\mathbf{1}\mu_{\mathtt{F}}^\top )\tilde{\alpha}\rVert^2 = (3^2  + 5^2 + 4^2 +2^2)/5/4 = 2.7\]</div>
+
+4. We compute the direction of maximum variance in the data by the SVD of the centered data matrix. The first right singular vector <span class="math notranslate nohighlight">\(V_{\cdot 1}=(0.27, -0.96)\)</span> of the centered data matrix denotes the direction of maximum variance (the first principle component) and the squared first singular value divided by the number of samples denotes the variance <span class="math notranslate nohighlight">\(\sigma_{\mathtt{F}_{V_{\cdot 1}}}^2 = 4.85\)</span> (all values are rounded to two decimal points).</p>
+</li>
+</ol>
+</div>
+</li>
+<li><p>Given a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>, Show that every right singular vector <span class="math notranslate nohighlight">\(V_{\cdot k}\)</span> of the centered data matrix <span class="math notranslate nohighlight">\(C=D -\vvec{1}{\bm \mu_\mathtt{F}^\top }\)</span> indicates a new feature <span class="math notranslate nohighlight">\(\mathtt{F}_{V_{\cdot k}}= V_{1k}\mathtt{F}_1 + \ldots + V_{dk}\mathtt{F}_d\)</span> whose sample variance is given by the corresponding squared singular value divided by the number of samples <span class="math notranslate nohighlight">\(\sigma_k^2/n\)</span>.</p>
+<div class="toggle docutils container">
+<p>We have derived in the lecture that the sample variance of a feature defined by <span class="math notranslate nohighlight">\(\mathtt{F}_{\alpha}= \alpha_1\mathtt{F}_1 + \ldots + \alpha_d\mathtt{F}_d\)</span> is given by</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+   \sigma_{\mathtt{F}_{\alpha}}^2 = \frac1n\left\lVert \left(D -\vvec{1}{\bm \mu_\mathtt{F}^\top }\right){\bm\alpha}\right\rVert^2 = \frac1n\left\lVert C{\bm\alpha}\right\rVert^2. 
+\end{align*}\]</div>
+<p>If we choose now <span class="math notranslate nohighlight">\(\alpha = V_{\cdot k}\)</span>, and insert the singular value decomposition of <span class="math notranslate nohighlight">\(C=U\Sigma V^\top\)</span>, then we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sigma_{\mathtt{F}_{V_{\cdot k}}}^2 &amp; = \frac1n\left\lVert C{V_{\cdot k}}\right\rVert^2\\
+&amp; = \frac1n\left\lVert U\Sigma V^\top {V_{\cdot k}}\right\rVert^2 \\
+ &amp; = \frac1n\left\lVert \Sigma V^\top {V_{\cdot k}}\right\rVert^2 &amp; \text{(orthogonal invariance)}\\
+ &amp; = \frac1n\left\lVert \Sigma 
+ \begin{pmatrix} V_{\cdot 1}^\top V_{\cdot k}\\
+ \vdots\\
+ V_{\cdot k}^\top V_{\cdot k}\\
+ \vdots\\
+ V_{\cdot 1}^\top V_{\cdot d}
+ \end{pmatrix}\right\rVert^2 
+ = \frac1n\left\lVert \Sigma \begin{pmatrix} 0\\
+ \vdots\\
+ 1\\
+ \vdots\\
+ 0
+ \end{pmatrix}\right\rVert^2 \\
+ &amp;=\frac1n \sigma_k^2. &amp;(\sigma_k = \Sigma_{kk})
+\end{align*}\]</div>
+</div>
+</li>
+<li><p>Given an <span class="math notranslate nohighlight">\(n\times d\)</span> data matrix <span class="math notranslate nohighlight">\(D\)</span>, gathering <span class="math notranslate nohighlight">\(n\)</span> observations of <span class="math notranslate nohighlight">\(d\)</span> features <span class="math notranslate nohighlight">\(\mathtt{F}_1,\ldots,\mathtt{F}_d\)</span>. We define a new feature <span class="math notranslate nohighlight">\(\displaystyle\mathtt{F}_{d+1}= \sum_{k=1}^d \alpha_k\mathtt{F}_k\)</span>.</p>
+<ol class="simple">
+<li><p>Show that the sample mean of the new feature can be computed by the matrix-vector product <span class="math notranslate nohighlight">\({\bm \mu_{\mathtt{F}_{d+1}}=\bm \mu_\mathtt{F}^\top \alpha}\)</span>, where <span class="math notranslate nohighlight">\(\bm \mu_\mathtt{F}^\top = \begin{pmatrix}
+\mu_{\mathtt{F}_1} &amp;\ldots &amp; \mu_{\mathtt{F}_d}\end{pmatrix}\)</span> gathers the sample means of all other features.</p></li>
+<li><p>Show that the sample variance of the new feature can be computed as <span class="math notranslate nohighlight">\(\sigma_{\mathtt{F}_{d+1}}^2 = \frac1n\left\lVert \left(D -\vvec{1}{\bm \mu_\mathtt{F}^\top }\right){\bm\alpha}\right\rVert^2\)</span>.</p></li>
+</ol>
+<div class="toggle docutils container">
+<ol>
+<li><p>Given the <span class="math notranslate nohighlight">\(n\)</span> observations of the new feature</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b40ba68f-0dcd-4cf6-88f8-cf5d6ad0cc55">
+<span class="eqno">(241)<a class="headerlink" href="#equation-b40ba68f-0dcd-4cf6-88f8-cf5d6ad0cc55" title="Permalink to this equation">#</a></span>\[\begin{align}
+    D_{\cdot d+1} =\sum_{k=1}^d \alpha_kD_{\cdot k}=D\bm\alpha\in\mathbb{R}^n, \label{eq:DnewF}
+    \end{align}\]</div>
+<p>the sample mean can be computed by:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-67d1a01a-031a-4f8b-a395-654f7d9313d2">
+<span class="eqno">(242)<a class="headerlink" href="#equation-67d1a01a-031a-4f8b-a395-654f7d9313d2" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \mu_{\mathtt{F}_{d+1}} &amp;= \frac1n \sum_{i=1}^n D_{i d+1} &amp;\text{(Definition sample mean)}\nonumber\\
+    &amp;= \frac1n\vvec{1}^\top D_{\cdot d+1} &amp; (\mathbf{1}\in\{1\}^n \text{ is constant one vector})\nonumber\\
+    &amp;= \frac1n\vvec{1}^\top D{\bm\alpha} &amp; \text{(Eq.~\eqref{eq:DnewF})}\nonumber\\
+    &amp;= \begin{pmatrix}
+    \mu_{\mathtt{F}_1} &amp;\ldots &amp; \mu_{\mathtt{F}_d}
+    \end{pmatrix} {\bm\alpha} &amp;\text{(Computation of mean)}\nonumber\\
+    &amp;= {\bm \mu_\mathtt{F}^\top \alpha},\label{eq:munewF}
+    \end{align}\]</div>
+</li>
+<li><p>The sample variance is computed as follows:</p></li>
+</ol>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \sigma_{\mathtt{F}_{d+1}}^2 &amp;=\frac1n\sum_{i=1}^n (D_{id+1}-\mu_{\mathtt{F}_{d+1}})^2 &amp;\text{(Definition sample variance)}\\
+    &amp;=\frac1n\Vert D_{\cdot d+1} - \vvec{1}\mu_{\mathtt{F}_{d+1}}\rVert^2 &amp; (\text{Definition Euclidean norm, }\mathbf{1}\in\{1\}^n)\\
+    &amp;=\frac1n\left\lVert D{\bm\alpha} -\vvec{1}{\bm \mu_\mathtt{F}^\top \alpha}\right\rVert^2 &amp; (\text{Eq.~\eqref{eq:munewF}})\\
+    &amp;=\frac1n\left\lVert \left(D -\vvec{1}{\bm \mu_\mathtt{F}^\top }\right){\bm\alpha}\right\rVert^2
+\end{align*}\]</div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="dim_reduction_pca.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Principal Component Analysis</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="clustering.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Clustering</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

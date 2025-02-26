@@ -1,0 +1,1002 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Optimization Problems &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Numerical Optimization" href="optimization_numerical.html" />
+    <link rel="prev" title="Optimization" href="optimization.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_n_larger_p.html">
+     Regression When
+     <span class="math notranslate nohighlight">
+      \(p&gt;n\)
+     </span>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naïve Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     Neural Networks Intro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_comp_graphs.html">
+     Computational graphs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Foptimization_problems.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/optimization_problems.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/optimization_problems.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unconstrained-optimization-problems">
+   Unconstrained Optimization Problems
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fonc-sonc">
+     FONC &amp; SONC
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fonc-sonc-in-higher-dimensions">
+     FONC &amp; SONC in higher dimensions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#constrained-optimization-problems">
+   Constrained Optimization Problems
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Optimization Problems</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unconstrained-optimization-problems">
+   Unconstrained Optimization Problems
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fonc-sonc">
+     FONC &amp; SONC
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fonc-sonc-in-higher-dimensions">
+     FONC &amp; SONC in higher dimensions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#constrained-optimization-problems">
+   Constrained Optimization Problems
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="optimization-problems">
+<h1>Optimization Problems<a class="headerlink" href="#optimization-problems" title="Permalink to this headline">#</a></h1>
+<figure class="align-left" id="mountain">
+<a class="reference internal image-reference" href="_images/mountain.jpg"><img alt="_images/mountain.jpg" src="_images/mountain.jpg" style="height: 200px;" /></a>
+</figure>
+<p>Imagine yourself standing in the middle of a vast, rugged mountain landscape. Your goal is to reach the lowest point in this terrain—a hidden valley where the air is still. Easy, you might think. I’ll just look at the map and see where the lowest point is. But what if the map is infinitely big? And what if the mountain landscape is in a high-dimensional hyperspace, where you can’t see anything but three dimensional projections of this hyperspace? The optimization challenges in machine learning are a bit like that: the task to find the lowest valley an infinitely large space extending within hundreds of dimensions. What we need to solve this task is to get some hints where to look for the valley, and this is what optimization theory can deliver.</p>
+<p>We start with looking at vanilla optimization problems that consist only of an objective function that is to be minimized, having no additional constraints on the solution.</p>
+<section id="unconstrained-optimization-problems">
+<h2>Unconstrained Optimization Problems<a class="headerlink" href="#unconstrained-optimization-problems" title="Permalink to this headline">#</a></h2>
+<p>We define an optimization problem, also called <em>the objective</em> as follows.</p>
+<div class="proof definition admonition" id="objective">
+<p class="admonition-title"><span class="caption-number">Definition 4 </span> (unconstrained optimization objective)</p>
+<section class="definition-content" id="proof-content">
+<p>Given an <strong>objective function</strong> <span class="math notranslate nohighlight">\(f:\mathbb{R}^n\rightarrow \mathbb{R}\)</span>, the <strong>objective of an unconstrained optimization problem</strong> is:
+<div class="math notranslate nohighlight">
+\[\begin{align*}
+        \min_{x\in\mathbb{R}^n} f(\vvec{x})
+    \end{align*}\]</div>
+
+We say that:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\displaystyle \vvec{x}^*\in\argmin_{x\in\mathbb{R}^n}f(\vvec{x})\)</span> is a <strong>minimizer</strong></p></li>
+<li><p><span class="math notranslate nohighlight">\(\displaystyle \min_{\vvec{x}\in\mathbb{R}^n}f(\vvec{x})\)</span> is the <strong>minimum</strong></p></li>
+</ul>
+</section>
+</div><p>A minimizer can be <em>local</em> or <em>global</em>. Following our analogy, the global minimizer is the lowest valley and a local minimizer can be any valley.</p>
+<div class="proof definition admonition" id="minimizers">
+<p class="admonition-title"><span class="caption-number">Definition 5 </span> (minimizers)</p>
+<section class="definition-content" id="proof-content">
+<p>Given an unconstrained objective as defined above. A <strong>global minimizer</strong> is a vector <span class="math notranslate nohighlight">\(\vvec{x}^*\)</span> satisfying
+<div class="math notranslate nohighlight">
+\[
+  f(\vvec{x}^*)\leq f(\vvec{x}) \text{ for all } \vvec{x}\in\mathbb{R}^n
+\]</div>
+
+A <strong>local minimizer</strong> is a vector <span class="math notranslate nohighlight">\(\vvec{x}_0\)</span> satisfying
+<div class="math notranslate nohighlight">
+\[f(\vvec{x}_0)\leq f(\vvec{x}) \text{ for all } \vvec{x}\in\mathcal{N}_\epsilon(\vvec{x}_0),\]</div>
+
+where <span class="math notranslate nohighlight">\(\mathcal{N}_\epsilon(\vvec{x}_0) = \{\vvec{x}\in\mathbb{R}^n\vert \lVert x-x_0\rVert\leq \epsilon\}\)</span></p>
+</section>
+</div><p>In an unconstrained optimization problem, the minimizers are the points where the function does not decrease in any direction. These points are a subset of the <em>stationary points</em>, which can be identified by solving a mathematical equation.</p>
+<section id="fonc-sonc">
+<h3>FONC &amp; SONC<a class="headerlink" href="#fonc-sonc" title="Permalink to this headline">#</a></h3>
+<p>You probably know from your highschool math classes that every local minimizer <span class="math notranslate nohighlight">\(x_0\)</span> of a function <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R}\)</span> is a stationary point: <span class="math notranslate nohighlight">\(\frac{d}{dx}f(x_0)=0\)</span>. This is known as the first order neccessary condition. This property is easily understood, considering that the derivative indicates the slope of a function at a specified point. If we have a real-valued minimizer, then the slope is zero at that minimizer. If the slope would be positive, then we can go to the left to decrease the function value further, and if the slope is negative, we can go to the right. By means of this property, we can identify all the candidates that could be minimizers. Maximizers and saddle points are stationary points too. With the second order neccessary condition, we can filter further the minimizers from the pool of candidates. The second order neccessary condition states that at a minimizer the second derivative is nonnegative <span class="math notranslate nohighlight">\(\frac{d^2}{dx^2}f(x_0)\geq 0\)</span>. The second derivative is the slope of the slope. If we have a minimizer, then the slope increases: first we go down, and then we go up. Hence, we need that the slope of the slope does at least not decrease.</p>
+<div class="proof example admonition" id="example-2">
+<p class="admonition-title"><span class="caption-number">Example 8 </span></p>
+<section class="example-content" id="proof-content">
+<p>Let’s have a look at a seemingly simple example. The function <span class="math notranslate nohighlight">\(f(x) = \frac14x^4 + \frac13x^3 -x^2\)</span> is plotted below and we see that there are two minimizers <span class="math notranslate nohighlight">\(x_1=-2\)</span> and <span class="math notranslate nohighlight">\(x_2=1\)</span>. The question is just if those are all minimizers, or if there is another one beyond the scope of what is plotted here.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-b2427c92aa6d74085e15433b634dd01ad375d2b1.svg" alt="Figure made with TikZ" /></p>
+</div><p>To find all the minimizers of the function, we apply the first and second order neccessary condition. We compute the first and second derivative.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \frac{d}{dx} f(x) &amp;= x^3 + x^2 -2x \\
+    \frac{d^2}{dx^2}f(x) &amp; = 3x^2 + 2x -2
+\end{align*}\]</div>
+<p>Now we solve the equation setting the first derivative to zero and get three stationary points:
+<div class="math notranslate nohighlight">
+\[\frac{d}{dx} f(x) =0 \quad \Leftrightarrow \quad x_1=-2, x_2 = 0, x_3=1\]</div>
+
+Given the plot, we already know which of these are minimizers, but to conclude our example, we apply the second order sufficient condition to identify the local minimizers <span class="math notranslate nohighlight">\(x_1=-2\)</span> and <span class="math notranslate nohighlight">\(x_2=3\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\frac{d^2}{dx^2}f(-2)=6\geq 0,\quad \frac{d^2}{dx^2}f(0)=-2&lt; 0,\quad \frac{d^2}{dx^2}f(1)=3\geq 0 \]</div>
+</section>
+</div></section>
+<section id="fonc-sonc-in-higher-dimensions">
+<h3>FONC &amp; SONC in higher dimensions<a class="headerlink" href="#fonc-sonc-in-higher-dimensions" title="Permalink to this headline">#</a></h3>
+<p>The principles of the first and second order conditions can be generalized to functions <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span> mapping from a <span class="math notranslate nohighlight">\(d\)</span>-dimensional vector space to real values. The main difficulty is that we have now more to consider than just left and right when looking for a direction into which we could minimize the function further. In fact, any vector <span class="math notranslate nohighlight">\(\vvec{v}\in\mathbb{R}^d\)</span> could indicate a possible direction in which the function might decrease. Luckily, we can show that we just have to check one direction, given by the negative <em>gradient</em>, which points into the direction of steepest descent. The gradient indicates the slope of a function in the directions of the coordinates, which are called the <em>partial derivatives</em>. A partial derivative <span class="math notranslate nohighlight">\(\frac{\partial f(\vvec{x})}{\partial x_i}\)</span> is computed like a one-dimensional derivative by treating all variables except for <span class="math notranslate nohighlight">\(x_i\)</span> as  a constant. The gradient gathers those partial derivatives in a vector. The transposed of the gradient is called the <em>Jacobian</em>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \frac{\partial f(\vvec{x})}{\partial \vvec{x}} &amp;=
+    \begin{pmatrix}
+    \frac{\partial f(\vvec{x})}{\partial x_1} &amp; \ldots &amp; \frac{\partial f(\vvec{x})}{\partial x_d}
+    \end{pmatrix}\in\mathbb{R}^{1\times d} &amp;\text{(Jacobian)}\\
+      \nabla_\vvec{x} f(\vvec{x}) &amp;=
+    \begin{pmatrix}
+    \frac{\partial f(\vvec{x})}{\partial x_1} \\ \vdots \\ \frac{\partial f(\vvec{x})}{\partial x_d}
+    \end{pmatrix}\in\mathbb{R}^{d} &amp;\text{(Gradient)}
+\end{align*}\]</div>
+<p>With the gradient, we get a first order neccessary condition (FONC) for functions mapping from a vector space <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.</p>
+<div class="proof theorem admonition" id="theorem-3">
+<p class="admonition-title"><span class="caption-number">Theorem 1 </span> (FONC)</p>
+<section class="theorem-content" id="proof-content">
+<p>If <span class="math notranslate nohighlight">\(\vvec{x}\)</span> is a local  minimizer of <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(f\)</span> is continuously
+differentiable in an open neighborhood of <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, then
+<div class="math notranslate nohighlight">
+\[\nabla f(\vvec{x})=0\]</div>
+</p>
+</section>
+</div><p>Likewise, a vector <span class="math notranslate nohighlight">\(\vvec{x}\)</span> is called <em>stationary point</em> if <span class="math notranslate nohighlight">\(\nabla f(\vvec{x})=0\)</span>. The second order neccessary condition (SONC) uses the generation of the second order derivative to vector spaces, called the <em>Hessian</em>. We state this condition here for reasons of completeness, but we will not need this property for the machine learning models that we discuss in this course.</p>
+<div class="proof theorem admonition" id="theorem-4">
+<p class="admonition-title"><span class="caption-number">Theorem 2 </span> (SONC)</p>
+<section class="theorem-content" id="proof-content">
+<p>If <span class="math notranslate nohighlight">\(\vvec{x}\)</span> is a local  minimizer of <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(\nabla^2f\)</span> is continuous in an open
+neighborhood of <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, then
+<div class="math notranslate nohighlight">
+\[\nabla f(\vvec{x})=0 \text{ and } \nabla^2f(\vvec{x}) \text{ is positive semidefinite}\]</div>
+</p>
+</section>
+</div><p>A matrix <span class="math notranslate nohighlight">\(A\in\mathbb{R}^{d\times d}\)</span> is <strong>positive semidefinite</strong> if
+<div class="math notranslate nohighlight">
+\[\vvec{x}^\top A \vvec{x}\geq 0 \text{ for all } \vvec{x}\in\mathbb{R}^d\]</div>
+</p>
+<div class="proof example admonition" id="expl_fonc">
+<p class="admonition-title"><span class="caption-number">Example 9 </span></p>
+<section class="example-content" id="proof-content">
+<figure class="align-left" id="rosenbrock">
+<a class="reference internal image-reference" href="_images/rosenbrock.png"><img alt="_images/rosenbrock.png" src="_images/rosenbrock.png" style="height: 200px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">The Rosenbrock function</span><a class="headerlink" href="#rosenbrock" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In this example we apply FONC and SONC to find the minimizers of the Rosenbrock function, which is given by</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    f(\vvec{x})&amp;= 100(x_2-x_1^2)^2 +(1-x_1)^2.
+\end{align*}\]</div>
+<p>In order to apply FONC, we need to compute the gradient. We do so by computing the partial derivatives. The partial derivatives are computed by the same rules as you know it from computing the derivative of a one-dimensional function.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \frac{\partial}{\partial x_1}f(\vvec{x})&amp;= 400x_1(x_1^2-x_2) +2(x_1-1)\\
+    \frac{\partial}{\partial x_2}f(\vvec{x})&amp;= 200(x_2-x_1^2)
+\end{align*}\]</div>
+<p>FONC says that every minimizer has to be a stationary point. Stationary points are the vectors at which the gradient of <span class="math notranslate nohighlight">\(f\)</span> is zero. We compute the set of stationary points by setting the gradient to zero and solving for <span class="math notranslate nohighlight">\(\vvec{x}\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+      \frac{\partial}{\partial x_2}f(\vvec{x})&amp;=200(x_2-x_1^2)=0
+      &amp;\Leftrightarrow x_2 =x_1^2\\
+      \frac{\partial}{\partial x_1}f\begin{pmatrix}x_1\\x_1^2\end{pmatrix}&amp;= 2(x_1-1) =0 
+      &amp;\Leftrightarrow x_1=1
+\end{align*}\]</div>
+<p>According to FONC we have a stationary point at <span class="math notranslate nohighlight">\(\vvec{x}=(1,1)\)</span>. Now we check with SONC if the stationary point could be a minimizer (it could also be a maximizer or a saddle point). SONC says that every minimizer has a positive definite Hessian. Hence, we require the Hessian, the second derivative of the Rosenbrock function. To that end, we compute the partial derivatives of the partial derivatives:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial^2}{\partial^2 x_1}f(\vvec{x})&amp;= \frac{\partial}{\partial x_1}\left(\frac{\partial}{\partial x_1}f(\vvec{x})\right)= 1200x_1^2-400x_2 +2\\
+\frac{\partial^2}{\partial^2 x_2}f(\vvec{x})&amp;=  \frac{\partial}{\partial x_2} \left(\frac{\partial}{\partial x_2}f(\vvec{x})\right)= 200\\
+\frac{\partial^2}{\partial x_1\partial x_2}f(\vvec{x})&amp;=\frac{\partial^2}{\partial x_2\partial x_1}f(\vvec{x})= -400x_1
+\end{align*}\]</div>
+<p>The Hessian is given by</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \nabla^2 f(\vvec{x})&amp;=  \begin{pmatrix}\frac{\partial^2}{\partial^2 x_1} f(\vvec{x}) &amp; \frac{\partial^2}{\partial x_1x_2} f(\vvec{x})\\ \frac{\partial^2}{\partial x_2x_1}f(\vvec{x}) &amp; \frac{\partial^2}{\partial^2 x_2} f(\vvec{x})\end{pmatrix}\\
+    &amp;=200\begin{pmatrix} 6x_1^2-2x_2 + 0.01&amp; -2x_1\\ -2x_1 &amp;1 \end{pmatrix}
+\end{align*}\]</div>
+<p>We insert our stationary point <span class="math notranslate nohighlight">\(\vvec{x}_0=(1,1)\)</span> into the Hessian and get
+<div class="math notranslate nohighlight">
+\[\begin{split}\nabla^2f(\vvec{x}_0)= 200\begin{pmatrix} 4.01&amp; -2\\ -2 &amp; 1\end{pmatrix}\end{split}\]</div>
+
+Now we check if the Hessian at the stationary point is positive definite. Let <span class="math notranslate nohighlight">\(\vvec{x}\in\mathbb{R}^2\)</span>, then</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \vvec{x}^\top \nabla^2f(\vvec{x}_0) \vvec{x} &amp;= 200 \begin{pmatrix}x_1 &amp; x_2\end{pmatrix} \begin{pmatrix}
+     4.01&amp; -2\\ -2 &amp; 1
+    \end{pmatrix}\begin{pmatrix}x_1\\x_2\end{pmatrix}\\
+    &amp;= 200\begin{pmatrix}x_1 &amp; x_2\end{pmatrix} \begin{pmatrix}
+    4.01x_1-2x_2\\ -2x_1+ x_2
+    \end{pmatrix}\\
+    &amp;=200(4.01x_1^2 -2x_1x_2 -2x_1x_2 +x_2^2)\\
+    &amp;= 200(4.01x_1^2 -4x_1x_2 + x_2^2)\\
+    &amp;= 200((2x_1-x_2)^2 +0.01x_1^2) \geq 0
+\end{align*}\]</div>
+<p>The last inequality follows because the sum of quadratic terms can not be negative.
+We conclude that the Hessian at our stationary point is positive semi-definite. As a result, FONC and SONC yield that <span class="math notranslate nohighlight">\(\vvec{x}=(1,1)\)</span> is the only possible local minimizer of <span class="math notranslate nohighlight">\(f\)</span>.</p>
+</section>
+</div><p>Nice, we have now a strategy yo find local minimizers if we have an unconstrained objective with an objective function which is continuously differentiable. Let’s consider a more complex setting, introducing constraints</p>
+</section>
+</section>
+<section id="constrained-optimization-problems">
+<h2>Constrained Optimization Problems<a class="headerlink" href="#constrained-optimization-problems" title="Permalink to this headline">#</a></h2>
+<div class="proof definition admonition" id="constr_objective">
+<p class="admonition-title"><span class="caption-number">Definition 6 </span> (Constrained Objective)</p>
+<section class="definition-content" id="proof-content">
+<p>Given an objective function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span> and constraint functions <span class="math notranslate nohighlight">\(c_i,g_k:\mathbb{R}^d\rightarrow \mathbb{R}\)</span>, then  the <strong>objective</strong> of an constrained optimization problem is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \min_{x\in\mathbb{R}^n}&amp;\ f(\vvec{x}) \\
+    \text{s.t. }&amp; c_i(\vvec{x}) =0  &amp;\text{ for } 1\leq i \leq m,\\
+                &amp; g_k(\vvec{x})\geq 0 &amp;\text{ for }1\leq k\leq l
+\end{align*}\]</div>
+<p>We call the set of vectors satisfying the constraints the <strong>feasible set</strong>:
+<div class="math notranslate nohighlight">
+\[\mathcal{C}=\{\vvec{x}\mid c_i(\vvec{x})=0, g_k(\vvec{x})\geq 0 \text{ for }1\leq i\leq m, 1\leq k\leq l\}.\]</div>
+</p>
+</section>
+</div><p>Adding constraints to an optimization problem often makes it more challenging. Now, there are two types of minimizers to consider:</p>
+<ol class="simple">
+<li><p>Interior Minimizers: Points that lie in a “valley” of the objective function, where the function value only increases or remains the same when moving in any direction.</p></li>
+<li><p>Boundary Minimizers: Points on the edge of the feasible set, where the function value increases or stays the same when moving <em>inward</em> along the feasible region (the function value might decrease when moving out of the feasible set).</p></li>
+</ol>
+<p>Boundary minimizers can be difficult to identify because traditional methods like the First-Order Necessary Condition (FONC) do not directly apply. However, by using the Lagrangian approach, we can transform a constrained objective into an (almost) unconstrained one, making it possible to find solutions at the boundary.</p>
+<div class="proof definition admonition" id="lagrangian">
+<p class="admonition-title"><span class="caption-number">Definition 7 </span> (Lagrangian)</p>
+<section class="definition-content" id="proof-content">
+<p>Given a constrained optimization objective as in <a class="reference internal" href="#constr_objective">Definition 6</a>, then  the the <strong>Lagrangian function</strong> is defined as
+<div class="math notranslate nohighlight">
+\[\mathcal{L}(\vvec{x},\bm\lambda,\bm\mu) = f(\vvec{x}) - \sum_{i=1}^m\bm\lambda_i c_i(\vvec{x}) - \sum_{k=1}^l\bm\mu_k g_k(\vvec{x}).\]</div>
+
+The parameters <span class="math notranslate nohighlight">\(\lambda_i\in\mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(\mu_k\geq 0\)</span> are called <em>Lagrange multipliers</em>.</p>
+</section>
+</div><p>The Lagrangian introduces an adversarial approach to handling constraints. We remove the constraints on <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, allowing us to minimize over all <span class="math notranslate nohighlight">\(\vvec{x}\in\mathbb{R}^d\)</span>, while simultaneously maximizing over the Lagrange multipliers <span class="math notranslate nohighlight">\(\bm\lambda\in\mathbb{R}^m\)</span> and <span class="math notranslate nohighlight">\(\bm\mu\geq\vvec{0}\)</span>.</p>
+<p>Imagine a scenario where you are trying to minimize the Lagrangian by adjusting <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, while an “adversary” seeks to maximize it by adjusting <span class="math notranslate nohighlight">\(\bm\lambda\)</span> and <span class="math notranslate nohighlight">\(\bm\mu\)</span>. If <span class="math notranslate nohighlight">\(\vvec{x}\)</span> lies outside the feasible set, the adversary can exploit this by driving up the Lagrangian value. For instance, if a constraint <span class="math notranslate nohighlight">\(c_i(\vvec{x})=0.1\neq 0\)</span> is unmet, the adversary could set <span class="math notranslate nohighlight">\(\lambda_i=-10000\)</span>, raising the Lagrangian by <span class="math notranslate nohighlight">\(-(-10000)\cdot 0.1=1000\)</span>.</p>
+<p>To prevent these large increases, we need to ensure <span class="math notranslate nohighlight">\(\vvec{x}\)</span> is within the feasible set, effectively limiting the adversary’s ability to inflate the Lagrangian.</p>
+<p>The Lagrangian can be used to transform the <em>primal problem</em>, which is the original unconstrained objective from <a class="reference internal" href="#constr_objective">Definition 6</a>, to the dual problem.</p>
+<div class="proof definition admonition" id="dual_problem">
+<p class="admonition-title"><span class="caption-number">Definition 8 </span> (Dual Problem)</p>
+<section class="definition-content" id="proof-content">
+<p>Given a primal optimization objective as defined in <a class="reference internal" href="#constr_objective">Definition 6</a>, we define the <strong>dual objective function</strong> <span class="math notranslate nohighlight">\(\mathcal{L}_{dual}\)</span>, returning the minimum (infimum to be precise) of the Lagrangian, given any <span class="math notranslate nohighlight">\(\bm\lambda,\bm\mu\geq\vvec{0}\)</span>:
+<div class="math notranslate nohighlight">
+\[\inf_{\vvec{x}\in\mathbb{R}^d}\mathcal{L}(\vvec{x},\bm\lambda,\bm\mu) = \mathcal{L}_{dual}(\bm\lambda,\bm\mu).\]</div>
+ the <strong>dual optimization objective</strong> is defined as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\max_{\bm\lambda, \bm\mu }&amp;\ \mathcal{L}_{dual}(\bm\lambda,\bm\mu) \\
+\text{s.t. }&amp; \bm\lambda\in\mathbb{R}^m, \bm\mu\in\mathbb{R}_+^l
+\end{align*}\]</div>
+</section>
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The defintion of the dual objective uses the infimum and not the minimum, because there might be some cases where you don’t reach the minimum of the Lagrangian for any specific <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, but only in a limit, e.g. <span class="math notranslate nohighlight">\(\vvec{x}\rightarrow\infty\)</span>. The infimum returns then the minimum in the limit. If you’re not familiar with the concept of the infimum, you can think of it as the minimum.</p>
+</div>
+<p>The solution to the dual objective are saddle points: points <span class="math notranslate nohighlight">\((\vvec{x},\bm\lambda,\bm\mu)\)</span> that minimize the Lagrangian subject to <span class="math notranslate nohighlight">\(\vvec{x}\)</span> and maximize it subject to <span class="math notranslate nohighlight">\((\bm\lambda,\bm\mu)\)</span>. This allows us to formulate necessary conditions (similar to FONC), called the Karush-Kuhn-Tukker (KKT) conditions that have to be met for a solution to the dual problem.</p>
+<div class="proof theorem admonition" id="theorem-9">
+<p class="admonition-title"><span class="caption-number">Theorem 3 </span> (KKT conditions)</p>
+<section class="theorem-content" id="proof-content">
+<p>Suppose that the objective function <span class="math notranslate nohighlight">\(\displaystyle f\colon \mathbb {R} ^{n}\rightarrow \mathbb {R}\)</span> and the constraint functions <span class="math notranslate nohighlight">\(\displaystyle c_{i}\colon \mathbb{R} ^{n}\rightarrow \mathbb {R} \)</span> and <span class="math notranslate nohighlight">\(\displaystyle g_{k}\colon \mathbb {R} ^{n}\rightarrow \mathbb{R}\)</span> are continuously differentiable. If <span class="math notranslate nohighlight">\( \vvec{x}^*\)</span> is a local minimum, and the constraint functions <span class="math notranslate nohighlight">\(c_{i},g_k\)</span> are affine functions, then there exist multipliers <span class="math notranslate nohighlight">\(\bm\lambda^*\)</span> and <span class="math notranslate nohighlight">\(\bm\mu^*\)</span> such that the following conditions hold:</p>
+<ol>
+<li><p><strong>Stationarity</strong>:
+<div class="math notranslate nohighlight">
+\[
+\nabla_{\vvec{x}} \mathcal{L}(\vvec{x}^*,\bm\lambda^*,\bm\mu^*) = \nabla f(x^*) + \sum_{i=1}^m \lambda_i^* \nabla c_i(x^*) + \sum_{k=1}^l \mu_k^* \nabla g_k(x^*) = 0
+\]</div>
+</p></li>
+<li><p><strong>Primal feasibility</strong>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+   c_i(\vvec{x}^*) = 0, \quad \forall i
+   g_k(\vvec{x}^*) \geq 0, \quad \forall k
+   \end{align*}\]</div>
+</li>
+<li><p><strong>Dual feasibility</strong>:
+<div class="math notranslate nohighlight">
+\[
+\mu_k^* \geq 0, \quad \forall k
+\]</div>
+</p></li>
+<li><p><strong>Complementary slackness</strong>:
+<div class="math notranslate nohighlight">
+\[
+\mu_k^* g_k(\vvec{x}^*) = 0, \quad \forall k
+\]</div>
+</p></li>
+</ol>
+</section>
+</div><p>The KKT conditions state a set of linear equations, that can be used to obtain candidates for potential minimizers <span class="math notranslate nohighlight">\(\vvec{x}^*\)</span>.
+We can easily show that the Lagrangian forms a lower bound of the objective function. For feasible <span class="math notranslate nohighlight">\(\vvec{x}\in\mathcal{C}\)</span> and <span class="math notranslate nohighlight">\(\bm\lambda\in\mathbb{R}^m,\bm\mu\in\mathbb{R}^l\)</span>, <span class="math notranslate nohighlight">\(\bm\mu\geq \vvec{0}\)</span> we have
+<div class="math notranslate nohighlight">
+\[\mathcal{L}(\vvec{x},\bm\lambda,\bm\mu) = f(\vvec{x}) - \sum_{i=1}^m\bm\lambda_i \underbrace{c_i(\vvec{x}}_{=0}) - \sum_{k=1}^l\underbrace{\bm\mu_k}_{\geq 0} \underbrace{g_k(\vvec{x})}_{\geq 0}\leq f(\vvec{x})\]</div>
+
+In this course, we will need to solve a dual problem only for a linear optimization problem, where the objective function and the constraint functions are affine functions. In this case, <em>strong duality</em> holds, such that every minimizer of the primal objective is a maximizer of the dual objective <span class="math notranslate nohighlight">\(f(\vvec{x}^*)= \mathcal{L}_{dual}(\bm\lambda^*,\bm\mu^*)\)</span>. In this case, we know that every point <span class="math notranslate nohighlight">\(\vvec{x}^*\)</span> obtained by the KKT conditions is a solution to the primal problem.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="optimization.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Optimization</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="optimization_numerical.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Numerical Optimization</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

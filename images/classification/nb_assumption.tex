@@ -1,0 +1,21 @@
+\documentclass[crop,tikz,convert={outext=.svg,command=\unexpanded{pdf2svg \infile\space\outfile}},multi=false]{standalone}[2012/04/13]
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{pgfplots}
+
+
+%-------------------------------------
+% Tikz and pgf options & definitions
+%-------------------------------------
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{matrix}
+
+
+
+\begin{document}
+\begin{tikzpicture}[every node/.style={anchor=west}]
+  \matrix (m) [matrix of math nodes, nodes in empty cells]{
+    {\cal D} = \lbrace \left( \raisebox{-1ex}{\includegraphics[scale=0.5]{mnist_0.png}} , 5 \right), \left( \raisebox{-1ex}{\includegraphics[scale=0.5]{mnist_1.png}} , 0 \right), \left( \raisebox{-1ex}{\includegraphics[scale=0.5]{mnist_2.png}} , 4 \right), \left( \raisebox{-1ex}{\includegraphics[scale=0.5]{mnist_3.png}} , 1 \right), \ldots, \left( \raisebox{-1ex}{\includegraphics[scale=0.5]{mnist_4.png}} , 9 \right)\rbrace .\\};
+\end{tikzpicture}
+\end{document}
