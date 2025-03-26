@@ -255,7 +255,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="classification_problem.html">
-     Classification Problem
+     Classification Objective
     </a>
    </li>
    <li class="toctree-l2">
@@ -270,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_naive_bayes.html">
-     Naïve Bayes
+     Naive Bayes
     </a>
    </li>
    <li class="toctree-l2">
@@ -395,6 +395,11 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bibliography.html">
+   Bibliography
+  </a>
  </li>
 </ul>
 
@@ -591,24 +596,21 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#problem-motivation">
-   Problem motivation
+  <a class="reference internal nav-link" href="#inference">
+   Inference
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#solution-approach">
-   Solution approach
+  <a class="reference internal nav-link" href="#training">
+   Training
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bias-variance-tradeoff">
-   Bias/variance tradeoff
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bootstrapping">
-   Bootstrapping
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bootstrapping">
+     Bootstrapping
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aggregating">
@@ -635,24 +637,21 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#problem-motivation">
-   Problem motivation
+  <a class="reference internal nav-link" href="#inference">
+   Inference
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#solution-approach">
-   Solution approach
+  <a class="reference internal nav-link" href="#training">
+   Training
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bias-variance-tradeoff">
-   Bias/variance tradeoff
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bootstrapping">
-   Bootstrapping
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bootstrapping">
+     Bootstrapping
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aggregating">
@@ -671,88 +670,95 @@ title="Print to PDF"
                 
   <section id="random-forests">
 <h1>Random Forests<a class="headerlink" href="#random-forests" title="Permalink to this headline">#</a></h1>
-<section id="problem-motivation">
-<h2>Problem motivation<a class="headerlink" href="#problem-motivation" title="Permalink to this headline">#</a></h2>
-<p><strong>Recap:</strong> the performance of a particular decision tree  <span class="math notranslate nohighlight">\( {\cal T} \)</span> depends on its structure – branches from the root to the leaves – and its content – boolean functions / dimensions <span class="math notranslate nohighlight">\( \lbrace \left( f_{\boldsymbol{\eta}}(\cdot), d_{\boldsymbol{\eta}} \right) \rbrace \)</span> assigned to the decision nodes <span class="math notranslate nohighlight">\( \lbrace \boldsymbol{\eta} \rbrace \)</span> and e.g. categorical distributions <span class="math notranslate nohighlight">\( \lbrace P_{\boldsymbol{\ell}}(\cdot) \rbrace \)</span> assigned to the prediction nodes <span class="math notranslate nohighlight">\( \lbrace \boldsymbol{\ell} \rbrace \)</span>. On the other hand, the structure and content of tree <span class="math notranslate nohighlight">\( {\cal T} \)</span> are tightly coupled with the particular set <span class="math notranslate nohighlight">\( {\cal D} \)</span> of training examples employed to build it. Therefore, the performance of two decision trees <span class="math notranslate nohighlight">\( {\cal T}^{(1)} \)</span> and <span class="math notranslate nohighlight">\( {\cal T}^{(2)} \)</span> built to perform the same classification task, but using slightly different datasets <span class="math notranslate nohighlight">\( {\cal D}^{(1)} \)</span> and <span class="math notranslate nohighlight">\( {\cal D}^{(2)} \)</span>, might significantly differ. <strong>Conclusion:</strong> despite being quite easy for a human to interpret how a decision tree performs the classification task, a decision tree alone is not such a reliable classifier.</p>
+<p>The performance of a decision tree depends on its structure, that is determined by a greedy method, for example with the CART algorithm. The greedy selection of the best split tends to overfit on the training data, as greedy methods quickly get lost in details because they operate only on local views of the data. We can overcome the tendency to overfit by choosing an early stopping criterion, but we can do even better by combining various trees into an ensemble – called a random forest. The disadvantage is that we lose the interpretability of a single tree, but on the other hand, we obtain one of the strongest classifiers to this date.</p>
+<p>The theoretical motivation for the random forest is the bias-variance tradeoff for classification (to be discussed in detail in <a class="reference internal" href="classification_evaluation.html#class-evaluation"><span class="std std-ref">Estimating the true classification error</span></a>). Similar to the bias-variance tradeoff in regression, a complex model tends to overfit and consequently has a high variance and low bias. In turn, a simple model has a high bias and low variance. If we now train a couple of overfitting decision trees, for example by setting the stopping criteria pretty lax, such that we get big trees, and if we aggregate the results of those trees, then we get an low bias, low variance classifier.</p>
+<section id="inference">
+<h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">#</a></h2>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 22 </span> (Random Forest)</p>
+<section class="definition-content" id="proof-content">
+<p>A Random Forest classifier is an ensemble of <span class="math notranslate nohighlight">\(m\)</span> decision trees <span class="math notranslate nohighlight">\(f_{dt1},\ldots,f_{dtm}\)</span>, aggregating their predictions. Let <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})\in\{0,1\}^c\)</span> denote the one-hot encoded argmax function (also called hardmax), such that <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})_y=1\)</span> if and only if <span class="math notranslate nohighlight">\(y = \argmax_{1\leq l\leq c} p_l\)</span>. We define then the random forest classifier as
+<div class="math notranslate nohighlight">
+\[ f_{rf}(\vvec{x})= \frac{1}{m}\sum_{j=1}^m \mathbb{1}(f_{dtj}).\]</div>
+
+As a result, the random forest predicts the class that wins the majority vote of all decision trees.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\hat{y} &amp; = \argmax_y\ f_{rf}(\vvec{x})_y\\
+&amp;= \mathrm{mode}(\{\hat{y}_{dtj}\mid 1\leq j\leq m\})
+\end{align*}\]</div>
 </section>
-<section id="solution-approach">
-<h2>Solution approach<a class="headerlink" href="#solution-approach" title="Permalink to this headline">#</a></h2>
-<p>We can improve the performance of isolated decision trees by using a randomized ensemble of decision trees. The randomized ensemble is created by means of a technique called <em>bagging</em> which includes both:</p>
+</div></section>
+<section id="training">
+<h2>Training<a class="headerlink" href="#training" title="Permalink to this headline">#</a></h2>
+<p>We generate multiple trees from one dataset with a technique called <strong>bootstrapping</strong>.</p>
 <ul class="simple">
-<li><p><strong>Bootstrapping:</strong> use several randomized versions or bootstraps <span class="math notranslate nohighlight">\( \lbrace {\cal D}^{(b)} \rbrace \)</span>, <span class="math notranslate nohighlight">\( b \in \lbrace 1, \ldots, B \rbrace \)</span>, of the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> to build different decision trees <span class="math notranslate nohighlight">\( \lbrace {\cal T}^{(b)} \rbrace \)</span> using the CART algorithm <span id="id1">[]</span>. We can also randomize the CART algorithm parameters. For example, we can select a particular set of features <span class="math notranslate nohighlight">\( {\cal F}^{(b)} \subset \lbrace 1, \ldots, D \rbrace \)</span> to build each tree <span class="math notranslate nohighlight">\( {\cal T}^{(b)} \)</span>; and</p></li>
-<li><p><strong>Aggregating:</strong> for a particular observed sample <span class="math notranslate nohighlight">\( \check{\bf x} \)</span>, we combine the estimates <span class="math notranslate nohighlight">\( \lbrace \hat{y}^{(b)} \rbrace \)</span> provided by the ensemble <span class="math notranslate nohighlight">\( {\cal E} = \lbrace {\cal T}^{(b)} \rbrace \)</span>, <span class="math notranslate nohighlight">\( b \in \lbrace 1, \ldots, B \rbrace \)</span>, to produce a final estimate <span class="math notranslate nohighlight">\( \hat{y} \)</span>.</p></li>
+<li><p><strong>Bootstrapping:</strong> use several randomized versions or bootstraps <span class="math notranslate nohighlight">\( \lbrace {\cal D}^{(b)} \rbrace \)</span>, <span class="math notranslate nohighlight">\( b \in \lbrace 1, \ldots, B \rbrace \)</span>, of the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> to build different decision trees <span class="math notranslate nohighlight">\( \lbrace {\cal T}^{(b)} \rbrace \)</span> using the CART algorithm <span id="id1">[<a class="reference internal" href="bibliography.html#id2" title="Leo Breiman. Random forests. Machine learning, 45:5–32, 2001.">2</a>]</span>. We can also randomize the CART algorithm parameters. For example, we can select a particular set of features <span class="math notranslate nohighlight">\( {\cal F}^{(b)} \subset \lbrace 1, \ldots, D \rbrace \)</span> to build each tree <span class="math notranslate nohighlight">\( {\cal T}^{(b)} \)</span>; and</p></li>
 </ul>
 <p>That leads to one of the most powerful existing classifiers today to work with <em>unstructured</em> data: the random forests (RFs).</p>
-</section>
-<section id="bias-variance-tradeoff">
-<h2>Bias/variance tradeoff<a class="headerlink" href="#bias-variance-tradeoff" title="Permalink to this headline">#</a></h2>
-<p>Remember that, by assumption, the training dataset – and also the testing dataset – of the type <div class="math notranslate nohighlight">
-\[ {\cal D} = \bigcup_{i=1}^{N} \lbrace \left( {\bf x}_{i}, y_{i} \right) \rbrace, \]</div>
- in which <span class="math notranslate nohighlight">\( {\bf x}_{i} \in {\cal X} \)</span> and <span class="math notranslate nohighlight">\( y_{i} \in {\cal Y} \)</span>, contains several (<span class="math notranslate nohighlight">\( N \gg 0 \)</span>) realizations of the random vectors / variables <span class="math notranslate nohighlight">\( {\bf X}, Y \)</span> jointly distributed according to some unknown distribution <span class="math notranslate nohighlight">\( p^{\ast}({\bf x}, y) \)</span>. Note that the prediction <span class="math notranslate nohighlight">\( \hat{y} \)</span> provided by a trained classifier <span class="math notranslate nohighlight">\( h:{\cal X} \rightarrow {\cal Y} \)</span> for an arbitrary feature vector <span class="math notranslate nohighlight">\( \check{\bf x} \)</span> – i.e. a particular sample of the random vector <span class="math notranslate nohighlight">\( {\bf X} \)</span> – is a realization of the random variable <span class="math notranslate nohighlight">\( \hat{Y} = h({\bf X}) \)</span>. Hence, the classifier prediction itself can be modeled as a random variable. Now, let the random variable</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9c9d736c-a351-4149-8c06-00fe1c45c3e6">
-<span class="eqno">(120)<a class="headerlink" href="#equation-9c9d736c-a351-4149-8c06-00fe1c45c3e6" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-Z &amp;\triangleq&amp; \left[ Y = h({\bf X}) \right] \nonumber \\
-&amp;\equiv&amp; \left[ Y = \hat{Y} \right] \nonumber \\
-\end{eqnarray}\]</div>
-<p>indicate a classification match which is distributed according to the p.m.f <span class="math notranslate nohighlight">\( P_{Z}(z) = Pr \lbrace Z=z \rbrace \)</span>, <span class="math notranslate nohighlight">\( z \in \lbrace 0, 1 \rbrace \)</span>, such that <span class="math notranslate nohighlight">\( Pr \lbrace Z = 0 \rbrace \equiv Pr \lbrace Y \neq h({\bf X}) \rbrace \)</span> and <span class="math notranslate nohighlight">\( Pr \lbrace Z = 1 \rbrace \equiv Pr \lbrace Y = h({\bf X}) \rbrace \)</span> correspond respectively to the true classification error <span class="math notranslate nohighlight">\( CE_{true} \)</span>  and to the true classification accuracy <span class="math notranslate nohighlight">\( ACC_{true} \)</span> of the classifier <span class="math notranslate nohighlight">\( h(\cdot) \)</span>. Thus, a particular classification match <span class="math notranslate nohighlight">\( z_{i} = \left[ y_{i} = \hat{y}_{i} \right] \)</span> with <span class="math notranslate nohighlight">\( \hat{y}_{i} = h({\bf x}_{i}) \)</span> committed by the classifier <span class="math notranslate nohighlight">\( h (\cdot) \)</span> for the <span class="math notranslate nohighlight">\(i\)</span>-th data item <span class="math notranslate nohighlight">\( {\bf x}_{i} \)</span> in <span class="math notranslate nohighlight">\( {\cal D} \)</span> is a realization of the random variable <span class="math notranslate nohighlight">\( Z \)</span>. We can therefore rewrite the training classification error <span class="math notranslate nohighlight">\( CE_{train} \)</span> and accuracy <span class="math notranslate nohighlight">\( ACC_{train} \)</span> as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-81f3d603-f6ad-41ac-a43b-f8cd3135c933">
-<span class="eqno">(121)<a class="headerlink" href="#equation-81f3d603-f6ad-41ac-a43b-f8cd3135c933" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
- ACC_{train} &amp;=&amp; 1 - CE_{train} \nonumber \\
- &amp;=&amp; \frac{1}{N} \sum_{i=1}^{N} z_{i} \nonumber
-\end{eqnarray}\]</div>
-<p>such that <span class="math notranslate nohighlight">\( CE_{train} \rightarrow CE_{true} \)</span> and <span class="math notranslate nohighlight">\( ACC_{train} \rightarrow ACC_{true} \)</span> when the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> grows unbounded, i.e. <span class="math notranslate nohighlight">\( N \rightarrow \infty \)</span>. Since <span class="math notranslate nohighlight">\( CE_{train} \)</span> and <span class="math notranslate nohighlight">\( ACC_{train} \)</span> are empirical approximations to the true classification error <span class="math notranslate nohighlight">\( CE_{true} \)</span> and classification accuracy <span class="math notranslate nohighlight">\( ACC_{true} \)</span>, respectively, relying on the samples <span class="math notranslate nohighlight">\( \lbrace z_{i} \rbrace \)</span>, <span class="math notranslate nohighlight">\( i \in \lbrace 1, \ldots, N \rbrace \)</span>, they are also realizations of random variables which are in turn functions of the random variable <span class="math notranslate nohighlight">\( Z \)</span>. A similar analysis can be done for the testing classification error <span class="math notranslate nohighlight">\( CE_{test} \)</span> and accuracy <span class="math notranslate nohighlight">\( ACC_{test} \)</span>.</p>
-<p>To summarize, the empirical training – or testing – performance metrics of a classifier <span class="math notranslate nohighlight">\( h(\cdot) \)</span> are realizations of random variables which depend on the particular samples of the training – or testing – datasets. Putting more straightforwardly, different datasets lead to different empirical performance metrics <span class="math notranslate nohighlight">\( CE_{train} \)</span>, <span class="math notranslate nohighlight">\( ACC_{train} \)</span>, <span class="math notranslate nohighlight">\( CE_{test} \)</span> and <span class="math notranslate nohighlight">\( ACC_{test} \)</span>.</p>
-<p>Now, let us consider the impact of the model complexity on the classification performance. The model complexity is a measure of the flexibility of a model. For example, it can correspond to the number of nearest neighbors <span class="math notranslate nohighlight">\( K \)</span> employed by a KNN classifier or to the depth of the binary tree employed by a DT classifier.</p>
-<p>Let <span class="math notranslate nohighlight">\( h_{{\cal D}} (\cdot) \)</span> represent a classifier trained with a particular training dataset <span class="math notranslate nohighlight">\({\cal D}\)</span>. Furthermore, let us define the mean squared error (MSE) for a given feature vector <span class="math notranslate nohighlight">\( {\bf x} \)</span> as
+<div class="proof theorem admonition" id="theorem-1">
+<p class="admonition-title"><span class="caption-number">Theorem 15 </span> (expected prediction error bound)</p>
+<section class="theorem-content" id="proof-content">
+<p>Defining the margin function of a random forest as
 <div class="math notranslate nohighlight">
-\[
-MSE({\bf x}) = E \lbrace \left( Y - h_{{\cal D}}({\bf X}) \right)^{2} \mid {\bf X}={\bf x}\rbrace
-\]</div>
+\[m(\vvec{x},y) = p_\omega(f(\vvec{x};\omega)=y)-\max_{l\neq y}p_\omega(f(\vvec{x};\omega)=l),\]</div>
 
-with the expected value taken over all possible (random) datasets <span class="math notranslate nohighlight">\( {\cal D} \)</span> containing training examples <span class="math notranslate nohighlight">\( \left( {\bf x}_{i}, y_{i} \right) \)</span> drawn from a distribution <span class="math notranslate nohighlight">\( p^{\ast} \)</span>. We offer without proof that the MSE can be decomposed into three components as follows
+and the strength of a random forest as the expected margin
+<span class="math notranslate nohighlight">\(\mu = \mathbb{E}_{\vvec{x},y}m(\vvec{x},y)\)</span>.
+Assuming that the expected margin is nonnegative <span class="math notranslate nohighlight">\(\mu\geq 0\)</span>, then the expected prediction error of a random forest is bounded by
 <div class="math notranslate nohighlight">
-\[
-MSE({\bf x}) = \underbrace{\left( E \lbrace h_{{\cal D}}({\bf x}) - \bar{h}({\bf x}) \rbrace \right)^{2}}_{\mbox{Bias}^{2}} + \underbrace{E \lbrace \left( h_{{\cal D}}({\bf x}) - \bar{h}({\bf x}) \right)^{2} \rbrace}_{\mbox{Variance}} + \mbox{Irreducible term},
-\]</div>
+\[EPE = p(y\neq \argmax_l f_{\mathrm{rf}}(\vvec{x})_l) \leq \rho\frac{1-\mu^2}{\mu^2},\]</div>
 
-where the  <span class="math notranslate nohighlight">\(\bar{h}({\bf x}) \triangleq E \lbrace h_{{\cal D}}({\bf X}) \rbrace \)</span> is the expected classifier computed over all possible datasets <span class="math notranslate nohighlight">\( {\cal D} \)</span>.</p>
-<p>In general, the model complexity<a class="footnote-reference brackets" href="#footnote3" id="id2">1</a> affects these components as follows</p>
+where</p>
 <ul class="simple">
-<li><p>The bias component captures the inherent error of the classifier (even if trainned with an infinite size dataset <span class="math notranslate nohighlight">\( {\cal D}^{\infty} \)</span>) and it always decreases <span class="math notranslate nohighlight">\(\downarrow\)</span> as the model complexity increases <span class="math notranslate nohighlight">\(\uparrow\)</span>.</p></li>
-<li><p>The variance component captures how much the classifier changes if trainned with different datasets and it always increases <span class="math notranslate nohighlight">\(\uparrow\)</span> as the model complexity increases <span class="math notranslate nohighlight">\(\uparrow\)</span>.</p></li>
-<li><p>The irreducible component does not depend on the model complexity and it is related to the data itself.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\rho = \)</span></p></li>
 </ul>
-<p>Thus, as shown in <a class="reference internal" href="#bias-variance-tradeoff1a-fig"><span class="std std-numref">Fig. 22</span></a>, the bias and variance components contribute differently to the total prediction error. In particular, there is an optimal complexity that minimizes the prediction error. The bias-variance tradeoff consists exactly in choosing the optimal model complexity taking into account the bias and the variance contributions to the total prediction error.</p>
-<figure class="align-left" id="bias-variance-tradeoff1a-fig">
-<a class="reference internal image-reference" href="_images/bias_variance_tradeoff.svg"><img alt="_images/bias_variance_tradeoff.svg" height="320px" src="_images/bias_variance_tradeoff.svg" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 22 </span><span class="caption-text">Bias and variance contributing to the total error.</span><a class="headerlink" href="#bias-variance-tradeoff1a-fig" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p><a class="reference internal" href="#bias-variance-tradeoff1b-fig"><span class="std std-numref">Fig. 23</span></a> illustrates how the training and testing prediction errors behave as the model complexity increases. As indicated in the figure, as the model complexity increases, the bias component always decreases and the variance component always increases when composing the testing prediction error. Specifically, as the model complexity starts increasing, we observe a decrease in the testing prediction error as the squared bias component quickly decreases. The testing prediction error continues to decrease as the model complexity gets higher, but at some point it starts increasing as the variance component gets too high due to model overfitting, i.e. the model starts overfitting the training data. In this case, despite fitting better and better to the training data, the model starts loosing its ability to properly generalize and deal with <em>unseen</em> samples from a testing dataset. Note though that the training prediction error always decreases as the model complexity increases.</p>
-<figure class="align-left" id="bias-variance-tradeoff1b-fig">
-<a class="reference internal image-reference" href="_images/e2.png"><img alt="_images/e2.png" src="_images/e2.png" style="height: 320px;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 23 </span><span class="caption-text">The prediction error as a function of model complexity (borrowed from <span id="id3">[]</span>). The performance curves in light blue and light red are associated with different training datasets. More specifically, each light blue curve was created by training classifiers with increasing model complexities using the same training dataset and by evaluating then their prediction errors. On the other hand, the light red curves were created by evaluating the prediction error of the trained classifiers using a testing dataset. The bold curves in blue and red represent respectively the average of the training and testing performance curves. Lastly, bold curves indicate the prediction error bias whereas light tone curves indicate its variance, i.e. how spread the performance curves associated with different training datasets are around the corresponding average curve.</span><a class="headerlink" href="#bias-variance-tradeoff1b-fig" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<aside class="margin sidebar">
-<p class="sidebar-title"></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The results shown in <a class="reference internal" href="#bias-variance-tradeoff1b-fig"><span class="std std-numref">Fig. 23</span></a> suggest that the optimal model complexity corresponds to the point – or interval – in which the bias stops decreasing. Before reaching this point the model is too simple and underfits the training dataset and after this point the model is too flexible, overfits the training dataset and, as a consequence, loses its ability to properly generalize across the testing dataset.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><a class="reference internal" href="#bias-variance-tradeoff1b-fig"><span class="std std-numref">Fig. 23</span></a> also indicates that, for a fixed model complexity, the performance can be significantly different for two distinct training datasets. However, in average, the classifiers obtained by different training datasets can perform consistently good (or poor).</p>
-</div>
-</aside>
 </section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. If the margin is negative, then the prediction of the random forest is not correct. Hence, we can write that the expected prediction error is the probability that the margin is negative</p>
+<div class="math notranslate nohighlight" id="equation-eq-epe-margin">
+<span class="eqno">(62)<a class="headerlink" href="#equation-eq-epe-margin" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+EPE &amp;= p_{\vvec{x},y}(m(\vvec{x},y)&lt;0)\\
+&amp;= p_{\vvec{x},y}(m(\vvec{x},y)-\mu &lt; -\mu)\\
+&amp;= p_{\vvec{x},y}(\mu - m(\vvec{x},y) &gt; \mu)
+\end{align*}\end{split}\]</div>
+<p>We can apply Chebychev’s inequality to the probability above. Chebychev’s inequality states that
+<div class="math notranslate nohighlight">
+\[p(\lvert x-\mu\rvert\geq w)\leq \frac{\sigma^2}{w^2},\]</div>
+
+where <span class="math notranslate nohighlight">\(\mu\)</span> is the expected value and <span class="math notranslate nohighlight">\(\sigma^2\)</span> is the variance of random variable <span class="math notranslate nohighlight">\(x\)</span>.
+We apply this to  Eq. <a class="reference internal" href="#equation-eq-epe-margin">(62)</a></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+EPE&amp;\leq  p_{\vvec{x},y}(\lvert\mu - m(\vvec{x},y)\rvert &gt; \mu)
+\leq \frac{\sigma^2}{\mu^2}.
+\end{align*}\]</div>
+<p>Now we define the second most frequently predicted label of the random forest as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+s(\vvec{x},y) = \argmax_{l\neq y} p_\omega(\hat{y}_\omega(\vvec{x})=l)
+\end{align*}\]</div>
+<p>We introduce the Kronecker delta that returns one if two integers <span class="math notranslate nohighlight">\(i=j\)</span> and zero otherwise
+<div class="math notranslate nohighlight">
+\[\begin{split}\delta(i,j) = \begin{cases}
+1 &amp; \text{ if } i=j\\
+0 &amp; \text{ if } i\neq j
+\end{cases}.\end{split}\]</div>
+
+Using this notation, we can write the margin as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+m(\vvec{x},y)&amp;= p_\omega(\delta(\hat{y}_\omega(\vvec{x}),y)=1) - p_\omega(\delta(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y)=1))\\
+&amp;=\mathbb{E}_\omega[\delta(\hat{y}_\omega(\vvec{x}),y) -\delta(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y)) ]
+\end{align*}\]</div>
+<p>because of the linearity of the expected value and</p>
+</div>
+<p>The higher the margin, the more confidently a random forest predicts the correct class <span class="math notranslate nohighlight">\(y\)</span> for observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span>.</p>
 <section id="bootstrapping">
-<h2>Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">#</a></h2>
+<h3>Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">#</a></h3>
 <p>Based on the previous discussion regarding the bias-variance trade off, we can improve the performance of an isolated DT classifier by exploring the average behavior – bias of the prediction error – of several DT classifiers trained using different datasets. First, let us create <span class="math notranslate nohighlight">\( B \)</span> randomized versions – bootstraps – <span class="math notranslate nohighlight">\( \lbrace {\cal D}^{(b)} \rbrace \)</span>, <span class="math notranslate nohighlight">\( b \in \lbrace 1, 2, \ldots, B \rbrace \)</span>, of the training dataset</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c65a1721-4279-4bbe-b0f4-07ee13f003e4">
-<span class="eqno">(122)<a class="headerlink" href="#equation-c65a1721-4279-4bbe-b0f4-07ee13f003e4" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-63682b76-944c-464b-bb53-15891a4f762e">
+<span class="eqno">(63)<a class="headerlink" href="#equation-63682b76-944c-464b-bb53-15891a4f762e" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\cal D} &amp;=&amp; \bigcup_{i=1}^{N} \lbrace \underbrace{\left( {\bf x}_{i}, y_{i} \right)}_{{\cal D}_{i}} \rbrace \nonumber \\
 &amp;=&amp; \lbrace {\cal D}_{1}, {\cal D}_{2}, {\cal D}_{3}, {\cal D}_{4}, {\cal D}_{5}, {\cal D}_{6}, {\cal D}_{7}, \ldots , {\cal D}_{N} \rbrace \nonumber
 \end{eqnarray}\]</div>
@@ -762,16 +768,16 @@ where the  <span class="math notranslate nohighlight">\(\bar{h}({\bf x}) \triang
 \[ i_{j} \sim U_{\lbrace 1, \ldots, N \rbrace}(\xi), \]</div>
  for each <span class="math notranslate nohighlight">\( j \in \lbrace 1, 2, \ldots N \rbrace \)</span>.</p>
 <p>We repeat this procedure for <span class="math notranslate nohighlight">\( b \in \lbrace 1, \ldots, B \rbrace \)</span> to obtain <span class="math notranslate nohighlight">\( B \)</span> bootstraps as illustrated below</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6213695f-4f20-4322-aead-0c40a5580af5">
-<span class="eqno">(123)<a class="headerlink" href="#equation-6213695f-4f20-4322-aead-0c40a5580af5" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-a4daa54e-a0fd-43a4-91df-49f4ce1ecf7c">
+<span class="eqno">(64)<a class="headerlink" href="#equation-a4daa54e-a0fd-43a4-91df-49f4ce1ecf7c" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\cal D}^{(1)} &amp;=&amp; \underbrace{\lbrace {\cal D}_{9}, {\cal D}_{8}, {\cal D}_{9}, {\cal D}_{6}, {\cal D}_{2}, {\cal D}_{7}, {\cal D}_{1}, \ldots \rbrace}_{N} \nonumber \\
 {\cal D}^{(2)} &amp;=&amp; \underbrace{\lbrace {\cal D}_{11}, {\cal D}_{6}, {\cal D}_{7}, {\cal D}_{7}, {\cal D}_{1}, {\cal D}_{14}, {\cal D}_{20}, \ldots \rbrace}_{N} \nonumber \\
 {\cal D}^{(3)} &amp;=&amp; \underbrace{\lbrace {\cal D}_{3}, {\cal D}_{9}, {\cal D}_{2}, {\cal D}_{4}, {\cal D}_{17}, {\cal D}_{11}, {\cal D}_{16}, \ldots \rbrace}_{N} \nonumber \\
 &amp;\vdots&amp; \nonumber \\
 {\cal D}^{(B)} &amp;=&amp; \underbrace{\lbrace {\cal D}_{5}, {\cal D}_{18}, {\cal D}_{7}, {\cal D}_{5}, {\cal D}_{1}, {\cal D}_{12}, {\cal D}_{7}, \ldots \rbrace}_{N}. \nonumber
 \end{eqnarray}\]</div>
-<div class="proof remark admonition" id="remark-0">
-<p class="admonition-title"><span class="caption-number">Remark 14 </span></p>
+<div class="proof remark admonition" id="remark-2">
+<p class="admonition-title"><span class="caption-number">Remark 4 </span></p>
 <section class="remark-content" id="proof-content">
 <p>Note that each pair <span class="math notranslate nohighlight">\( {\cal D}_{i} \in {\cal D} \)</span>, <span class="math notranslate nohighlight">\( \forall i \in \lbrace 1, \ldots, N \rbrace \)</span>, can appear multiple times in the same bootstrap. For <span class="math notranslate nohighlight">\( B \rightarrow \infty \)</span>, only <span class="math notranslate nohighlight">\( 1 - \frac{1}{e} \approx 63.21 \)</span> % of the original samples will be presented at each bootstrap. Note also that bootstraps follow aleatory sequences with respect to the sequence of pairs <span class="math notranslate nohighlight">\( \lbrace {\cal D}_{1}, {\cal D}_{2}, {\cal D}_{3}, \ldots \rbrace \)</span> in the original dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>.</p>
 </section>
@@ -787,42 +793,67 @@ where the  <span class="math notranslate nohighlight">\(\bar{h}({\bf x}) \triang
 </div>
 </aside>
 </section>
+</section>
 <section id="aggregating">
 <h2>Aggregating<a class="headerlink" href="#aggregating" title="Permalink to this headline">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\( \lbrace \hat{y}^{(b)} \rbrace \)</span> collect the predicted labels obtained by the ensemble <span class="math notranslate nohighlight">\( {\cal E} \)</span>. We can select the final ensemble prediction <span class="math notranslate nohighlight">\( \hat{y} \)</span> by allowing the individual trees <span class="math notranslate nohighlight">\( \lbrace {\cal T}^{(b)} \rbrace \)</span> to vote. Specifically, for an arbitrary feature vector <span class="math notranslate nohighlight">\( {\bf x} \)</span>, the Random Forest (RF) classifier selects the most frequent predicted label</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1d3443ba-8650-4045-8a24-81f45b1d118c">
-<span class="eqno">(124)<a class="headerlink" href="#equation-1d3443ba-8650-4045-8a24-81f45b1d118c" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-c5d6fbb0-2280-481c-b9af-3927eabfb898">
+<span class="eqno">(65)<a class="headerlink" href="#equation-c5d6fbb0-2280-481c-b9af-3927eabfb898" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
  h_{RF}({\bf x}) &amp;=&amp; \argmax_{y \in {\cal Y} } Fr(y; \lbrace \hat{y}^{(b)} \rbrace) \nonumber \\
 \hat{y}^{(b)} &amp;=&amp; h_{DT}({\bf x}; {\cal T}^{(b)}), \,\, \forall b \in \lbrace 1, \ldots, B \rbrace, \nonumber
 \end{eqnarray}\]</div>
 <p>where the function <span class="math notranslate nohighlight">\( Fr(a; {\cal A}) \triangleq \sum_{a' \in {\cal A}} \left[ a' = a \right] \)</span> counts the frequency of the value <span class="math notranslate nohighlight">\( a \)</span> in a finite set <span class="math notranslate nohighlight">\( {\cal A} \)</span>.</p>
-<div class="proof remark admonition" id="remark-1">
-<p class="admonition-title"><span class="caption-number">Remark 15 </span></p>
+<div class="proof remark admonition" id="remark-3">
+<p class="admonition-title"><span class="caption-number">Remark 5 </span></p>
 <section class="remark-content" id="proof-content">
 <p>Assume that the decision trees in <span class="math notranslate nohighlight">\( {\cal E} \)</span> were designed to perform a regression task instead of a classification task. A decision tree <span class="math notranslate nohighlight">\( {\cal T}^{(b)} \in {\cal E} \)</span> can do that by storing training samples from <span class="math notranslate nohighlight">\( {\cal D}^{(b)} \)</span> at the leaves. In particular, let the training dataset split <div class="math notranslate nohighlight">
 \[ {\cal D}_{\boldsymbol{\ell}}^{(b)} = \bigcup_{i=1}^{| {\cal D}_{\boldsymbol{\ell}}^{(b)} | } \lbrace \left( {\bf x}_{i}, z_{i} \right) \rbrace \]</div>
  collect the data items at the leaf <span class="math notranslate nohighlight">\( \boldsymbol{\ell} \)</span> associated with an input data item <span class="math notranslate nohighlight">\( {\bf x} \)</span>. Recap: the binary sequence <span class="math notranslate nohighlight">\( \boldsymbol{\ell} \)</span> indicates which decisions were satisfied (<span class="math notranslate nohighlight">\(1\)</span>) or not (<span class="math notranslate nohighlight">\(0\)</span>) by <span class="math notranslate nohighlight">\( {\bf x} \)</span> along the branch from the root to its corresponding leaf and therefore uniquely identifies the leaf itself. We can use e.g. a convex combination <div class="math notranslate nohighlight">
 \[ h_{DT}({\bf x}; {\cal T}^{(b)}) = \sum_{i=1}^{| {\cal D}_{\boldsymbol{\ell}}^{(b)} |} \alpha_{i}({\bf x}; {\bf x}_{i}) z_{i} \]</div>
  to compute the predicted value such that <span class="math notranslate nohighlight">\( \alpha_{i}({\bf x}; {\bf x}_{i}) \propto || {\bf x} - {\bf x}_{i} || \)</span> and <span class="math notranslate nohighlight">\( \sum_{i=1}^{| {\cal D}_{\boldsymbol{\ell}}^{(b)} |} \alpha_{i}({\bf x}; {\bf x}_{i}) = 1 \)</span>. In this case, we can combine the predicted values <span class="math notranslate nohighlight">\( \lbrace \hat{z}^{(b)} \rbrace \)</span> obtained by the ensemble <span class="math notranslate nohighlight">\( {\cal E} \)</span> by simply averaging. Thus, for a given feature vector <span class="math notranslate nohighlight">\( {\bf x} \)</span>, we can write</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b7472dc6-b998-4f2a-aca5-da9fe1cef4a1">
-<span class="eqno">(125)<a class="headerlink" href="#equation-b7472dc6-b998-4f2a-aca5-da9fe1cef4a1" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-7f61da6d-e49c-4f24-9de0-73ef79cd0a8d">
+<span class="eqno">(66)<a class="headerlink" href="#equation-7f61da6d-e49c-4f24-9de0-73ef79cd0a8d" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
  h_{RF}({\bf x}) &amp;=&amp; \frac{1}{B} \sum_{b=1}^{B} \hat{z}^{(b)} \nonumber \\
 \hat{z}^{(b)} &amp;=&amp; h_{DT}({\bf x}; {\cal T}^{(b)}), \,\, \forall b \in \lbrace 1, \ldots, B \rbrace. \nonumber
 \end{eqnarray}\]</div>
 </section>
-</div><div class="proof remark admonition" id="remark-2">
-<p class="admonition-title"><span class="caption-number">Remark 16 </span></p>
+</div><div class="proof remark admonition" id="remark-4">
+<p class="admonition-title"><span class="caption-number">Remark 6 </span></p>
 <section class="remark-content" id="proof-content">
 <p>Let <span class="math notranslate nohighlight">\( CE_{test}^{(b)} \)</span> denote the empirical classification error of the DT classifier associated with the <span class="math notranslate nohighlight">\(b\)</span>-th decision tree <span class="math notranslate nohighlight">\( {\cal T}^{(b)} \)</span> trained based on the boostrap <span class="math notranslate nohighlight">\( {\cal D}^{(b)} \)</span> and evaluated against a testing dataset <span class="math notranslate nohighlight">\( {\cal D}_{test} \)</span>. As the testing dataset <span class="math notranslate nohighlight">\( {\cal D}_{test} \)</span> contains realizations of the unknown distribution <span class="math notranslate nohighlight">\( p^{\ast}({\bf x}, y) \)</span>, the empirical error <span class="math notranslate nohighlight">\( CE_{test}^{(b)} \)</span> is also a realization of some random variable <span class="math notranslate nohighlight">\( W_{b} \sim p_{b}(w_{b}) \)</span> with variance <span class="math notranslate nohighlight">\( \sigma_{b}^{2} = E_{W_{b} \sim p_{b}} \lbrace (W_{b} - \mu_{b})^{2} \rbrace  \)</span> and mean <span class="math notranslate nohighlight">\( \mu_{b} = E_{W_{b} \sim p_{b}} \lbrace W_{b} \rbrace \)</span>. Analogously, we also assume that the empirical classification error <span class="math notranslate nohighlight">\( CE_{test} \)</span> of the ensemble <span class="math notranslate nohighlight">\( {\cal E} \)</span> is a realization of a random variable <span class="math notranslate nohighlight">\( W_{e} \sim p_{e}(w_{e}) \)</span> with variance <span class="math notranslate nohighlight">\( \sigma_{e}^{2} = E_{W_{e} \sim p_{e}} \lbrace (W_{e} - \mu_{e})^{2} \rbrace \)</span> and mean <span class="math notranslate nohighlight">\( \mu_{e} = E_{W_{e} \sim p_{e}} \lbrace W_{e} \rbrace \)</span>. Note that, by combining the predicted labels of the ensemble, we expect that the variance <span class="math notranslate nohighlight">\( \sigma_{e}^{2} \)</span> associated with the empirical classification error <span class="math notranslate nohighlight">\( CE_{test} \)</span> of the ensemble will be smaller than any variance <span class="math notranslate nohighlight">\( \lbrace \sigma_{b}^{2} \rbrace \)</span> associated with the classification errors <span class="math notranslate nohighlight">\( \lbrace CE_{test}^{(b)} \rbrace \)</span> of the individual decision trees <span class="math notranslate nohighlight">\( \lbrace {\cal T}^{(b)} \rbrace \)</span>. In addition to this, let us assume that in the best case scenario – for some aggregation procedure – <span class="math notranslate nohighlight">\( W_{e} \)</span> is given by the average of the random variables <span class="math notranslate nohighlight">\( \lbrace W_{b} \rbrace \)</span>, we expect then that – in this scenario – the variance <span class="math notranslate nohighlight">\( \sigma_{e}^{2} \)</span> associated with the ensemble <span class="math notranslate nohighlight">\( {\cal E} \)</span> will be the average of the variances <span class="math notranslate nohighlight">\( \lbrace \sigma_{b}^{2} \rbrace \)</span> associated with the individual classifiers. To summarize the discussion, for an arbitrary aggregation procedure, we write <div class="math notranslate nohighlight">
 \[ \frac{1}{B} \sum_{b=1}^{B} \sigma_{b}^{2} \leq \sigma_{e}^{2} \leq \sigma_{1}^{2}, \sigma_{2}^{2}, \ldots, \sigma_{B}^{2}, \]</div>
  i.e. the aggregation procedure reduces the variance associated with the individual classifiers leading to a more robust ensemble classifier in the sense its empirical error <span class="math notranslate nohighlight">\( CE_{test} \)</span> is less sensitive to the employed training and testing datasets: <span class="math notranslate nohighlight">\( {\cal D} \)</span> and <span class="math notranslate nohighlight">\( {\cal D}_{test} \)</span>. Finally, it is worth stressing that this discussion aims to motivate the ensemble approach, it does not intend to offer a rigorous proof regarding the ensemble performance.</p>
 </section>
-</div><hr class="footnotes docutils" />
-<dl class="footnote brackets">
-<dt class="label" id="footnote3"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
-<dd><p>A complex model has more flexibility – e.g. more parameters or bigger structure – to adapt itself to the training data than a simpler one.</p>
-</dd>
-</dl>
+</div><p>Additive ensembles <span class="math notranslate nohighlight">\(f(x) = \sum_{i=1}^M w_i h_i(x)\)</span> wobei <span class="math notranslate nohighlight">\(w_i \in \mathbb R\)</span> und <span class="math notranslate nohighlight">\(h_i\)</span> sind DTs<br />
+Theorie: Die Rademacherkomplexität eines additiven Ensembles ist der gewichtete Durchschnitt der Einzelkomplexitäten jedes Baumes ⇒ im Durchschnitt kleine Bäume ⇒ gute Bound</p>
+<ul class="simple">
+<li><p>Beweis für den gewichteten Durchschnitt https://proceedings.mlr.press/v32/cortesb14.html</p></li>
+<li><p>Abschätzung über die Komplexität von Bäumen https://arxiv.org/abs/2111.04409</p></li>
+</ul>
+<p>Boosting: Trainiere kleine (in der Theorie stumps, in der Praxis Tiefe &lt;= 5) trees in Runden</p>
+<ul>
+<li><p>AdaBoost: Trainiere Klassifikationsbäume # In der Praxis vermutlich komplett durch XGBoost und Co. ersetzt</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+            h_{i+1} &amp;= \arg\min_h L(\sum_{i=1}^M w_i h_i(x) + h(x), D) \text{# Finde ein h}\\
+            w_{i+1}  &amp;= \arg\min_h L(\sum_{i=1}^M w_i h_i(x) + wh(x), D) \text{# Liniensuche für das optimale Gewicht}
+    \end{align*}\]</div>
+</li>
+<li><p>Gradient boosting: Trainiere Regressionsbäume (für ein Klassifikationsproblem)
+<div class="math notranslate nohighlight">
+\[h_{i+t} = \arg\min_h L(\sum_{i=1}^M w_i h_i(x) + wh(x), D)\]</div>
+ wobei D der Datensatz ist und w ein festes Gewicht  # Liniensuche wird meistens nicht mehr gemacht</p>
+<ul class="simple">
+<li><p>Bekannte Frameworks/Variationen: XGBoost (GPU Support + Regularisierung im Loss), LightGBM (GPU + sampling based DT Algorithmus), CatBoost (GPU + besonderes Loss für kategorische Variable)</p></li>
+</ul>
+</li>
+<li><p>Random Forest: Trainiere große Klassifikationsbäume parallel (Bagging + weitere Randomisierung beim Lernen der Bäume)
+(!) Das funktioniert gut entgegen der PAC Bound oben<br />
+Einzelne große Bäume = “Starke Lerner” ⇒ niedriger Bias, hohe Varianz
+Der Generalisierungsfehler eines RF ist die <span class="math notranslate nohighlight">\(\rho (1-s^2) / s^2\)</span> wobei <span class="math notranslate nohighlight">\(\rho\)</span> die Korrelation zwischen den Bäumen und s^2 den Bias der Bäume misst
+https://link.springer.com/article/10.1023/A:1010933404324<br />
+Eine weitere Erklärung für die Robustheit von RF gegenüber Noise in den Daten ist, dass RF effektiv interpolieren: Korrekte Datenpunkte kommen vermutlich in den meisten Bootstrap samples vor, sodass die meisten Bäume diese korrekt identifizieren, wobei noisy Punkte nur vereinzelnd vorkommen. Diese werden in jedem Baum isoliert (da jeder Baum overfittet) https://arxiv.org/abs/1504.07676</p></li>
+</ul>
 </section>
 </section>
 

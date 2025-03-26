@@ -873,8 +873,8 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
     X^\top X = V\Sigma^\top \underbrace{U^\top U}_{=I} \Sigma V^\top = V\Sigma^\top \Sigma V^\top.
 \end{align*}\]</div>
 <p>Given the singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span>, we can try to solve Eq. <a class="reference internal" href="#equation-eq-minimizers">(10)</a> for <span class="math notranslate nohighlight">\(\bm\beta\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b0df067b-6bb7-4b7d-8212-3b9d528ecbe4">
-<span class="eqno">(11)<a class="headerlink" href="#equation-b0df067b-6bb7-4b7d-8212-3b9d528ecbe4" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d4075666-7e49-4dba-a99e-42f65e34362a">
+<span class="eqno">(11)<a class="headerlink" href="#equation-d4075666-7e49-4dba-a99e-42f65e34362a" title="Permalink to this equation">#</a></span>\[\begin{align}
    X^\top X\bm{\beta} &amp;= X^\top \vvec{y} \quad 
    \Leftrightarrow \quad V\Sigma^\top\Sigma V^\top \bm{\beta}= V\Sigma^\top U^\top\vvec{y}
    \quad 
@@ -928,8 +928,8 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
 </div><div class="toggle docutils container">
 <div class="proof admonition" id="proof">
 <p>Proof. We start at the characterization of regression solvers by SVD (Observation):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d9eee2b8-eda2-46e9-b07c-9e7b9237e550">
-<span class="eqno">(12)<a class="headerlink" href="#equation-d9eee2b8-eda2-46e9-b07c-9e7b9237e550" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3aecb977-dc39-4b3a-9db4-a06d17a5e3dd">
+<span class="eqno">(12)<a class="headerlink" href="#equation-3aecb977-dc39-4b3a-9db4-a06d17a5e3dd" title="Permalink to this equation">#</a></span>\[\begin{align}
 \Sigma^\top\Sigma V^\top\bm\beta &amp;= \Sigma^\top U_r^\top y\\
 \Leftrightarrow
 \left(\begin{array}{cc}
@@ -947,8 +947,8 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
 \end{array}\right) U_r^\top y
 \end{align}\]</div>
 <p>We see here that only the first <span class="math notranslate nohighlight">\(r\)</span> equations are relevant, the remaining equations <span class="math notranslate nohighlight">\(0=0\)</span> are evidently true. We further shorten the notation by setting <span class="math notranslate nohighlight">\(\hat{\bm\beta}=V^\top\bm\beta\)</span>. We have then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-549e3995-154b-4050-8db5-69bb51219806">
-<span class="eqno">(13)<a class="headerlink" href="#equation-549e3995-154b-4050-8db5-69bb51219806" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-1e44d23b-d721-4ceb-b90d-6de0452f41bd">
+<span class="eqno">(13)<a class="headerlink" href="#equation-1e44d23b-d721-4ceb-b90d-6de0452f41bd" title="Permalink to this equation">#</a></span>\[\begin{align}
 \Sigma_r\begin{pmatrix} \Sigma_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= \Sigma_r U_r^\top y\\ 
 \Leftrightarrow
 \begin{pmatrix} \Sigma_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= U_r^\top y\\ 
@@ -958,8 +958,8 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
 \hat{\bm\beta}_{0:r} &amp;= \Sigma_r^{-1} U_r^\top y
 \end{align}\]</div>
 <p>We see that only the first <span class="math notranslate nohighlight">\(r\)</span> coordinates of <span class="math notranslate nohighlight">\(\hat{\bm\beta}\)</span> are determined by the given equation. What we have in the rest of the coordinates is free to choose and the equation will still hold. We model the coordinates that are free to choose with the vector <span class="math notranslate nohighlight">\(z\)</span>. Then we have</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0fa2b6ca-49cc-4657-a436-e8995c596707">
-<span class="eqno">(14)<a class="headerlink" href="#equation-0fa2b6ca-49cc-4657-a436-e8995c596707" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f7347e60-bded-4a13-98b4-1ff1b12ed5b9">
+<span class="eqno">(14)<a class="headerlink" href="#equation-f7347e60-bded-4a13-98b4-1ff1b12ed5b9" title="Permalink to this equation">#</a></span>\[\begin{align}
 \hat{\bm\beta} &amp;= \begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}\\
 \Leftrightarrow V^\top\bm\beta &amp;= \begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}\\
 \Leftrightarrow \bm\beta &amp;= V\begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}

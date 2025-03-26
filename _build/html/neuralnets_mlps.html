@@ -255,7 +255,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_problem.html">
-     Classification Problem
+     Classification Objective
     </a>
    </li>
    <li class="toctree-l2">
@@ -270,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_naive_bayes.html">
-     Naïve Bayes
+     Naive Bayes
     </a>
    </li>
    <li class="toctree-l2">
@@ -395,6 +395,11 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bibliography.html">
+   Bibliography
+  </a>
  </li>
 </ul>
 
@@ -595,28 +600,28 @@ title="Print to PDF"
   <section id="multi-layer-perceptrons">
 <h1>Multi-Layer Perceptrons<a class="headerlink" href="#multi-layer-perceptrons" title="Permalink to this headline">#</a></h1>
 <p>Multi-Layer Perceptrons (MLPs) a.k.a. Multi-Layer Feed-Forward Neural Networks are obtained by stacking multiple hidden layers. Each hidden layer can contain different number of hidden units. In general, a MLP has <span class="math notranslate nohighlight">\(L\)</span> hidden layers with <span class="math notranslate nohighlight">\(H_{1}, H_{2}, \ldots, H_{L} \)</span> hidden units, i.e. the <span class="math notranslate nohighlight">\(\ell\)</span>-th hidden layer contains <span class="math notranslate nohighlight">\(H_{\ell}\)</span> hidden units. For convenience, we also assume that the network inputs correspond to a layer <span class="math notranslate nohighlight">\( 0 \)</span> with <span class="math notranslate nohighlight">\( H_{0} = D \)</span> units. Lastly, the <span class="math notranslate nohighlight">\( L\)</span>-th layer can directly produce the network outputs. In this case, <span class="math notranslate nohighlight">\( H_{L} = O \)</span>. Alternatively, the <span class="math notranslate nohighlight">\( H_{L} \)</span> values at the last layer can be combined <em>somehow</em> to produce the final network estimate <span class="math notranslate nohighlight">\( \hat{\bf y} = f({\bf x}) \)</span>. In this case, <span class="math notranslate nohighlight">\( H_{L} \)</span> is not necessarily equal to <span class="math notranslate nohighlight">\( O \)</span>.</p>
-<p>The figures below illustrate MLPs with different number of hidden layers. <a class="reference internal" href="#mlp1-fig1"><span class="std std-numref">Fig. 48</span></a> shows a MLP network with a single hidden layer, <a class="reference internal" href="#mlp1-fig2"><span class="std std-numref">Fig. 49</span></a> a MLP with two hidden layers and <a class="reference internal" href="#mlp1-fig3"><span class="std std-numref">Fig. 50</span></a> a MLP with tree hidden layers. Note that each layer <span class="math notranslate nohighlight">\(\ell\)</span> can use a distinct activation function <span class="math notranslate nohighlight">\(\phi_{\ell}\)</span>. Note that the values from the last hidden layer units are being combined by means of a single linear unit – affine transform represented by the symbol <span class="math notranslate nohighlight">\( \sum \)</span> – to produce the final network estimate <span class="math notranslate nohighlight">\( \hat{y} = f({\bf x}) \)</span> (<span class="math notranslate nohighlight">\( O = 1 \)</span>). However, as we will see later, other ways to combine are also possible.</p>
+<p>The figures below illustrate MLPs with different number of hidden layers. <a class="reference internal" href="#mlp1-fig1"><span class="std std-numref">Fig. 35</span></a> shows a MLP network with a single hidden layer, <a class="reference internal" href="#mlp1-fig2"><span class="std std-numref">Fig. 36</span></a> a MLP with two hidden layers and <a class="reference internal" href="#mlp1-fig3"><span class="std std-numref">Fig. 37</span></a> a MLP with tree hidden layers. Note that each layer <span class="math notranslate nohighlight">\(\ell\)</span> can use a distinct activation function <span class="math notranslate nohighlight">\(\phi_{\ell}\)</span>. Note that the values from the last hidden layer units are being combined by means of a single linear unit – affine transform represented by the symbol <span class="math notranslate nohighlight">\( \sum \)</span> – to produce the final network estimate <span class="math notranslate nohighlight">\( \hat{y} = f({\bf x}) \)</span> (<span class="math notranslate nohighlight">\( O = 1 \)</span>). However, as we will see later, other ways to combine are also possible.</p>
 <figure class="align-left" id="mlp1-fig1">
 <a class="reference internal image-reference" href="_images/multi_layer_MLP_01.png"><img alt="_images/multi_layer_MLP_01.png" src="_images/multi_layer_MLP_01.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 48 </span><span class="caption-text">1-layer MLP (<span class="math notranslate nohighlight">\(L=1\)</span>).</span><a class="headerlink" href="#mlp1-fig1" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 35 </span><span class="caption-text">1-layer MLP (<span class="math notranslate nohighlight">\(L=1\)</span>).</span><a class="headerlink" href="#mlp1-fig1" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-left" id="mlp1-fig2">
 <a class="reference internal image-reference" href="_images/multi_layer_MLP_05.png"><img alt="_images/multi_layer_MLP_05.png" src="_images/multi_layer_MLP_05.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 49 </span><span class="caption-text">2-layer MLP (<span class="math notranslate nohighlight">\(L=2\)</span>)</span><a class="headerlink" href="#mlp1-fig2" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 36 </span><span class="caption-text">2-layer MLP (<span class="math notranslate nohighlight">\(L=2\)</span>)</span><a class="headerlink" href="#mlp1-fig2" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-left" id="mlp1-fig3">
 <a class="reference internal image-reference" href="_images/multi_layer_MLP_07.png"><img alt="_images/multi_layer_MLP_07.png" src="_images/multi_layer_MLP_07.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 50 </span><span class="caption-text">3-layer MLP (<span class="math notranslate nohighlight">\(L=3\)</span>).</span><a class="headerlink" href="#mlp1-fig3" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 37 </span><span class="caption-text">3-layer MLP (<span class="math notranslate nohighlight">\(L=3\)</span>).</span><a class="headerlink" href="#mlp1-fig3" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Let <span class="math notranslate nohighlight">\( w^{\ell}_{i,j} \)</span> denote the artificial synaptic weight from the <span class="math notranslate nohighlight">\(i\)</span>-th unit in previous layer <span class="math notranslate nohighlight">\( \ell-1 \)</span> to the <span class="math notranslate nohighlight">\(j\)</span>-th unit in the current layer <span class="math notranslate nohighlight">\( \ell\)</span> and let vector <span class="math notranslate nohighlight">\( {\bf w}^{\ell}_{j} = \begin{bmatrix} w^{\ell}_{0,j} &amp; w^{\ell}_{1,j} &amp; \ldots &amp; w^{\ell}_{H_{\ell-1},j} \end{bmatrix}^{T}\)</span> collect all weights of the <span class="math notranslate nohighlight">\(j\)</span>-th unit at layer <span class="math notranslate nohighlight">\(\ell\)</span>. Additionally, for convenience, let <span class="math notranslate nohighlight">\( {\bf h}^{0} = \begin{bmatrix} 1 &amp; x_{1} &amp; x_{2} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> with <span class="math notranslate nohighlight">\( H_{0} = D \)</span> collect the observed features and let <span class="math notranslate nohighlight">\( {\bf h}^{\ell} = \begin{bmatrix} 1 &amp; h^{\ell}_{1} &amp; h^{\ell}_{2} &amp; \ldots &amp; h^{\ell}_{H_{\ell}} \end{bmatrix}^{T} \)</span> collect the embedded features for all <span class="math notranslate nohighlight">\( \ell \in \lbrace 1, \ldots, L \rbrace \)</span>. Thus, we can write the activation value of the <span class="math notranslate nohighlight">\(j\)</span>-th unit of the current layer <span class="math notranslate nohighlight">\( \ell \)</span> using vector notation as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9f386004-b191-4872-b0a6-4d8a28e045cf">
-<span class="eqno">(191)<a class="headerlink" href="#equation-9f386004-b191-4872-b0a6-4d8a28e045cf" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-8ebe7699-a3a0-470e-bb4e-6f9457d3c40d">
+<span class="eqno">(132)<a class="headerlink" href="#equation-8ebe7699-a3a0-470e-bb4e-6f9457d3c40d" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i} \nonumber \\
 &amp;=&amp; ({\bf w}_{j}^{\ell})^{T} {\bf h}^{\ell-1}. \nonumber
 \end{eqnarray}\]</div>
@@ -624,19 +629,19 @@ a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i
 \[ h^{\ell}_{j} = \phi_{\ell}\left( a^{\ell}_{j} \right). \]</div>
 </p>
 <p>Now, let the matrix <span class="math notranslate nohighlight">\( {\bf W}^{\ell} = \left[  w^{\ell}_{i,j} \right] \)</span> collect the weights of all units at the <span class="math notranslate nohighlight">\(\ell\)</span>-th layer such that its <span class="math notranslate nohighlight">\(j\)</span>-th column stores the weights associated with the <span class="math notranslate nohighlight">\(j\)</span>-th unit at layer <span class="math notranslate nohighlight">\(\ell\)</span>. Equivalently, we can write <span class="math notranslate nohighlight">\( {\bf W}^{\ell} = \begin{bmatrix} {\bf w}^{\ell}_{1} &amp; {\bf w}^{\ell}_{2} &amp; \ldots &amp; {\bf w}^{\ell}_{H_{\ell}} \end{bmatrix} \)</span>. Furthermore, let the vector <span class="math notranslate nohighlight">\( {\bf a}^{\ell} = \begin{bmatrix} a^{\ell}_{1} &amp; a^{\ell}_{2} &amp; \ldots &amp; a^{\ell}_{H_{\ell}} \end{bmatrix}^{T} \)</span> collect all activations <span class="math notranslate nohighlight">\(a^{\ell}_{j}\)</span> of layer <span class="math notranslate nohighlight">\(\ell\)</span>. Then, we can conveniently write <span class="math notranslate nohighlight">\({\bf a}^{\ell}\)</span> and <span class="math notranslate nohighlight">\( {\bf h}^{\ell} \)</span> as matrix-vector products</p>
-<div class="amsmath math notranslate nohighlight" id="equation-041742b8-6fe6-4ae7-8e08-f2285619a147">
-<span class="eqno">(192)<a class="headerlink" href="#equation-041742b8-6fe6-4ae7-8e08-f2285619a147" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-4526c2b0-4364-4450-afdd-6da36205f18d">
+<span class="eqno">(133)<a class="headerlink" href="#equation-4526c2b0-4364-4450-afdd-6da36205f18d" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf a}^{\ell} &amp;=&amp; ({\bf W}^{\ell})^{T} \, {\bf h}^{\ell-1} \nonumber \\
 {\bf h}^{\ell} &amp;=&amp; \phi_{\ell}({\bf a}^{\ell}), \nonumber
 \end{eqnarray}\]</div>
 <p>in which the non-linearity <span class="math notranslate nohighlight">\( \phi_{\ell} \)</span> is applied element-wise on the vector <span class="math notranslate nohighlight">\( {\bf a}^{\ell} \)</span>.</p>
 <p>Therefore, the <span class="math notranslate nohighlight">\(\ell\)</span>-th layer output can be computed from the output of the previous layer <span class="math notranslate nohighlight">\( \ell -1 \)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-mlp-recursion">
-<span class="eqno">(193)<a class="headerlink" href="#equation-mlp-recursion" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<span class="eqno">(134)<a class="headerlink" href="#equation-mlp-recursion" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf h}^{\ell} &amp;=&amp; \phi_{\ell} \left( ({\bf W}^{\ell})^{T} \, {\bf h}^{\ell-1} \right)
 \end{eqnarray}\]</div>
-<p>and the last layer output can be computed by recursively applying <a class="reference internal" href="#equation-mlp-recursion">(193)</a> starting with <span class="math notranslate nohighlight">\( {\bf h}^{0} \)</span> – vector storing the network inputs in <span class="math notranslate nohighlight">\( {\bf x} \)</span> – until obtain <span class="math notranslate nohighlight">\( {\bf h}^{L} \)</span> – vector collecting the values produced by the units at the last layer. Finally, the last layer output can be further <em>combined</em> to produce the network output <span class="math notranslate nohighlight">\( \hat{\bf y} = f({\bf x}) \)</span>.</p>
-<p>The computation performed by the 3-layer network illustrated in <a class="reference internal" href="#mlp1-fig3"><span class="std std-numref">Fig. 50</span></a> can be written using a single line as <div class="math notranslate nohighlight">
+<p>and the last layer output can be computed by recursively applying <a class="reference internal" href="#equation-mlp-recursion">(134)</a> starting with <span class="math notranslate nohighlight">\( {\bf h}^{0} \)</span> – vector storing the network inputs in <span class="math notranslate nohighlight">\( {\bf x} \)</span> – until obtain <span class="math notranslate nohighlight">\( {\bf h}^{L} \)</span> – vector collecting the values produced by the units at the last layer. Finally, the last layer output can be further <em>combined</em> to produce the network output <span class="math notranslate nohighlight">\( \hat{\bf y} = f({\bf x}) \)</span>.</p>
+<p>The computation performed by the 3-layer network illustrated in <a class="reference internal" href="#mlp1-fig3"><span class="std std-numref">Fig. 37</span></a> can be written using a single line as <div class="math notranslate nohighlight">
 \[ f({\bf x}) = \underbrace{({\bf W}^{4})^{T}
 \phi_3 \Big(
 \underbrace{({\bf W}^{3})^{T} \phi_2 \Big(
@@ -644,11 +649,11 @@ a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i
 \phi_1 \Big(
 \underbrace{({\bf W}^{1})^{T} {\bf h}^{0}}_{\mathbf{a}^{1}} 
 \Big)}_{\mathbf{a}^{2}} \Big)}_{\mathbf{a}^{3}} \Big)}_{\hat{y}} \]</div>
- in which <span class="math notranslate nohighlight">\( \mathbf{W}^{4} \)</span> is <span class="math notranslate nohighlight">\(H_L \times O\)</span> matrix and <span class="math notranslate nohighlight">\( {\bf h}^{0} \triangleq \begin{bmatrix} 1 &amp; {\bf x}^{T} \end{bmatrix}^{T} \)</span> with <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_1 &amp; x_2 &amp; \ldots &amp; x_D \end{bmatrix}^{T} \)</span>. In this example, the single linear output unit – node with symbol <span class="math notranslate nohighlight">\( \sum \)</span> in <a class="reference internal" href="#mlp1-fig3"><span class="std std-numref">Fig. 50</span></a> – uses an affine transform (<span class="math notranslate nohighlight">\( \mathbf{W}^{4} \)</span>) to combine the <span class="math notranslate nohighlight">\(H_L\)</span> values at last hidden layer into a single output <span class="math notranslate nohighlight">\( \hat{y} \)</span>, i.e. <span class="math notranslate nohighlight">\(O=1\)</span>. For multiple outputs, we can design <span class="math notranslate nohighlight">\( \mathbf{W}^{4} \)</span> such that <span class="math notranslate nohighlight">\(O &gt; 1\)</span>. The MLP is thus a nested sequence of matrix-vector multiplications each of them followed by an element-wise non-linearity.</p>
+ in which <span class="math notranslate nohighlight">\( \mathbf{W}^{4} \)</span> is <span class="math notranslate nohighlight">\(H_L \times O\)</span> matrix and <span class="math notranslate nohighlight">\( {\bf h}^{0} \triangleq \begin{bmatrix} 1 &amp; {\bf x}^{T} \end{bmatrix}^{T} \)</span> with <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_1 &amp; x_2 &amp; \ldots &amp; x_D \end{bmatrix}^{T} \)</span>. In this example, the single linear output unit – node with symbol <span class="math notranslate nohighlight">\( \sum \)</span> in <a class="reference internal" href="#mlp1-fig3"><span class="std std-numref">Fig. 37</span></a> – uses an affine transform (<span class="math notranslate nohighlight">\( \mathbf{W}^{4} \)</span>) to combine the <span class="math notranslate nohighlight">\(H_L\)</span> values at last hidden layer into a single output <span class="math notranslate nohighlight">\( \hat{y} \)</span>, i.e. <span class="math notranslate nohighlight">\(O=1\)</span>. For multiple outputs, we can design <span class="math notranslate nohighlight">\( \mathbf{W}^{4} \)</span> such that <span class="math notranslate nohighlight">\(O &gt; 1\)</span>. The MLP is thus a nested sequence of matrix-vector multiplications each of them followed by an element-wise non-linearity.</p>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 27 </span> (Expressive Efficiency phenomenon)</p>
+<p class="admonition-title"><span class="caption-number">Definition 23 </span> (Expressive Efficiency phenomenon)</p>
 <section class="definition-content" id="proof-content">
-<p>As stated by Pinkus <span id="id1">[]</span> (see <a class="reference internal" href="neuralnets_func_approx.html"><span class="doc">Function approximator</span></a> page), single layer neural networks can approximate arbitrarily well any continuous function <span class="math notranslate nohighlight">\(f^{\ast} \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O}\)</span> for a wide range of non-linearities <span class="math notranslate nohighlight">\(\phi\)</span>. Thus, why do we need multiple layers?</p>
+<p>As stated by Pinkus <span id="id1">[<a class="reference internal" href="bibliography.html#id17" title="Allan Pinkus. Approximation theory of the mlp model in neural networks. Acta numerica, 8:143–195, 1999.">12</a>]</span> (see <a class="reference internal" href="neuralnets_func_approx.html"><span class="doc">Function approximator</span></a> page), single layer neural networks can approximate arbitrarily well any continuous function <span class="math notranslate nohighlight">\(f^{\ast} \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O}\)</span> for a wide range of non-linearities <span class="math notranslate nohighlight">\(\phi\)</span>. Thus, why do we need multiple layers?</p>
 <p>The motivation to use multiple layers is related to a phenomenon called <em>Expressive Efficiency</em>:</p>
 <ul class="simple">
 <li><p>Despite being universal approximators, shallow networks with a single hidden layer might require an exponential size – number of hidden layer units – on the number of inputs to approximate some function classes.</p></li>

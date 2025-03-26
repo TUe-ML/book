@@ -187,11 +187,68 @@ const thebe_selector_output = ".output, .cell_output"
   </ul>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="classification.html">
-   Classification
+  <a class="reference internal" href="regression.html">
+   Regression
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -229,71 +286,6 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="regression.html">
-   Regression
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_objective.html">
-     Regression Objective
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_functions.html">
-     Regression Functions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_optimization.html">
-     Minimizing the RSS
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_bias_var.html">
-     The Bias-Variance Tradeoff
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_n_larger_p.html">
-     Regression When
-     <span class="math notranslate nohighlight">
-      \(p&gt;n\)
-     </span>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_sparse.html">
-     The Sparse Regression Task
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_ridge.html">
-     Ridge Regression
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_lasso.html">
-     Lasso
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_exercises.html">
-     Exercises
     </a>
    </li>
   </ul>
@@ -388,8 +380,13 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="clustering_nonconvex.html">
-     Nonconvex Clustering
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
     </a>
    </li>
    <li class="toctree-l2">
@@ -1049,8 +1046,8 @@ Yah, it gets interesting with the matrix product.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.3, 1.5, 0.9, 0.7, 1.6],
-       [1.2, 1.3, 0.9, 0.7, 1.5]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.7, 0.9, 1.1, 1. , 1.1],
+       [0.8, 0.8, 0.8, 1.2, 1.1]])
 </pre></div>
 </div>
 </div>
@@ -1106,8 +1103,8 @@ The matrix product is the sum of outer products of corresponding column- and row
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.7, 1. , 0.2],
-       [0.8, 0.8, 0.2]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.8, 0.3, 0.8],
+       [0.4, 0.9, 0.4]])
 </pre></div>
 </div>
 </div>
@@ -1119,8 +1116,8 @@ The matrix product is the sum of outer products of corresponding column- and row
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.7, 1. , 0.2],
-       [0.8, 0.8, 0.2]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.8, 0.3, 0.8],
+       [0.4, 0.9, 0.4]])
 </pre></div>
 </div>
 </div>
@@ -1155,8 +1152,8 @@ Diagonal matrices with nonzero elements on the diagonal have an inverse:
 $$\begin{pmatrix} 1&amp; 0 &amp; 0\
 0 &amp; 2 &amp; 0\
 0 &amp; 0 &amp; 3\end{pmatrix}</p>
-<div class="amsmath math notranslate nohighlight" id="equation-10f4146f-d15a-4c1d-b7ed-33570da134e6">
-<span class="eqno">(1)<a class="headerlink" href="#equation-10f4146f-d15a-4c1d-b7ed-33570da134e6" title="Permalink to this equation">#</a></span>\[\begin{pmatrix}1&amp; 0 &amp; 0\\
+<div class="amsmath math notranslate nohighlight" id="equation-01fd8e19-eb2f-40e3-a680-9c501a6fb75a">
+<span class="eqno">(1)<a class="headerlink" href="#equation-01fd8e19-eb2f-40e3-a680-9c501a6fb75a" title="Permalink to this equation">#</a></span>\[\begin{pmatrix}1&amp; 0 &amp; 0\\
 0 &amp; \frac12 &amp; 0\\
 0 &amp; 0 &amp; \frac13\end{pmatrix}\]</div>
 <div class="cell docutils container">
@@ -1200,8 +1197,8 @@ $$\begin{pmatrix} 1&amp; 0 &amp; 0\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution time of our naive implementation in seconds: 1.66581130027771
-Execution time of the numpy implementation in seconds: 0.01103830337524414
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution time of our naive implementation in seconds: 1.6495919227600098
+Execution time of the numpy implementation in seconds: 0.0007619857788085938
 </pre></div>
 </div>
 </div>

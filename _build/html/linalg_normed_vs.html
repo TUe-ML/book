@@ -187,11 +187,68 @@ const thebe_selector_output = ".output, .cell_output"
   </ul>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="classification.html">
-   Classification
+  <a class="reference internal" href="regression.html">
+   Regression
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -229,71 +286,6 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="regression.html">
-   Regression
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_objective.html">
-     Regression Objective
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_functions.html">
-     Regression Functions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_optimization.html">
-     Minimizing the RSS
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_bias_var.html">
-     The Bias-Variance Tradeoff
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_n_larger_p.html">
-     Regression When
-     <span class="math notranslate nohighlight">
-      \(p&gt;n\)
-     </span>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_sparse.html">
-     The Sparse Regression Task
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_ridge.html">
-     Ridge Regression
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_lasso.html">
-     Lasso
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_exercises.html">
-     Exercises
     </a>
    </li>
   </ul>
@@ -388,8 +380,13 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="clustering_nonconvex.html">
-     Nonconvex Clustering
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
     </a>
    </li>
    <li class="toctree-l2">
@@ -764,10 +761,10 @@ $$X= U\Sigma V^\top, \text{ where}$$
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-0.5,  0.1, -0.7, -0.5],
-       [-0.3, -0.5,  0.6, -0.5],
-       [-0.5,  0.7,  0.4,  0.2],
-       [-0.6, -0.5, -0.2,  0.6]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-0.6,  0.4, -0.1, -0.7],
+       [-0.3, -0.9, -0. , -0.3],
+       [-0.1,  0. ,  1. , -0. ],
+       [-0.8,  0.1, -0.1,  0.6]])
 </pre></div>
 </div>
 </div>
@@ -779,10 +776,10 @@ $$X= U\Sigma V^\top, \text{ where}$$
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.0e+00, 6.7e-18, 6.7e-18, 1.9e-16],
-       [6.7e-18, 1.0e+00, 2.1e-17, 9.4e-17],
-       [6.7e-18, 2.1e-17, 1.0e+00, 4.3e-17],
-       [1.9e-16, 9.4e-17, 4.3e-17, 1.0e+00]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.0e+00,  6.4e-17,  2.3e-17, -2.1e-17],
+       [ 6.4e-17,  1.0e+00,  1.5e-17, -4.8e-18],
+       [ 2.3e-17,  1.5e-17,  1.0e+00,  8.0e-18],
+       [-2.1e-17, -4.8e-18,  8.0e-18,  1.0e+00]])
 </pre></div>
 </div>
 </div>
@@ -794,8 +791,8 @@ $$X= U\Sigma V^\top, \text{ where}$$
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.7, 0. ],
-       [0. , 0.6]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.5, 0. ],
+       [0. , 0.4]])
 </pre></div>
 </div>
 </div>
@@ -808,8 +805,8 @@ $$X= U\Sigma V^\top, \text{ where}$$
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.7, 0. ],
-       [0. , 0.6],
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.5, 0. ],
+       [0. , 0.4],
        [0. , 0. ],
        [0. , 0. ]])
 </pre></div>

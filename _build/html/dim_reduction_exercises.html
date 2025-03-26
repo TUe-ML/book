@@ -255,7 +255,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_problem.html">
-     Classification Problem
+     Classification Objective
     </a>
    </li>
    <li class="toctree-l2">
@@ -270,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_naive_bayes.html">
-     Naïve Bayes
+     Naive Bayes
     </a>
    </li>
    <li class="toctree-l2">
@@ -395,6 +395,11 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bibliography.html">
+   Bibliography
+  </a>
  </li>
 </ul>
 
@@ -663,8 +668,8 @@ title="Print to PDF"
 </ol>
 <div class="toggle docutils container">
 <p>The matrix has two obvious movie patterns. The first pattern is <span class="math notranslate nohighlight">\((5,5,1,1)\)</span>, indicating that movie 1 and 2 is liked (rated with 5/5 stars) and the last two movies are not liked (rated with 1 of 5 stars). The second pattern is <span class="math notranslate nohighlight">\((1,1,5,5)\)</span>,  indicating that the first two movies are not liked  and the last two are liked. The last user likes all movies, which could be understood like he belongs to  both patterns. In fact, we can write the matrix <span class="math notranslate nohighlight">\(D\)</span> as the following rank-2 MF:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8aeb2cfa-3997-4edc-9226-1ae0fde079bc">
-<span class="eqno">(239)<a class="headerlink" href="#equation-8aeb2cfa-3997-4edc-9226-1ae0fde079bc" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-6340d02f-a906-4f3a-a040-f84f62324d29">
+<span class="eqno">(178)<a class="headerlink" href="#equation-6340d02f-a906-4f3a-a040-f84f62324d29" title="Permalink to this equation">#</a></span>\[\begin{align}
 D\approx\begin{pmatrix}
     5 &amp; 5 &amp; 1 &amp; 1\\
 5 &amp; 5 &amp; 1 &amp; 1\\
@@ -813,8 +818,8 @@ Due to the orthogonal invariance of the Frobenius norm, we have</p>
 <li><p>Show that the constraint <span class="math notranslate nohighlight">\(Z^\top Z=I\)</span> for <span class="math notranslate nohighlight">\(Z\in\mathbb{R}^{n\times r}\)</span>, <span class="math notranslate nohighlight">\(r&lt;n\)</span> which is imposed for the objective of PCA implies that <span class="math notranslate nohighlight">\(Z\)</span> has orthogonal columns which all have a Euclidean norm of one.</p>
 <div class="toggle docutils container">
 <p>The constraint <span class="math notranslate nohighlight">\(Z^\top Z=I\)</span> implies that the entry <span class="math notranslate nohighlight">\(s,t\)</span> for <span class="math notranslate nohighlight">\(1\leq s,t\leq r\)</span> of <span class="math notranslate nohighlight">\(Z^\top Z\)</span> is equal to zero if <span class="math notranslate nohighlight">\(s\neq t\)</span> and equal to one otherwise. We have</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b563ca01-5caf-4147-994f-d783251d1a76">
-<span class="eqno">(240)<a class="headerlink" href="#equation-b563ca01-5caf-4147-994f-d783251d1a76" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-5b36826f-0330-40a1-b3aa-39b626b651fd">
+<span class="eqno">(179)<a class="headerlink" href="#equation-5b36826f-0330-40a1-b3aa-39b626b651fd" title="Permalink to this equation">#</a></span>\[\begin{align}
     Z^\top Z &amp;=I\nonumber\\
     \Leftrightarrow (Z^\top Z)_{s,t}=Z_{\cdot s}^\top Z_{\cdot t}&amp;=\begin{cases}
 0&amp; \text{if } s\neq t\\
@@ -985,13 +990,13 @@ Z_{\cdot s}^\top Z_{\cdot s} = \lVert Z_{\cdot s}\rVert^2 &amp;=1 &amp;\text{for
 <div class="toggle docutils container">
 <ol>
 <li><p>Given the <span class="math notranslate nohighlight">\(n\)</span> observations of the new feature</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b40ba68f-0dcd-4cf6-88f8-cf5d6ad0cc55">
-<span class="eqno">(241)<a class="headerlink" href="#equation-b40ba68f-0dcd-4cf6-88f8-cf5d6ad0cc55" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d26cc0fa-ce96-4d1a-9ce1-6547c7b519e9">
+<span class="eqno">(180)<a class="headerlink" href="#equation-d26cc0fa-ce96-4d1a-9ce1-6547c7b519e9" title="Permalink to this equation">#</a></span>\[\begin{align}
     D_{\cdot d+1} =\sum_{k=1}^d \alpha_kD_{\cdot k}=D\bm\alpha\in\mathbb{R}^n, \label{eq:DnewF}
     \end{align}\]</div>
 <p>the sample mean can be computed by:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-67d1a01a-031a-4f8b-a395-654f7d9313d2">
-<span class="eqno">(242)<a class="headerlink" href="#equation-67d1a01a-031a-4f8b-a395-654f7d9313d2" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a11c93d0-7bc5-4bff-9a98-9614f1caf86f">
+<span class="eqno">(181)<a class="headerlink" href="#equation-a11c93d0-7bc5-4bff-9a98-9614f1caf86f" title="Permalink to this equation">#</a></span>\[\begin{align}
     \mu_{\mathtt{F}_{d+1}} &amp;= \frac1n \sum_{i=1}^n D_{i d+1} &amp;\text{(Definition sample mean)}\nonumber\\
     &amp;= \frac1n\vvec{1}^\top D_{\cdot d+1} &amp; (\mathbf{1}\in\{1\}^n \text{ is constant one vector})\nonumber\\
     &amp;= \frac1n\vvec{1}^\top D{\bm\alpha} &amp; \text{(Eq.~\eqref{eq:DnewF})}\nonumber\\

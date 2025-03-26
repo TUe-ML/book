@@ -1,252 +1,240 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# ## Naïve Bayes   
+# ## Naive Bayes   
+# The Naïve Bayes classifier is a simple yet powerful probabilistic algorithm used for classification tasks. It is based on Bayes' Theorem and assumes that the features are conditionally independent, given the class label. Despite its simplicity, it performs well in many real-world applications, such as spam detection, sentiment analysis, and medical diagnosis.
 # 
-# In this section, we recap some important concepts from probability theory. In the sequel, for the sake of simplicity, we introduce the Naive Bayes (NB) classifier assuming a space $ {\cal X} $ of discrete-valued features only. However, the results here can be promptly extended to a space $ {\cal X} $ containing continuous-valued features or a mix of continuous and discrete-valued features.
-# 
-# ### Marginalization
-# 
-# Let 
-# \begin{eqnarray}
-# P({\bf a}, {\bf b}) &\equiv& P_{{\bf A},{\bf B}}({\bf a}, {\bf b}) \nonumber \\
-# &\triangleq& Pr \lbrace {\bf A} = {\bf a} \wedge {\bf B} = {\bf b} \rbrace \nonumber
-# \end{eqnarray}
-# denote the joint probability mass function (p.m.f.)[^footnote1] of the random vectors $ {\bf A} $ and $ {\bf B} $, i.e. $ {\bf A}, {\bf B} \sim P({\bf a}, {\bf b}) $. Furthermore, we assume that the realizations $ {\bf a} $ and $ {\bf b} $ of the random vectors $ {\bf A} $ and $ {\bf B} $ take values in the discrete-valued vector spaces $ \Omega_{a} $ and $ \Omega_{b} $, respectively. 
-# 
-# [^footnote1]: We use the uppercase notation $ P(\cdot) $ to distinguish p.m.f's from continuous-valued and mixed distributions denoted by $ p(\cdot) $.
-# 
-# ````{prf:definition} Marginalization
-# :label: marginalization
-# Then, the marginal p.m.f.
-# \begin{eqnarray}
-# P({\bf a}) &\equiv& P_{{\bf A}}({\bf a}) \nonumber \\
-# &\triangleq& Pr \lbrace {\bf A} = {\bf a} \rbrace  \nonumber
-# \end{eqnarray}
-# of the random vector $ {\bf A} $ can be computed from the joint p.m.f. $ P({\bf a}, {\bf b}) $ as
-# \begin{equation}
-# P({\bf a}) = \sum_{{\bf b} \in \Omega_{b}} P({\bf a}, {\bf b}).
-# \end{equation}
-# Analogously, the marginal p.m.f. 
-# \begin{eqnarray}
-# P({\bf b}) &\equiv& P_{\bf B}({\bf b}) \nonumber \\
-# &\triangleq& Pr \lbrace {\bf B} = {\bf b} \rbrace \nonumber
-# \end{eqnarray}
-# of the random vector $ {\bf B} $ can be obtained by
-# \begin{equation}
-# P({\bf b}) = \sum_{{\bf a} \in \Omega_{a}} P({\bf a}, {\bf b}).
-# \end{equation}
-# 
-# ````
-# 
-# ```{prf:remark} Valid distributions
-# Recap: a valid p.m.f. $ P({\bf x}) \equiv P_{\bf X}({\bf x}) $, $ {\bf x} \in \Omega_{x} $, must be non-negative and the sum over its support must be equals one, i.e. it must satisfy the following conditions
-# \begin{eqnarray}
-# && 0 \leq P({\bf x}) \leq 1, \forall {\bf x} \in \Omega_{x} \,\, \mbox{} \nonumber \\
-# && \sum_{{\bf x} \in \Omega_{x}} P({\bf x}) = 1. \nonumber \\
-# \end{eqnarray}
+# ### Approximating the Bayes Classifier
+# Naïve Bayes is a probabilistic classifier, and before we delve into its mechanics, we establish first some terminology to describe the probabilties that we are dealing with.
+# ```{prf:definition} Probabilistic Machine Learning Speak
+# Given two random variables $\vvec{x}$ and $y$, where $\vvec{x}$ is the random variable of the observations of a dataset and $y$ is the random variable of the class label. We define then the following probabilities:
+# * $p(y\mid \vvec{x})$ is the **posterior probability** (the probability of class $y$ given observation $\vvec{x}$ )
+# * $p(\vvec{x}\mid y)$ is the **likelihood** (how likely is it to observe $\vvec{x}$ in class $y$?)
+# * $p(y)$ is the **prior probability** (how often do I expect class $y$ to occur in my dataset?)
+# * $p(\vvec{x})$ is the **evidence** (how probable is observation $\vvec{x}$?)
 # ```
-# 
-# ### Conditional probability distribution
-# 
-# ````{prf:definition} Conditional probability distributions
-# :label: conditional_probability_distribution
-# The p.m.f. $ P({\bf a} \mid {\bf b}) $ of the random vector $ {\bf A} $ conditioned on a particular realization $ {\bf b} $ of the random vector $ {\bf B} $ is defined as 
-# \begin{eqnarray}
-# P({\bf a} \mid {\bf b}) &\equiv& P_{{\bf A} \mid {\bf b}}({\bf a} \mid {\bf b}) \nonumber \\
-# &\triangleq& Pr \lbrace {\bf A} = {\bf a} \mid {\bf B} = {\bf b} \rbrace \nonumber
-# \end{eqnarray}
-# and can be computed from the joint distribution $ P({\bf a}, {\bf b}) $ as
-# ```{math}
-# :label: pab_cond
-# P({\bf a} \mid {\bf b}) = \frac{P({\bf a}, {\bf b})}{P({\bf b})}.
-# ```
-# ````
-# 
-# Note that we can write $ {\bf A} \mid {\bf b} \sim P({\bf a} \mid {\bf b}) $ which indicates the distribution of the random vector $ {\bf A} $ given that the realization $ {\bf b} $ of $ {\bf B} $ has occurred. Conversely, the p.m.f. $ P({\bf b} \mid {\bf a}) $ of the random vector $ {\bf B} $ conditioned on a particular realization $ {\bf a} $ of the random vector $ {\bf A} $ is defined as
-# \begin{eqnarray}
-# P({\bf b} \mid {\bf a}) &\equiv& P_{{\bf B} \mid {\bf a}}({\bf b} \mid {\bf a}) \nonumber \\
-# &\triangleq& Pr \lbrace {\bf B} = {\bf b} \mid {\bf A} = {\bf a} \rbrace, \nonumber
-# \end{eqnarray}
-# i.e. $ {\bf B} \mid {\bf a} \sim P({\bf b} \mid {\bf a}) $, and is obtained from $ P({\bf a}, {\bf b}) $ by
-# ```{math}
-# :label: pba_cond
-# P({\bf b} \mid {\bf a}) = \frac{P({\bf a}, {\bf b})}{P({\bf a})}.
-# ```
-# Lastly, from Eqs. {eq}`pab_cond` and {eq}`pba_cond`, we can write
-# ```{math}
-# :label: equiv
-# P({\bf a}, {\bf b}) = P({\bf a} \mid {\bf b}) \, P({\bf b}) = P({\bf b} \mid {\bf a}) \, P({\bf a}).
-# ```
-# 
-# ### Bayes rule
-# 
-# **Goal:** we seek to obtain the so-called *posterior* distribution $ P({\bf a} \mid \check{\bf b}) $ of the random vector $ {\bf A} $ provided that
-# * we have observed the realization $ \check{\bf b} $ of $ {\bf B} $;
-# * we know the conditional distribution $ P({\bf b} \mid {\bf a}) $, which models how likely it is to observe a given sample $ {\bf b} $ for each possibly value $ {\bf a} \in \Omega_{a} $;
-# * we know the *prior* distribution $ P({\bf a}) $ of the random vector $ {\bf A} $.
-# 
-# Note that we can rewrite Eq. {eq}`equiv` as
-# ```{math}
-# :label: bayes_rule1
-# P({\bf a} \mid {\bf b}) = \frac{P({\bf b} \mid {\bf a}) \, P({\bf a})}{P({\bf b})}.
-# ```
-# 
-# By plugging the particular observation $ \check{\bf b} $ into {eq}`bayes_rule1`, we write
-# ```{math}
-# :label: bayes_rule2a
-# P({\bf a} \mid \check{\bf b}) = \frac{P(\check{\bf b} \mid {\bf a}) \, P({\bf a})}{P(\check{\bf b})}
-# ```
-# and them
-# ```{math}
-# :label: bayes_rule2b
-# P({\bf a} \mid \check{\bf b}) \propto  P(\check{\bf b} \mid {\bf a}) \, P({\bf a}),
-# ```
-# in which the denominator $ P(\check{\bf b}) $ on the right-hand side of {eq}`bayes_rule2a` was omitted in {eq}`bayes_rule2b` since it is a constant -- it is the p.m.f. $ P({\bf b}) $ evaluated at the particular sample $ \check{\bf b} $.
-# 
-# ````{prf:definition} The glorious Bayes rule
+# The motivation for the Naive Bayes classifier is to approximate the Bayes optimal classifier $y^*=\argmax_y p^*(y\mid\vvec{x})$ under simplifying assumptions. To estimate $p*(y\mid\vvec{x})$, Naive Bayes uses the Bayes rule. 
+# ````{prf:theorem} Bayes rule
 # :label: bayes_rule
-# Eq. {eq}`bayes_rule1`, i.e. $$ P({\bf a} \mid {\bf b}) = \frac{P({\bf b} \mid {\bf a}) \, P({\bf a})}{P({\bf b})}, $$ is called the Bayes rule -- a.k.a. the probability inversion rule -- and it is the basis for Bayesian inference. It tells us how the information contained in an observed sample $ \check{\bf b} $ can be assimilated through a model $ P({\bf b} \mid {\bf a}) $ to update a *prior* distribution $ P({\bf a}) $ and compute a *posterior* distribution $ P({\bf a} \mid \check{\bf b}) $ which incorporates the observed data $ \check{\bf b} $.
+# Given two random variables $x$ and $y$, then te Bayes rule is given as
+# $$ p(y \mid x) = \frac{p(x \mid y) \, p(y)}{p(x)}$$ 
 # ````
+# The Bayes rule indicates that we can compute the unkown prediction probability $p^*(y\mid \vvec{x})$ by means of three probabilities: the likelihood, the prior probability and the evidence. The prior probabilities $p(y)$ we can simply estimate as the fraction of observations with label $y$ in the dataset. Further, we can neglect the evidence when we want to predict the posterior probability, since
+# \begin{align*}
+# \argmax_y p(y\mid \vvec{x}) &= \argmax_y p(y\mid \vvec{x})p(\vvec{x})\\
+# &= p(\vvec{x}\mid y)p(y).
+# \end{align*}
+# Hence, the only thing that is left to estimate is $p(\vvec{x}\mid y)$. To do so, Naive Bayes makes a simplifying assumption.
 # 
-# ```{prf:remark} Evidence
-# The probability $ P(\check{\bf b}) $ of a sample $ \check{\bf b} $ being observed -- independently of $ {\bf A} $ -- is also called the evidence in {eq}`bayes_rule1` and can be easily computed from the known distributions $ P({\bf a} \mid {\bf b}) $ and $ P({\bf a}) $ as
-# \begin{eqnarray}
-# P(\check{\bf b}) &=& \sum_{{\bf a'} \in \Omega_{a}} P({\bf a}', \check{\bf b}) \nonumber \\
-# &\equiv& \sum_{{\bf a'} \in \Omega_{a}} P({\bf a}' \mid \check{\bf b}) P({\bf a}'), \nonumber
-# \end{eqnarray}
-# in which the likelihood $ P({\bf a} \mid {\bf b}) $ is evaluated at $ \check{\bf b} $.
-# ```
-# 
-# ````{margin}
-# ```{note}
-# In general, the *uncertainty* in the *prior* distribution $ P({\bf a}) $ is incrementally decreased in the *posterior* distribution $ P({\bf a} \mid \check{\bf b}_{1}, \check{\bf b}_{2}, \ldots) $ as we assimilate more and more data $ \check{\bf b}_{1}, \check{\bf b}_{2}, \ldots $ by means of the Bayes rule.
-# ```
-# ````
-# 
-# ```{prf:remark} Uncertainty as a measure of dispersion
-# Uncertainty can be thought of as a measure of the dispersion of a distribution. Let $ | \Omega_{x} | $ denote the cardinality -- i.e. the number of elements -- of a vector space $ \Omega_{x} $ with discrete-valued space dimensions. An uniform distribution over $ \Omega_{x} $
-# \begin{equation}
-# U({\bf x}) = \frac{1}{|\Omega_{x}|}, \forall {\bf x} \in \Omega_{x} \nonumber
-# \end{equation}
-# is called *non-informative* p.m.f. since it does not provide any information on the most or less probable values of $ {\bf X} $, i.e. all values are equiprobable. On the other hand, we can think of a deterministic vector $ {\bf x}' $ as being the realization of a random vector $ {\bf X} $ distributed according to a p.m.f.
-# \begin{equation}
-# P_{\bf X}({\bf x}) = \left[ {\bf x} = {\bf x}' \right] \nonumber
-# \end{equation}
-# with no uncertainty at all, i.e. all values have null probability except for the most probable value.
-# ```
-# 
-# ### Back to the classification problem
-# Let us assume that the $ {\cal X} $ is a $ D $-dimensional space comprising discrete-valued features only, i.e.
-# \begin{equation}
-# {\cal X} = {\cal X}_{1} \times {\cal X}_{2} \times \ldots {\cal X}_{D},
-# \end{equation}
-# where $ \lbrace {\cal X}_{d} \rbrace $, $ d \in \lbrace 1, \ldots, D \rbrace $, are finite sets of discrete values or alphabets.
-# 
-# The feature vector $ {\bf x} \in {\cal X} $ can be written in turn as 
-# \begin{equation}
-# {\bf x} = \begin{bmatrix} x_{1} & x_{2} & \ldots & x_{D} \end{bmatrix}^{T}
-# \end{equation}
-# with $ x_{d} \in {\cal X}_{d} $, $ \forall d \in \lbrace 1, \ldots, D \rbrace $.
-# 
-# Remember that the optimal classifier is given by
-# ```{math}
-# :label: nb_estimate1a
-# h^{\ast}({\bf x}) = \argmax_{y \in {\cal Y}} P^{\ast}(y \mid {\bf x}),
-# ```
-# where the *unknown* p.m.f. $ P^{\ast}(y \mid {\bf x}) $ can be rewritten using the Bayes rule as
-# ```{math}
-# :label: bayes_rule3
-# P^{\ast}(y \mid {\bf x}) \propto P^{\ast}({\bf x} \mid y) P^{\ast}(y).
-# ```
-# 
-# Thus, by plugging {eq}`bayes_rule3` into {eq}`nb_estimate1a`, we can write
-# ```{math}
-# :label: nb_estimate1b
-# h^{\ast}({\bf x}) = \argmax_{y \in {\cal Y}} P^{\ast}({\bf x} \mid y) P^{\ast}(y),
-# ```
-# since the underlying proportionality constant in {eq}`bayes_rule3` -- i.e. the reciprocal of $ P^{\ast}({\bf x}) $ -- does not depend on $ y $.
-# 
-# Note that the prior p.m.f. $ P^{\ast}(y) $ can be approximated by computing the frequencies of each label in the training dataset $ {\cal D} $, i.e.
-# ```{math}
-# :label: freq_approx1
-# P^{\ast}(y) &=& Pr \lbrace Y = y \rbrace \nonumber \\
-# &\approx& \frac{1}{N} \sum_{ \left( {\bf x}', y' \right) \in {\cal D}} \left[ y' = y \right]. \nonumber \\
-# &\triangleq P(y)
-# ```
-# 
-# On the other hand, finding a suitable approximation for the true conditional p.m.f. $ P^{\ast}({\bf x} \mid y) $ -- without further assumptions on its structure -- can be a really trick task since $ {\bf x} $ resides in such high-dimensional feature space $ {\cal X} $.
-# 
-# ### Naive Bayes assumption
-# 
-# ````{prf:definition} Naive Bayes assumption
-# Let us further assume that all features $ \lbrace x_{d} \rbrace $, $ d \in \lbrace 1, 2, \ldots, D \rbrace $, are conditionally independent. Thus, conditioned on a class value $ y $, we can write
+# ````{prf:property} Naive Bayes assumption
+# We assume that all features are conditionally independent given the class $y$. In this case, we can write
 # ```{math}
 # :label: naive_assumption
-# P^{\ast}({\bf x} \mid y) = \prod_{d=1}^{D} P^{\ast}(x_{d} \mid y).
+# p({\bf x} \mid y) = p(x_1 \mid y)\cdot p(x_2\mid y) \ldots \cdot p(x_d\mid y) .
 # ```
 # ````
-# 
-# Let the dataset partition $ {\cal D}_{y} \triangleq \lbrace \left( {\bf x}', y' \right) \in {\cal D} \mid  y' = y \rbrace $ collect all training examples from the dataset $ {\cal D} $ with class value $ y $. In this case, the true-class conditional distributions $ P^{\ast}(x_{d} \mid y) $ can be approximated as
+# Under this assumption, we can now define the inference (prediction step) of the Naive Bayes classifier. 
+# ### Inference
+# Using Bayes’ Theorem and the Naïve assumption, the prediction is made by choosing the class  that maximizes the posterior probability $p(y\mid x)$.
+# ````{prf:definition} NB classifier
+# The naive Bayes classifier computes the probabilities that observation $\vvec{x}$ orrcurs together with label $y$ under the naive Bayes assumption: 
 # ```{math}
-# :label: freq_approx2
-# P^{\ast}(x_{d} \mid y) &\approx& \frac{1}{|{\cal D}_{y}|} \sum_{\left( {\bf x}', y' \right) \in {\cal D}_{y}} \left[ x_{d}' = x_{d} \right] \nonumber \\
-# &\triangleq& P(x_{d} \mid y)
+# :label: f_nb
+# f_{nb}(\vvec{x})_y = p(y)\prod_{k=1}^d p(x_k\mid y)
 # ```
-# with $ {\bf x}' = \begin{bmatrix} x_{1}' & \ldots & x_{d}' & \ldots & x_{D} \end{bmatrix}^{T} $.
+# As a result, the naive Bayes classifier predicts the most likely label, given observation $\vvec{x}$:
+# ```{math}
+# :label: yhat_nb
+# \begin{align*}
+# \hat{y} & = \argmax_y\ f_{nb}(\vvec{x})_y\\
+# &= \argmax_y\ p(y\mid \vvec{x})
+# \end{align*}
+# ```
+# ````
+# The inference of Naive Bayes is quick if we have already stored all the probabilities $p(x_k \mid y)$. 
 # 
-# ````{prf:remark} Laplace smoothing
-# Note that $ \sum_{y \in {\cal Y}} |{\cal D}_{y}| = |{\cal D}| = N $, however, some of the classes might be under represented in the training dataset $ {\cal D} $. Thus, to avoid hard $ 0 $ or $ 1 $ probabilities, we use Laplace smoothing and rewrite {eq}`freq_approx2` as
+# Good applications of Naive Bayes justify the assumption of conditional assumption of features, given the class. This assumption is for example given in text classification. The features are here usually the word frequencies in a text document or the binary presence of words. Although word occurrences are generally not independent from each other, individual word occurrences can give strong independent signals to the classifier. Think of the word "viagra" when training a spam-detector. Also in medical diagnosis, Naive Bayes can be useful if the features are not strongly correlated. That is, a prediction of a patient condition based on a set of features like "Blood pressure", "heart rate", and "cholesterol levels" is not a suitable application of Naive Bayes, since these features are strongly correlated.     
+# #### Implementation Practice: log probabilities
+# The classifier $f_{nb}$ multiplies $d+1$ probabilities that have values in $[0,1]$. Especially for a high dimensional feature space (when $d$ is large), the probabilities of $f_{np}$ will be so close to zero that we run into numerical computation problems, such that nonzero probabilities are rounded to zero in floating-point precision. This effect is called _numerical underflow_. We can observe this effect in a minimal running example. 
+
+# In[1]:
+
+
+import numpy as np
+
+# Generate 1000 random numbers in [0,1]
+numbers = np.random.uniform(0, 1, 1000)
+product = np.prod(numbers)
+
+print(f"Product of 1000 numbers: {product:.6e}, is the product equal to zero? {product ==0}")  # Exponential notation for clarity
+
+
+# We can deal with underflow by computing the log-probabilities instead. After all, it doesn't matter if we compute the prediction $y$ that maximizes $p(y\mid \vvec{x})$ or the $\log p(y\mid \vvec{x})$, since the logarithm is a monotonically increasing function. As a result, we compute our classifications as 
+# \begin{align*}
+#     \hat{y} & = \argmax_y\ \log f_{nb}(\vvec{x})_y\\
+# &= \argmax_y\ \log(p(y)\prod_{k=1}^d p(x_k\mid y))\\
+# & = \argmax_y\ \log p(y) + \sum_{k=1}^d \log p(x_k\mid y)
+# \end{align*}
+# Using this log-probability trick, we get the following result for our minimal example: 
+
+# In[2]:
+
+
+np.sum(np.log(numbers))
+
+
+# ### Multinomial Naive Bayes
+# If we have discrete features $x_k\in\mathcal{X}_k$, where $\mathcal{X}_k$ is a finite set, then we can assume multinomial probabilities $p(x_k\mid y)$ that are approximated over the counts: 
+# \begin{align*}
+# p(x_k = a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert}.
+# \end{align*}
+# Every probability $p(x_k = a\mid y=l)$ is approximated as the number of observations where feature $x_k$ is equal to value $a$ and the label is $y_i=l$ over the number of observations where the label is $l$. 
+# #### Implementation Practice: Laplace Smoothing
+# Using the standard estimation of multinomial probabilities has the undesirable effect that some probabilities $p(x_k = a\mid y=l)$ are equal to zero if the feature $x_k$ is never equal to value $a$ in class $y$. In this case, the classifier probabilities $f_{nb}(\vvec{x})_y$ is equal to zero for all observations $\vvec{x}$ where $x_k=a$. In particular if we have many classes, a high-dimensional feature space or features with a large domain (if $\mathcal{X}_k$ is large), this effect might happen quite often. Laplace smoothing mitigates this effect by adding $\alpha$ imaginary observations for each value of $x_k$ and class $y$.
+# ````{prf:definition} Laplace smoothing
+# Given a dataset $\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}$ and feature $x_k$ attaining values in the finite set $\mathcal{X}_k$. The class-conditioned multinomial probability estimations with Laplace smoothing with variable $\alpha> 0$ are then given as 
 # ```{math}
 # :label: freq_approx3
-# P(x_{d} \mid y) = \frac{\alpha + \sum_{\left( {\bf x}', y' \right) \in {\cal D}_{y}} \left[ x_{d}' = x_{d} \right]}{\alpha |\Omega_{d}| + |{\cal D}_{y}|},
-# ```
-# where $ \alpha \geq 0 $ is the smoothing parameter such that the approximated probability $ P(x_{d} \mid y) $ will be between the empirical probability as in {eq}`freq_approx2` ($ \alpha = 0 $) and the uniform probability $ \dfrac{1}{|\Omega_{d}|} $ ( $ \alpha \rightarrow \infty $).
-# ````
-# 
-# ````{prf:remark} The naive assumption is quite strong
-# For example, let us suppose that the feature vector $$ {\bf x} \in {\cal X} = {\cal X}_{1} \times \ldots \times {\cal X}_{D}, $$ with $ {\cal X}_{d} \triangleq \lbrace 0, 1, \ldots, 255 \rbrace $, $ \forall d \in \lbrace 1, \ldots, D \rbrace $, collect the $8$-bit pixel values of a $ 28 \times 28 $ input image containing pictures of handwritten numbers $ y \in {\cal Y} = \lbrace 0, 1, 2, \ldots, 9 \rbrace $. The training dataset has the type
-# ```{figure} /images/classification/nb_assumption.svg
-# ---
-# height: 320px
-# name: nb_assumption_fig
-# align: left
-# ---
-# An image dataset with intrinsically spatially-correlated features. Note that nearby image pixels (features) are highly correlated by virtue of the underlying data generation process (handwriting).
-# ```
-# 
-# Note first that the number of dimensions is quite large $ D = 28^{2} = 784 $. As the number of possible values along each dimension $ d $ is $ |{\cal X}_{d}| = 2^{8} = 256 $, there are $ |{\cal X}| = |{\cal X}_{1}| \times |{\cal X}_{2}| \times \ldots \times |{\cal X}_{784}| = 256^{784} $ possible images. This is larger than the number of atoms in the universe $ \approx 10^{82} $. On the other hand, the subset $ {\cal X}' \subset {\cal X} $ containing valid images of numerals is much smaller.
-# 
-# Finally, as images of handwritten numbers, nearby pixels are intrinsically correlated -- for instance, an image containing the handwriting of the number two still corresponding to the class label $ y = 2 $ after being rotated or slightly translated and scaled such that the handwritten number is still within image bounds. Thus, the conditionally independence assumption is not directly applicable to the feature space $ {\cal X} $ as defined here. That is, conditioned on a class value $ y $, the image pixels $ \lbrace x_{d} \rbrace $, $ d \in \lbrace 1, \ldots, D \rbrace $, are spatially correlated.
-# ````
-# 
-# ### Naive Bayes classifier
-# 
-# ````{prf:definition} NB classifier
-# :label: nb_classifier
-# The NB classifier is defined as
-# ```{math}
-# :label: nb_estimate2
-# h_{NB}({\bf x}) = \argmax_{y \in {\cal Y}} \left\lbrace P(y) \prod_{d=1}^{D} P(x_{d} \mid y) \right\rbrace,
-# ```
-# where $ {\bf x} = \begin{bmatrix} x_{1} & \ldots & x_{d} & \ldots & x_{D} \end{bmatrix}^{T} $.
-# ````
-# 
-# ````{toggle}
-# ```{prf:proof}
-# By plugging {eq}`naive_assumption` into {eq}`nb_estimate1b` and substituting $ P^{\ast}(y) $ and $ P^{\ast}(x_{d} \mid y) $ by their frequentist approximations $ P(y) $ and $ P(x_{d} \mid y) $ given by {eq}`freq_approx1` and {eq}`freq_approx2`, respectively, we obtain the NB classifier as defined in {eq}`nb_estimate2`.
+# p_\alpha(x_{k} =a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}
 # ```
 # ````
+# Note that adding $\alpha \lvert\mathcal{X}_k\rvert$ to the denominator makes the conditioned probability estimations with Laplace smoothing sum up to one:
+# \begin{align*}
+# \sum_{a\in \mathcal{X}_k} p_\alpha(x_{k} =a\mid y=l) 
+# & = \sum_{a\in \mathcal{X}_k} \frac{\lvert\{ i\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{i\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\\
+# & =  \frac{\sum_{a\in \mathcal{X}_k}( \lvert\{ i\mid {x_i}_k = a, y_i=l \}\rvert+\alpha)}{\lvert\{i\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\\
+# &= 1.
+# \end{align*}
+# #### Training
 # 
-# ````{prf:remark} Switching to log odds
-# Note that the NB classifier as defined in {eq}`nb_estimate2` is numerically unstable since it requires the computation of the product of several conditional probabilities $ P(x_{d} \mid y) $, $ d \in \lbrace 1, \ldots, D \rbrace $, for a large dimensional feature space $ {\cal X} $. As computers use a limited number of bits to represent real numbers -- using double-precision or single-precision float-point format --, even though a small fraction of these $ D $ probabilities are small, their product might easily collapse to zero. Thus, a typical workaround to avoid numerical instability is to rewrite {eq}`nb_estimate2` as
-# ```{math}
-# :label: nb_estimate3
-# h_{NB}({\bf x}) &=& \argmax_{y \in {\cal Y}} \left\lbrace \log \left( P(y) \prod_{d=1}^{D} P(x_{d} \mid y) \right) \right\rbrace \nonumber \\
-# &\equiv& \argmax_{y \in {\cal Y}} \left\lbrace \log P(y) + \sum_{d=1}^{D} \log P(x_{d} \mid y) \right\rbrace,
+# ```{prf:example}
+# We consider the following toy dataset, where the task is to predict whether the email is spam, based on the words "free", "win", "offer" and "meeting".
+# 
+# | Contains "Free"? | Contains "Win"? | Contains "Offer"? | Contains "Meeting"? | Spam |
+# |----------------|----------------|----------------|----------------|------------|
+# | Yes            | No             | Yes            | No             | Yes        |
+# | No             | Yes            | No             | Yes            | No         |
+# | Yes            | Yes            | Yes            | No             | Yes        |
+# | No             | No             | No             | Yes            | No         |
+# | Yes            | No             | No             | Yes            | No         |
+# | No             | Yes            | Yes            | No             | Yes        |
+# 
+# We compute the probabilities of the word "free" conditioned on whether it is in a spam email or not, using Laplace smoothing parameter $\alpha=1$. The domain of the feature "free" is "yes" and "no", hence, $\lvert \mathcal{X}_{free}\rvert=2$.
+# \begin{align*}
+# p(free = yes\mid spam=yes) &= \frac{2 +1}{3+2} = \frac{3}{5}\\
+# p(free = no\mid spam=yes) &= \frac{1 +1}{3+2} = \frac{2}{5}\\
+# p(free = yes\mid spam=no) &= \frac{1 +1}{3+2} = \frac{2}{5}\\
+# p(free = no\mid spam=no) &= \frac{2 +1}{3+2} = \frac{3}{5}\\
+# \end{align*}
 # ```
-# since $ \log(\cdot) $ is a monotonic increasing function. In this case, the NB classifier is selecting the class value $ y $ which maximizes the log-likelihood function with the term $ \log P(y) $ representing the prior evidence of the class value $ y $ and the terms $ \log P(x_{d} \mid y) $ representing the contribution of each observed component $ x_{d} $ given the class value $ y $. The contribution of the log function to numerical stability is two-folded: 
-# * the summation in {eq}`nb_estimate3` avoids collapsing the joint likelihood function $ P( {\bf x} \mid y) \ \equiv P(x_{1}, x_{2}, \ldots, x_{D} \mid y) $ by multiplying several possible small likelihoods $ P(x_{d} \mid y) > 0 $ and, 
-# * albeit the logarithm of valid probabilities are upper bounded by $ 0 $, near-zero probabilities / likelihoods are severely penalized since $ \log(0^{+}) = -\infty $.
-# ````
+
+# ### Gaussian Naive Bayes
+# If feature $x_k$ attains continuous values, then a popular choice is to assume a Gaussian distribution for the class-conditioned probabilities:
+# \begin{align*}
+# p(x_k = a\mid y=l) = \frac{1}{\sqrt{2\pi \sigma_{kl}^2}}\exp\left(-\frac{(a-\mu_{kl})^2}{2\sigma_{kl}^2}\right).
+# \end{align*}
+# The parameter $\mu_{kl}$ is the estimated mean value $\sigma_{kl}$ is the estimated variance of feature $x_k$ in class $y$.
+# * $\mu_{kl} = \frac{1}{\lvert\{i\mid y_i=l\}\rvert}\sum_{i:y_i=l} {x_i}_k $
+# * $\sigma_{kl}^2 = \frac{1}{\lvert\{i\mid y_i=l\}\rvert} \sum_{i:y_i=l} ({x_i}_k-\mu_{kl})^2$
 # 
+# Note that the definition of the conditional probability for Gaussian naive Bayes is mathematically not exactly clean, since we have on the right side a probability _distribution_ and not an actual probability. For practical purposes this is ok, since Naive Bayes relies on a comparison between likelihoods of feature values given a class.     
+# 
+# #### Decision Boundaries
+# We plot the decision making process of Gaussian Naive Bayes below. The plot below shows the log probabilities of the joint distribution $\log p(x,y)$ for each of the two classes. The more intense the color, the higher the log-probability of the corresponding class. We observe the Gaussians that are fit for each class on each axis result in an ellipse-shaped levelset.  
+
+# In[3]:
+
+
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+from sklearn.inspection import DecisionBoundaryDisplay
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+from sklearn.datasets import make_moons
+
+
+X,y = make_moons(noise=0.3, random_state=0, n_samples=200)
+X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.4, random_state=42
+    )
+
+fig, axs = plt.subplots(ncols=2, figsize=(12, 5))
+cm_0 = LinearSegmentedColormap.from_list("mycmap", ["#ffffff","#a0c3ff"])
+cm_1 = LinearSegmentedColormap.from_list("mycmap", ["#ffffff", "#ffa1cf"])
+cmaps = [cm_0,cm_1]
+cm_points = ListedColormap(["#007bff", "magenta"])
+for ax, k in zip(axs, (0,1)):
+    gnb = GaussianNB()
+    y_pred = gnb.fit(X_train, y_train)
+    x = np.arange(-2, 3, 0.05)
+    y = np.arange(-2, 3, 0.05)
+
+    xx, yy = np.meshgrid(x, y)
+    X = np.array([xx,yy]).reshape(2,x.shape[0]*y.shape[0]).T
+    Z = gnb.predict_joint_log_proba(np.c_[xx.ravel(), yy.ravel()])
+    h = ax.contourf(x,y,Z[:,k].reshape((y.shape[0],x.shape[0])),cmap=cmaps[k])
+
+    ax.axis('scaled')
+    scatter = ax.scatter(X_train[:, 0], X_train[:, 1], c=y_train, edgecolors="k",cmap = cm_points)
+    _ = ax.set_title(
+        f"Two moons log p(x,y={k}) Gaussian Naive Bayes"
+    )
+    
+plt.show()
+
+
+# The corresponding classifier predicts the class attaining the maximum joint probability. Below, you can see the decision boundary. The classifier looks linear in this example. That is not necessarily the case, but since the joint probabilities are always ellipses, the Gaussian Naive Bayes classifier can't model arbritary shapes in the decision boundary.  
+
+# In[4]:
+
+
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+from sklearn.inspection import DecisionBoundaryDisplay
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+from sklearn.datasets import make_moons
+
+
+X,y = make_moons(noise=0.3, random_state=0, n_samples=200)
+X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.4, random_state=42
+    )
+
+_, ax = plt.subplots(ncols=1, figsize=(12, 5))
+cm = ListedColormap(["#a0c3ff", "#ffa1cf"])
+cm_points = ListedColormap(["#007bff", "magenta"])
+gnb = GaussianNB()
+y_pred = gnb.fit(X_train, y_train)
+disp = DecisionBoundaryDisplay.from_estimator(
+    gnb,
+    X_test,
+    response_method="predict",
+    plot_method="pcolormesh",
+    shading="auto",
+    alpha=0.5,
+    ax=ax,
+    cmap=cm,
+)
+scatter = disp.ax_.scatter(X_train[:, 0], X_train[:, 1], c=y_train, edgecolors="k",cmap = cm_points)
+_ = disp.ax_.set_title(
+    f"Two moons classification Gaussian Naive Bayes"
+)
+ax.axis('scaled')
+
+plt.show()
+
+
+# ### Training
+# Naive Bayes doesn't need training in the classical sense, but to enable a quick inference of a naive Bayes classifier, the required probabilities, respectively their parameters are stored in advance. That is, for discrete features we compute all log probabilities, and for continuous features we compute the estimation parameters $\mu_{kl}$ and $\sigma_{kl}$.
+# ```{prf:algorithm} Naive Bayes (Gaussian and Multinomial)
+# 
+# **Input**: training data $\mathcal{D}$, $\alpha$
+# 1. **for** $k\in\{1,\ldots,d\}$
+#     1. **if** $x_k$ is a discrete feature
+#         1. **for** $a\in\mathcal{X}_k$
+#             1. **for** $l\in\{1,\ldots, c\}$
+#                 1. Store $\log p_\alpha(x_k=a\mid y=l)$
+#     2. **else**    
+#         1. **for** $l\in\{1,\ldots, c\}$
+#             1. Store $\mu_{kl}$ and $\sigma_{kl}$.
+# ```

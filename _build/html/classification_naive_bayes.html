@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Naïve Bayes &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    <title>Naive Bayes &#8212; Data Mining and Machine Learning Jupyter Book</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -255,7 +255,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="classification_problem.html">
-     Classification Problem
+     Classification Objective
     </a>
    </li>
    <li class="toctree-l2">
@@ -270,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Naïve Bayes
+     Naive Bayes
     </a>
    </li>
    <li class="toctree-l2">
@@ -591,33 +591,54 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#marginalization">
-   Marginalization
+  <a class="reference internal nav-link" href="#approximating-the-bayes-classifier">
+   Approximating the Bayes Classifier
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#conditional-probability-distribution">
-   Conditional probability distribution
+  <a class="reference internal nav-link" href="#inference">
+   Inference
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#implementation-practice-log-probabilities">
+     Implementation Practice: log probabilities
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bayes-rule">
-   Bayes rule
+  <a class="reference internal nav-link" href="#multinomial-naive-bayes">
+   Multinomial Naive Bayes
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#implementation-practice-laplace-smoothing">
+     Implementation Practice: Laplace Smoothing
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training">
+     Training
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#back-to-the-classification-problem">
-   Back to the classification problem
+  <a class="reference internal nav-link" href="#gaussian-naive-bayes">
+   Gaussian Naive Bayes
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#decision-boundaries">
+     Decision Boundaries
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#naive-bayes-assumption">
-   Naive Bayes assumption
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#naive-bayes-classifier">
-   Naive Bayes classifier
+  <a class="reference internal nav-link" href="#id1">
+   Training
   </a>
  </li>
 </ul>
@@ -629,7 +650,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Naïve Bayes</h1>
+                <h1>Naive Bayes</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -640,33 +661,54 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#marginalization">
-   Marginalization
+  <a class="reference internal nav-link" href="#approximating-the-bayes-classifier">
+   Approximating the Bayes Classifier
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#conditional-probability-distribution">
-   Conditional probability distribution
+  <a class="reference internal nav-link" href="#inference">
+   Inference
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#implementation-practice-log-probabilities">
+     Implementation Practice: log probabilities
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bayes-rule">
-   Bayes rule
+  <a class="reference internal nav-link" href="#multinomial-naive-bayes">
+   Multinomial Naive Bayes
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#implementation-practice-laplace-smoothing">
+     Implementation Practice: Laplace Smoothing
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training">
+     Training
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#back-to-the-classification-problem">
-   Back to the classification problem
+  <a class="reference internal nav-link" href="#gaussian-naive-bayes">
+   Gaussian Naive Bayes
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#decision-boundaries">
+     Decision Boundaries
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#naive-bayes-assumption">
-   Naive Bayes assumption
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#naive-bayes-classifier">
-   Naive Bayes classifier
+  <a class="reference internal nav-link" href="#id1">
+   Training
   </a>
  </li>
 </ul>
@@ -680,245 +722,344 @@ title="Print to PDF"
               <div>
                 
   <section id="naive-bayes">
-<h1>Naïve Bayes<a class="headerlink" href="#naive-bayes" title="Permalink to this headline">#</a></h1>
-<p>In this section, we recap some important concepts from probability theory. In the sequel, for the sake of simplicity, we introduce the Naive Bayes (NB) classifier assuming a space <span class="math notranslate nohighlight">\( {\cal X} \)</span> of discrete-valued features only. However, the results here can be promptly extended to a space <span class="math notranslate nohighlight">\( {\cal X} \)</span> containing continuous-valued features or a mix of continuous and discrete-valued features.</p>
-<section id="marginalization">
-<h2>Marginalization<a class="headerlink" href="#marginalization" title="Permalink to this headline">#</a></h2>
-<p>Let</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c020b981-85c2-485e-a04c-f0f1a8d5e9df">
-<span class="eqno">(67)<a class="headerlink" href="#equation-c020b981-85c2-485e-a04c-f0f1a8d5e9df" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-P({\bf a}, {\bf b}) &amp;\equiv&amp; P_{{\bf A},{\bf B}}({\bf a}, {\bf b}) \nonumber \\
-&amp;\triangleq&amp; Pr \lbrace {\bf A} = {\bf a} \wedge {\bf B} = {\bf b} \rbrace \nonumber
-\end{eqnarray}\]</div>
-<p>denote the joint probability mass function (p.m.f.)<a class="footnote-reference brackets" href="#footnote1" id="id1">1</a> of the random vectors <span class="math notranslate nohighlight">\( {\bf A} \)</span> and <span class="math notranslate nohighlight">\( {\bf B} \)</span>, i.e. <span class="math notranslate nohighlight">\( {\bf A}, {\bf B} \sim P({\bf a}, {\bf b}) \)</span>. Furthermore, we assume that the realizations <span class="math notranslate nohighlight">\( {\bf a} \)</span> and <span class="math notranslate nohighlight">\( {\bf b} \)</span> of the random vectors <span class="math notranslate nohighlight">\( {\bf A} \)</span> and <span class="math notranslate nohighlight">\( {\bf B} \)</span> take values in the discrete-valued vector spaces <span class="math notranslate nohighlight">\( \Omega_{a} \)</span> and <span class="math notranslate nohighlight">\( \Omega_{b} \)</span>, respectively.</p>
-<div class="proof definition admonition" id="marginalization">
-<p class="admonition-title"><span class="caption-number">Definition 18 </span> (Marginalization)</p>
+<h1>Naive Bayes<a class="headerlink" href="#naive-bayes" title="Permalink to this headline">#</a></h1>
+<p>The Naïve Bayes classifier is a simple yet powerful probabilistic algorithm used for classification tasks. It is based on Bayes’ Theorem and assumes that the features are conditionally independent, given the class label. Despite its simplicity, it performs well in many real-world applications, such as spam detection, sentiment analysis, and medical diagnosis.</p>
+<section id="approximating-the-bayes-classifier">
+<h2>Approximating the Bayes Classifier<a class="headerlink" href="#approximating-the-bayes-classifier" title="Permalink to this headline">#</a></h2>
+<p>Naïve Bayes is a probabilistic classifier, and before we delve into its mechanics, we establish first some terminology to describe the probabilties that we are dealing with.</p>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 17 </span> (Probabilistic Machine Learning Speak)</p>
 <section class="definition-content" id="proof-content">
-<p>Then, the marginal p.m.f.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-07ed9026-d2d7-4f62-82a1-b33b4ac4b210">
-<span class="eqno">(68)<a class="headerlink" href="#equation-07ed9026-d2d7-4f62-82a1-b33b4ac4b210" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-P({\bf a}) &amp;\equiv&amp; P_{{\bf A}}({\bf a}) \nonumber \\
-&amp;\triangleq&amp; Pr \lbrace {\bf A} = {\bf a} \rbrace  \nonumber
-\end{eqnarray}\]</div>
-<p>of the random vector <span class="math notranslate nohighlight">\( {\bf A} \)</span> can be computed from the joint p.m.f. <span class="math notranslate nohighlight">\( P({\bf a}, {\bf b}) \)</span> as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-cff3ce1e-aac6-4f58-863f-7ebfd2f925e4">
-<span class="eqno">(69)<a class="headerlink" href="#equation-cff3ce1e-aac6-4f58-863f-7ebfd2f925e4" title="Permalink to this equation">#</a></span>\[\begin{equation}
-P({\bf a}) = \sum_{{\bf b} \in \Omega_{b}} P({\bf a}, {\bf b}).
-\end{equation}\]</div>
-<p>Analogously, the marginal p.m.f.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5edae753-fc90-483a-8823-744e20b712cd">
-<span class="eqno">(70)<a class="headerlink" href="#equation-5edae753-fc90-483a-8823-744e20b712cd" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-P({\bf b}) &amp;\equiv&amp; P_{\bf B}({\bf b}) \nonumber \\
-&amp;\triangleq&amp; Pr \lbrace {\bf B} = {\bf b} \rbrace \nonumber
-\end{eqnarray}\]</div>
-<p>of the random vector <span class="math notranslate nohighlight">\( {\bf B} \)</span> can be obtained by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a5a12c0a-0de2-40b5-9748-5ef2381198fe">
-<span class="eqno">(71)<a class="headerlink" href="#equation-a5a12c0a-0de2-40b5-9748-5ef2381198fe" title="Permalink to this equation">#</a></span>\[\begin{equation}
-P({\bf b}) = \sum_{{\bf a} \in \Omega_{a}} P({\bf a}, {\bf b}).
-\end{equation}\]</div>
-</section>
-</div><div class="proof remark admonition" id="remark-1">
-<p class="admonition-title"><span class="caption-number">Remark 5 </span> (Valid distributions)</p>
-<section class="remark-content" id="proof-content">
-<p>Recap: a valid p.m.f. <span class="math notranslate nohighlight">\( P({\bf x}) \equiv P_{\bf X}({\bf x}) \)</span>, <span class="math notranslate nohighlight">\( {\bf x} \in \Omega_{x} \)</span>, must be non-negative and the sum over its support must be equals one, i.e. it must satisfy the following conditions</p>
-<div class="amsmath math notranslate nohighlight" id="equation-eec4648f-d75c-46ec-875d-9c7fd37c7dc8">
-<span class="eqno">(72)<a class="headerlink" href="#equation-eec4648f-d75c-46ec-875d-9c7fd37c7dc8" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-&amp;&amp; 0 \leq P({\bf x}) \leq 1, \forall {\bf x} \in \Omega_{x} \,\, \mbox{} \nonumber \\
-&amp;&amp; \sum_{{\bf x} \in \Omega_{x}} P({\bf x}) = 1. \nonumber \\
-\end{eqnarray}\]</div>
-</section>
-</div></section>
-<section id="conditional-probability-distribution">
-<h2>Conditional probability distribution<a class="headerlink" href="#conditional-probability-distribution" title="Permalink to this headline">#</a></h2>
-<div class="proof definition admonition" id="conditional_probability_distribution">
-<p class="admonition-title"><span class="caption-number">Definition 19 </span> (Conditional probability distributions)</p>
-<section class="definition-content" id="proof-content">
-<p>The p.m.f. <span class="math notranslate nohighlight">\( P({\bf a} \mid {\bf b}) \)</span> of the random vector <span class="math notranslate nohighlight">\( {\bf A} \)</span> conditioned on a particular realization <span class="math notranslate nohighlight">\( {\bf b} \)</span> of the random vector <span class="math notranslate nohighlight">\( {\bf B} \)</span> is defined as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f70ae0ea-bd94-4141-8ec1-f3c05cbeceb1">
-<span class="eqno">(73)<a class="headerlink" href="#equation-f70ae0ea-bd94-4141-8ec1-f3c05cbeceb1" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-P({\bf a} \mid {\bf b}) &amp;\equiv&amp; P_{{\bf A} \mid {\bf b}}({\bf a} \mid {\bf b}) \nonumber \\
-&amp;\triangleq&amp; Pr \lbrace {\bf A} = {\bf a} \mid {\bf B} = {\bf b} \rbrace \nonumber
-\end{eqnarray}\]</div>
-<p>and can be computed from the joint distribution <span class="math notranslate nohighlight">\( P({\bf a}, {\bf b}) \)</span> as</p>
-<div class="math notranslate nohighlight" id="equation-pab-cond">
-<span class="eqno">(74)<a class="headerlink" href="#equation-pab-cond" title="Permalink to this equation">#</a></span>\[P({\bf a} \mid {\bf b}) = \frac{P({\bf a}, {\bf b})}{P({\bf b})}.\]</div>
-</section>
-</div><p>Note that we can write <span class="math notranslate nohighlight">\( {\bf A} \mid {\bf b} \sim P({\bf a} \mid {\bf b}) \)</span> which indicates the distribution of the random vector <span class="math notranslate nohighlight">\( {\bf A} \)</span> given that the realization <span class="math notranslate nohighlight">\( {\bf b} \)</span> of <span class="math notranslate nohighlight">\( {\bf B} \)</span> has occurred. Conversely, the p.m.f. <span class="math notranslate nohighlight">\( P({\bf b} \mid {\bf a}) \)</span> of the random vector <span class="math notranslate nohighlight">\( {\bf B} \)</span> conditioned on a particular realization <span class="math notranslate nohighlight">\( {\bf a} \)</span> of the random vector <span class="math notranslate nohighlight">\( {\bf A} \)</span> is defined as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3251638f-cfe2-46b7-93b5-a590a29e0e99">
-<span class="eqno">(75)<a class="headerlink" href="#equation-3251638f-cfe2-46b7-93b5-a590a29e0e99" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-P({\bf b} \mid {\bf a}) &amp;\equiv&amp; P_{{\bf B} \mid {\bf a}}({\bf b} \mid {\bf a}) \nonumber \\
-&amp;\triangleq&amp; Pr \lbrace {\bf B} = {\bf b} \mid {\bf A} = {\bf a} \rbrace, \nonumber
-\end{eqnarray}\]</div>
-<p>i.e. <span class="math notranslate nohighlight">\( {\bf B} \mid {\bf a} \sim P({\bf b} \mid {\bf a}) \)</span>, and is obtained from <span class="math notranslate nohighlight">\( P({\bf a}, {\bf b}) \)</span> by</p>
-<div class="math notranslate nohighlight" id="equation-pba-cond">
-<span class="eqno">(76)<a class="headerlink" href="#equation-pba-cond" title="Permalink to this equation">#</a></span>\[P({\bf b} \mid {\bf a}) = \frac{P({\bf a}, {\bf b})}{P({\bf a})}.\]</div>
-<p>Lastly, from Eqs. <a class="reference internal" href="#equation-pab-cond">(74)</a> and <a class="reference internal" href="#equation-pba-cond">(76)</a>, we can write</p>
-<div class="math notranslate nohighlight" id="equation-equiv">
-<span class="eqno">(77)<a class="headerlink" href="#equation-equiv" title="Permalink to this equation">#</a></span>\[P({\bf a}, {\bf b}) = P({\bf a} \mid {\bf b}) \, P({\bf b}) = P({\bf b} \mid {\bf a}) \, P({\bf a}).\]</div>
-</section>
-<section id="bayes-rule">
-<h2>Bayes rule<a class="headerlink" href="#bayes-rule" title="Permalink to this headline">#</a></h2>
-<p><strong>Goal:</strong> we seek to obtain the so-called <em>posterior</em> distribution <span class="math notranslate nohighlight">\( P({\bf a} \mid \check{\bf b}) \)</span> of the random vector <span class="math notranslate nohighlight">\( {\bf A} \)</span> provided that</p>
+<p>Given two random variables <span class="math notranslate nohighlight">\(\vvec{x}\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, where <span class="math notranslate nohighlight">\(\vvec{x}\)</span> is the random variable of the observations of a dataset and <span class="math notranslate nohighlight">\(y\)</span> is the random variable of the class label. We define then the following probabilities:</p>
 <ul class="simple">
-<li><p>we have observed the realization <span class="math notranslate nohighlight">\( \check{\bf b} \)</span> of <span class="math notranslate nohighlight">\( {\bf B} \)</span>;</p></li>
-<li><p>we know the conditional distribution <span class="math notranslate nohighlight">\( P({\bf b} \mid {\bf a}) \)</span>, which models how likely it is to observe a given sample <span class="math notranslate nohighlight">\( {\bf b} \)</span> for each possibly value <span class="math notranslate nohighlight">\( {\bf a} \in \Omega_{a} \)</span>;</p></li>
-<li><p>we know the <em>prior</em> distribution <span class="math notranslate nohighlight">\( P({\bf a}) \)</span> of the random vector <span class="math notranslate nohighlight">\( {\bf A} \)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p(y\mid \vvec{x})\)</span> is the <strong>posterior probability</strong> (the probability of class <span class="math notranslate nohighlight">\(y\)</span> given observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span> )</p></li>
+<li><p><span class="math notranslate nohighlight">\(p(\vvec{x}\mid y)\)</span> is the <strong>likelihood</strong> (how likely is it to observe <span class="math notranslate nohighlight">\(\vvec{x}\)</span> in class <span class="math notranslate nohighlight">\(y\)</span>?)</p></li>
+<li><p><span class="math notranslate nohighlight">\(p(y)\)</span> is the <strong>prior probability</strong> (how often do I expect class <span class="math notranslate nohighlight">\(y\)</span> to occur in my dataset?)</p></li>
+<li><p><span class="math notranslate nohighlight">\(p(\vvec{x})\)</span> is the <strong>evidence</strong> (how probable is observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span>?)</p></li>
 </ul>
-<p>Note that we can rewrite Eq. <a class="reference internal" href="#equation-equiv">(77)</a> as</p>
-<div class="math notranslate nohighlight" id="equation-bayes-rule1">
-<span class="eqno">(78)<a class="headerlink" href="#equation-bayes-rule1" title="Permalink to this equation">#</a></span>\[P({\bf a} \mid {\bf b}) = \frac{P({\bf b} \mid {\bf a}) \, P({\bf a})}{P({\bf b})}.\]</div>
-<p>By plugging the particular observation <span class="math notranslate nohighlight">\( \check{\bf b} \)</span> into <a class="reference internal" href="#equation-bayes-rule1">(78)</a>, we write</p>
-<div class="math notranslate nohighlight" id="equation-bayes-rule2a">
-<span class="eqno">(79)<a class="headerlink" href="#equation-bayes-rule2a" title="Permalink to this equation">#</a></span>\[P({\bf a} \mid \check{\bf b}) = \frac{P(\check{\bf b} \mid {\bf a}) \, P({\bf a})}{P(\check{\bf b})}\]</div>
-<p>and them</p>
-<div class="math notranslate nohighlight" id="equation-bayes-rule2b">
-<span class="eqno">(80)<a class="headerlink" href="#equation-bayes-rule2b" title="Permalink to this equation">#</a></span>\[P({\bf a} \mid \check{\bf b}) \propto  P(\check{\bf b} \mid {\bf a}) \, P({\bf a}),\]</div>
-<p>in which the denominator <span class="math notranslate nohighlight">\( P(\check{\bf b}) \)</span> on the right-hand side of <a class="reference internal" href="#equation-bayes-rule2a">(79)</a> was omitted in <a class="reference internal" href="#equation-bayes-rule2b">(80)</a> since it is a constant – it is the p.m.f. <span class="math notranslate nohighlight">\( P({\bf b}) \)</span> evaluated at the particular sample <span class="math notranslate nohighlight">\( \check{\bf b} \)</span>.</p>
-<div class="proof definition admonition" id="bayes_rule">
-<p class="admonition-title"><span class="caption-number">Definition 20 </span> (The glorious Bayes rule)</p>
-<section class="definition-content" id="proof-content">
-<p>Eq. <a class="reference internal" href="#equation-bayes-rule1">(78)</a>, i.e. <div class="math notranslate nohighlight">
-\[ P({\bf a} \mid {\bf b}) = \frac{P({\bf b} \mid {\bf a}) \, P({\bf a})}{P({\bf b})}, \]</div>
- is called the Bayes rule – a.k.a. the probability inversion rule – and it is the basis for Bayesian inference. It tells us how the information contained in an observed sample <span class="math notranslate nohighlight">\( \check{\bf b} \)</span> can be assimilated through a model <span class="math notranslate nohighlight">\( P({\bf b} \mid {\bf a}) \)</span> to update a <em>prior</em> distribution <span class="math notranslate nohighlight">\( P({\bf a}) \)</span> and compute a <em>posterior</em> distribution <span class="math notranslate nohighlight">\( P({\bf a} \mid \check{\bf b}) \)</span> which incorporates the observed data <span class="math notranslate nohighlight">\( \check{\bf b} \)</span>.</p>
 </section>
-</div><div class="proof remark admonition" id="remark-4">
-<p class="admonition-title"><span class="caption-number">Remark 6 </span> (Evidence)</p>
-<section class="remark-content" id="proof-content">
-<p>The probability <span class="math notranslate nohighlight">\( P(\check{\bf b}) \)</span> of a sample <span class="math notranslate nohighlight">\( \check{\bf b} \)</span> being observed – independently of <span class="math notranslate nohighlight">\( {\bf A} \)</span> – is also called the evidence in <a class="reference internal" href="#equation-bayes-rule1">(78)</a> and can be easily computed from the known distributions <span class="math notranslate nohighlight">\( P({\bf a} \mid {\bf b}) \)</span> and <span class="math notranslate nohighlight">\( P({\bf a}) \)</span> as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8dddcc03-7a20-4794-91cf-b3ec4c4d8773">
-<span class="eqno">(81)<a class="headerlink" href="#equation-8dddcc03-7a20-4794-91cf-b3ec4c4d8773" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-P(\check{\bf b}) &amp;=&amp; \sum_{{\bf a'} \in \Omega_{a}} P({\bf a}', \check{\bf b}) \nonumber \\
-&amp;\equiv&amp; \sum_{{\bf a'} \in \Omega_{a}} P({\bf a}' \mid \check{\bf b}) P({\bf a}'), \nonumber
-\end{eqnarray}\]</div>
-<p>in which the likelihood <span class="math notranslate nohighlight">\( P({\bf a} \mid {\bf b}) \)</span> is evaluated at <span class="math notranslate nohighlight">\( \check{\bf b} \)</span>.</p>
+</div><p>The motivation for the Naive Bayes classifier is to approximate the Bayes optimal classifier <span class="math notranslate nohighlight">\(y^*=\argmax_y p^*(y\mid\vvec{x})\)</span> under simplifying assumptions. To estimate <span class="math notranslate nohighlight">\(p*(y\mid\vvec{x})\)</span>, Naive Bayes uses the Bayes rule.</p>
+<div class="proof theorem admonition" id="bayes_rule">
+<p class="admonition-title"><span class="caption-number">Theorem 14 </span> (Bayes rule)</p>
+<section class="theorem-content" id="proof-content">
+<p>Given two random variables <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, then te Bayes rule is given as
+<div class="math notranslate nohighlight">
+\[ p(y \mid x) = \frac{p(x \mid y) \, p(y)}{p(x)}\]</div>
+</p>
 </section>
-</div><aside class="margin sidebar">
-<p class="sidebar-title"></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In general, the <em>uncertainty</em> in the <em>prior</em> distribution <span class="math notranslate nohighlight">\( P({\bf a}) \)</span> is incrementally decreased in the <em>posterior</em> distribution <span class="math notranslate nohighlight">\( P({\bf a} \mid \check{\bf b}_{1}, \check{\bf b}_{2}, \ldots) \)</span> as we assimilate more and more data <span class="math notranslate nohighlight">\( \check{\bf b}_{1}, \check{\bf b}_{2}, \ldots \)</span> by means of the Bayes rule.</p>
-</div>
-</aside>
-<div class="proof remark admonition" id="remark-5">
-<p class="admonition-title"><span class="caption-number">Remark 7 </span> (Uncertainty as a measure of dispersion)</p>
-<section class="remark-content" id="proof-content">
-<p>Uncertainty can be thought of as a measure of the dispersion of a distribution. Let <span class="math notranslate nohighlight">\( | \Omega_{x} | \)</span> denote the cardinality – i.e. the number of elements – of a vector space <span class="math notranslate nohighlight">\( \Omega_{x} \)</span> with discrete-valued space dimensions. An uniform distribution over <span class="math notranslate nohighlight">\( \Omega_{x} \)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-f9ff592e-0554-470e-ba9a-28bb821c9ee9">
-<span class="eqno">(82)<a class="headerlink" href="#equation-f9ff592e-0554-470e-ba9a-28bb821c9ee9" title="Permalink to this equation">#</a></span>\[\begin{equation}
-U({\bf x}) = \frac{1}{|\Omega_{x}|}, \forall {\bf x} \in \Omega_{x} \nonumber
-\end{equation}\]</div>
-<p>is called <em>non-informative</em> p.m.f. since it does not provide any information on the most or less probable values of <span class="math notranslate nohighlight">\( {\bf X} \)</span>, i.e. all values are equiprobable. On the other hand, we can think of a deterministic vector <span class="math notranslate nohighlight">\( {\bf x}' \)</span> as being the realization of a random vector <span class="math notranslate nohighlight">\( {\bf X} \)</span> distributed according to a p.m.f.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ea5b7389-9715-4d93-88fb-f50874f574e1">
-<span class="eqno">(83)<a class="headerlink" href="#equation-ea5b7389-9715-4d93-88fb-f50874f574e1" title="Permalink to this equation">#</a></span>\[\begin{equation}
-P_{\bf X}({\bf x}) = \left[ {\bf x} = {\bf x}' \right] \nonumber
-\end{equation}\]</div>
-<p>with no uncertainty at all, i.e. all values have null probability except for the most probable value.</p>
-</section>
-</div></section>
-<section id="back-to-the-classification-problem">
-<h2>Back to the classification problem<a class="headerlink" href="#back-to-the-classification-problem" title="Permalink to this headline">#</a></h2>
-<p>Let us assume that the <span class="math notranslate nohighlight">\( {\cal X} \)</span> is a <span class="math notranslate nohighlight">\( D \)</span>-dimensional space comprising discrete-valued features only, i.e.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5c7809cd-73a5-4b13-bc23-8a9bae9aecb4">
-<span class="eqno">(84)<a class="headerlink" href="#equation-5c7809cd-73a5-4b13-bc23-8a9bae9aecb4" title="Permalink to this equation">#</a></span>\[\begin{equation}
-{\cal X} = {\cal X}_{1} \times {\cal X}_{2} \times \ldots {\cal X}_{D},
-\end{equation}\]</div>
-<p>where <span class="math notranslate nohighlight">\( \lbrace {\cal X}_{d} \rbrace \)</span>, <span class="math notranslate nohighlight">\( d \in \lbrace 1, \ldots, D \rbrace \)</span>, are finite sets of discrete values or alphabets.</p>
-<p>The feature vector <span class="math notranslate nohighlight">\( {\bf x} \in {\cal X} \)</span> can be written in turn as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9db5207e-fdc5-4768-b846-31f31fe12037">
-<span class="eqno">(85)<a class="headerlink" href="#equation-9db5207e-fdc5-4768-b846-31f31fe12037" title="Permalink to this equation">#</a></span>\[\begin{equation}
-{\bf x} = \begin{bmatrix} x_{1} &amp; x_{2} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T}
-\end{equation}\]</div>
-<p>with <span class="math notranslate nohighlight">\( x_{d} \in {\cal X}_{d} \)</span>, <span class="math notranslate nohighlight">\( \forall d \in \lbrace 1, \ldots, D \rbrace \)</span>.</p>
-<p>Remember that the optimal classifier is given by</p>
-<div class="math notranslate nohighlight" id="equation-nb-estimate1a">
-<span class="eqno">(86)<a class="headerlink" href="#equation-nb-estimate1a" title="Permalink to this equation">#</a></span>\[h^{\ast}({\bf x}) = \argmax_{y \in {\cal Y}} P^{\ast}(y \mid {\bf x}),\]</div>
-<p>where the <em>unknown</em> p.m.f. <span class="math notranslate nohighlight">\( P^{\ast}(y \mid {\bf x}) \)</span> can be rewritten using the Bayes rule as</p>
-<div class="math notranslate nohighlight" id="equation-bayes-rule3">
-<span class="eqno">(87)<a class="headerlink" href="#equation-bayes-rule3" title="Permalink to this equation">#</a></span>\[P^{\ast}(y \mid {\bf x}) \propto P^{\ast}({\bf x} \mid y) P^{\ast}(y).\]</div>
-<p>Thus, by plugging <a class="reference internal" href="#equation-bayes-rule3">(87)</a> into <a class="reference internal" href="#equation-nb-estimate1a">(86)</a>, we can write</p>
-<div class="math notranslate nohighlight" id="equation-nb-estimate1b">
-<span class="eqno">(88)<a class="headerlink" href="#equation-nb-estimate1b" title="Permalink to this equation">#</a></span>\[h^{\ast}({\bf x}) = \argmax_{y \in {\cal Y}} P^{\ast}({\bf x} \mid y) P^{\ast}(y),\]</div>
-<p>since the underlying proportionality constant in <a class="reference internal" href="#equation-bayes-rule3">(87)</a> – i.e. the reciprocal of <span class="math notranslate nohighlight">\( P^{\ast}({\bf x}) \)</span> – does not depend on <span class="math notranslate nohighlight">\( y \)</span>.</p>
-<p>Note that the prior p.m.f. <span class="math notranslate nohighlight">\( P^{\ast}(y) \)</span> can be approximated by computing the frequencies of each label in the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>, i.e.</p>
-<div class="math notranslate nohighlight" id="equation-freq-approx1">
-<span class="eqno">(89)<a class="headerlink" href="#equation-freq-approx1" title="Permalink to this equation">#</a></span>\[\begin{split}P^{\ast}(y) &amp;=&amp; Pr \lbrace Y = y \rbrace \nonumber \\
-&amp;\approx&amp; \frac{1}{N} \sum_{ \left( {\bf x}', y' \right) \in {\cal D}} \left[ y' = y \right]. \nonumber \\
-&amp;\triangleq P(y)\end{split}\]</div>
-<p>On the other hand, finding a suitable approximation for the true conditional p.m.f. <span class="math notranslate nohighlight">\( P^{\ast}({\bf x} \mid y) \)</span> – without further assumptions on its structure – can be a really trick task since <span class="math notranslate nohighlight">\( {\bf x} \)</span> resides in such high-dimensional feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span>.</p>
-</section>
-<section id="naive-bayes-assumption">
-<h2>Naive Bayes assumption<a class="headerlink" href="#naive-bayes-assumption" title="Permalink to this headline">#</a></h2>
-<div class="proof definition admonition" id="definition-6">
-<p class="admonition-title"><span class="caption-number">Definition 21 </span> (Naive Bayes assumption)</p>
-<section class="definition-content" id="proof-content">
-<p>Let us further assume that all features <span class="math notranslate nohighlight">\( \lbrace x_{d} \rbrace \)</span>, <span class="math notranslate nohighlight">\( d \in \lbrace 1, 2, \ldots, D \rbrace \)</span>, are conditionally independent. Thus, conditioned on a class value <span class="math notranslate nohighlight">\( y \)</span>, we can write</p>
+</div><p>The Bayes rule indicates that we can compute the unkown prediction probability <span class="math notranslate nohighlight">\(p^*(y\mid \vvec{x})\)</span> by means of three probabilities: the likelihood, the prior probability and the evidence. The prior probabilities <span class="math notranslate nohighlight">\(p(y)\)</span> we can simply estimate as the fraction of observations with label <span class="math notranslate nohighlight">\(y\)</span> in the dataset. Further, we can neglect the evidence when we want to predict the posterior probability, since</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\argmax_y p(y\mid \vvec{x}) &amp;= \argmax_y p(y\mid \vvec{x})p(\vvec{x})\\
+&amp;= p(\vvec{x}\mid y)p(y).
+\end{align*}\]</div>
+<p>Hence, the only thing that is left to estimate is <span class="math notranslate nohighlight">\(p(\vvec{x}\mid y)\)</span>. To do so, Naive Bayes makes a simplifying assumption.</p>
+<div class="proof property admonition" id="property-2">
+<p class="admonition-title"><span class="caption-number">Property 3 </span> (Naive Bayes assumption)</p>
+<section class="property-content" id="proof-content">
+<p>We assume that all features are conditionally independent given the class <span class="math notranslate nohighlight">\(y\)</span>. In this case, we can write</p>
 <div class="math notranslate nohighlight" id="equation-naive-assumption">
-<span class="eqno">(90)<a class="headerlink" href="#equation-naive-assumption" title="Permalink to this equation">#</a></span>\[P^{\ast}({\bf x} \mid y) = \prod_{d=1}^{D} P^{\ast}(x_{d} \mid y).\]</div>
+<span class="eqno">(57)<a class="headerlink" href="#equation-naive-assumption" title="Permalink to this equation">#</a></span>\[p({\bf x} \mid y) = p(x_1 \mid y)\cdot p(x_2\mid y) \ldots \cdot p(x_d\mid y) .\]</div>
 </section>
-</div><p>Let the dataset partition <span class="math notranslate nohighlight">\( {\cal D}_{y} \triangleq \lbrace \left( {\bf x}', y' \right) \in {\cal D} \mid  y' = y \rbrace \)</span> collect all training examples from the dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> with class value <span class="math notranslate nohighlight">\( y \)</span>. In this case, the true-class conditional distributions <span class="math notranslate nohighlight">\( P^{\ast}(x_{d} \mid y) \)</span> can be approximated as</p>
-<div class="math notranslate nohighlight" id="equation-freq-approx2">
-<span class="eqno">(91)<a class="headerlink" href="#equation-freq-approx2" title="Permalink to this equation">#</a></span>\[\begin{split}P^{\ast}(x_{d} \mid y) &amp;\approx&amp; \frac{1}{|{\cal D}_{y}|} \sum_{\left( {\bf x}', y' \right) \in {\cal D}_{y}} \left[ x_{d}' = x_{d} \right] \nonumber \\
-&amp;\triangleq&amp; P(x_{d} \mid y)\end{split}\]</div>
-<p>with <span class="math notranslate nohighlight">\( {\bf x}' = \begin{bmatrix} x_{1}' &amp; \ldots &amp; x_{d}' &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span>.</p>
-<div class="proof remark admonition" id="remark-7">
-<p class="admonition-title"><span class="caption-number">Remark 8 </span> (Laplace smoothing)</p>
-<section class="remark-content" id="proof-content">
-<p>Note that <span class="math notranslate nohighlight">\( \sum_{y \in {\cal Y}} |{\cal D}_{y}| = |{\cal D}| = N \)</span>, however, some of the classes might be under represented in the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>. Thus, to avoid hard <span class="math notranslate nohighlight">\( 0 \)</span> or <span class="math notranslate nohighlight">\( 1 \)</span> probabilities, we use Laplace smoothing and rewrite <a class="reference internal" href="#equation-freq-approx2">(91)</a> as</p>
+</div><p>Under this assumption, we can now define the inference (prediction step) of the Naive Bayes classifier.</p>
+</section>
+<section id="inference">
+<h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">#</a></h2>
+<p>Using Bayes’ Theorem and the Naïve assumption, the prediction is made by choosing the class  that maximizes the posterior probability <span class="math notranslate nohighlight">\(p(y\mid x)\)</span>.</p>
+<div class="proof definition admonition" id="definition-3">
+<p class="admonition-title"><span class="caption-number">Definition 18 </span> (NB classifier)</p>
+<section class="definition-content" id="proof-content">
+<p>The naive Bayes classifier computes the probabilities that observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span> orrcurs together with label <span class="math notranslate nohighlight">\(y\)</span> under the naive Bayes assumption:</p>
+<div class="math notranslate nohighlight" id="equation-f-nb">
+<span class="eqno">(58)<a class="headerlink" href="#equation-f-nb" title="Permalink to this equation">#</a></span>\[f_{nb}(\vvec{x})_y = p(y)\prod_{k=1}^d p(x_k\mid y)\]</div>
+<p>As a result, the naive Bayes classifier predicts the most likely label, given observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-yhat-nb">
+<span class="eqno">(59)<a class="headerlink" href="#equation-yhat-nb" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+\hat{y} &amp; = \argmax_y\ f_{nb}(\vvec{x})_y\\
+&amp;= \argmax_y\ p(y\mid \vvec{x})
+\end{align*}\end{split}\]</div>
+</section>
+</div><p>The inference of Naive Bayes is quick if we have already stored all the probabilities <span class="math notranslate nohighlight">\(p(x_k \mid y)\)</span>.</p>
+<p>Good applications of Naive Bayes justify the assumption of conditional assumption of features, given the class. This assumption is for example given in text classification. The features are here usually the word frequencies in a text document or the binary presence of words. Although word occurrences are generally not independent from each other, individual word occurrences can give strong independent signals to the classifier. Think of the word “viagra” when training a spam-detector. Also in medical diagnosis, Naive Bayes can be useful if the features are not strongly correlated. That is, a prediction of a patient condition based on a set of features like “Blood pressure”, “heart rate”, and “cholesterol levels” is not a suitable application of Naive Bayes, since these features are strongly correlated.</p>
+<section id="implementation-practice-log-probabilities">
+<h3>Implementation Practice: log probabilities<a class="headerlink" href="#implementation-practice-log-probabilities" title="Permalink to this headline">#</a></h3>
+<p>The classifier <span class="math notranslate nohighlight">\(f_{nb}\)</span> multiplies <span class="math notranslate nohighlight">\(d+1\)</span> probabilities that have values in <span class="math notranslate nohighlight">\([0,1]\)</span>. Especially for a high dimensional feature space (when <span class="math notranslate nohighlight">\(d\)</span> is large), the probabilities of <span class="math notranslate nohighlight">\(f_{np}\)</span> will be so close to zero that we run into numerical computation problems, such that nonzero probabilities are rounded to zero in floating-point precision. This effect is called <em>numerical underflow</em>. We can observe this effect in a minimal running example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Generate 1000 random numbers in [0,1]</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">product</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Product of 1000 numbers: </span><span class="si">{</span><span class="n">product</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">, is the product equal to zero? </span><span class="si">{</span><span class="n">product</span> <span class="o">==</span><span class="mi">0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Exponential notation for clarity</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Product of 1000 numbers: 0.000000e+00, is the product equal to zero? True
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can deal with underflow by computing the log-probabilities instead. After all, it doesn’t matter if we compute the prediction <span class="math notranslate nohighlight">\(y\)</span> that maximizes <span class="math notranslate nohighlight">\(p(y\mid \vvec{x})\)</span> or the <span class="math notranslate nohighlight">\(\log p(y\mid \vvec{x})\)</span>, since the logarithm is a monotonically increasing function. As a result, we compute our classifications as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \hat{y} &amp; = \argmax_y\ \log f_{nb}(\vvec{x})_y\\
+&amp;= \argmax_y\ \log(p(y)\prod_{k=1}^d p(x_k\mid y))\\
+&amp; = \argmax_y\ \log p(y) + \sum_{k=1}^d \log p(x_k\mid y)
+\end{align*}\]</div>
+<p>Using this log-probability trick, we get the following result for our minimal example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">numbers</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-991.8070604075465
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="multinomial-naive-bayes">
+<h2>Multinomial Naive Bayes<a class="headerlink" href="#multinomial-naive-bayes" title="Permalink to this headline">#</a></h2>
+<p>If we have discrete features <span class="math notranslate nohighlight">\(x_k\in\mathcal{X}_k\)</span>, where <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span> is a finite set, then we can assume multinomial probabilities <span class="math notranslate nohighlight">\(p(x_k\mid y)\)</span> that are approximated over the counts:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+p(x_k = a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert}.
+\end{align*}\]</div>
+<p>Every probability <span class="math notranslate nohighlight">\(p(x_k = a\mid y=l)\)</span> is approximated as the number of observations where feature <span class="math notranslate nohighlight">\(x_k\)</span> is equal to value <span class="math notranslate nohighlight">\(a\)</span> and the label is <span class="math notranslate nohighlight">\(y_i=l\)</span> over the number of observations where the label is <span class="math notranslate nohighlight">\(l\)</span>.</p>
+<section id="implementation-practice-laplace-smoothing">
+<h3>Implementation Practice: Laplace Smoothing<a class="headerlink" href="#implementation-practice-laplace-smoothing" title="Permalink to this headline">#</a></h3>
+<p>Using the standard estimation of multinomial probabilities has the undesirable effect that some probabilities <span class="math notranslate nohighlight">\(p(x_k = a\mid y=l)\)</span> are equal to zero if the feature <span class="math notranslate nohighlight">\(x_k\)</span> is never equal to value <span class="math notranslate nohighlight">\(a\)</span> in class <span class="math notranslate nohighlight">\(y\)</span>. In this case, the classifier probabilities <span class="math notranslate nohighlight">\(f_{nb}(\vvec{x})_y\)</span> is equal to zero for all observations <span class="math notranslate nohighlight">\(\vvec{x}\)</span> where <span class="math notranslate nohighlight">\(x_k=a\)</span>. In particular if we have many classes, a high-dimensional feature space or features with a large domain (if <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span> is large), this effect might happen quite often. Laplace smoothing mitigates this effect by adding <span class="math notranslate nohighlight">\(\alpha\)</span> imaginary observations for each value of <span class="math notranslate nohighlight">\(x_k\)</span> and class <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<div class="proof definition admonition" id="definition-4">
+<p class="admonition-title"><span class="caption-number">Definition 19 </span> (Laplace smoothing)</p>
+<section class="definition-content" id="proof-content">
+<p>Given a dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}\)</span> and feature <span class="math notranslate nohighlight">\(x_k\)</span> attaining values in the finite set <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span>. The class-conditioned multinomial probability estimations with Laplace smoothing with variable <span class="math notranslate nohighlight">\(\alpha&gt; 0\)</span> are then given as</p>
 <div class="math notranslate nohighlight" id="equation-freq-approx3">
-<span class="eqno">(92)<a class="headerlink" href="#equation-freq-approx3" title="Permalink to this equation">#</a></span>\[P(x_{d} \mid y) = \frac{\alpha + \sum_{\left( {\bf x}', y' \right) \in {\cal D}_{y}} \left[ x_{d}' = x_{d} \right]}{\alpha |\Omega_{d}| + |{\cal D}_{y}|},\]</div>
-<p>where <span class="math notranslate nohighlight">\( \alpha \geq 0 \)</span> is the smoothing parameter such that the approximated probability <span class="math notranslate nohighlight">\( P(x_{d} \mid y) \)</span> will be between the empirical probability as in <a class="reference internal" href="#equation-freq-approx2">(91)</a> (<span class="math notranslate nohighlight">\( \alpha = 0 \)</span>) and the uniform probability <span class="math notranslate nohighlight">\( \dfrac{1}{|\Omega_{d}|} \)</span> ( <span class="math notranslate nohighlight">\( \alpha \rightarrow \infty \)</span>).</p>
+<span class="eqno">(60)<a class="headerlink" href="#equation-freq-approx3" title="Permalink to this equation">#</a></span>\[p_\alpha(x_{k} =a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\]</div>
 </section>
-</div><div class="proof remark admonition" id="remark-8">
-<p class="admonition-title"><span class="caption-number">Remark 9 </span> (The naive assumption is quite strong)</p>
-<section class="remark-content" id="proof-content">
-<p>For example, let us suppose that the feature vector <div class="math notranslate nohighlight">
-\[ {\bf x} \in {\cal X} = {\cal X}_{1} \times \ldots \times {\cal X}_{D}, \]</div>
- with <span class="math notranslate nohighlight">\( {\cal X}_{d} \triangleq \lbrace 0, 1, \ldots, 255 \rbrace \)</span>, <span class="math notranslate nohighlight">\( \forall d \in \lbrace 1, \ldots, D \rbrace \)</span>, collect the <span class="math notranslate nohighlight">\(8\)</span>-bit pixel values of a <span class="math notranslate nohighlight">\( 28 \times 28 \)</span> input image containing pictures of handwritten numbers <span class="math notranslate nohighlight">\( y \in {\cal Y} = \lbrace 0, 1, 2, \ldots, 9 \rbrace \)</span>. The training dataset has the type</p>
-<figure class="align-left" id="nb-assumption-fig">
-<a class="reference internal image-reference" href="images/classification/nb_assumption.svg"><img alt="images/classification/nb_assumption.svg" height="320px" src="images/classification/nb_assumption.svg" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 17 </span><span class="caption-text">An image dataset with intrinsically spatially-correlated features. Note that nearby image pixels (features) are highly correlated by virtue of the underlying data generation process (handwriting).</span><a class="headerlink" href="#nb-assumption-fig" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p>Note first that the number of dimensions is quite large <span class="math notranslate nohighlight">\( D = 28^{2} = 784 \)</span>. As the number of possible values along each dimension <span class="math notranslate nohighlight">\( d \)</span> is <span class="math notranslate nohighlight">\( |{\cal X}_{d}| = 2^{8} = 256 \)</span>, there are <span class="math notranslate nohighlight">\( |{\cal X}| = |{\cal X}_{1}| \times |{\cal X}_{2}| \times \ldots \times |{\cal X}_{784}| = 256^{784} \)</span> possible images. This is larger than the number of atoms in the universe <span class="math notranslate nohighlight">\( \approx 10^{82} \)</span>. On the other hand, the subset <span class="math notranslate nohighlight">\( {\cal X}' \subset {\cal X} \)</span> containing valid images of numerals is much smaller.</p>
-<p>Finally, as images of handwritten numbers, nearby pixels are intrinsically correlated – for instance, an image containing the handwriting of the number two still corresponding to the class label <span class="math notranslate nohighlight">\( y = 2 \)</span> after being rotated or slightly translated and scaled such that the handwritten number is still within image bounds. Thus, the conditionally independence assumption is not directly applicable to the feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span> as defined here. That is, conditioned on a class value <span class="math notranslate nohighlight">\( y \)</span>, the image pixels <span class="math notranslate nohighlight">\( \lbrace x_{d} \rbrace \)</span>, <span class="math notranslate nohighlight">\( d \in \lbrace 1, \ldots, D \rbrace \)</span>, are spatially correlated.</p>
+</div><p>Note that adding <span class="math notranslate nohighlight">\(\alpha \lvert\mathcal{X}_k\rvert\)</span> to the denominator makes the conditioned probability estimations with Laplace smoothing sum up to one:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{a\in \mathcal{X}_k} p_\alpha(x_{k} =a\mid y=l) 
+&amp; = \sum_{a\in \mathcal{X}_k} \frac{\lvert\{ i\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{i\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\\
+&amp; =  \frac{\sum_{a\in \mathcal{X}_k}( \lvert\{ i\mid {x_i}_k = a, y_i=l \}\rvert+\alpha)}{\lvert\{i\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\\
+&amp;= 1.
+\end{align*}\]</div>
+</section>
+<section id="training">
+<h3>Training<a class="headerlink" href="#training" title="Permalink to this headline">#</a></h3>
+<div class="proof example admonition" id="example-5">
+<p class="admonition-title"><span class="caption-number">Example 21 </span></p>
+<section class="example-content" id="proof-content">
+<p>We consider the following toy dataset, where the task is to predict whether the email is spam, based on the words “free”, “win”, “offer” and “meeting”.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Contains “Free”?</p></th>
+<th class="head"><p>Contains “Win”?</p></th>
+<th class="head"><p>Contains “Offer”?</p></th>
+<th class="head"><p>Contains “Meeting”?</p></th>
+<th class="head"><p>Spam</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+</tbody>
+</table>
+<p>We compute the probabilities of the word “free” conditioned on whether it is in a spam email or not, using Laplace smoothing parameter <span class="math notranslate nohighlight">\(\alpha=1\)</span>. The domain of the feature “free” is “yes” and “no”, hence, <span class="math notranslate nohighlight">\(\lvert \mathcal{X}_{free}\rvert=2\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+p(free = yes\mid spam=yes) &amp;= \frac{2 +1}{3+2} = \frac{3}{5}\\
+p(free = no\mid spam=yes) &amp;= \frac{1 +1}{3+2} = \frac{2}{5}\\
+p(free = yes\mid spam=no) &amp;= \frac{1 +1}{3+2} = \frac{2}{5}\\
+p(free = no\mid spam=no) &amp;= \frac{2 +1}{3+2} = \frac{3}{5}\\
+\end{align*}\]</div>
 </section>
 </div></section>
-<section id="naive-bayes-classifier">
-<h2>Naive Bayes classifier<a class="headerlink" href="#naive-bayes-classifier" title="Permalink to this headline">#</a></h2>
-<div class="proof definition admonition" id="nb_classifier">
-<p class="admonition-title"><span class="caption-number">Definition 22 </span> (NB classifier)</p>
-<section class="definition-content" id="proof-content">
-<p>The NB classifier is defined as</p>
-<div class="math notranslate nohighlight" id="equation-nb-estimate2">
-<span class="eqno">(93)<a class="headerlink" href="#equation-nb-estimate2" title="Permalink to this equation">#</a></span>\[h_{NB}({\bf x}) = \argmax_{y \in {\cal Y}} \left\lbrace P(y) \prod_{d=1}^{D} P(x_{d} \mid y) \right\rbrace,\]</div>
-<p>where <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{1} &amp; \ldots &amp; x_{d} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span>.</p>
 </section>
-</div><div class="toggle docutils container">
-<div class="proof admonition" id="proof">
-<p>Proof. By plugging <a class="reference internal" href="#equation-naive-assumption">(90)</a> into <a class="reference internal" href="#equation-nb-estimate1b">(88)</a> and substituting <span class="math notranslate nohighlight">\( P^{\ast}(y) \)</span> and <span class="math notranslate nohighlight">\( P^{\ast}(x_{d} \mid y) \)</span> by their frequentist approximations <span class="math notranslate nohighlight">\( P(y) \)</span> and <span class="math notranslate nohighlight">\( P(x_{d} \mid y) \)</span> given by <a class="reference internal" href="#equation-freq-approx1">(89)</a> and <a class="reference internal" href="#equation-freq-approx2">(91)</a>, respectively, we obtain the NB classifier as defined in <a class="reference internal" href="#equation-nb-estimate2">(93)</a>.</p>
-</div>
-</div>
-<div class="proof remark admonition" id="remark-10">
-<p class="admonition-title"><span class="caption-number">Remark 10 </span> (Switching to log odds)</p>
-<section class="remark-content" id="proof-content">
-<p>Note that the NB classifier as defined in <a class="reference internal" href="#equation-nb-estimate2">(93)</a> is numerically unstable since it requires the computation of the product of several conditional probabilities <span class="math notranslate nohighlight">\( P(x_{d} \mid y) \)</span>, <span class="math notranslate nohighlight">\( d \in \lbrace 1, \ldots, D \rbrace \)</span>, for a large dimensional feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span>. As computers use a limited number of bits to represent real numbers – using double-precision or single-precision float-point format –, even though a small fraction of these <span class="math notranslate nohighlight">\( D \)</span> probabilities are small, their product might easily collapse to zero. Thus, a typical workaround to avoid numerical instability is to rewrite <a class="reference internal" href="#equation-nb-estimate2">(93)</a> as</p>
-<div class="math notranslate nohighlight" id="equation-nb-estimate3">
-<span class="eqno">(94)<a class="headerlink" href="#equation-nb-estimate3" title="Permalink to this equation">#</a></span>\[\begin{split}h_{NB}({\bf x}) &amp;=&amp; \argmax_{y \in {\cal Y}} \left\lbrace \log \left( P(y) \prod_{d=1}^{D} P(x_{d} \mid y) \right) \right\rbrace \nonumber \\
-&amp;\equiv&amp; \argmax_{y \in {\cal Y}} \left\lbrace \log P(y) + \sum_{d=1}^{D} \log P(x_{d} \mid y) \right\rbrace,\end{split}\]</div>
-<p>since <span class="math notranslate nohighlight">\( \log(\cdot) \)</span> is a monotonic increasing function. In this case, the NB classifier is selecting the class value <span class="math notranslate nohighlight">\( y \)</span> which maximizes the log-likelihood function with the term <span class="math notranslate nohighlight">\( \log P(y) \)</span> representing the prior evidence of the class value <span class="math notranslate nohighlight">\( y \)</span> and the terms <span class="math notranslate nohighlight">\( \log P(x_{d} \mid y) \)</span> representing the contribution of each observed component <span class="math notranslate nohighlight">\( x_{d} \)</span> given the class value <span class="math notranslate nohighlight">\( y \)</span>. The contribution of the log function to numerical stability is two-folded:</p>
+<section id="gaussian-naive-bayes">
+<h2>Gaussian Naive Bayes<a class="headerlink" href="#gaussian-naive-bayes" title="Permalink to this headline">#</a></h2>
+<p>If feature <span class="math notranslate nohighlight">\(x_k\)</span> attains continuous values, then a popular choice is to assume a Gaussian distribution for the class-conditioned probabilities:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+p(x_k = a\mid y=l) = \frac{1}{\sqrt{2\pi \sigma_{kl}^2}}\exp\left(-\frac{(a-\mu_{kl})^2}{2\sigma_{kl}^2}\right).
+\end{align*}\]</div>
+<p>The parameter <span class="math notranslate nohighlight">\(\mu_{kl}\)</span> is the estimated mean value <span class="math notranslate nohighlight">\(\sigma_{kl}\)</span> is the estimated variance of feature <span class="math notranslate nohighlight">\(x_k\)</span> in class <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <ul class="simple">
-<li><p>the summation in <a class="reference internal" href="#equation-nb-estimate3">(94)</a> avoids collapsing the joint likelihood function <span class="math notranslate nohighlight">\( P( {\bf x} \mid y) \ \equiv P(x_{1}, x_{2}, \ldots, x_{D} \mid y) \)</span> by multiplying several possible small likelihoods <span class="math notranslate nohighlight">\( P(x_{d} \mid y) &gt; 0 \)</span> and,</p></li>
-<li><p>albeit the logarithm of valid probabilities are upper bounded by <span class="math notranslate nohighlight">\( 0 \)</span>, near-zero probabilities / likelihoods are severely penalized since <span class="math notranslate nohighlight">\( \log(0^{+}) = -\infty \)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu_{kl} = \frac{1}{\lvert\{i\mid y_i=l\}\rvert}\sum_{i:y_i=l} {x_i}_k \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_{kl}^2 = \frac{1}{\lvert\{i\mid y_i=l\}\rvert} \sum_{i:y_i=l} ({x_i}_k-\mu_{kl})^2\)</span></p></li>
 </ul>
+<p>Note that the definition of the conditional probability for Gaussian naive Bayes is mathematically not exactly clean, since we have on the right side a probability <em>distribution</em> and not an actual probability. For practical purposes this is ok, since Naive Bayes relies on a comparison between likelihoods of feature values given a class.</p>
+<section id="decision-boundaries">
+<h3>Decision Boundaries<a class="headerlink" href="#decision-boundaries" title="Permalink to this headline">#</a></h3>
+<p>We plot the decision making process of Gaussian Naive Bayes below. The plot below shows the log probabilities of the joint distribution <span class="math notranslate nohighlight">\(\log p(x,y)\)</span> for each of the two classes. The more intense the color, the higher the log-probability of the corresponding class. We observe the Gaussians that are fit for each class on each axis result in an ellipse-shaped levelset.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span><span class="p">,</span> <span class="n">LinearSegmentedColormap</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span>
+
+
+<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+    <span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">cm_0</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">&quot;mycmap&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;#ffffff&quot;</span><span class="p">,</span><span class="s2">&quot;#a0c3ff&quot;</span><span class="p">])</span>
+<span class="n">cm_1</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">&quot;mycmap&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;#ffffff&quot;</span><span class="p">,</span> <span class="s2">&quot;#ffa1cf&quot;</span><span class="p">])</span>
+<span class="n">cmaps</span> <span class="o">=</span> <span class="p">[</span><span class="n">cm_0</span><span class="p">,</span><span class="n">cm_1</span><span class="p">]</span>
+<span class="n">cm_points</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#007bff&quot;</span><span class="p">,</span> <span class="s2">&quot;magenta&quot;</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axs</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)):</span>
+    <span class="n">gnb</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">gnb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+
+    <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">gnb</span><span class="o">.</span><span class="n">predict_joint_log_proba</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">Z</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span><span class="n">cmap</span><span class="o">=</span><span class="n">cmaps</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;scaled&#39;</span><span class="p">)</span>
+    <span class="n">scatter</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_train</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cm_points</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Two moons log p(x,y=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">) Gaussian Naive Bayes&quot;</span>
+    <span class="p">)</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/classification_naive_bayes_6_0.png" src="_images/classification_naive_bayes_6_0.png" />
+</div>
+</div>
+<p>The corresponding classifier predicts the class attaining the maximum joint probability. Below, you can see the decision boundary. The classifier looks linear in this example. That is not necessarily the case, but since the joint probabilities are always ellipses, the Gaussian Naive Bayes classifier can’t model arbritary shapes in the decision boundary.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span><span class="p">,</span> <span class="n">LinearSegmentedColormap</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span>
+
+
+<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+    <span class="p">)</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#a0c3ff&quot;</span><span class="p">,</span> <span class="s2">&quot;#ffa1cf&quot;</span><span class="p">])</span>
+<span class="n">cm_points</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#007bff&quot;</span><span class="p">,</span> <span class="s2">&quot;magenta&quot;</span><span class="p">])</span>
+<span class="n">gnb</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">gnb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">disp</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
+    <span class="n">gnb</span><span class="p">,</span>
+    <span class="n">X_test</span><span class="p">,</span>
+    <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
+    <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span>
+    <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_train</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cm_points</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Two moons classification Gaussian Naive Bayes&quot;</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;scaled&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/classification_naive_bayes_8_0.png" src="_images/classification_naive_bayes_8_0.png" />
+</div>
+</div>
 </section>
-</div><hr class="footnotes docutils" />
-<dl class="footnote brackets">
-<dt class="label" id="footnote1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>We use the uppercase notation <span class="math notranslate nohighlight">\( P(\cdot) \)</span> to distinguish p.m.f’s from continuous-valued and mixed distributions denoted by <span class="math notranslate nohighlight">\( p(\cdot) \)</span>.</p>
-</dd>
-</dl>
 </section>
+<section id="id1">
+<h2>Training<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<p>Naive Bayes doesn’t need training in the classical sense, but to enable a quick inference of a naive Bayes classifier, the required probabilities, respectively their parameters are stored in advance. That is, for discrete features we compute all log probabilities, and for continuous features we compute the estimation parameters <span class="math notranslate nohighlight">\(\mu_{kl}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{kl}\)</span>.</p>
+<div class="proof algorithm admonition" id="algorithm-6">
+<p class="admonition-title"><span class="caption-number">Algorithm 6 </span> (Naive Bayes (Gaussian and Multinomial))</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Input</strong>: training data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, <span class="math notranslate nohighlight">\(\alpha\)</span></p>
+<ol class="simple">
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(k\in\{1,\ldots,d\}\)</span></p>
+<ol class="simple">
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(x_k\)</span> is a discrete feature</p>
+<ol class="simple">
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(a\in\mathcal{X}_k\)</span></p>
+<ol class="simple">
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(l\in\{1,\ldots, c\}\)</span></p>
+<ol class="simple">
+<li><p>Store <span class="math notranslate nohighlight">\(\log p_\alpha(x_k=a\mid y=l)\)</span></p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>else</strong></p>
+<ol class="simple">
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(l\in\{1,\ldots, c\}\)</span></p>
+<ol class="simple">
+<li><p>Store <span class="math notranslate nohighlight">\(\mu_{kl}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{kl}\)</span>.</p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+</div></section>
 </section>
 
     <script type="text/x-thebe-config">

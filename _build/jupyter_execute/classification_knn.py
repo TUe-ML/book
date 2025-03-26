@@ -3,111 +3,91 @@
 
 # ## K-Nearest Neighbor
 # 
-# In this section, we introduce first the Nearest Neighbor (NN) classifier to better motivate the K-Nearest Neighbor (KNN) classifier. In particular, we illustrate how the KNN overcomes some of the NN limitations by means of a particular classification task.
+# The k-Nearest Neighbors ($\kappa$NN) classifier is probably the most simple classifier. Yet, it is a good baseline, since it is easy to understand, it can be analyzed in tems of Bayes-optimality and it performs also quite well. The $\kappa$NN classifier makes predictions based on the majority class among the nearest training examples. It is non-parametric and instance-based, meaning that it does not use a parametrized function class from which the classifier is determined by learning the parameters. Instead, it directly computes the prediction from the training data.
 # 
-# ### Nearest Neighbor (NN) classifier
-# For a given observed data item $ \check{\bf x} $, the predicted class value $ \hat{y} $ is the label $ y_{c} $ associated with the closest data item $ {\bf x}_{c} $ -- the nearest neighbor -- within the training dataset $ {\cal D} $. In precise mathematical terms, for an arbitrary data item $ {\bf x} \in {\cal X} $, the NN classifier can be written as
-# \begin{eqnarray}
-# h_{NN}({\bf x}) &=& y_{c} \nonumber \\
-# \left( {\bf x}_{c},  y_{c} \right) &=& \argmin_{ \left( {\bf x}',  y' \right) \in {\cal D}} || {\bf x}' - {\bf x} ||, \nonumber
-# \end{eqnarray}
-# where the operator $ ||\cdot|| $ stands for a suitable distance metric, e.g.
-# * the Manhattan distance ($ L_{1} $ norm),
-# * the Euclidean distance ($ L_{2} $ norm),
-# * the Hamming distance for binary feature vectors or
-# * any user-defined distance metric satisfying the triangular inequality $ || {\bf x} + {\bf x}' || \leq || {\bf x} || + || {\bf x}' || $, $ \forall {\bf x}, {\bf x}' \in {\cal X} $.
+# ### Inference 
+# Given a (training) dataset $\mathcal{D}=\{(\vvec{x}_1,y_1),\ldots, (\vvec{x}_n,y_n)\}$ and a distance metric $dist(\vvec{x}_i,\vvec{x}_j)\in\mathbb{R}_+$ returning the nonnegative distance between two vectors $\vvec{x}_i,\vvec{x}_j\in\mathbb{R}^d$. We define the function $\kappa NN(\vvec{x})=\{i_1,\ldots, i_k\}$ returning the indices of the $\kappa$ closest neighbors of $\vvec{x}$ in $\mathcal{D}$. That is, we have
+# $$dist(x,x_{i_j})\leq dist(x,x_i) \text{ for all } 1\leq i\leq n.$$
+# ```{prf:definition} kNN classifier
+# The kNN classifier returns the class probabilities estimated from the $\kappa$ neighbors: 
+# \begin{align*}
+# f_{knn}(\vvec{x})_l = \frac{1}{\kappa} \lvert\{i\in \kappa NN(x)\mid y_i=l\}\rvert    
+# \end{align*}
+# As a result, the class predictions are made by a majority vote of the nearest neighbors:
+# \begin{align*}
+# \hat{y}_{\kappa nn}(\vvec{x}) &= \argmax_l f_{\kappa nn}(\vvec{x})_l\\
+# &= \argmax_l \lvert\{i\in \kappa NN(x)\mid y_i=l\}\rvert 
+# \end{align*}
+# ```
+# As a distance function we can use basically anything. Standard norm-induced distances are possible for continuous features
+# $$dist(\vvec{x}_i,\vvec{x}_j)=\lVert \vvec{x}_i - \vvec{x}_j\rVert,$$
+# but we can also integrate distance functions for discrete features, such as the Hamming distance (assuming we have $d$ categorical features)
+# $$dist(\vvec{x}_i,\vvec{x}_j) = \lvert \{{\vvec{x}_i}_k\neq {\vvec{x}_j}_m\mid 1\leq k,m\leq d\}\rvert$$
 # 
-# ````{margin}
+# However, combining the distance functions over various kinds of features can be tricky and vastly influence the performance, as some distances may be weighted disproportionally to others.
+# #### Implementation Practice 
+# Computing a prediction of the $\kappa$NN classifier requires in principle the computation of distances to all datapoints, hence a computation time in $\mathcal{O}(n)$. This is quite costly for one prediction. We can imagine that in particular for bigger training datasets, this is far too expensive. However, there are some common strategies that are frequently applied in machine learning when we need to access local neighborhoods in an efficient manner. Two popular approaches to do so are kd-trees and locality-sensitive hashing.     
+# 
+# A k-dimensional tree (kd-tree) partitions the feature space recursively, allowing for faster nearest-neighbor queries in low-dimensional spaces ($d<20$). The search complexity is approximately $\mathcal{O}(\log ⁡n)$ in the average case.    
+# 
+# Locality-Sensitive Hashing (LSH) maps similar points to the same hash buckets. The proximity between points is reflected by their physical storage places. To find the nearest neighbors of a data point, we compute the hash key of this data point and access neighbors by looking into the hash buckets close to the hash bucket of the data point.
+# 
+# ### Choosing $\kappa$
+# The $\kappa$NN classifier has one hyperparameter: the number of neighbors $\kappa$. If $\kappa$ is very small, then the classifier tends to overfit and is sensitive to noise or outliers in the data. If $\kappa$ is too large, then the $\kappa$NN classifier tends to underfit.   
+# 
+# The plot below shows the decision boundary of the $\kappa$NN classifier for three values of $k$ on the two moons synthetic dataset. The points reflect the training data set. For $\kappa=1$ we observe that the decision boundary is very fractured. We can imagine that a this decision boundary is very dependent on the data and hence the $\kappa$NN classifier with $\kappa=1$ has a high variance. The second value $\kappa=10$ is suitable to reflect the decision boundary of the two moons. It generalizes, since we observe that some of the red training data points in the area of the blue class do not influence the decision boundary. For $\kappa=50$ the model underfits. The shape of the two moons is not reflected by the decision boundary and the $\kappa$NN classifier resembles a linear classifier.  
+
+# In[1]:
+
+
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+from sklearn.inspection import DecisionBoundaryDisplay
+from sklearn.neighbors import KNeighborsClassifier
+from matplotlib.colors import ListedColormap
+from sklearn.datasets import make_moons
+
+
+X,y = make_moons(noise=0.3, random_state=0, n_samples=200)
+X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.4, random_state=42
+    )
+
+_, axs = plt.subplots(ncols=3, figsize=(12, 5))
+cm = ListedColormap(["#a0c3ff", "#ffa1cf"])
+cm_points = ListedColormap(["#007bff", "magenta"])
+for ax, k in zip(axs, (1,10,50)):
+    knn = KNeighborsClassifier(n_neighbors=k)
+    knn.fit(X_train, y_train)
+    disp = DecisionBoundaryDisplay.from_estimator(
+        knn,
+        X_test,
+        response_method="predict",
+        plot_method="pcolormesh",
+        shading="auto",
+        alpha=0.5,
+        ax=ax,
+        cmap=cm,
+    )
+    scatter = disp.ax_.scatter(X_train[:, 0], X_train[:, 1], c=y_train, edgecolors="k",cmap = cm_points)
+    _ = disp.ax_.set_title(
+        f"Two moons classification\n($\kappa$={k})"
+    )
+
+plt.show()
+
+
+# In practice, we can determine $\kappa$ by cross-validation or by means of the validation set.
 # ```{note}
-# **Pros:** The NN classifier is non-parametric, i.e. there are no additional parameters to learn besides the training dataset $ {\cal D} $ itself.
+# For binary classification, it is important to employ an odd number of $ \kappa $ nearest neighbors to prevent a voting tie between the two classes. 
 # ```
-# 
-# ```{note}
-# **Cons:** We need to store the full data set $ {\cal D} $. The prediction has cost $ {\cal O}(N) $. The NN classifier is also very sensitive to outliers / noise within the training dataset $ {\cal D} $.
+
+# ### Bayes consistency
+# Although the $\kappa$NN classifier is very simple, it is theoretically sound in the sense that we can show that it converges to the Bayes-optimal classifier in theory.
+# ```{prf:theorem}
+# The kNN classifier converges to the Bayes classifier for $n\rightarrow \infty$ when choosing $\kappa$ such that 
+# * $\kappa\rightarrow \infty$ and 
+# * $\frac{\kappa}{n}\rightarrow 0$.
 # ```
-# ````
-# 
-# ```{figure} /images/classification/nn_classifier.svg
-# ---
-# height: 320px
-# name: nn_classifier_fig
-# align: left
-# ---
-# The NN classifier being fooled by an outlier. Data items are colored according to their corresponding class values (<span style="color: red;">red</span> and <span style="color: blue;">blue</span> labels). The dashed straight line indicates a possible linear decision boundary between the two classes -- not the decision boundary produced by the NN classifier itself. The observed data item $ \check{\bf x} $ is classified according to the label (in this case, <span style="color: blue;">blue</span>) of the closest data item $ {\bf x}_{c} $ from the training dataset $ {\cal D} $. Something looks odd...
-# ```
-# 
-# ### K-Nearest Neighbor (KNN) classifier
-# 
-# Find the $ K $ nearest neighbors of the observed data item $ \check{\bf x} $ within the training dataset $ {\cal D} $ and let them vote to predict the label $ \hat{y} $. Specifically, let the set
-# \begin{equation}
-# {\cal D}_{K}({\bf x}) \triangleq \bigcup_{i=1}^{K} \lbrace \left( {\bf x}_{i}', y_{i}' \right) \rbrace \subseteq {\cal D}
-# \end{equation}
-# collect the $ K $ nearest neighbors in $ {\cal D} $ of an arbitrary $ {\bf x} \in {\cal X} $ such that $$ || {\bf x} - {\bf x}_{i}' || \leq || {\bf x} - {\bf x}' ||, $$ $ \forall \left( {\bf x}_{i}', y_{i}' \right) \in {\cal D}_{K}({\bf x}) $ and $ \forall \left( {\bf x}', y' \right) \in {\cal D} \setminus {\cal D}_{K}({\bf x}) $.
-# 
-# ````{prf:definition}
-# We define the KNN classifier as
-# ```{math}
-# :label: knn
-# h_{KNN} ({\bf x}) = \argmax_{y \in {\cal Y}} F(y;{\cal D}_{K}({\bf x})),
-# ```
-# where the function 
-# ```{math}
-# :label: freq_labels
-# F(y;{\cal D}_{K}({\bf x})) = \sum_{i=1}^{K} \left[ y_{i}' = y \right]
-# ```
-# indicates the frequency of the label $ y $ within $ {\cal D}_{K}({\bf x}) $. 
-# ````
-# 
-# ````{margin}
-# ```{note}
-# Note that the set $ \lbrace \left( y, F(y;{\cal D}_{K}({\bf x})) \right) \mid y \in {\cal Y} \rbrace $ defines a histogram with the frequency of each class value $ y \in {\cal Y} $ in $ {\cal D}_{K}({\bf x}) $. The KNN prediction is the mode among the class values collected by $ {\cal D}_{K}({\bf x}) $.
-# ```
-# ````
-# 
-# ```{figure} /images/classification/knn_classifier.svg
-# ---
-# height: 320px
-# name: knn_classifier_fig
-# align: left
-# ---
-# The KNN classifier dealing with an outlier. The observed data item $ \check{\bf x} $ is classified according to the most often label (in this case, <span style="color: red;">red</span>) in $ {\cal D}_{K}(\check{\bf x}) $ associated with the $ K = 5 $ nearest data items within the training dataset $ {\cal D} $. Outliers are properly filtered out by allowing neighbors to vote. Again, the dashed straight line illustrates a possible linear decision boundary between the two classes. Note however that the boundary produced by the KNN classifier is typically non-linear as it is governed by the spread of the training samples over the feature space $ {\cal X} $.
-# ```
-# 
-# ````{margin}
-# ```{note}
-# For binary classification, it is important to employ an odd number of $ K $ nearest neighbors to prevent a voting tie between the two classes. 
-# ```
-# ````
-# 
-# ```{prf:remark}
-# **Pros:** The KNN classifier is simple (majority vote) and is non-parametric. Training is trivially achieved by storing the full dataset $ {\cal D} $. The KNN classifier is also Bayes consistent, i.e. the $ R(h_{KNN}) - R(h^{\ast}) \rightarrow 0 $ as both the number of training examples $ N \rightarrow \infty $ and the number of neighbors $ K \rightarrow \infty $, but $ N $ grows faster than $ K $, i.e $ \frac{K}{N} \rightarrow 0 $.
-# 
-# **Cons:** We need to store the full dataset $ {\cal D} $. Moreover, a naive implementation of KNN which checks all $ N $ training samples has cost $ \Theta(N) $. However, we can improve its computational complexity by storing the training samples into some computational structure -- e.g. kd-tree -- to efficiently retrieve the $ K $ nearest data items to an observed sample $ \check{\bf x} $. 
-# ```
-# 
-# ### KNN for regression
-# We can straightforwardly change the KNN classifier to perform regression by storing continuous values $ z \in {\cal Z} \subseteq \mathbb{R} $ instead of labels. In this case, the training dataset can be rewritten in this case as
-# \begin{eqnarray}
-# {\cal D} &=& \bigcup_{i=1}^{N} \lbrace \left( {\bf x}_{i}, {z}_{i} \right) \rbrace \nonumber \\
-# &\equiv& \lbrace \left( {\bf x}_{1}, {z}_{1} \right), \left( {\bf x}_{2}, {z}_{2} \right), \ldots, \left( {\bf x}_{N}, {z}_{N} \right) \rbrace \nonumber
-# \end{eqnarray}
-# with $ {\bf x}_{i} \in {\cal X} $ and $ z_{i} \in {\cal Z} $, $ \forall i \in \lbrace 1, 2, \ldots, N \rbrace $.
-# 
-# Next, let the set
-# \begin{equation}
-# {\cal D}_{K}({\bf x}) \triangleq \bigcup_{i=1}^{K} \lbrace \left( {\bf x}_{i}', z_{i}' \right) \rbrace \subseteq {\cal D} 
-# \end{equation}
-# collect the $ K $ nearest neighbors in $ {\cal D} $ of a given data item $ {\bf x} $ such that $$ || {\bf x} - {\bf x}_{i}' || \leq || {\bf x} - {\bf x}' ||, $$ $ \forall \left( {\bf x}_{i}', z_{i}' \right) \in {\cal D}_{K}({\bf x}) $ and $ \forall \left( {\bf x}', z' \right) \in {\cal D} \setminus {\cal D}_{K}({\bf x}) $.
-# 
-# ````{margin}
-# ```{note}
-# Note though that the characteristics of the particular regression problem -- i.e. the function we are trying to approximate -- will drive the selection of the best interpolation method.
-# ```
-# ````
-# 
-# The values in $ {\cal D}_{K}({\bf x}) $ can be used then to predict the class value by means e.g. of a convex linear combination 
-# \begin{equation}
-# h_{KNN}({\bf x}) = \sum_{i=1}^{K} \alpha_{i}({\bf x}; {\bf x}_{i}') \, z_{i}',
-# \end{equation}
-# where the $i$-th coefficient / weight -- parameterized by $ {\bf x}_{i}' $ -- is $ \alpha_{i}({\bf x}; {\bf x}_{i}') \propto || {\bf x} - {\bf x}_{i}' || $ and the coefficients / weights are properly normalized such that $$ \sum_{i=1}^{K} \alpha_{i}({\bf x}; {\bf x}_{i}') = 1. $$
+# A classifier that converges to the Bayes classifier if the size of the dataset grows infinitely is called **Bayes consistent**. A popular choice of $\kappa$ in practice is $\kappa=\sqrt{n}$. Hence, for this choice of $\kappa$, the $\kappa$NN classifier is also Bayes consistent.
 # 

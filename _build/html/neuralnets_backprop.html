@@ -255,7 +255,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_problem.html">
-     Classification Problem
+     Classification Objective
     </a>
    </li>
    <li class="toctree-l2">
@@ -270,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_naive_bayes.html">
-     Naïve Bayes
+     Naive Bayes
     </a>
    </li>
    <li class="toctree-l2">
@@ -395,6 +395,11 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bibliography.html">
+   Bibliography
+  </a>
  </li>
 </ul>
 
@@ -700,48 +705,48 @@ title="Print to PDF"
 \[ {\cal D}_{train} = \bigcup_{i=1}^{N} \lbrace \left( {\bf x}_{i}, y_{i} \right) \rbrace \]</div>
  as</p>
 <div class="math notranslate nohighlight" id="equation-empirical-risk">
-<span class="eqno">(194)<a class="headerlink" href="#equation-empirical-risk" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{eqnarray}
+<span class="eqno">(135)<a class="headerlink" href="#equation-empirical-risk" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{eqnarray}
 L_{train} &amp;=&amp; \frac{1}{N} \sum_{i=1}^{N} L \left( y_{i}, \hat{y}_{i} \right) \\
 &amp;=&amp; \frac{1}{N} \sum_{i=1}^{N} L \left( y_{i}, f({\bf x}_{i}; {\bf w}) \right).
 \end{eqnarray}\end{split}\]</div>
 <p>As mentioned above, the most common loss for regression is the Mean Square Error (MSE). The squared error is defined as</p>
 <div class="math notranslate nohighlight" id="equation-squared-error">
-<span class="eqno">(195)<a class="headerlink" href="#equation-squared-error" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<span class="eqno">(136)<a class="headerlink" href="#equation-squared-error" title="Permalink to this equation">#</a></span>\[\begin{equation}
 L(y, \hat{y}) = (\hat{y} - y)^2
 \end{equation}\]</div>
 <p>and its partial derivative w.r.t. estimate <span class="math notranslate nohighlight">\( \hat{y} \)</span> is given simple by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-75c8217f-8eb5-4163-9f0d-ea7e53503b05">
-<span class="eqno">(196)<a class="headerlink" href="#equation-75c8217f-8eb5-4163-9f0d-ea7e53503b05" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-af027db6-a5c9-478f-81a9-39b6aff60d99">
+<span class="eqno">(137)<a class="headerlink" href="#equation-af027db6-a5c9-478f-81a9-39b6aff60d99" title="Permalink to this equation">#</a></span>\[\begin{equation}
 {\partial L(y, \hat{y}) \over \partial \hat{y}} = 2 (\hat{y} - y).
 \end{equation}\]</div>
-<p>The Mean Squared Error (MSE) in turn is obtained by plugging <a class="reference internal" href="#equation-squared-error">(195)</a> into the empirical risk <a class="reference internal" href="#equation-empirical-risk">(194)</a></p>
-<div class="amsmath math notranslate nohighlight" id="equation-e4404e0e-483b-4552-9e84-3726d6b28df1">
-<span class="eqno">(197)<a class="headerlink" href="#equation-e4404e0e-483b-4552-9e84-3726d6b28df1" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<p>The Mean Squared Error (MSE) in turn is obtained by plugging <a class="reference internal" href="#equation-squared-error">(136)</a> into the empirical risk <a class="reference internal" href="#equation-empirical-risk">(135)</a></p>
+<div class="amsmath math notranslate nohighlight" id="equation-5e801d11-bb10-47cd-bd72-35cd5a832b6c">
+<span class="eqno">(138)<a class="headerlink" href="#equation-5e801d11-bb10-47cd-bd72-35cd5a832b6c" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 L_{train} &amp;=&amp; MSE(y, \hat{y}; {\bf w}) \\
 &amp;=&amp; \frac{1}{N} \sum_{i=1}^{N} (\hat{y}_{i} - y_{i})^2  \\
  &amp;=&amp; \frac{1}{N} \sum_{i=1}^{N} (f({\bf x}_{i}; {\bf w}) - y_{i})^2.
 \end{eqnarray}\]</div>
 <p>On the other hand, a Cross Entropy (CE) loss function is frequently employed for classification tasks. But how do we setup a neural network as a classifier? Let <span class="math notranslate nohighlight">\(C\)</span> denote the number of classes among the network must decide. First, we employ <span class="math notranslate nohighlight">\(C\)</span> linear units at the last hidden layer of the network, i.e. the vector <span class="math notranslate nohighlight">\( {\bf h}^{L} \)</span> collecting the outputs of the last hidden layer has <span class="math notranslate nohighlight">\( C \)</span> elements. Then, we use a <em>softmax</em> activation to convert this vector into a probability distribution.</p>
-<p>In the example of <a class="reference internal" href="#classification-mlp-fig"><span class="std std-numref">Fig. 51</span></a>, the network must decide among <span class="math notranslate nohighlight">\( C=3 \)</span> classes. Thus, <span class="math notranslate nohighlight">\(\mathbf{W}^{4}\)</span> must be a <span class="math notranslate nohighlight">\(H_L \times C\)</span> matrix (<span class="math notranslate nohighlight">\(C=3\)</span>) such that <div class="math notranslate nohighlight">
+<p>In the example of <a class="reference internal" href="#classification-mlp-fig"><span class="std std-numref">Fig. 38</span></a>, the network must decide among <span class="math notranslate nohighlight">\( C=3 \)</span> classes. Thus, <span class="math notranslate nohighlight">\(\mathbf{W}^{4}\)</span> must be a <span class="math notranslate nohighlight">\(H_L \times C\)</span> matrix (<span class="math notranslate nohighlight">\(C=3\)</span>) such that <div class="math notranslate nohighlight">
 \[ {\bf h}^{4} = {\mathbf{W}^{4}}^{T} \phi_3 \Big( {\mathbf{W}^{3}}^{T} \phi_2 \Big( {\mathbf{W}^{2}}^{T} \phi_1 \Big( {\mathbf{W}^{1}}^{T} {\bf h}^{0} \Big) \Big) \Big) \]</div>
  is a <span class="math notranslate nohighlight">\( 3 \)</span>-element vector with <span class="math notranslate nohighlight">\( {\bf h}^{0} = \begin{bmatrix} 1 &amp; x_1 &amp; x_2 &amp; \ldots &amp; x_D \end{bmatrix}^{T} \)</span>.</p>
 <figure class="align-left" id="classification-mlp-fig">
 <a class="reference internal image-reference" href="_images/classification_MLP.svg"><img alt="_images/classification_MLP.svg" height="320px" src="_images/classification_MLP.svg" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 51 </span><span class="caption-text">A neural network with <span class="math notranslate nohighlight">\( C = 3 \)</span> linear units at its output layer. The <span class="math notranslate nohighlight">\( \sum \)</span> symbol indicates that the corresponding units is linear.</span><a class="headerlink" href="#classification-mlp-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 38 </span><span class="caption-text">A neural network with <span class="math notranslate nohighlight">\( C = 3 \)</span> linear units at its output layer. The <span class="math notranslate nohighlight">\( \sum \)</span> symbol indicates that the corresponding units is linear.</span><a class="headerlink" href="#classification-mlp-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The softmax activation converts an arbitrary input vector into a valid probability distribution. In precise mathematical terms, let <span class="math notranslate nohighlight">\({\bf h}=\begin{bmatrix} h_1 &amp; h_2 &amp; \ldots &amp; h_C \end{bmatrix}^{T}\)</span> be a <span class="math notranslate nohighlight">\(C\)</span>-dimensional vector. Then, the softmax of <span class="math notranslate nohighlight">\({\bf h}\)</span> is defined as</p>
 <div class="math notranslate nohighlight" id="equation-softmax">
-<span class="eqno">(198)<a class="headerlink" href="#equation-softmax" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<span class="eqno">(139)<a class="headerlink" href="#equation-softmax" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \softmax({\bf h}) = \begin{bmatrix} \hat{y}_1 &amp; \hat{y}_2 &amp; \ldots &amp; \hat{y}_C \end{bmatrix}^{T},
 \end{equation}\]</div>
 <p>in which</p>
-<div class="amsmath math notranslate nohighlight" id="equation-695589df-5a6e-442a-bb60-fdc308e6ba21">
-<span class="eqno">(199)<a class="headerlink" href="#equation-695589df-5a6e-442a-bb60-fdc308e6ba21" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1871fa76-9ace-49ab-8a61-4cc9ab8791ff">
+<span class="eqno">(140)<a class="headerlink" href="#equation-1871fa76-9ace-49ab-8a61-4cc9ab8791ff" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \hat{y}_{i} = {e^{h_{i}} \over \sum_{c=1}^{C} e^{h_{c}}}. 
 \end{equation}\]</div>
-<p>Note that the softmax <a class="reference internal" href="#equation-softmax">(198)</a> is defined such that it returns a valid categorical distribution, i.e. <div class="math notranslate nohighlight">
+<p>Note that the softmax <a class="reference internal" href="#equation-softmax">(139)</a> is defined such that it returns a valid categorical distribution, i.e. <div class="math notranslate nohighlight">
 \[ \hat{y}_{i} \geq 0, \,\, \forall i \in \lbrace 1, 2, \ldots, C \rbrace, \]</div>
  and <div class="math notranslate nohighlight">
 \[ \sum_{i=1}^{C} \hat{y}_{i} = 1. \]</div>
@@ -749,12 +754,12 @@ L_{train} &amp;=&amp; MSE(y, \hat{y}; {\bf w}) \\
 <figure class="align-left" id="softmax-fig">
 <a class="reference internal image-reference" href="_images/softmax.png"><img alt="_images/softmax.png" src="_images/softmax.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 52 </span><span class="caption-text">Softmax example using <em>NumPy</em> for array data handling and <em>Matplotlib</em> for visualization.</span><a class="headerlink" href="#softmax-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 39 </span><span class="caption-text">Softmax example using <em>NumPy</em> for array data handling and <em>Matplotlib</em> for visualization.</span><a class="headerlink" href="#softmax-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Let the vector <span class="math notranslate nohighlight">\( \hat{\bf y} = \begin{bmatrix} \hat{y}_1 &amp; \hat{y}_2 &amp; \ldots &amp; \hat{y}_C \end{bmatrix}^{T} \)</span> store the predicted categorical distribution <span class="math notranslate nohighlight">\( q(c) \)</span> over the <span class="math notranslate nohighlight">\( C \)</span> classes such that <span class="math notranslate nohighlight">\( q(c) = \hat{y}_c \)</span>, <span class="math notranslate nohighlight">\( \forall c \in \lbrace 1, \ldots, C \rbrace \)</span>. Note that <span class="math notranslate nohighlight">\( \hat{\bf y} \)</span> is the softmax of the last layer, i.e. <span class="math notranslate nohighlight">\( \hat{\bf y} = \softmax({\bf h}^{L}) \)</span>, where <span class="math notranslate nohighlight">\({\bf h}^{L}=\begin{bmatrix} h_1^{L} &amp; h_2^{L} &amp; \ldots &amp; h_C^{L} \end{bmatrix}^{T}\)</span> collect the values at the last hidden layer <span class="math notranslate nohighlight">\( L \)</span>. The Cross Entropy (CE) of the predicted distribution <span class="math notranslate nohighlight">\( q(c) \)</span> relative to the true distribution <span class="math notranslate nohighlight">\( p(c) = \left[ y = c \right] \)</span> (a distribution with no uncertainty at all) is defined as</p>
 <div class="math notranslate nohighlight" id="equation-ce">
-<span class="eqno">(200)<a class="headerlink" href="#equation-ce" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{eqnarray}
+<span class="eqno">(141)<a class="headerlink" href="#equation-ce" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{eqnarray}
 L(y, \hat{\bf y}) &amp;=&amp; CE(y, \hat{\bf y}; {\bf w}) \\
 %&amp;=&amp; CE(y, f({\bf x}; {\bf w}))  \\
 &amp;\triangleq&amp; - \sum_{c=1}^{C} p(c) \log q(c)  \\
@@ -762,17 +767,17 @@ L(y, \hat{\bf y}) &amp;=&amp; CE(y, \hat{\bf y}; {\bf w}) \\
 &amp;=&amp; - \left\lbrace \underbrace{\left[ y=1 \right]}_{0} \log \left( \hat{y}_{1} \right) + \ldots + \underbrace{\left[ y=y \right]}_{1} \log \left( \hat{y}_{y} \right) + \ldots + \underbrace{\left[ y=C \right]}_{0} \log \left( \hat{y}_{C} \right) \right\rbrace  \\
 &amp;=&amp; - \log \left( \hat{y}_{y} \right),
 \end{eqnarray}\end{split}\]</div>
-<p>in which <span class="math notranslate nohighlight">\( y \)</span> corresponds to the index of the true class. In this case, the CE <a class="reference internal" href="#equation-ce">(200)</a> is the negative log-probability of the true class. For a perfect prediction (<span class="math notranslate nohighlight">\( \hat{y}_{y} = 1 \)</span> and <span class="math notranslate nohighlight">\( \hat{y}_{c} = 0 \)</span> for <span class="math notranslate nohighlight">\( c \neq y \)</span>), the CE loss is zero (minimum). On the other hand, for an uncertain prediction (<span class="math notranslate nohighlight">\( 0 &lt; \hat{y}_{y} &lt; 1 \)</span>), CE will quickly approach <span class="math notranslate nohighlight">\( \infty \)</span> as <span class="math notranslate nohighlight">\( \hat{y}_{y} \rightarrow 0^{+} \)</span>, i.e. the CE loss strongly penalizes the predicted distribution if the predicted probability of the true-class <span class="math notranslate nohighlight">\( \hat{y}_{y} \)</span> is close to zero.</p>
+<p>in which <span class="math notranslate nohighlight">\( y \)</span> corresponds to the index of the true class. In this case, the CE <a class="reference internal" href="#equation-ce">(141)</a> is the negative log-probability of the true class. For a perfect prediction (<span class="math notranslate nohighlight">\( \hat{y}_{y} = 1 \)</span> and <span class="math notranslate nohighlight">\( \hat{y}_{c} = 0 \)</span> for <span class="math notranslate nohighlight">\( c \neq y \)</span>), the CE loss is zero (minimum). On the other hand, for an uncertain prediction (<span class="math notranslate nohighlight">\( 0 &lt; \hat{y}_{y} &lt; 1 \)</span>), CE will quickly approach <span class="math notranslate nohighlight">\( \infty \)</span> as <span class="math notranslate nohighlight">\( \hat{y}_{y} \rightarrow 0^{+} \)</span>, i.e. the CE loss strongly penalizes the predicted distribution if the predicted probability of the true-class <span class="math notranslate nohighlight">\( \hat{y}_{y} \)</span> is close to zero.</p>
 <p>Therefore, the mean cross entropy, i.e the training loss, is obtained as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3151b6dc-8ee6-45f9-ba16-a719404228b4">
-<span class="eqno">(201)<a class="headerlink" href="#equation-3151b6dc-8ee6-45f9-ba16-a719404228b4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6afd2362-ddea-4e4f-95b0-124f7e3a6930">
+<span class="eqno">(142)<a class="headerlink" href="#equation-6afd2362-ddea-4e4f-95b0-124f7e3a6930" title="Permalink to this equation">#</a></span>\[\begin{equation}
 L_{train} =  {1 \over N} \sum_{i=1}^{N} CE(y_{i}, \hat{\bf y}_{i}; {\bf w}),
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\( y_{i} \)</span> and <span class="math notranslate nohighlight">\( \hat{\bf y}_{i} = f({\bf x}_{i}; {\bf w})\)</span> are respectively the true class and the network output (probability) associated with the <span class="math notranslate nohighlight">\(i\)</span>-th training example <span class="math notranslate nohighlight">\( \left({\bf x}_{i}, y_{i} \right) \in {\cal D}_{train} \)</span>.</p>
 <figure class="align-left" id="ce-fig">
 <a class="reference internal image-reference" href="_images/MLP_CE_04.png"><img alt="_images/MLP_CE_04.png" src="_images/MLP_CE_04.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 53 </span><span class="caption-text">Computational graph representing a MLP with <span class="math notranslate nohighlight">\(4\)</span> hidden layers designed for classification (<span class="math notranslate nohighlight">\(C=3\)</span>). The last hidden layer comprises <span class="math notranslate nohighlight">\(3\)</span> linear units whose outputs are collected by the vector <span class="math notranslate nohighlight">\( {\bf h}^{4} \)</span>. The <span class="math notranslate nohighlight">\(\softmax\)</span> is applied to <span class="math notranslate nohighlight">\( {\bf h}^{4} \)</span> to build a valid categorical distribution stored in <span class="math notranslate nohighlight">\( \hat{\bf y} = \begin{bmatrix} \hat{y}_{1} &amp; \hat{y}_{2} &amp; \hat{y}_{3} \end{bmatrix}^{T} \)</span> which can be evaluated in turn by computing the cross entropy <span class="math notranslate nohighlight">\( CE(y, \hat{\bf y}; {\bf w}) \)</span> using the true class <span class="math notranslate nohighlight">\( y \)</span> as in <a class="reference internal" href="#equation-ce">(200)</a>.</span><a class="headerlink" href="#ce-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 40 </span><span class="caption-text">Computational graph representing a MLP with <span class="math notranslate nohighlight">\(4\)</span> hidden layers designed for classification (<span class="math notranslate nohighlight">\(C=3\)</span>). The last hidden layer comprises <span class="math notranslate nohighlight">\(3\)</span> linear units whose outputs are collected by the vector <span class="math notranslate nohighlight">\( {\bf h}^{4} \)</span>. The <span class="math notranslate nohighlight">\(\softmax\)</span> is applied to <span class="math notranslate nohighlight">\( {\bf h}^{4} \)</span> to build a valid categorical distribution stored in <span class="math notranslate nohighlight">\( \hat{\bf y} = \begin{bmatrix} \hat{y}_{1} &amp; \hat{y}_{2} &amp; \hat{y}_{3} \end{bmatrix}^{T} \)</span> which can be evaluated in turn by computing the cross entropy <span class="math notranslate nohighlight">\( CE(y, \hat{\bf y}; {\bf w}) \)</span> using the true class <span class="math notranslate nohighlight">\( y \)</span> as in <a class="reference internal" href="#equation-ce">(141)</a>.</span><a class="headerlink" href="#ce-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Let <span class="math notranslate nohighlight">\( {\bf h} = \begin{bmatrix} h_1 &amp; h_2 &amp; \ldots &amp; h_C \end{bmatrix}^{T} \)</span> collect the values at the last hidden layer, i.e. the logits of the softmax. To be able to learn, we need to compute the derivative of the cross-entropy. In the following, we use <span class="math notranslate nohighlight">\( CE = CE(y, \hat{\bf y}; {\bf w}) \)</span> for the sake of clarity. The derivative of the cross-entropy w.r.t. the value <span class="math notranslate nohighlight">\( h_j \)</span> of the <span class="math notranslate nohighlight">\(j\)</span>-th unit is given by</p>
@@ -828,120 +833,120 @@ L_{train} =  {1 \over N} \sum_{i=1}^{N} CE(y_{i}, \hat{\bf y}_{i}; {\bf w}),
 <li><p><strong>return</strong> Trained neural network parameters <span class="math notranslate nohighlight">\({\bf w}\)</span>.</p></li>
 </ol>
 </section>
-</div><p><a class="reference internal" href="#loss-ladscape-fig"><span class="std std-numref">Fig. 54</span></a> illustrates in turn how challenging could be optimizing the loss function for two parameters.</p>
+</div><p><a class="reference internal" href="#loss-ladscape-fig"><span class="std std-numref">Fig. 41</span></a> illustrates in turn how challenging could be optimizing the loss function for two parameters.</p>
 <figure class="align-left" id="loss-ladscape-fig">
 <a class="reference internal image-reference" href="_images/loss_landscape.png"><img alt="_images/loss_landscape.png" src="_images/loss_landscape.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 54 </span><span class="caption-text">Loss landscape of neural networks for a bi-dimensional parameter space (borrowed from <span id="id1">[]</span>). There are several local minima and one global minima. Ordinary gradient descent implementations could be easily captured by a local minima.</span><a class="headerlink" href="#loss-ladscape-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 41 </span><span class="caption-text">Loss landscape of neural networks for a bi-dimensional parameter space (borrowed from <span id="id1">[<a class="reference internal" href="bibliography.html#id20" title="Hao Li, Zheng Xu, Gavin Taylor, Christoph Studer, and Tom Goldstein. Visualizing the loss landscape of neural nets. arXiv preprint arXiv:1712.09913, 2017.">10</a>]</span>). There are several local minima and one global minima. Ordinary gradient descent implementations could be easily captured by a local minima.</span><a class="headerlink" href="#loss-ladscape-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Note that computing the gradient <span class="math notranslate nohighlight">\( \nabla_{\bf w} L_{train} \)</span> is key for <a class="reference internal" href="#gradient_descent_alg">Algorithm 10</a>. But how do we compute this gradient? First, let us defined it precisely. The gradient of the training loss <span class="math notranslate nohighlight">\(L_{train}\)</span> w.r.t. to the parameter vector <span class="math notranslate nohighlight">\( {\bf w} \)</span> is defined as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-26c57d73-24eb-4721-946c-8d77704b480e">
-<span class="eqno">(202)<a class="headerlink" href="#equation-26c57d73-24eb-4721-946c-8d77704b480e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-19561980-1579-4aaa-a1e1-c24045063061">
+<span class="eqno">(143)<a class="headerlink" href="#equation-19561980-1579-4aaa-a1e1-c24045063061" title="Permalink to this equation">#</a></span>\[\begin{equation}
  \nabla_{\bf w} L_{train} = \begin{bmatrix} \frac{\partial L_{train}}{\partial w_1} &amp; \frac{\partial L_{train}}{\partial w_2} &amp; \cdots \end{bmatrix}^{T}. 
 \end{equation}\]</div>
 <p>Note though that we can rewrite the overall gradient as a sum of sample-wise gradients</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2aa35dc7-54ac-4c4a-acef-99dd5c4414d0">
-<span class="eqno">(203)<a class="headerlink" href="#equation-2aa35dc7-54ac-4c4a-acef-99dd5c4414d0" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-275ed5cf-9cc0-4273-84c1-0f81984b46cd">
+<span class="eqno">(144)<a class="headerlink" href="#equation-275ed5cf-9cc0-4273-84c1-0f81984b46cd" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 \nabla_{\bf w} L_{train} &amp;=&amp; \nabla_{\bf w}  \left( {1 \over N}  \sum_{i=1}^N L(y_{i}, \hat{\bf y}_{i}) \right)  \\
 &amp;=&amp; {1 \over N}  \sum_{i=1}^N \nabla_{\bf w} L(y_{i}, \hat{\bf y}_{i}),
 \end{eqnarray}\]</div>
 <p>in which the gradient <span class="math notranslate nohighlight">\( \nabla_{\bf w} L(y_{i}, \hat{\bf y}_{i}) \)</span> of the <span class="math notranslate nohighlight">\(i\)</span>-th sample in <span class="math notranslate nohighlight">\( {\cal D}_{train} \)</span> is computed independently.</p>
 <p>The gradient of a single sample <div class="math notranslate nohighlight">
 \[ \nabla_{\bf w} L(y_{i}, \hat{\bf y}_{i}) \]</div>
- in turn can be computed using the backpropagation of error (backprop). <a class="reference internal" href="#backprop-fig"><span class="std std-numref">Fig. 55</span></a> illustrates the backpropagation procedure. First the input features in <span class="math notranslate nohighlight">\( {\bf x} \)</span> are feedforwarded to compute the network prediction <span class="math notranslate nohighlight">\(\hat{\bf y} \)</span> using the current network parameters stored in <span class="math notranslate nohighlight">\({\bf w}\)</span>. Then, the loss function <span class="math notranslate nohighlight">\( L(y, \hat{\bf y}) \)</span> is computed to evaluate the prediction quality against the true value <span class="math notranslate nohighlight">\( y \)</span>. In this sense, the loss function encodes the prediction error. Lastly, the prediction error is backpropagated. Specifically, the derivatives of the loss function are backpropagated to allow one to compute the loss function derivative <span class="math notranslate nohighlight">\(\frac{\partial L_{train}}{\partial w_j}\)</span> w.r.t any network parameter <span class="math notranslate nohighlight">\( w_j \)</span> in <span class="math notranslate nohighlight">\( {\bf w} \)</span>.</p>
+ in turn can be computed using the backpropagation of error (backprop). <a class="reference internal" href="#backprop-fig"><span class="std std-numref">Fig. 42</span></a> illustrates the backpropagation procedure. First the input features in <span class="math notranslate nohighlight">\( {\bf x} \)</span> are feedforwarded to compute the network prediction <span class="math notranslate nohighlight">\(\hat{\bf y} \)</span> using the current network parameters stored in <span class="math notranslate nohighlight">\({\bf w}\)</span>. Then, the loss function <span class="math notranslate nohighlight">\( L(y, \hat{\bf y}) \)</span> is computed to evaluate the prediction quality against the true value <span class="math notranslate nohighlight">\( y \)</span>. In this sense, the loss function encodes the prediction error. Lastly, the prediction error is backpropagated. Specifically, the derivatives of the loss function are backpropagated to allow one to compute the loss function derivative <span class="math notranslate nohighlight">\(\frac{\partial L_{train}}{\partial w_j}\)</span> w.r.t any network parameter <span class="math notranslate nohighlight">\( w_j \)</span> in <span class="math notranslate nohighlight">\( {\bf w} \)</span>.</p>
 <figure class="align-left" id="backprop-fig">
 <a class="reference internal image-reference" href="_images/backprop_scheme_04.png"><img alt="_images/backprop_scheme_04.png" src="_images/backprop_scheme_04.png" style="height: 480px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 55 </span><span class="caption-text">Backpropagation procedure overview.</span><a class="headerlink" href="#backprop-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 42 </span><span class="caption-text">Backpropagation procedure overview.</span><a class="headerlink" href="#backprop-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>But how do we compute the derivatives <span class="math notranslate nohighlight">\( \frac{\partial L_{train}}{\partial w_j} \)</span> of the loss function w.r.t. to each network parameters <span class="math notranslate nohighlight">\( w_j \)</span>? We employ the chain rule of calculus plus some <em>bookkeeping</em> to store partial derivatives along the paths linking this parameter to the network outputs.</p>
 <div class="proof definition admonition" id="definition-2">
-<p class="admonition-title"><span class="caption-number">Definition 28 </span> (Chain rule of calculus)</p>
+<p class="admonition-title"><span class="caption-number">Definition 24 </span> (Chain rule of calculus)</p>
 <section class="definition-content" id="proof-content">
 <p>Let the function <span class="math notranslate nohighlight">\( f(x) = f(g(x), h(x)) \)</span> be the composition of two functions <span class="math notranslate nohighlight">\( g(x) \)</span> and <span class="math notranslate nohighlight">\( h(x) \)</span>. Thus, the derivative of <span class="math notranslate nohighlight">\( f(\cdot) \)</span> w.r.t. the argument <span class="math notranslate nohighlight">\( x \)</span> can be computed as <div class="math notranslate nohighlight">
 \[ {\partial f \over \partial x } = {\partial f \over \partial g } {\partial g \over \partial x } + {\partial f \over \partial h } {\partial h \over \partial x }. \]</div>
 </p>
-<p><a class="reference internal" href="#backprop-detail-fig"><span class="std std-numref">Fig. 56</span></a> shows how the derivatives are combined over the computational graph corresponding to function <span class="math notranslate nohighlight">\( f(x) = f(g(x), h(x)) \)</span>. Partial derivatives along the same backpropagation path between two node are multiplied to obtain <span class="math notranslate nohighlight">\( {\partial f \over \partial g } {\partial g \over \partial x } \)</span> and <span class="math notranslate nohighlight">\( {\partial f \over \partial h } {\partial h \over \partial x } \)</span>. Backpropagated derivatives arriving at the node <span class="math notranslate nohighlight">\( {\bf x} \)</span> are added up to obtain the final derivative <span class="math notranslate nohighlight">\( {\partial f \over \partial x } \)</span>.</p>
+<p><a class="reference internal" href="#backprop-detail-fig"><span class="std std-numref">Fig. 43</span></a> shows how the derivatives are combined over the computational graph corresponding to function <span class="math notranslate nohighlight">\( f(x) = f(g(x), h(x)) \)</span>. Partial derivatives along the same backpropagation path between two node are multiplied to obtain <span class="math notranslate nohighlight">\( {\partial f \over \partial g } {\partial g \over \partial x } \)</span> and <span class="math notranslate nohighlight">\( {\partial f \over \partial h } {\partial h \over \partial x } \)</span>. Backpropagated derivatives arriving at the node <span class="math notranslate nohighlight">\( {\bf x} \)</span> are added up to obtain the final derivative <span class="math notranslate nohighlight">\( {\partial f \over \partial x } \)</span>.</p>
 <figure class="align-left" id="backprop-detail-fig">
 <a class="reference internal image-reference" href="_images/backprop_detail_simple.svg"><img alt="_images/backprop_detail_simple.svg" height="320px" src="_images/backprop_detail_simple.svg" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 56 </span><span class="caption-text">Backpropagation of partial derivatives.</span><a class="headerlink" href="#backprop-detail-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 43 </span><span class="caption-text">Backpropagation of partial derivatives.</span><a class="headerlink" href="#backprop-detail-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
-</div><p><a class="reference internal" href="#backprop-detail-small-fig1"><span class="std std-numref">Fig. 57</span></a> through <a class="reference internal" href="#backprop-detail-small-fig4"><span class="std std-numref">Fig. 60</span></a> detail the backpropagation procedure for a small network. It shows the backpropagated messages over the network. Note that the computational graph was expanded in the figures to turn the computation of each unit activation explicit.</p>
+</div><p><a class="reference internal" href="#backprop-detail-small-fig1"><span class="std std-numref">Fig. 44</span></a> through <a class="reference internal" href="#backprop-detail-small-fig4"><span class="std std-numref">Fig. 47</span></a> detail the backpropagation procedure for a small network. It shows the backpropagated messages over the network. Note that the computational graph was expanded in the figures to turn the computation of each unit activation explicit.</p>
 <figure class="align-left" id="backprop-detail-small-fig1">
 <a class="reference internal image-reference" href="_images/backprop_detail_small_01.png"><img alt="_images/backprop_detail_small_01.png" src="_images/backprop_detail_small_01.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 57 </span><span class="caption-text">A single hidden layer network.</span><a class="headerlink" href="#backprop-detail-small-fig1" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 44 </span><span class="caption-text">A single hidden layer network.</span><a class="headerlink" href="#backprop-detail-small-fig1" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-left" id="backprop-detail-small-fig2">
 <a class="reference internal image-reference" href="_images/backprop_detail_small_02.png"><img alt="_images/backprop_detail_small_02.png" src="_images/backprop_detail_small_02.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 58 </span><span class="caption-text">Backprop message <span class="math notranslate nohighlight">\( {\color{blue} B_{1} } \)</span>.</span><a class="headerlink" href="#backprop-detail-small-fig2" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 45 </span><span class="caption-text">Backprop message <span class="math notranslate nohighlight">\( {\color{blue} B_{1} } \)</span>.</span><a class="headerlink" href="#backprop-detail-small-fig2" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-left" id="backprop-detail-small-fig3">
 <a class="reference internal image-reference" href="_images/backprop_detail_small_03.png"><img alt="_images/backprop_detail_small_03.png" src="_images/backprop_detail_small_03.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 59 </span><span class="caption-text">Backprop messages <span class="math notranslate nohighlight">\( {\color{green} B_{2,1} } \)</span> and <span class="math notranslate nohighlight">\({\color{green} B_{2,2} }\)</span>.</span><a class="headerlink" href="#backprop-detail-small-fig3" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 46 </span><span class="caption-text">Backprop messages <span class="math notranslate nohighlight">\( {\color{green} B_{2,1} } \)</span> and <span class="math notranslate nohighlight">\({\color{green} B_{2,2} }\)</span>.</span><a class="headerlink" href="#backprop-detail-small-fig3" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-left" id="backprop-detail-small-fig4">
 <a class="reference internal image-reference" href="_images/backprop_detail_small_04.png"><img alt="_images/backprop_detail_small_04.png" src="_images/backprop_detail_small_04.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 60 </span><span class="caption-text">Backprop messagess <span class="math notranslate nohighlight">\({\color{darkred} B_{3,1} } \)</span> and <span class="math notranslate nohighlight">\({\color{darkred} B_{3,2} }\)</span>.</span><a class="headerlink" href="#backprop-detail-small-fig4" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 47 </span><span class="caption-text">Backprop messagess <span class="math notranslate nohighlight">\({\color{darkred} B_{3,1} } \)</span> and <span class="math notranslate nohighlight">\({\color{darkred} B_{3,2} }\)</span>.</span><a class="headerlink" href="#backprop-detail-small-fig4" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>We detail the bookkeeping of backpropagated messages below.</p>
 <p>I. Compute the message <span class="math notranslate nohighlight">\( {\color{blue} {B_1} } \)</span> as the derivative of the loss function (MSE or CE):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-87ac4e1b-9c36-4049-ac0a-0fc555797d90">
-<span class="eqno">(204)<a class="headerlink" href="#equation-87ac4e1b-9c36-4049-ac0a-0fc555797d90" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-409ac1b3-8d2e-417a-8936-7e3254e57104">
+<span class="eqno">(145)<a class="headerlink" href="#equation-409ac1b3-8d2e-417a-8936-7e3254e57104" title="Permalink to this equation">#</a></span>\[\begin{equation}
  {\color{blue} \partial L \over \partial \hat{y}} \triangleq {\color{blue} {B_1} }.
 \end{equation}\]</div>
 <p>II. Compute the messages <span class="math notranslate nohighlight">\( {\color{green} B_{2,1} } \)</span> and <span class="math notranslate nohighlight">\( {\color{green} B_{2,2} } \)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0b3a9a28-9ddb-406d-9d75-52ba1a6b0eea">
-<span class="eqno">(205)<a class="headerlink" href="#equation-0b3a9a28-9ddb-406d-9d75-52ba1a6b0eea" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-bcb2cce1-d8f4-4454-af8a-a5b9d6814bff">
+<span class="eqno">(146)<a class="headerlink" href="#equation-bcb2cce1-d8f4-4454-af8a-a5b9d6814bff" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
  {\color{green} \partial L \over \partial h_i} &amp;=&amp; {\color{blue} \partial L \over \partial \hat{y}}{\partial \hat{y} \over \partial h_i}  \\
  &amp;=&amp; {\color{blue} B_1 } w^{2}_{i,1}  \\
  &amp;\triangleq&amp; {\color{green} B_{2,i}}.
 \end{eqnarray}\]</div>
 <p>III. Compute the messages <span class="math notranslate nohighlight">\({\color{darkred} B_{3,1} } \)</span> and <span class="math notranslate nohighlight">\({\color{darkred} B_{3,2} }\)</span> using the activation function derivative:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f2a3de0a-be16-43ff-90a9-48c4edde0a90">
-<span class="eqno">(206)<a class="headerlink" href="#equation-f2a3de0a-be16-43ff-90a9-48c4edde0a90" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-1c1fda50-418f-4562-86c1-5a602768d584">
+<span class="eqno">(147)<a class="headerlink" href="#equation-1c1fda50-418f-4562-86c1-5a602768d584" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
  {\color{darkred} \partial L \over \partial a_i} &amp;=&amp; {\color{green} \partial L \over \partial h_i}{\partial h_i \over \partial a_i}  \\
  &amp;=&amp; {\color{green} B_{2,i} } \, \phi_1'(a_i)  \\
  &amp;\triangleq&amp; {\color{darkred} B_{3,i} }.
 \end{eqnarray}\]</div>
 <p>IV. Then, compute the partial derivatives of the loss w.r.t. the network parameters at the output layer:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9501eb50-c8f5-4341-b906-e73fb723e8d8">
-<span class="eqno">(207)<a class="headerlink" href="#equation-9501eb50-c8f5-4341-b906-e73fb723e8d8" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-191f8408-3db8-47cd-8659-1c489067dbf9">
+<span class="eqno">(148)<a class="headerlink" href="#equation-191f8408-3db8-47cd-8659-1c489067dbf9" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
  {\partial L \over \partial w^2_{i,1}} &amp;=&amp; {\color{blue} \partial L \over \partial \hat{y}}{\partial \hat{y} \over \partial w^2_{i,1}}   \\
 &amp;\equiv&amp; {\color{blue} {B_1} } {h_i}.
 \end{eqnarray}\]</div>
 <p>VI. Finally, compute the partial derivatives of the loss w.r.t. the network parameters at the hidden layer:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f913ab5f-1a13-4c09-9416-2f2ad21416b8">
-<span class="eqno">(208)<a class="headerlink" href="#equation-f913ab5f-1a13-4c09-9416-2f2ad21416b8" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-eb27d979-45d5-4d7d-8031-61ccac888d40">
+<span class="eqno">(149)<a class="headerlink" href="#equation-eb27d979-45d5-4d7d-8031-61ccac888d40" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\partial L \over \partial w^1_{i,j}} &amp;=&amp; {\color{darkred} \partial L \over \partial a_j}{\partial a_j \over \partial w^1_{i,j}}  \\
 &amp;\equiv&amp; {\color{darkred} {B_{3,j}} } {x_i}.
 \end{eqnarray}\]</div>
 <div class="proof definition admonition" id="definition-3">
-<p class="admonition-title"><span class="caption-number">Definition 29 </span> (Jacobian matrix)</p>
+<p class="admonition-title"><span class="caption-number">Definition 25 </span> (Jacobian matrix)</p>
 <section class="definition-content" id="proof-content">
 <p>Let <span class="math notranslate nohighlight">\(y = f(x)\)</span> be a single input, single output (SISO) function <span class="math notranslate nohighlight">\(f \colon \mathbb{R} \rightarrow \mathbb{R}\)</span>. The derivative of <span class="math notranslate nohighlight">\(f\)</span> is written as <div class="math notranslate nohighlight">
 \[ f' \triangleq {\partial f \over \partial x}. \]</div>
  Now, let <span class="math notranslate nohighlight">\(f \colon \mathbb{R}^n \rightarrow \mathbb{R}^m\)</span> denote a multiple input, multiple output (MIMO) function, i.e.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c2909dff-0a47-4b68-aeab-0dc3b42f8474">
-<span class="eqno">(209)<a class="headerlink" href="#equation-c2909dff-0a47-4b68-aeab-0dc3b42f8474" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-5c210122-ff43-4182-8da9-8053eeff7770">
+<span class="eqno">(150)<a class="headerlink" href="#equation-5c210122-ff43-4182-8da9-8053eeff7770" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf y} &amp;=&amp; f({\bf x})  \\
 &amp;=&amp; \begin{bmatrix} f_1({\bf x}) &amp; \ldots &amp; f_m({\bf x})\end{bmatrix}^{T}.  
 \end{eqnarray}\]</div>
 <p>The <em>derivative</em> of <span class="math notranslate nohighlight">\(f\)</span> w.r.t. to its argument <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{1} &amp; \ldots &amp; x_{n} \end{bmatrix}^{T} \)</span> is defined by the <strong>Jacobian matrix</strong>. More precisely, the Jacobian matrix <span class="math notranslate nohighlight">\({\bf J}\)</span> is a <span class="math notranslate nohighlight">\(m \times n\)</span> matrix containing all <em>partial</em> derivatives</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b36e5ba8-18df-4024-b9dc-dcc037adae8e">
-<span class="eqno">(210)<a class="headerlink" href="#equation-b36e5ba8-18df-4024-b9dc-dcc037adae8e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-329b6982-d143-4ff9-aa66-d1ce8d4dad80">
+<span class="eqno">(151)<a class="headerlink" href="#equation-329b6982-d143-4ff9-aa66-d1ce8d4dad80" title="Permalink to this equation">#</a></span>\[\begin{equation}
 {\bf J} = 
 \begin{bmatrix}
 {\partial f_1 \over \partial x_1} &amp; \ldots &amp; {\partial f_1 \over \partial x_n} \\
@@ -955,20 +960,20 @@ L_{train} =  {1 \over N} \sum_{i=1}^{N} CE(y_{i}, \hat{\bf y}_{i}; {\bf w}),
 <h2>Vectorized Backprop<a class="headerlink" href="#vectorized-backprop" title="Permalink to this headline">#</a></h2>
 <p>Now, let <span class="math notranslate nohighlight">\({\color{green}\mathbf{v}}\)</span> and <span class="math notranslate nohighlight">\({\color{darkred} \mathbf{v'}}\)</span> be two sets containing respectively <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(m\)</span> units of a neural network (possibly from different layers). Moreover, let  <span class="math notranslate nohighlight">\(f({\color{green}\mathbf{v}}) = {\color{darkred} \mathbf{v'}}\)</span> be a function <span class="math notranslate nohighlight">\(f \colon \mathbb{R}^n \mapsto \mathbb{R}^m\)</span> mapping values from <span class="math notranslate nohighlight">\({\color{green}\mathbf{v}}\)</span> into values at  <span class="math notranslate nohighlight">\({\color{darkred} \mathbf{v'}}\)</span>. If all computational paths from the units in <span class="math notranslate nohighlight">\({\color{green}\mathbf{v}}\)</span> to the loss function <span class="math notranslate nohighlight">\(L\)</span> (at the output) go over the units in <span class="math notranslate nohighlight">\({\color{darkred}\mathbf{v}'}\)</span>, then we can write</p>
 <div class="math notranslate nohighlight" id="equation-jacob-magic">
-<span class="eqno">(211)<a class="headerlink" href="#equation-jacob-magic" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<span class="eqno">(152)<a class="headerlink" href="#equation-jacob-magic" title="Permalink to this equation">#</a></span>\[\begin{equation}
 {\color{green} \nabla_{\mathbf{v}} L} =  {\color{blue} \mathbf{J}^{T}} {\color{darkred}\nabla_{\mathbf{v}'} L}.
 \end{equation}\]</div>
 <p>That is, the Gradient of the loss <span class="math notranslate nohighlight">\(L\)</span> w.r.t. <span class="math notranslate nohighlight">\({\color{green}\mathbf{v}}\)</span> is the Gradient of the loss <span class="math notranslate nohighlight">\(L\)</span> w.r.t. <span class="math notranslate nohighlight">\({\color{darkred}\mathbf{v}'}\)</span> pre-multiplied by the Jacobian of <span class="math notranslate nohighlight">\(f\)</span> transposed. Thus, it suffices to know the Jacobian of <span class="math notranslate nohighlight">\(f\)</span> to backpropagate the Gradients from units ahead (<span class="math notranslate nohighlight">\({\color{darkred} \mathbf{v}'}\)</span>) to units backwards (<span class="math notranslate nohighlight">\({\color{green}\mathbf{v}}\)</span>) in the network. Note that this is similar to the <span class="math notranslate nohighlight">\(1D\)</span> case in which <span class="math notranslate nohighlight">\(L = L(f({\color{green}v})) = L({\color{darkred}v'})\)</span> and</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5d8a644d-2e76-4f69-b8bd-fa7ac74be1fc">
-<span class="eqno">(212)<a class="headerlink" href="#equation-5d8a644d-2e76-4f69-b8bd-fa7ac74be1fc" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-700b1e2b-c86b-4ee8-9fa1-efc1ec42398d">
+<span class="eqno">(153)<a class="headerlink" href="#equation-700b1e2b-c86b-4ee8-9fa1-efc1ec42398d" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
  {\color{green} \partial L \over \partial v} &amp;=&amp; {\color{darkred} \partial L \over \partial v'}{\color{blue} \partial v' \over \partial v}  \\
  &amp;=&amp; {\color{blue} f'} {\color{darkred} \partial L \over \partial v'}.
 \end{eqnarray}\]</div>
-<p><a class="reference internal" href="#vectorized-backprop-fig"><span class="std std-numref">Fig. 61</span></a> compares the <span class="math notranslate nohighlight">\(1D\)</span> backpropagation procedure with the vectorized backpropagation over a simplified computational graph in which grouped units (circles) in <span class="math notranslate nohighlight">\({\color{darkred} \mathbf{v}'}\)</span> and <span class="math notranslate nohighlight">\({\color{green}\mathbf{v}}\)</span> are enclosed by boxes. In the former case, we compute the Gradient at a single unit <span class="math notranslate nohighlight">\( {\color{green}v} \)</span> using the gradient <span class="math notranslate nohighlight">\( {\color{blue} f'} \)</span> of the SISO function<span class="math notranslate nohighlight">\( f: \mathbb{R} \rightarrow \mathbb{R} \)</span> mapping the values at this unit to the values at the unit ahead <span class="math notranslate nohighlight">\({\color{darkred}v'}\)</span>. In the later case, we compute the Gradient at the units <span class="math notranslate nohighlight">\({\color{green}\mathbf{v}}\)</span> using the Jacobian <span class="math notranslate nohighlight">\( {\color{blue} \mathbf{J}^{T}} \)</span> of the MIMO function <span class="math notranslate nohighlight">\( f: \mathbb{R}^{n} \rightarrow \mathbb{R}^{m} \)</span> summarizing all computational paths of these units to the units ahead <span class="math notranslate nohighlight">\({\color{darkred} \mathbf{v}'}\)</span>.</p>
+<p><a class="reference internal" href="#vectorized-backprop-fig"><span class="std std-numref">Fig. 48</span></a> compares the <span class="math notranslate nohighlight">\(1D\)</span> backpropagation procedure with the vectorized backpropagation over a simplified computational graph in which grouped units (circles) in <span class="math notranslate nohighlight">\({\color{darkred} \mathbf{v}'}\)</span> and <span class="math notranslate nohighlight">\({\color{green}\mathbf{v}}\)</span> are enclosed by boxes. In the former case, we compute the Gradient at a single unit <span class="math notranslate nohighlight">\( {\color{green}v} \)</span> using the gradient <span class="math notranslate nohighlight">\( {\color{blue} f'} \)</span> of the SISO function<span class="math notranslate nohighlight">\( f: \mathbb{R} \rightarrow \mathbb{R} \)</span> mapping the values at this unit to the values at the unit ahead <span class="math notranslate nohighlight">\({\color{darkred}v'}\)</span>. In the later case, we compute the Gradient at the units <span class="math notranslate nohighlight">\({\color{green}\mathbf{v}}\)</span> using the Jacobian <span class="math notranslate nohighlight">\( {\color{blue} \mathbf{J}^{T}} \)</span> of the MIMO function <span class="math notranslate nohighlight">\( f: \mathbb{R}^{n} \rightarrow \mathbb{R}^{m} \)</span> summarizing all computational paths of these units to the units ahead <span class="math notranslate nohighlight">\({\color{darkred} \mathbf{v}'}\)</span>.</p>
 <figure class="align-left" id="vectorized-backprop-fig">
 <a class="reference internal image-reference" href="_images/jacobian.svg"><img alt="_images/jacobian.svg" height="640px" src="_images/jacobian.svg" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 61 </span><span class="caption-text">Vectorized backpropagation of the Gradients.</span><a class="headerlink" href="#vectorized-backprop-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 48 </span><span class="caption-text">Vectorized backpropagation of the Gradients.</span><a class="headerlink" href="#vectorized-backprop-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -981,8 +986,8 @@ L_{train} =  {1 \over N} \sum_{i=1}^{N} CE(y_{i}, \hat{\bf y}_{i}; {\bf w}),
 </ul>
 <p>Note though that the Jacobian of a <strong>matrix multiplication</strong> of the type <span class="math notranslate nohighlight">\( {\bf y} = f({\bf x}) = {\bf W} {\bf x}\)</span> is just the matrix <span class="math notranslate nohighlight">\( {\bf W} \)</span> defining the affine transform, whereas the Jacobian of an <strong>element-wise nonlinearity</strong> of the type <span class="math notranslate nohighlight">\({\bf y} = f({\bf x})\)</span> is a diagonal matrix <span class="math notranslate nohighlight">\( {\bf J} = \mathrm{diag}(f'({\bf x})) \)</span>.</p>
 <p>More explicitly, let the matrix multiplication</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e9acd62d-7a36-4711-b913-2abeb665c748">
-<span class="eqno">(213)<a class="headerlink" href="#equation-e9acd62d-7a36-4711-b913-2abeb665c748" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1f456fea-0279-43f4-be0b-9662f0ba5551">
+<span class="eqno">(154)<a class="headerlink" href="#equation-1f456fea-0279-43f4-be0b-9662f0ba5551" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \underbrace{\begin{bmatrix}
 y_1 \\
 y_2 \\
@@ -1004,8 +1009,8 @@ x_m
 \end{bmatrix}}_{\bf x}
 \end{equation}\]</div>
 <p>define a linear function of the type <span class="math notranslate nohighlight">\({\bf y} = f({\bf x}) = \mathbf{W} {\bf x}\)</span>. The Jacobian of this matrix multiplication operation is given by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-be170f78-cc83-4cf2-b2a2-132cc206ed02">
-<span class="eqno">(214)<a class="headerlink" href="#equation-be170f78-cc83-4cf2-b2a2-132cc206ed02" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-cd6a5f52-092d-4750-93d7-ad1caa5b24b9">
+<span class="eqno">(155)<a class="headerlink" href="#equation-cd6a5f52-092d-4750-93d7-ad1caa5b24b9" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf J}
 &amp;=&amp;
 \begin{bmatrix}
@@ -1024,7 +1029,7 @@ w_{n1} &amp; w_{n2} &amp; \dots  &amp; w_{nm}
 \end{eqnarray}\]</div>
 <p>On the other hand, let the function <span class="math notranslate nohighlight">\({\bf y} = f({\bf x}) = \begin{bmatrix} f(x_1) &amp; f(x_2) &amp; \ldots &amp; f(x_n) \end{bmatrix}^{T} \)</span> represent an element-wise nonlinearity applied to the input vector <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_1 &amp; x_2 &amp; \ldots &amp; x_n \end{bmatrix}^{T} \)</span>. The Jacobian of this element-wise nonlinearity is given</p>
 <div class="math notranslate nohighlight" id="equation-jacobian-magic2">
-<span class="eqno">(215)<a class="headerlink" href="#equation-jacobian-magic2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{eqnarray}
+<span class="eqno">(156)<a class="headerlink" href="#equation-jacobian-magic2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{eqnarray}
 {\bf J}
 &amp;=&amp;
 \begin{bmatrix}
@@ -1042,16 +1047,16 @@ f'(x_1) &amp; 0       &amp; \dots  &amp; 0 \\
 \end{bmatrix}}_{\mathrm{diag}(f'({\bf x}))}. 
 \end{eqnarray}\end{split}\]</div>
 <div class="proof example admonition" id="example-4">
-<p class="admonition-title"><span class="caption-number">Example 25 </span> (Vectorized backprop over a small MLP)</p>
+<p class="admonition-title"><span class="caption-number">Example 26 </span> (Vectorized backprop over a small MLP)</p>
 <section class="example-content" id="proof-content">
-<p><a class="reference internal" href="#vectorized-backprop2-fig"><span class="std std-numref">Fig. 62</span></a> shows a MLP with <span class="math notranslate nohighlight">\(3\)</span> non-linear hidden layers and one linear output layer.</p>
+<p><a class="reference internal" href="#vectorized-backprop2-fig"><span class="std std-numref">Fig. 49</span></a> shows a MLP with <span class="math notranslate nohighlight">\(3\)</span> non-linear hidden layers and one linear output layer.</p>
 <figure class="align-left" id="vectorized-backprop2-fig">
 <a class="reference internal image-reference" href="_images/multi_layer_MLP_07.png"><img alt="_images/multi_layer_MLP_07.png" src="_images/multi_layer_MLP_07.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 62 </span><span class="caption-text">Example of a small MLPs to illustrate the vectorized backpropagation procedure.</span><a class="headerlink" href="#vectorized-backprop2-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 49 </span><span class="caption-text">Example of a small MLPs to illustrate the vectorized backpropagation procedure.</span><a class="headerlink" href="#vectorized-backprop2-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>In the sequel, we detail the feedforward evaluation and the backpropagation of error procedures for the small MLP shown in <a class="reference internal" href="#vectorized-backprop2-fig"><span class="std std-numref">Fig. 62</span></a>. First, remember that the network output <span class="math notranslate nohighlight">\( \hat{y} = f({\bf x}) \)</span> for a given input vector <span class="math notranslate nohighlight">\({\bf x} = \begin{bmatrix} x_1 &amp; x_2 &amp; \ldots &amp; x_D \end{bmatrix}^{T} \)</span> is recursively computed – from the inputs to the output – by applying a linear transformation <span class="math notranslate nohighlight">\( \mathbf{a}^\ell = {\mathbf{W}^{\ell}}^{T} \mathbf{h}^{\ell-1} \)</span> followed by an element-wise nonlinearity <span class="math notranslate nohighlight">\( \mathbf{h}^\ell = \phi_\ell(\mathbf{a}^\ell) \)</span> at each layer <span class="math notranslate nohighlight">\( \ell \)</span>. For the MLP shown in <a class="reference internal" href="#vectorized-backprop2-fig"><span class="std std-numref">Fig. 62</span></a>, we have the following feedforward computation steps</p>
+<p>In the sequel, we detail the feedforward evaluation and the backpropagation of error procedures for the small MLP shown in <a class="reference internal" href="#vectorized-backprop2-fig"><span class="std std-numref">Fig. 49</span></a>. First, remember that the network output <span class="math notranslate nohighlight">\( \hat{y} = f({\bf x}) \)</span> for a given input vector <span class="math notranslate nohighlight">\({\bf x} = \begin{bmatrix} x_1 &amp; x_2 &amp; \ldots &amp; x_D \end{bmatrix}^{T} \)</span> is recursively computed – from the inputs to the output – by applying a linear transformation <span class="math notranslate nohighlight">\( \mathbf{a}^\ell = {\mathbf{W}^{\ell}}^{T} \mathbf{h}^{\ell-1} \)</span> followed by an element-wise nonlinearity <span class="math notranslate nohighlight">\( \mathbf{h}^\ell = \phi_\ell(\mathbf{a}^\ell) \)</span> at each layer <span class="math notranslate nohighlight">\( \ell \)</span>. For the MLP shown in <a class="reference internal" href="#vectorized-backprop2-fig"><span class="std std-numref">Fig. 49</span></a>, we have the following feedforward computation steps</p>
 <ol class="simple">
 <li><p><span class="math notranslate nohighlight">\( \mathbf{a}^1 = {\mathbf{W}^{1}}^{T} \mathbf{h}^0 \)</span> with <span class="math notranslate nohighlight">\( \mathbf{h}^0 \triangleq \begin{bmatrix} 1 &amp; {\bf x}^{T} \end{bmatrix}^{T} \equiv \begin{bmatrix} 1 &amp; x_1 &amp; x_2 &amp; \ldots &amp; x_D \end{bmatrix}^{T} \)</span>;</p></li>
 <li><p><span class="math notranslate nohighlight">\( \mathbf{h}^1 = \phi_1(\mathbf{a}^1) \)</span>;</p></li>
@@ -1079,7 +1084,7 @@ f'(x_1) &amp; 0       &amp; \dots  &amp; 0 \\
 in which the layer outputs <span class="math notranslate nohighlight">\( {\bf h}^{1} \)</span>, <span class="math notranslate nohighlight">\( {\bf h}^{2} \)</span> and <span class="math notranslate nohighlight">\( {\bf h}^{3} \)</span> contain the intermediate results of the feedforward evaluation procedure. For convenience, the activations <span class="math notranslate nohighlight">\( {\bf a}^{1} \)</span>, <span class="math notranslate nohighlight">\( {\bf a}^{2} \)</span> and <span class="math notranslate nohighlight">\( {\bf a}^{3} \)</span> are also stored for the backpropagation procedure.</p>
 <p>Now, let the operator <span class="math notranslate nohighlight">\(\odot\)</span> denote the element-wise multiplication such that</p>
 <div class="math notranslate nohighlight" id="equation-odot">
-<span class="eqno">(216)<a class="headerlink" href="#equation-odot" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{equation}
+<span class="eqno">(157)<a class="headerlink" href="#equation-odot" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{equation}
 {\bf A} \odot {\bf B} \triangleq 
 \begin{bmatrix} 
 a_{1,1} b_{1,1} &amp; a_{1,2} b_{1,2} &amp; \ldots &amp; a_{1,n} b_{1,n} \\
@@ -1090,8 +1095,8 @@ a_{m,1} b_{m,1} &amp; a_{m,2} b_{m,2} &amp; \ldots &amp; a_{m,n} b_{m,n} \\
 \end{equation}\end{split}\]</div>
 <p>for any pair of <span class="math notranslate nohighlight">\(m \times n\)</span> matrices <span class="math notranslate nohighlight">\( {\bf A} \)</span> and <span class="math notranslate nohighlight">\( {\bf B} \)</span>. Furthermore, let us assume that the gradient <span class="math notranslate nohighlight">\(\nabla_{\hat{y}} L\)</span> of the loss function w.r.t. to the network output <span class="math notranslate nohighlight">\( \hat{y} \)</span> is given in closed form and can be easily computed. Then, we can recursively compute the gradients from the output to the inputs – backpropagation of error – using the following steps</p>
 <ol class="simple">
-<li><p><span class="math notranslate nohighlight">\(\nabla_{{\bf h}^3} L = \left( {\mathbf{W}^4}^{T} \right)^{^T} \nabla_{\hat{y}} L \therefore \nabla_{{\bf h}^3} L = \mathbf{W}^4 \nabla_{\hat{y}} L\)</span> in which <span class="math notranslate nohighlight">\( \mathbf{W}^4 \)</span> is the Jacobian of the affine transform (see <a class="reference internal" href="#equation-jacob-magic">(211)</a>);</p></li>
-<li><p><span class="math notranslate nohighlight">\(\nabla_{\mathbf{a}^3} L = \mathrm{diag}(\phi_{3}'(\mathbf{a}^3)) \nabla_{{\bf h}^3} L \therefore \nabla_{\mathbf{a}^3} L = \phi_{3}'(\mathbf{a}^3) \odot \nabla_{{\bf h}^3} L \)</span> by combining <a class="reference internal" href="#equation-jacobian-magic2">(215)</a> and <a class="reference internal" href="#equation-odot">(216)</a>;</p></li>
+<li><p><span class="math notranslate nohighlight">\(\nabla_{{\bf h}^3} L = \left( {\mathbf{W}^4}^{T} \right)^{^T} \nabla_{\hat{y}} L \therefore \nabla_{{\bf h}^3} L = \mathbf{W}^4 \nabla_{\hat{y}} L\)</span> in which <span class="math notranslate nohighlight">\( \mathbf{W}^4 \)</span> is the Jacobian of the affine transform (see <a class="reference internal" href="#equation-jacob-magic">(152)</a>);</p></li>
+<li><p><span class="math notranslate nohighlight">\(\nabla_{\mathbf{a}^3} L = \mathrm{diag}(\phi_{3}'(\mathbf{a}^3)) \nabla_{{\bf h}^3} L \therefore \nabla_{\mathbf{a}^3} L = \phi_{3}'(\mathbf{a}^3) \odot \nabla_{{\bf h}^3} L \)</span> by combining <a class="reference internal" href="#equation-jacobian-magic2">(156)</a> and <a class="reference internal" href="#equation-odot">(157)</a>;</p></li>
 <li><p><span class="math notranslate nohighlight">\(\nabla_{{\bf h}^2} L = \mathbf{W}^3 \nabla_{\mathbf{a}^3} L\)</span>;</p></li>
 <li><p><span class="math notranslate nohighlight">\(\nabla_{\mathbf{a}^2} L = \phi_{2}'(\mathbf{a}^2) \odot \nabla_{{\bf h}^2} L\)</span>;</p></li>
 <li><p><span class="math notranslate nohighlight">\(\nabla_{{\bf h}^1} L = \mathbf{W}^2 \nabla_{\mathbf{a}^2} L\)</span>;</p></li>
@@ -1126,13 +1131,13 @@ to stress how gradients of the loss function <span class="math notranslate nohig
 Note therefore that we also need to bookkeep the hidden layers’ outputs <span class="math notranslate nohighlight">\( {\bf h}^{1} \)</span>, <span class="math notranslate nohighlight">\( {\bf h}^{2} \)</span> and <span class="math notranslate nohighlight">\( {\bf h}^{3} \)</span> from the feedforward evaluation procedure as weel as the gradients <span class="math notranslate nohighlight">\( \nabla_{\mathbf{a}^{1}} L \)</span>, <span class="math notranslate nohighlight">\( \nabla_{\mathbf{a}^{2}} L \)</span>, <span class="math notranslate nohighlight">\( \nabla_{\mathbf{a}^{3}} L\)</span> and <span class="math notranslate nohighlight">\(\nabla_{\hat{y}} L\)</span> from the backpropagation procedure.</p></li>
 </ul>
 <p>The feedforward evaluation and backpropagation procedures are performed for each training example <span class="math notranslate nohighlight">\( \left( {\bf x}_{i}, y_{i} \right) \in {\cal D}_{train} \)</span>. Finally, we compute the gradient of the empirical training loss <span class="math notranslate nohighlight">\( L_{train} \)</span> w.r.t. parameters <span class="math notranslate nohighlight">\( {\bf W}^{\ell} \)</span> as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7163ff04-4674-4eb1-98d7-1db88919ec9d">
-<span class="eqno">(217)<a class="headerlink" href="#equation-7163ff04-4674-4eb1-98d7-1db88919ec9d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0ced469e-741b-4d10-9a72-94c4c46f319b">
+<span class="eqno">(158)<a class="headerlink" href="#equation-0ced469e-741b-4d10-9a72-94c4c46f319b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \nabla_{{\bf W}^{\ell}} L_{train} = \frac{1}{N} \sum_{i=1}^{N} \nabla_{{\bf W}^{\ell}} L (y_{i}, \hat{y}_{i})
 \end{equation}\]</div>
 <p>and update the parameters at the <span class="math notranslate nohighlight">\(\ell\)</span>-th layer as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-879daf33-fd9c-4cda-b721-09396d0f0e6e">
-<span class="eqno">(218)<a class="headerlink" href="#equation-879daf33-fd9c-4cda-b721-09396d0f0e6e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-4457d164-f4b3-45b8-b262-cef950b85b0b">
+<span class="eqno">(159)<a class="headerlink" href="#equation-4457d164-f4b3-45b8-b262-cef950b85b0b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 {\bf W}^{\ell} \gets {\bf W}^{\ell} - \eta_{k} \nabla_{{\bf W}^{\ell}} L_{train},
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\( \eta_{k} \)</span> is the learning rate used in the <span class="math notranslate nohighlight">\( k \)</span>-th step of the standard gradient descent method, a.k.a. batch gradient descent as it employs the whole training dataset <span class="math notranslate nohighlight">\( {\cal D}_{train} \)</span> at each step <span class="math notranslate nohighlight">\( k \)</span> to update the network parameters.</p>
@@ -1140,13 +1145,13 @@ Note therefore that we also need to bookkeep the hidden layers’ outputs <span 
 </div><div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>We can empirically check the correctness of our analytical derivations of the derivatives employed by the backprop procedure. More precisely, let <span class="math notranslate nohighlight">\(f({\bf x}) = f(x_1, x_2, \dots, x_D)\)</span> be a <span class="math notranslate nohighlight">\(D\)</span>-dimensional function. Its gradient</p>
-<div class="amsmath math notranslate nohighlight" id="equation-df045dfe-8bfa-4730-9138-817f7636fe64">
-<span class="eqno">(219)<a class="headerlink" href="#equation-df045dfe-8bfa-4730-9138-817f7636fe64" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3b725268-e2fa-4670-b40b-a6aacec68385">
+<span class="eqno">(160)<a class="headerlink" href="#equation-3b725268-e2fa-4670-b40b-a6aacec68385" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \nabla_{{\bf x}} f = \begin{bmatrix} {\partial f \over \partial x_1} &amp; {\partial f \over \partial x_2} &amp; \ldots &amp; {\partial f \over \partial x_D} \end{bmatrix}^{T}
 \end{equation}\]</div>
 <p>w.r.t. <span class="math notranslate nohighlight">\( {\bf x} \)</span> can be approximated – at each dimension <span class="math notranslate nohighlight">\( i \)</span> – using finite differences as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3fa476e7-0d95-482f-97b4-b12144fefe73">
-<span class="eqno">(220)<a class="headerlink" href="#equation-3fa476e7-0d95-482f-97b4-b12144fefe73" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-4e3e7b01-4fa0-4beb-b0be-f52a83fb7d65">
+<span class="eqno">(161)<a class="headerlink" href="#equation-4e3e7b01-4fa0-4beb-b0be-f52a83fb7d65" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \left. {\partial f \over \partial x_i} \right|_{{\bf x}} \approx  {f(x_1, \dots, x_i + \delta, \dots, x_D) - f(x_1, \dots, x_i, \dots, x_D) \over \delta}
 \end{equation}\]</div>
 <p>and then compare this approximation with results obtained by the closed form expression for the partial derivatives <span class="math notranslate nohighlight">\( \lbrace  {\partial f \over \partial x_i} \rbrace \)</span>. Note though that the approximations are computed around a given <span class="math notranslate nohighlight">\( {\bf x} \)</span>, i.e. the aproximation to <span class="math notranslate nohighlight">\( \nabla_{{\bf x}} f \)</span> is valid for a particular input vector <span class="math notranslate nohighlight">\( {\bf x} \)</span>. For <span class="math notranslate nohighlight">\(\delta \rightarrow 0\)</span>, the approximation becomes (by definition) the partial derivative. Besides being usefull for double checking analytical derivations using some data samples, this approximation is too expensive to use it in the backprop procedure itself. Thus, activation functions with closed form expressions for their derivatives are still required by the network to efficiently learn.</p>

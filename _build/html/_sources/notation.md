@@ -18,4 +18,5 @@
 | $\mathrm{inf}/\mathrm{sup}$ | The infimum or supremum of a sequence/function. The infimum is like the minimum, handling a special case where the minimum is not defined. So, if you don't know what inf/sup is, then think of it as min/max.|
 | $\mathrm{diag}(x_1,\ldots,x_n)$ | The $n\times n$ diagonal matrix having the vector $\mathbf{x}$ on the diagonal. |
 | $\log$ | The natural logarithm (to the base of $e$)|
+| $\lvert \mathcal{X}\rvert | The cardinality of set $\mathcal{X}$ (the number of elements in $\mathcal{X}$)| $
 

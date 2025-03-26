@@ -187,11 +187,68 @@ const thebe_selector_output = ".output, .cell_output"
   </ul>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="classification.html">
-   Classification
+  <a class="reference internal" href="regression.html">
+   Regression
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -229,71 +286,6 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="regression.html">
-   Regression
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_objective.html">
-     Regression Objective
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_functions.html">
-     Regression Functions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_optimization.html">
-     Minimizing the RSS
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_bias_var.html">
-     The Bias-Variance Tradeoff
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_n_larger_p.html">
-     Regression When
-     <span class="math notranslate nohighlight">
-      \(p&gt;n\)
-     </span>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_sparse.html">
-     The Sparse Regression Task
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_ridge.html">
-     Ridge Regression
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_lasso.html">
-     Lasso
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_exercises.html">
-     Exercises
     </a>
    </li>
   </ul>
@@ -655,8 +647,8 @@ That is, if for all <span class="math notranslate nohighlight">\(x,y\in \mathcal
 <p class="admonition-title"><span class="caption-number">Definition 10 </span> (Convex function)</p>
 <section class="definition-content" id="proof-content">
 <p>A function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> is <strong>convex</strong> if and only if for every <span class="math notranslate nohighlight">\(\alpha \in[0,1]\)</span>, and <span class="math notranslate nohighlight">\(\vvec{x},\vvec{y}\in\mathbb{R}^d\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5b3bcc8f-9bf7-4d9a-988c-499c511f4440">
-<span class="eqno">(3)<a class="headerlink" href="#equation-5b3bcc8f-9bf7-4d9a-988c-499c511f4440" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ad824678-db09-4153-b5b0-5ddaf9daa448">
+<span class="eqno">(3)<a class="headerlink" href="#equation-ad824678-db09-4153-b5b0-5ddaf9daa448" title="Permalink to this equation">#</a></span>\[\begin{equation}
  f(\alpha \vvec{x}+ (1-\alpha)\vvec{y})\leq\alpha f(\vvec{x})+(1-\alpha)f(\vvec{y})\nonumber
 \end{equation}\]</div>
 </section>

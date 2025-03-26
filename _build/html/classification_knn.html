@@ -55,7 +55,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Naïve Bayes" href="classification_naive_bayes.html" />
+    <link rel="next" title="Naive Bayes" href="classification_naive_bayes.html" />
     <link rel="prev" title="Evaluation" href="classification_evaluation.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -255,7 +255,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="classification_problem.html">
-     Classification Problem
+     Classification Objective
     </a>
    </li>
    <li class="toctree-l2">
@@ -270,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_naive_bayes.html">
-     Naïve Bayes
+     Naive Bayes
     </a>
    </li>
    <li class="toctree-l2">
@@ -591,18 +591,28 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#nearest-neighbor-nn-classifier">
-   Nearest Neighbor (NN) classifier
+  <a class="reference internal nav-link" href="#inference">
+   Inference
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#implementation-practice">
+     Implementation Practice
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#choosing-kappa">
+   Choosing
+   <span class="math notranslate nohighlight">
+    \(\kappa\)
+   </span>
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#k-nearest-neighbor-knn-classifier">
-   K-Nearest Neighbor (KNN) classifier
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#knn-for-regression">
-   KNN for regression
+  <a class="reference internal nav-link" href="#bayes-consistency">
+   Bayes consistency
   </a>
  </li>
 </ul>
@@ -625,18 +635,28 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#nearest-neighbor-nn-classifier">
-   Nearest Neighbor (NN) classifier
+  <a class="reference internal nav-link" href="#inference">
+   Inference
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#implementation-practice">
+     Implementation Practice
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#choosing-kappa">
+   Choosing
+   <span class="math notranslate nohighlight">
+    \(\kappa\)
+   </span>
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#k-nearest-neighbor-knn-classifier">
-   K-Nearest Neighbor (KNN) classifier
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#knn-for-regression">
-   KNN for regression
+  <a class="reference internal nav-link" href="#bayes-consistency">
+   Bayes consistency
   </a>
  </li>
 </ul>
@@ -651,120 +671,111 @@ title="Print to PDF"
                 
   <section id="k-nearest-neighbor">
 <h1>K-Nearest Neighbor<a class="headerlink" href="#k-nearest-neighbor" title="Permalink to this headline">#</a></h1>
-<p>In this section, we introduce first the Nearest Neighbor (NN) classifier to better motivate the K-Nearest Neighbor (KNN) classifier. In particular, we illustrate how the KNN overcomes some of the NN limitations by means of a particular classification task.</p>
-<section id="nearest-neighbor-nn-classifier">
-<h2>Nearest Neighbor (NN) classifier<a class="headerlink" href="#nearest-neighbor-nn-classifier" title="Permalink to this headline">#</a></h2>
-<p>For a given observed data item <span class="math notranslate nohighlight">\( \check{\bf x} \)</span>, the predicted class value <span class="math notranslate nohighlight">\( \hat{y} \)</span> is the label <span class="math notranslate nohighlight">\( y_{c} \)</span> associated with the closest data item <span class="math notranslate nohighlight">\( {\bf x}_{c} \)</span> – the nearest neighbor – within the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>. In precise mathematical terms, for an arbitrary data item <span class="math notranslate nohighlight">\( {\bf x} \in {\cal X} \)</span>, the NN classifier can be written as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2c9cd8f7-4c7e-4a8a-a6bb-a51816fd528c">
-<span class="eqno">(60)<a class="headerlink" href="#equation-2c9cd8f7-4c7e-4a8a-a6bb-a51816fd528c" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-h_{NN}({\bf x}) &amp;=&amp; y_{c} \nonumber \\
-\left( {\bf x}_{c},  y_{c} \right) &amp;=&amp; \argmin_{ \left( {\bf x}',  y' \right) \in {\cal D}} || {\bf x}' - {\bf x} ||, \nonumber
-\end{eqnarray}\]</div>
-<p>where the operator <span class="math notranslate nohighlight">\( ||\cdot|| \)</span> stands for a suitable distance metric, e.g.</p>
-<ul class="simple">
-<li><p>the Manhattan distance (<span class="math notranslate nohighlight">\( L_{1} \)</span> norm),</p></li>
-<li><p>the Euclidean distance (<span class="math notranslate nohighlight">\( L_{2} \)</span> norm),</p></li>
-<li><p>the Hamming distance for binary feature vectors or</p></li>
-<li><p>any user-defined distance metric satisfying the triangular inequality <span class="math notranslate nohighlight">\( || {\bf x} + {\bf x}' || \leq || {\bf x} || + || {\bf x}' || \)</span>, <span class="math notranslate nohighlight">\( \forall {\bf x}, {\bf x}' \in {\cal X} \)</span>.</p></li>
-</ul>
-<aside class="margin sidebar">
-<p class="sidebar-title"></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>Pros:</strong> The NN classifier is non-parametric, i.e. there are no additional parameters to learn besides the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> itself.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>Cons:</strong> We need to store the full data set <span class="math notranslate nohighlight">\( {\cal D} \)</span>. The prediction has cost <span class="math notranslate nohighlight">\( {\cal O}(N) \)</span>. The NN classifier is also very sensitive to outliers / noise within the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>.</p>
-</div>
-</aside>
-<figure class="align-left" id="nn-classifier-fig">
-<a class="reference internal image-reference" href="images/classification/nn_classifier.svg"><img alt="images/classification/nn_classifier.svg" height="320px" src="images/classification/nn_classifier.svg" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 15 </span><span class="caption-text">The NN classifier being fooled by an outlier. Data items are colored according to their corresponding class values (<span style="color: red;">red</span> and <span style="color: blue;">blue</span> labels). The dashed straight line indicates a possible linear decision boundary between the two classes – not the decision boundary produced by the NN classifier itself. The observed data item <span class="math notranslate nohighlight">\( \check{\bf x} \)</span> is classified according to the label (in this case, <span style="color: blue;">blue</span>) of the closest data item <span class="math notranslate nohighlight">\( {\bf x}_{c} \)</span> from the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>. Something looks odd…</span><a class="headerlink" href="#nn-classifier-fig" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="k-nearest-neighbor-knn-classifier">
-<h2>K-Nearest Neighbor (KNN) classifier<a class="headerlink" href="#k-nearest-neighbor-knn-classifier" title="Permalink to this headline">#</a></h2>
-<p>Find the <span class="math notranslate nohighlight">\( K \)</span> nearest neighbors of the observed data item <span class="math notranslate nohighlight">\( \check{\bf x} \)</span> within the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> and let them vote to predict the label <span class="math notranslate nohighlight">\( \hat{y} \)</span>. Specifically, let the set</p>
-<div class="amsmath math notranslate nohighlight" id="equation-135f48d3-b356-4bf8-8b4d-fc0ce6ca3f0f">
-<span class="eqno">(61)<a class="headerlink" href="#equation-135f48d3-b356-4bf8-8b4d-fc0ce6ca3f0f" title="Permalink to this equation">#</a></span>\[\begin{equation}
-{\cal D}_{K}({\bf x}) \triangleq \bigcup_{i=1}^{K} \lbrace \left( {\bf x}_{i}', y_{i}' \right) \rbrace \subseteq {\cal D}
-\end{equation}\]</div>
-<p>collect the <span class="math notranslate nohighlight">\( K \)</span> nearest neighbors in <span class="math notranslate nohighlight">\( {\cal D} \)</span> of an arbitrary <span class="math notranslate nohighlight">\( {\bf x} \in {\cal X} \)</span> such that <div class="math notranslate nohighlight">
-\[ || {\bf x} - {\bf x}_{i}' || \leq || {\bf x} - {\bf x}' ||, \]</div>
- <span class="math notranslate nohighlight">\( \forall \left( {\bf x}_{i}', y_{i}' \right) \in {\cal D}_{K}({\bf x}) \)</span> and <span class="math notranslate nohighlight">\( \forall \left( {\bf x}', y' \right) \in {\cal D} \setminus {\cal D}_{K}({\bf x}) \)</span>.</p>
-<div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 17 </span></p>
-<section class="definition-content" id="proof-content">
-<p>We define the KNN classifier as</p>
-<div class="math notranslate nohighlight" id="equation-knn">
-<span class="eqno">(62)<a class="headerlink" href="#equation-knn" title="Permalink to this equation">#</a></span>\[h_{KNN} ({\bf x}) = \argmax_{y \in {\cal Y}} F(y;{\cal D}_{K}({\bf x})),\]</div>
-<p>where the function</p>
-<div class="math notranslate nohighlight" id="equation-freq-labels">
-<span class="eqno">(63)<a class="headerlink" href="#equation-freq-labels" title="Permalink to this equation">#</a></span>\[F(y;{\cal D}_{K}({\bf x})) = \sum_{i=1}^{K} \left[ y_{i}' = y \right]\]</div>
-<p>indicates the frequency of the label <span class="math notranslate nohighlight">\( y \)</span> within <span class="math notranslate nohighlight">\( {\cal D}_{K}({\bf x}) \)</span>.</p>
-</section>
-</div><aside class="margin sidebar">
-<p class="sidebar-title"></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Note that the set <span class="math notranslate nohighlight">\( \lbrace \left( y, F(y;{\cal D}_{K}({\bf x})) \right) \mid y \in {\cal Y} \rbrace \)</span> defines a histogram with the frequency of each class value <span class="math notranslate nohighlight">\( y \in {\cal Y} \)</span> in <span class="math notranslate nohighlight">\( {\cal D}_{K}({\bf x}) \)</span>. The KNN prediction is the mode among the class values collected by <span class="math notranslate nohighlight">\( {\cal D}_{K}({\bf x}) \)</span>.</p>
-</div>
-</aside>
-<figure class="align-left" id="knn-classifier-fig">
-<a class="reference internal image-reference" href="images/classification/knn_classifier.svg"><img alt="images/classification/knn_classifier.svg" height="320px" src="images/classification/knn_classifier.svg" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 16 </span><span class="caption-text">The KNN classifier dealing with an outlier. The observed data item <span class="math notranslate nohighlight">\( \check{\bf x} \)</span> is classified according to the most often label (in this case, <span style="color: red;">red</span>) in <span class="math notranslate nohighlight">\( {\cal D}_{K}(\check{\bf x}) \)</span> associated with the <span class="math notranslate nohighlight">\( K = 5 \)</span> nearest data items within the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>. Outliers are properly filtered out by allowing neighbors to vote. Again, the dashed straight line illustrates a possible linear decision boundary between the two classes. Note however that the boundary produced by the KNN classifier is typically non-linear as it is governed by the spread of the training samples over the feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span>.</span><a class="headerlink" href="#knn-classifier-fig" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<aside class="margin sidebar">
-<p class="sidebar-title"></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For binary classification, it is important to employ an odd number of <span class="math notranslate nohighlight">\( K \)</span> nearest neighbors to prevent a voting tie between the two classes.</p>
-</div>
-</aside>
-<div class="proof remark admonition" id="remark-1">
-<p class="admonition-title"><span class="caption-number">Remark 4 </span></p>
-<section class="remark-content" id="proof-content">
-<p><strong>Pros:</strong> The KNN classifier is simple (majority vote) and is non-parametric. Training is trivially achieved by storing the full dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>. The KNN classifier is also Bayes consistent, i.e. the <span class="math notranslate nohighlight">\( R(h_{KNN}) - R(h^{\ast}) \rightarrow 0 \)</span> as both the number of training examples <span class="math notranslate nohighlight">\( N \rightarrow \infty \)</span> and the number of neighbors <span class="math notranslate nohighlight">\( K \rightarrow \infty \)</span>, but <span class="math notranslate nohighlight">\( N \)</span> grows faster than <span class="math notranslate nohighlight">\( K \)</span>, i.e <span class="math notranslate nohighlight">\( \frac{K}{N} \rightarrow 0 \)</span>.</p>
-<p><strong>Cons:</strong> We need to store the full dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>. Moreover, a naive implementation of KNN which checks all <span class="math notranslate nohighlight">\( N \)</span> training samples has cost <span class="math notranslate nohighlight">\( \Theta(N) \)</span>. However, we can improve its computational complexity by storing the training samples into some computational structure – e.g. kd-tree – to efficiently retrieve the <span class="math notranslate nohighlight">\( K \)</span> nearest data items to an observed sample <span class="math notranslate nohighlight">\( \check{\bf x} \)</span>.</p>
-</section>
-</div></section>
-<section id="knn-for-regression">
-<h2>KNN for regression<a class="headerlink" href="#knn-for-regression" title="Permalink to this headline">#</a></h2>
-<p>We can straightforwardly change the KNN classifier to perform regression by storing continuous values <span class="math notranslate nohighlight">\( z \in {\cal Z} \subseteq \mathbb{R} \)</span> instead of labels. In this case, the training dataset can be rewritten in this case as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-79f7b8ec-79a7-46e9-8dd4-523baf501555">
-<span class="eqno">(64)<a class="headerlink" href="#equation-79f7b8ec-79a7-46e9-8dd4-523baf501555" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-{\cal D} &amp;=&amp; \bigcup_{i=1}^{N} \lbrace \left( {\bf x}_{i}, {z}_{i} \right) \rbrace \nonumber \\
-&amp;\equiv&amp; \lbrace \left( {\bf x}_{1}, {z}_{1} \right), \left( {\bf x}_{2}, {z}_{2} \right), \ldots, \left( {\bf x}_{N}, {z}_{N} \right) \rbrace \nonumber
-\end{eqnarray}\]</div>
-<p>with <span class="math notranslate nohighlight">\( {\bf x}_{i} \in {\cal X} \)</span> and <span class="math notranslate nohighlight">\( z_{i} \in {\cal Z} \)</span>, <span class="math notranslate nohighlight">\( \forall i \in \lbrace 1, 2, \ldots, N \rbrace \)</span>.</p>
-<p>Next, let the set</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dccc96cf-3387-415f-b462-ec2263b30c0b">
-<span class="eqno">(65)<a class="headerlink" href="#equation-dccc96cf-3387-415f-b462-ec2263b30c0b" title="Permalink to this equation">#</a></span>\[\begin{equation}
-{\cal D}_{K}({\bf x}) \triangleq \bigcup_{i=1}^{K} \lbrace \left( {\bf x}_{i}', z_{i}' \right) \rbrace \subseteq {\cal D} 
-\end{equation}\]</div>
-<p>collect the <span class="math notranslate nohighlight">\( K \)</span> nearest neighbors in <span class="math notranslate nohighlight">\( {\cal D} \)</span> of a given data item <span class="math notranslate nohighlight">\( {\bf x} \)</span> such that <div class="math notranslate nohighlight">
-\[ || {\bf x} - {\bf x}_{i}' || \leq || {\bf x} - {\bf x}' ||, \]</div>
- <span class="math notranslate nohighlight">\( \forall \left( {\bf x}_{i}', z_{i}' \right) \in {\cal D}_{K}({\bf x}) \)</span> and <span class="math notranslate nohighlight">\( \forall \left( {\bf x}', z' \right) \in {\cal D} \setminus {\cal D}_{K}({\bf x}) \)</span>.</p>
-<aside class="margin sidebar">
-<p class="sidebar-title"></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Note though that the characteristics of the particular regression problem – i.e. the function we are trying to approximate – will drive the selection of the best interpolation method.</p>
-</div>
-</aside>
-<p>The values in <span class="math notranslate nohighlight">\( {\cal D}_{K}({\bf x}) \)</span> can be used then to predict the class value by means e.g. of a convex linear combination</p>
-<div class="amsmath math notranslate nohighlight" id="equation-38b8de61-3872-4b67-ad01-22dd928c4ade">
-<span class="eqno">(66)<a class="headerlink" href="#equation-38b8de61-3872-4b67-ad01-22dd928c4ade" title="Permalink to this equation">#</a></span>\[\begin{equation}
-h_{KNN}({\bf x}) = \sum_{i=1}^{K} \alpha_{i}({\bf x}; {\bf x}_{i}') \, z_{i}',
-\end{equation}\]</div>
-<p>where the <span class="math notranslate nohighlight">\(i\)</span>-th coefficient / weight – parameterized by <span class="math notranslate nohighlight">\( {\bf x}_{i}' \)</span> – is <span class="math notranslate nohighlight">\( \alpha_{i}({\bf x}; {\bf x}_{i}') \propto || {\bf x} - {\bf x}_{i}' || \)</span> and the coefficients / weights are properly normalized such that <div class="math notranslate nohighlight">
-\[ \sum_{i=1}^{K} \alpha_{i}({\bf x}; {\bf x}_{i}') = 1. \]</div>
+<p>The k-Nearest Neighbors (<span class="math notranslate nohighlight">\(\kappa\)</span>NN) classifier is probably the most simple classifier. Yet, it is a good baseline, since it is easy to understand, it can be analyzed in tems of Bayes-optimality and it performs also quite well. The <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier makes predictions based on the majority class among the nearest training examples. It is non-parametric and instance-based, meaning that it does not use a parametrized function class from which the classifier is determined by learning the parameters. Instead, it directly computes the prediction from the training data.</p>
+<section id="inference">
+<h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">#</a></h2>
+<p>Given a (training) dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_1,y_1),\ldots, (\vvec{x}_n,y_n)\}\)</span> and a distance metric <span class="math notranslate nohighlight">\(dist(\vvec{x}_i,\vvec{x}_j)\in\mathbb{R}_+\)</span> returning the nonnegative distance between two vectors <span class="math notranslate nohighlight">\(\vvec{x}_i,\vvec{x}_j\in\mathbb{R}^d\)</span>. We define the function <span class="math notranslate nohighlight">\(\kappa NN(\vvec{x})=\{i_1,\ldots, i_k\}\)</span> returning the indices of the <span class="math notranslate nohighlight">\(\kappa\)</span> closest neighbors of <span class="math notranslate nohighlight">\(\vvec{x}\)</span> in <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>. That is, we have
+<div class="math notranslate nohighlight">
+\[dist(x,x_{i_j})\leq dist(x,x_i) \text{ for all } 1\leq i\leq n.\]</div>
 </p>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 16 </span> (kNN classifier)</p>
+<section class="definition-content" id="proof-content">
+<p>The kNN classifier returns the class probabilities estimated from the <span class="math notranslate nohighlight">\(\kappa\)</span> neighbors:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f_{knn}(\vvec{x})_l = \frac{1}{\kappa} \lvert\{i\in \kappa NN(x)\mid y_i=l\}\rvert    
+\end{align*}\]</div>
+<p>As a result, the class predictions are made by a majority vote of the nearest neighbors:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\hat{y}_{\kappa nn}(\vvec{x}) &amp;= \argmax_l f_{\kappa nn}(\vvec{x})_l\\
+&amp;= \argmax_l \lvert\{i\in \kappa NN(x)\mid y_i=l\}\rvert 
+\end{align*}\]</div>
+</section>
+</div><p>As a distance function we can use basically anything. Standard norm-induced distances are possible for continuous features
+<div class="math notranslate nohighlight">
+\[dist(\vvec{x}_i,\vvec{x}_j)=\lVert \vvec{x}_i - \vvec{x}_j\rVert,\]</div>
+
+but we can also integrate distance functions for discrete features, such as the Hamming distance (assuming we have <span class="math notranslate nohighlight">\(d\)</span> categorical features)
+<div class="math notranslate nohighlight">
+\[dist(\vvec{x}_i,\vvec{x}_j) = \lvert \{{\vvec{x}_i}_k\neq {\vvec{x}_j}_m\mid 1\leq k,m\leq d\}\rvert\]</div>
+</p>
+<p>However, combining the distance functions over various kinds of features can be tricky and vastly influence the performance, as some distances may be weighted disproportionally to others.</p>
+<section id="implementation-practice">
+<h3>Implementation Practice<a class="headerlink" href="#implementation-practice" title="Permalink to this headline">#</a></h3>
+<p>Computing a prediction of the <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier requires in principle the computation of distances to all datapoints, hence a computation time in <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span>. This is quite costly for one prediction. We can imagine that in particular for bigger training datasets, this is far too expensive. However, there are some common strategies that are frequently applied in machine learning when we need to access local neighborhoods in an efficient manner. Two popular approaches to do so are kd-trees and locality-sensitive hashing.</p>
+<p>A k-dimensional tree (kd-tree) partitions the feature space recursively, allowing for faster nearest-neighbor queries in low-dimensional spaces (<span class="math notranslate nohighlight">\(d&lt;20\)</span>). The search complexity is approximately <span class="math notranslate nohighlight">\(\mathcal{O}(\log ⁡n)\)</span> in the average case.</p>
+<p>Locality-Sensitive Hashing (LSH) maps similar points to the same hash buckets. The proximity between points is reflected by their physical storage places. To find the nearest neighbors of a data point, we compute the hash key of this data point and access neighbors by looking into the hash buckets close to the hash bucket of the data point.</p>
+</section>
+</section>
+<section id="choosing-kappa">
+<h2>Choosing <span class="math notranslate nohighlight">\(\kappa\)</span><a class="headerlink" href="#choosing-kappa" title="Permalink to this headline">#</a></h2>
+<p>The <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier has one hyperparameter: the number of neighbors <span class="math notranslate nohighlight">\(\kappa\)</span>. If <span class="math notranslate nohighlight">\(\kappa\)</span> is very small, then the classifier tends to overfit and is sensitive to noise or outliers in the data. If <span class="math notranslate nohighlight">\(\kappa\)</span> is too large, then the <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier tends to underfit.</p>
+<p>The plot below shows the decision boundary of the <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier for three values of <span class="math notranslate nohighlight">\(k\)</span> on the two moons synthetic dataset. The points reflect the training data set. For <span class="math notranslate nohighlight">\(\kappa=1\)</span> we observe that the decision boundary is very fractured. We can imagine that a this decision boundary is very dependent on the data and hence the <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier with <span class="math notranslate nohighlight">\(\kappa=1\)</span> has a high variance. The second value <span class="math notranslate nohighlight">\(\kappa=10\)</span> is suitable to reflect the decision boundary of the two moons. It generalizes, since we observe that some of the red training data points in the area of the blue class do not influence the decision boundary. For <span class="math notranslate nohighlight">\(\kappa=50\)</span> the model underfits. The shape of the two moons is not reflected by the decision boundary and the <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier resembles a linear classifier.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span>
+
+
+<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+    <span class="p">)</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#a0c3ff&quot;</span><span class="p">,</span> <span class="s2">&quot;#ffa1cf&quot;</span><span class="p">])</span>
+<span class="n">cm_points</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#007bff&quot;</span><span class="p">,</span> <span class="s2">&quot;magenta&quot;</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axs</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">50</span><span class="p">)):</span>
+    <span class="n">knn</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">disp</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
+        <span class="n">knn</span><span class="p">,</span>
+        <span class="n">X_test</span><span class="p">,</span>
+        <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
+        <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span>
+        <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">scatter</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_train</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cm_points</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Two moons classification</span><span class="se">\n</span><span class="s2">($\kappa$=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">)&quot;</span>
+    <span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/classification_knn_1_0.png" src="_images/classification_knn_1_0.png" />
+</div>
+</div>
+<p>In practice, we can determine <span class="math notranslate nohighlight">\(\kappa\)</span> by cross-validation or by means of the validation set.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For binary classification, it is important to employ an odd number of <span class="math notranslate nohighlight">\( \kappa \)</span> nearest neighbors to prevent a voting tie between the two classes.</p>
+</div>
+</section>
+<section id="bayes-consistency">
+<h2>Bayes consistency<a class="headerlink" href="#bayes-consistency" title="Permalink to this headline">#</a></h2>
+<p>Although the <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier is very simple, it is theoretically sound in the sense that we can show that it converges to the Bayes-optimal classifier in theory.</p>
+<div class="proof theorem admonition" id="theorem-1">
+<p class="admonition-title"><span class="caption-number">Theorem 13 </span></p>
+<section class="theorem-content" id="proof-content">
+<p>The kNN classifier converges to the Bayes classifier for <span class="math notranslate nohighlight">\(n\rightarrow \infty\)</span> when choosing <span class="math notranslate nohighlight">\(\kappa\)</span> such that</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\kappa\rightarrow \infty\)</span> and</p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{\kappa}{n}\rightarrow 0\)</span>.</p></li>
+</ul>
+</section>
+</div><p>A classifier that converges to the Bayes classifier if the size of the dataset grows infinitely is called <strong>Bayes consistent</strong>. A popular choice of <span class="math notranslate nohighlight">\(\kappa\)</span> in practice is <span class="math notranslate nohighlight">\(\kappa=\sqrt{n}\)</span>. Hence, for this choice of <span class="math notranslate nohighlight">\(\kappa\)</span>, the <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier is also Bayes consistent.</p>
 </section>
 </section>
 
@@ -805,7 +816,7 @@ h_{KNN}({\bf x}) = \sum_{i=1}^{K} \alpha_{i}({\bf x}; {\bf x}_{i}') \, z_{i}',
     <a class='right-next' id="next-link" href="classification_naive_bayes.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Naïve Bayes</p>
+        <p class="prev-next-title">Naive Bayes</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

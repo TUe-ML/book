@@ -2,9 +2,63 @@
 # coding: utf-8
 
 # ## Evaluation  
-# This sections deals with practical issues regarding the evaluation of classifiers.
-# 
+# (class_evaluation)=
 # ### Estimating the true classification error
+# 
+# 
+# 
+# ```{prf:theorem} bias-variance tradeoff for classification
+# The EPE for any observation $\mathbf{x}_0$, having the label $y$ and prediction $\hat{y}_\mathcal{D}$ (depending on the training data $\mathcal{D}$) and most frequent prediction $\mathrm{mode}(\hat{y}_\mathcal{D})$ can be deconstructed into three parts:
+# \begin{align*}
+#     \mathbb{E}_{y,\mathcal{D}}[L_{01}(y,\hat{y}_\mathcal{D})]  
+#     = c_1\underbrace{\mathbb{E}_y[L_{01}(y,y^*)]}_{noise} &+\underbrace{L_{01}(y^*,\mathrm{mode}(\hat{y}_\mathcal{D}))]}_{bias}\\ &+c_2\underbrace{\mathbb{E}_\mathcal{D}[L_{01}(\mathrm{mode}(\hat{y}_\mathcal{D}),\hat{y}_\mathcal{D})}_{variance}] 
+# \end{align*}
+# where
+# \begin{align*}
+# c_1 &= p_{\mathcal{D}}(\hat{y}_{\cal D} = y^*)-p_{\cal D}(\hat{y}_{\cal D}=y\mid y^*\neq y)\\
+# c_2&= \begin{cases}
+# 1 & \text{ if } \mathrm{mode}(\hat{y}_\mathcal{D}) = y^*\\
+# -p_{\mathcal{D}}(\hat{y}_\mathcal{D}=y^*\mid \hat{y}_\mathcal{D}\neq\mathrm{mode}(\hat{y}_\mathcal{D})) & \text{ otherwise}
+# \end{cases}
+# \end{align*}
+# ```
+# ```{prf:corollary} 
+# The classification noise random variable is equal to the probability that the label is not equal to the _true_ label
+# $$\mathbb{E}_y[L_{01}(y,y^*)]=p(y\neq y^*)$$
+# ```
+# ```{prf:proof}
+# According to the definition of the expected value of a random variable with finitely many outcomes
+# $$\mathbb{E}[x] = x_1p(x=x_1) + \ldots + x_lp(x=x_l)$$
+# we have
+# \begin{align*}
+# \mathbb{E}_y[L_{01}(y,y^*)]&=1\cdot p(L_{01}(y,y^*)=1) + 0\cdot p(L_{01}(y,y^*)=0) \\
+# &=1\cdot p(y\neq y^*) + 0\cdot p(y=y^*) \\
+# &=p(y\neq y^*)
+# \end{align*}
+# ```
+# 
+# {numref}`bias_variance_tradeoff1b_fig` plots the result of the following experiment. Given a set of training data sets $\mathcal{D}_1,\ldots \mathcal{D}_m$. We train one model on each training data set for varying levels of complexity. Each thin blue curve tracks how the prediction error changes when we vary the complexity of the model, while training on the same dataset. That is, we have as many blue curves as there are training data sets. The thick blue line represents the mean of the thin blue lines. The red curves track the prediction error on the test set 
+# ```{figure} /images/classification/e2.png
+# ---
+# height: 320px
+# name: bias_variance_tradeoff1b_fig
+# align: left
+# ---
+# The prediction error as a function of model complexity (borrowed from {cite}`hastie2009elements`). 
+# ```
+# 
+# Key Insights
+# 
+# * Bias dominates when the model is too simple (underfitting)
+#         * Example: Linear classifiers on nonlinear data.
+# 
+# * Variance dominates when the model is too complex (overfitting)
+#         * Example: Deep neural networks trained on small datasets.
+# 
+# * There is an optimal tradeoff
+#         * Increasing model complexity reduces bias but increases variance.
+#         * Simplifying the model reduces variance but increases bias.
+# 
 # 
 # Recall that the true classification error of a classifier $ h $ is defined as
 # :::{math}
@@ -45,14 +99,6 @@
 # ::::{tip}
 # Using the training dataset to estimate true estimation error can lead to over fitting. Specifically, using the *training* examples to estimate the true classification error is too optimistic. A small training error does not imply good generalization, as the classifier can still perform poorly on samples not seen during training. To avoid over-fitting, we reserve therefore examples in a *testing* dataset to estimate the true classification error after training. This procedure avoids over-fitting since the *testing* examples are new to the classifier, i.e. they were not used in training. In addition to this, we can also reserve examples in a *validation* dataset to estimate the true classification error and tune any hyper-parameters of the classifier during training. In general, we split the set of available samples into training, validating and testing datasets using some proportion (e.g. $ 60 / 20 / 20 $ or $ 70/15/15 $).
 # 
-# :::{figure} /images/classification/train_val_test_datasets.svg
-# ---
-# height: 320px
-# name: training_testing_fig
-# align: left
-# ---
-# Splitting the available samples into training, validation and testing datasets.
-# :::
 # 
 # Thus, for a given classifier $ h(\cdot) $, we can estimate the training, validation and testing classification errors respectively as 
 # \begin{eqnarray}
@@ -129,12 +175,6 @@
 # ::::{prf:example}
 # The confusion matrix is a convenient tool for a human to quickly evaluate a classifier performance by comparing its diagonal and off-diagonal elements.
 # 
-# :::{figure} /images/classification/confusion_matrix.svg
-# ---
-# height: 320px
-# name: confusion_matrix
-# align: left
-# ---
 # A $ 4 \times 4 $ confusion matrix for a classifier $ h:{\cal X} \rightarrow {\cal Y} $ such that $ {\cal Y} = \lbrace \ell_{1}, \ell_{2}, \ell_{3} , \ell_{4} \rbrace $. The $i$-th row stores either frequencies or approximations to the empirical probabilities $ \lbrace Pr \left\lbrace h({\bf x}) = \ell_{j} \mid y = \ell_{i} \right\rbrace \rbrace $, $ j \in \lbrace 1, 2, 3, 4 \rbrace $. Note that $ Pr \left\lbrace h({\bf x}) = \ell_{j} \mid y = \ell_{i} \right\rbrace $ is the probability of the classifier $ h(\cdot) $ returning $ \ell_{j} $ given that the true class value is $ \ell_{i} $ and $ \sum_{j=1}^{4} Pr \left\lbrace h({\bf x}) = \ell_{j} \mid y = \ell_{i} \right\rbrace = 1$, $ \forall i \in \lbrace 1, 2, 3, 4 \rbrace $.
 # :::
 # ::::

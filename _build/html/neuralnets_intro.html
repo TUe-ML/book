@@ -255,7 +255,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_problem.html">
-     Classification Problem
+     Classification Objective
     </a>
    </li>
    <li class="toctree-l2">
@@ -270,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_naive_bayes.html">
-     Naïve Bayes
+     Naive Bayes
     </a>
    </li>
    <li class="toctree-l2">
@@ -671,7 +671,7 @@ title="Print to PDF"
 <figure class="align-left" id="neocortex-fig">
 <a class="reference internal image-reference" href="_images/neocortex.jpg"><img alt="_images/neocortex.jpg" src="_images/neocortex.jpg" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 36 </span><span class="caption-text">The neocortex (adapted from <span id="id3">[]</span>).</span><a class="headerlink" href="#neocortex-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 23 </span><span class="caption-text">The neocortex (adapted from <span id="id3">[]</span>).</span><a class="headerlink" href="#neocortex-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The grayish aspect of this <em>sheet</em> is due to the massive presence of the neuronal cell bodies. On the other hand, the so-called white matter beneath this external sheet corresponds to the brain <em>wiring</em> connecting cells from different regions over the neocortex. The regions are typically connected hierarchically such that sensorial regions and high reasoning regions correspond respectively to lower levels and to higher levels in this hierarchy.</p>
@@ -685,7 +685,7 @@ title="Print to PDF"
 <section id="artificial-neural-networks-anns">
 <h2>Artificial neural networks (ANNs)<a class="headerlink" href="#artificial-neural-networks-anns" title="Permalink to this headline">#</a></h2>
 <p>ANNs are computational / mathematical models biologically inspired by our limited understanding of how some mechanisms in the brain might work. Similar to the biological brain, they include multiple interconnected layers of computational units – called artificial neurons – that cooperate to perform a task. Despite a single artificial neuron is not able to perform a <em>complex task</em>, the <em>trained network</em> is able to. In this sense, <em>intelligent behavior</em>, i.e. being able to perform the task, is an emergent ability of the artificial network. Examples of challenging tasks are image processing e.g. classify objects on images and natural language processing e.g. voice recognition (speech-to-text), voice synthesis (text-to-speech) and translation (text-to-text). These are <em>apparently ease</em> tasks for the human brain, but it is very hard to explicitly design a computer program to solve them without using the machine learning approach, which consists of teaching a computer program to perform a task using data (typically, a lot of data is required).</p>
-<p><a class="reference internal" href="#biological-neuron-fig"><span class="std std-numref">Fig. 37</span></a> and <a class="reference internal" href="#artificial-neuron-fig"><span class="std std-numref">Fig. 38</span></a> illustrate respectively a typical biological neuron and its artificial model counterpart. Note that the artificial neuron is an oversimplified model of the biological one. First of all, whereas the intensity of a biological neuron response is related to how frequently it spikes over time, the output of an artificial neuron – associated with the index <span class="math notranslate nohighlight">\( j \)</span> in <a class="reference internal" href="#artificial-neuron-fig"><span class="std std-numref">Fig. 38</span></a> – at any time is often represented by a real number <span class="math notranslate nohighlight">\( y_{j} \)</span>. Moreover, the strength of a biological synapse depends on several factors e.g. its proximity to the soma, while the strength of an artificial synapse is represented by a real number <span class="math notranslate nohighlight">\( w_{i,j} \)</span> which simply weights the value of the corresponding input <span class="math notranslate nohighlight">\( x_{i} \)</span> on the global activation of the <span class="math notranslate nohighlight">\( j \)</span>-th neuron. In this sense, the artificial neuron activation is just an affine transformation of its <span class="math notranslate nohighlight">\( n \)</span> inputs <div class="math notranslate nohighlight">
+<p><a class="reference internal" href="#biological-neuron-fig"><span class="std std-numref">Fig. 24</span></a> and <a class="reference internal" href="#artificial-neuron-fig"><span class="std std-numref">Fig. 25</span></a> illustrate respectively a typical biological neuron and its artificial model counterpart. Note that the artificial neuron is an oversimplified model of the biological one. First of all, whereas the intensity of a biological neuron response is related to how frequently it spikes over time, the output of an artificial neuron – associated with the index <span class="math notranslate nohighlight">\( j \)</span> in <a class="reference internal" href="#artificial-neuron-fig"><span class="std std-numref">Fig. 25</span></a> – at any time is often represented by a real number <span class="math notranslate nohighlight">\( y_{j} \)</span>. Moreover, the strength of a biological synapse depends on several factors e.g. its proximity to the soma, while the strength of an artificial synapse is represented by a real number <span class="math notranslate nohighlight">\( w_{i,j} \)</span> which simply weights the value of the corresponding input <span class="math notranslate nohighlight">\( x_{i} \)</span> on the global activation of the <span class="math notranslate nohighlight">\( j \)</span>-th neuron. In this sense, the artificial neuron activation is just an affine transformation of its <span class="math notranslate nohighlight">\( n \)</span> inputs <div class="math notranslate nohighlight">
 \[ a_{j} = \sum_{i=1}^{n} w_{i,j} x_{i}. \]</div>
  Note also that the biological neuron activation produces an electrical spike which depends in turn on several factors e.g. the time since the last spike produced by the cell. On the other hand, the output value of the artificial neuron is determined by a non-linear activation function <span class="math notranslate nohighlight">\(\phi:\mathbb{R} \rightarrow \mathbb{R} \)</span> such that <div class="math notranslate nohighlight">
 \[ y_{j} = \phi(a_{j}). \]</div>
@@ -693,17 +693,17 @@ title="Print to PDF"
 <figure class="align-left" id="biological-neuron-fig">
 <a class="reference internal image-reference" href="_images/biological_neuron.png"><img alt="_images/biological_neuron.png" src="_images/biological_neuron.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 37 </span><span class="caption-text">Biological neuron.</span><a class="headerlink" href="#biological-neuron-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 24 </span><span class="caption-text">Biological neuron.</span><a class="headerlink" href="#biological-neuron-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-left" id="artificial-neuron-fig">
 <a class="reference internal image-reference" href="_images/artificial_neuron.png"><img alt="_images/artificial_neuron.png" src="_images/artificial_neuron.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 38 </span><span class="caption-text">Artificial neuron.</span><a class="headerlink" href="#artificial-neuron-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 25 </span><span class="caption-text">Artificial neuron.</span><a class="headerlink" href="#artificial-neuron-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="proof remark admonition" id="remark-1">
-<p class="admonition-title"><span class="caption-number">Remark 22 </span></p>
+<p class="admonition-title"><span class="caption-number">Remark 12 </span></p>
 <section class="remark-content" id="proof-content">
 <p>By performing complex tasks, ANNs are able to exhibit intelligent behavior. Eventually, a trained ANN would pass a Turing test designed to check whether that particular task was executed by a human or not. Note though that there is an endless debate between being truly intelligent and showing intelligent behavior. Refer to the Chinese Room experiment <span id="id6">[]</span> (just for curiosity, do not invest too much time there). For now, it suffices to say that we are intelligent even by showing no behavior at all e.g. while standing still paying attention to a lecture.</p>
 </section>
@@ -712,7 +712,7 @@ title="Print to PDF"
 <p>In the typical isolated learning paradigm <span id="id7">[]</span>, ANNs are designed and trained to execute a single, isolated task. Furthermore, in contrast with the human brain, ANNs are often not able to learn from new experiences. Specifically, once they are trained, its knowledge – typically stored in the weights of the artificial synapses – is frozen. Thus, after deployed, during the recall phase, artificial networks are not able to learn – we mean update their weights – from experience, i.e. by observing new input data. Lastly, learning to execute new tasks by accumulating new experiences is a widely research topic today known as continuous learning or lifelong learning. One of the challenges faced by continuous learning methods based on conventional ANNs is to adjust the network parameters (weights) to learn new tasks, while avoiding the catastrophic forgetting of previously learned tasks (refer to <span id="id8">[]</span> for an overview, but do not spend too much time there).</p>
 </div>
 <div class="proof remark admonition" id="remark-2">
-<p class="admonition-title"><span class="caption-number">Remark 23 </span></p>
+<p class="admonition-title"><span class="caption-number">Remark 13 </span></p>
 <section class="remark-content" id="proof-content">
 <p>Recently, with the advances of deep neural networks – ANNs with several hidden layers –, interesting results from literature show ANNs surpassing the human ability in several tasks. However, most of these results were obtained by designing and training ANNs to execute a single specific task. This is known as <em>narrow AI</em> as opposite to <em>general AI</em> in which an intelligent agent would be able to learn new tasks – potentially any task that a human being can perform – by accumulating / learning from previous experiences on the fly, for instance, by executing other tasks. Nevertheless, there is a heated debate today whether the humankind should left general AI to science fiction or not (see <span id="id9">[]</span>). For now, it suffices to think about some interesting inquiries: is there a limit on how intelligent an artificial agent can be? Conversely, which factors limit the human intelligence? Note that, compared to an ant, one can argue that our intelligence level is as high as Einstein’s intelligence. Specifically, all humans apparently exhibit the same level of intelligence w.r.t. any ant. The crucial question is: what is intelligence at all? Can we effectively measure it? Surprisingly, up to today, there is no overall consensus on how to answer those questions. Thus, let put the philosophical aspects aside and check how we can train and employ ANNs to solve practical problems…</p>
 </section>

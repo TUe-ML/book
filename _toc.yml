@@ -57,3 +57,4 @@ chapters:
   - file: clustering_kernel_kmeans
   - file: clustering_spectral
   - file: clustering_exercises
+- file: bibliography

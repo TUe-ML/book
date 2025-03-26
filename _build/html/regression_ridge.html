@@ -666,8 +666,8 @@ title="Print to PDF"
 <p class="admonition-title">Task (Ridge Regression)</p>
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>, a target vector <span class="math notranslate nohighlight">\(\vvec{y}\in\mathbb{R}^n\)</span>, the design matrix <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{n\times p}\)</span>, where <span class="math notranslate nohighlight">\(X_{i\cdot}=\bm\phi(D_{i\cdot}^\top)^\top\)</span> and a regularization weight <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span>.<br />
 <strong>Find</strong> the regression vector <span class="math notranslate nohighlight">\(\bm\beta\)</span>, solving the following objective</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fef4da5a-33c6-4858-a6e9-fc87c92b0547">
-<span class="eqno">(23)<a class="headerlink" href="#equation-fef4da5a-33c6-4858-a6e9-fc87c92b0547" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-95928825-504b-47bd-9d23-462c1e958a25">
+<span class="eqno">(23)<a class="headerlink" href="#equation-95928825-504b-47bd-9d23-462c1e958a25" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_2}(\bm{\beta})&amp;= \lVert \vvec{y}-X\bm\beta\rVert^2 +\lambda \lVert\bm{\beta}\rVert^2. 
 \end{align}\]</div>
 <p><strong>Return</strong> the predictor function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec{x})^\top\bm\beta\)</span></p>
@@ -692,8 +692,8 @@ title="Print to PDF"
 </section>
 </div><div class="proof admonition" id="proof">
 <p>Proof. Let <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\)</span> be the singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span>, then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-99b8abb5-d0d8-4cee-9898-afb1110806c8">
-<span class="eqno">(25)<a class="headerlink" href="#equation-99b8abb5-d0d8-4cee-9898-afb1110806c8" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-433710bd-f342-4bf5-a7dd-78f2faec4517">
+<span class="eqno">(25)<a class="headerlink" href="#equation-433710bd-f342-4bf5-a7dd-78f2faec4517" title="Permalink to this equation">#</a></span>\[\begin{align}
     X^\top X+\lambda I 
     &amp;= V(\Sigma^\top\Sigma +\lambda I )V^\top
 \end{align}\]</div>

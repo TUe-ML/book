@@ -255,7 +255,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_problem.html">
-     Classification Problem
+     Classification Objective
     </a>
    </li>
    <li class="toctree-l2">
@@ -270,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_naive_bayes.html">
-     Naïve Bayes
+     Naive Bayes
     </a>
    </li>
    <li class="toctree-l2">
@@ -395,6 +395,11 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bibliography.html">
+   Bibliography
+  </a>
  </li>
 </ul>
 
@@ -644,7 +649,7 @@ title="Print to PDF"
 <figure class="align-center" id="social-graph">
 <a class="reference internal image-reference" href="_images/facebook.jpg"><img alt="_images/facebook.jpg" src="_images/facebook.jpg" style="height: 300px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 66 </span><span class="caption-text">Graph clustering is relevant for example in social relation analysis</span><a class="headerlink" href="#social-graph" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 53 </span><span class="caption-text">Graph clustering is relevant for example in social relation analysis</span><a class="headerlink" href="#social-graph" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Interpretation of data as a graph. Every data point is a node. The weight of an edge reflects the similarity between connected nodes.<br />
@@ -744,7 +749,7 @@ Cut(Y;W)&amp;=\tr((\vvec{1}-Y)^\top W Y(Y^\top Y)^{-1}) \\
 <section id="optimization">
 <h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 30 </span> (Degree Matrix and Graph Laplacian)</p>
+<p class="admonition-title"><span class="caption-number">Definition 26 </span> (Degree Matrix and Graph Laplacian)</p>
 <section class="definition-content" id="proof-content">
 <p>Given a graph indicated by a weighted adjacency matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}_+^{n\times n}\)</span>.<br />
 The <strong>degree matrix</strong> is the diagonal matrix having the sum of all connecting edges for each node on the diagonal: <div class="math notranslate nohighlight">
@@ -755,7 +760,7 @@ The <strong>graph Laplacian</strong> is the matrix <div class="math notranslate 
 .</p>
 </section>
 </div><div class="proof example admonition" id="example-1">
-<p class="admonition-title"><span class="caption-number">Example 28 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 29 </span></p>
 <section class="example-content" id="proof-content">
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-cbbe8e859691edb42482980a4be6e867ab91b285.svg" alt="Figure made with TikZ" /></p>
 </div><div class="math notranslate nohighlight">
@@ -775,7 +780,7 @@ The <strong>graph Laplacian</strong> is the matrix <div class="math notranslate 
 \[Y_{\cdot s}^\top \underbrace{(I_W - W)}_{=L}Y_{\cdot s }=0\]</div>
 </p>
 <div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 25 </span> (Minimum Cut and Maximum Similarity Equivalences )</p>
+<p class="admonition-title"><span class="caption-number">Theorem 29 </span> (Minimum Cut and Maximum Similarity Equivalences )</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a symmetric similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, the degree matrix <span class="math notranslate nohighlight">\(I_W\)</span> and the Graph Laplacian <span class="math notranslate nohighlight">\(L=I_W-W\)</span>, then the following objectives are equivalent:</p>
 <div class="amsmath math notranslate nohighlight">
@@ -803,15 +808,15 @@ v^\top Lv &amp;= v^\top I_W v - v^\top W v
 </div>
 </div>
 <div class="proof theorem admonition" id="theorem-4">
-<p class="admonition-title"><span class="caption-number">Theorem 26 </span> (Connected Components and Eigenvectors)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 30 </span> (Connected Components and Eigenvectors)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a graph indicated by the symmetric matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, then the indicator vectors of the connected components are eigenvectors of the Laplacian <span class="math notranslate nohighlight">\(L=I_W-W\)</span> to the smallest eigenvalue <span class="math notranslate nohighlight">\(0\)</span>.</p>
 </section>
 </div><div class="toggle docutils container">
 <div class="proof admonition" id="proof">
 <p>Proof. For every connected component there exists an order of columns and rows such that <span class="math notranslate nohighlight">\(W\)</span> has a block-diagonal form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-73ff3157-29e4-469c-ba71-f12b54c5aeff">
-<span class="eqno">(259)<a class="headerlink" href="#equation-73ff3157-29e4-469c-ba71-f12b54c5aeff" title="Permalink to this equation">#</a></span>\[\begin{align} 
+<div class="amsmath math notranslate nohighlight" id="equation-b4ca45c8-104d-4f9b-b3b0-843b69c0f953">
+<span class="eqno">(198)<a class="headerlink" href="#equation-b4ca45c8-104d-4f9b-b3b0-843b69c0f953" title="Permalink to this equation">#</a></span>\[\begin{align} 
 Wv = 
 \left(
 \begin{array}{c:r}

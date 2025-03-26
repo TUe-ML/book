@@ -255,7 +255,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_problem.html">
-     Classification Problem
+     Classification Objective
     </a>
    </li>
    <li class="toctree-l2">
@@ -270,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_naive_bayes.html">
-     Naïve Bayes
+     Naive Bayes
     </a>
    </li>
    <li class="toctree-l2">
@@ -395,6 +395,11 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bibliography.html">
+   Bibliography
+  </a>
  </li>
 </ul>
 
@@ -594,41 +599,41 @@ title="Print to PDF"
                 
   <section id="function-approximator">
 <h1>Function approximator<a class="headerlink" href="#function-approximator" title="Permalink to this headline">#</a></h1>
-<p>What do we mean exactly by a <em>complex task</em>? ANNs build high-dimensional complex functions using simple modules – artificial neurons. However, like the brain, ANNs are black boxes and are hard to interpret, i.e. to clearly understand how they get their final output. Nevertheless, ANNs are universal approximators, they can approximate any function as indicated in the following theorem shown by Pinkus <span id="id1">[]</span>.</p>
+<p>What do we mean exactly by a <em>complex task</em>? ANNs build high-dimensional complex functions using simple modules – artificial neurons. However, like the brain, ANNs are black boxes and are hard to interpret, i.e. to clearly understand how they get their final output. Nevertheless, ANNs are universal approximators, they can approximate any function as indicated in the following theorem shown by Pinkus <span id="id1">[<a class="reference internal" href="bibliography.html#id17" title="Allan Pinkus. Approximation theory of the mlp model in neural networks. Acta numerica, 8:143–195, 1999.">12</a>]</span>.</p>
 <div class="proof theorem admonition" id="approximator">
-<p class="admonition-title"><span class="caption-number">Theorem 13 </span> (Pinkus Theorem)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 17 </span> (Pinkus Theorem)</p>
 <section class="theorem-content" id="proof-content">
 <p>Any continuous function <span class="math notranslate nohighlight">\(f^{\ast} \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O}\)</span> can be arbitrarily well approximated (on any compact set) by a single layer neural network, for a wide range of non-linearities <span class="math notranslate nohighlight">\(\phi\)</span> (non-polynomials).</p>
 </section>
 </div><figure class="align-left" id="network-approximation">
 <a class="reference internal image-reference" href="images/neuralnets/network_approximation.svg"><img alt="images/neuralnets/network_approximation.svg" height="320px" src="images/neuralnets/network_approximation.svg" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 43 </span><span class="caption-text">Network approximation <span class="math notranslate nohighlight">\( f \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O} \)</span> to a continuous function <span class="math notranslate nohighlight">\( f^{\ast} \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O} \)</span>. For a given observed feature vector <span class="math notranslate nohighlight">\( \check{\bf x} \in \mathbb{R}^{D} \)</span>, the network estimates the output as <span class="math notranslate nohighlight">\( \hat{\bf y} = f(\check{\bf x}) \in \mathbb{R}^{O} \)</span> as opposed to the true output <span class="math notranslate nohighlight">\( {\bf y} = f^{\ast}(\check{\bf x}) \in \mathbb{R}^{O} \)</span> that would be obtained by the approximated function <span class="math notranslate nohighlight">\( f^{\ast} \)</span>. Lastly, note that the network task represented by the function <span class="math notranslate nohighlight">\(f^{\ast}\)</span> can be arbitrarily complex e.g. convert speech-to-text.</span><a class="headerlink" href="#network-approximation" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 30 </span><span class="caption-text">Network approximation <span class="math notranslate nohighlight">\( f \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O} \)</span> to a continuous function <span class="math notranslate nohighlight">\( f^{\ast} \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O} \)</span>. For a given observed feature vector <span class="math notranslate nohighlight">\( \check{\bf x} \in \mathbb{R}^{D} \)</span>, the network estimates the output as <span class="math notranslate nohighlight">\( \hat{\bf y} = f(\check{\bf x}) \in \mathbb{R}^{O} \)</span> as opposed to the true output <span class="math notranslate nohighlight">\( {\bf y} = f^{\ast}(\check{\bf x}) \in \mathbb{R}^{O} \)</span> that would be obtained by the approximated function <span class="math notranslate nohighlight">\( f^{\ast} \)</span>. Lastly, note that the network task represented by the function <span class="math notranslate nohighlight">\(f^{\ast}\)</span> can be arbitrarily complex e.g. convert speech-to-text.</span><a class="headerlink" href="#network-approximation" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Note that we need to employ a non-linear activation function <span class="math notranslate nohighlight">\(\phi \colon \mathbb{R} \rightarrow \mathbb{R} \)</span>. <a class="reference internal" href="#activation-functions"><span class="std std-numref">Fig. 44</span></a> illustrates some widespread activation functions in machine learning literature. Common activation functions in traditional machine learning are the sigmoid</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1704e5ce-6317-41c7-9b66-f4888ed92bc6">
-<span class="eqno">(183)<a class="headerlink" href="#equation-1704e5ce-6317-41c7-9b66-f4888ed92bc6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<p>Note that we need to employ a non-linear activation function <span class="math notranslate nohighlight">\(\phi \colon \mathbb{R} \rightarrow \mathbb{R} \)</span>. <a class="reference internal" href="#activation-functions"><span class="std std-numref">Fig. 31</span></a> illustrates some widespread activation functions in machine learning literature. Common activation functions in traditional machine learning are the sigmoid</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5df1344e-c3a6-4c08-844d-c4f8ee453bd9">
+<span class="eqno">(124)<a class="headerlink" href="#equation-5df1344e-c3a6-4c08-844d-c4f8ee453bd9" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi(x) = \frac{1}{1+e^{-x}}
 \end{equation}\]</div>
 <p>and hyperbolic tangent</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e91e4c53-a80d-4340-ad04-7e5094869d5e">
-<span class="eqno">(184)<a class="headerlink" href="#equation-e91e4c53-a80d-4340-ad04-7e5094869d5e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c52bec72-0bf4-4b8e-88d4-ccb77d49929c">
+<span class="eqno">(125)<a class="headerlink" href="#equation-c52bec72-0bf4-4b8e-88d4-ccb77d49929c" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi(x) = \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}.
 \end{equation}\]</div>
 <p>However, modern deep learning methods typically use unbounded, non-linear activation functions such as the rectified linear unit (ReLU)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ec2280b8-c032-4dba-ac90-ef74574f6257">
-<span class="eqno">(185)<a class="headerlink" href="#equation-ec2280b8-c032-4dba-ac90-ef74574f6257" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a3f97efa-f23a-4926-b3b5-c7873e2d5fb3">
+<span class="eqno">(126)<a class="headerlink" href="#equation-a3f97efa-f23a-4926-b3b5-c7873e2d5fb3" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi(x) = \max(0, x),
 \end{equation}\]</div>
 <p>the leaky ReLU</p>
-<div class="amsmath math notranslate nohighlight" id="equation-73ec376c-a067-4a2c-a871-99814db0c123">
-<span class="eqno">(186)<a class="headerlink" href="#equation-73ec376c-a067-4a2c-a871-99814db0c123" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5f65d60d-4b90-4c30-92af-33ef4417a75b">
+<span class="eqno">(127)<a class="headerlink" href="#equation-5f65d60d-4b90-4c30-92af-33ef4417a75b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi(x) = \max(\alpha x, x)
 \end{equation}\]</div>
 <p>or the exponential linear unit (LU)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7ad4b2f9-05b8-42a0-90af-cdf9bf731f4d">
-<span class="eqno">(187)<a class="headerlink" href="#equation-7ad4b2f9-05b8-42a0-90af-cdf9bf731f4d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-29c05f72-f2d8-4bc3-bc9b-53b340c6b7ec">
+<span class="eqno">(128)<a class="headerlink" href="#equation-29c05f72-f2d8-4bc3-bc9b-53b340c6b7ec" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi(x) = \left\lbrace 
 \begin{matrix}
 x, &amp; x \geq 0 \\
@@ -638,53 +643,53 @@ x, &amp; x \geq 0 \\
 \end{equation}\]</div>
 <p>in which <span class="math notranslate nohighlight">\( \alpha \geq 0 \)</span> is a small constant e.g. <span class="math notranslate nohighlight">\( \alpha = 0.1 \)</span>.</p>
 <p>Activation functions are carefully designed such that their derivatives are available in closed form and can be computed very efficiently. For example, for the sigmoid and ReLU activation functions, the derivatives are straightforwardly computed respectively as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4802ba03-ca13-4937-a95f-5bd971f4faec">
-<span class="eqno">(188)<a class="headerlink" href="#equation-4802ba03-ca13-4937-a95f-5bd971f4faec" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1f357b32-7d2b-4ced-9aa0-5e77f861f16c">
+<span class="eqno">(129)<a class="headerlink" href="#equation-1f357b32-7d2b-4ced-9aa0-5e77f861f16c" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi'(x) =  \frac{\partial \phi(x)}{\partial x} =  \phi(x) \, \phi(-x)
 \end{equation}\]</div>
 <p>and</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ac81ce55-2a65-4c80-8a07-55f2d8c228f2">
-<span class="eqno">(189)<a class="headerlink" href="#equation-ac81ce55-2a65-4c80-8a07-55f2d8c228f2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-652f79e7-0072-4d89-949d-22a8ab8856c8">
+<span class="eqno">(130)<a class="headerlink" href="#equation-652f79e7-0072-4d89-949d-22a8ab8856c8" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi'(x) =  \frac{\partial \phi(x)}{\partial x} =  \left[ x \geq 0 \right],
 \end{equation}\]</div>
 <p>where the Iverson bracket <span class="math notranslate nohighlight">\( \left[ \Psi \right] \)</span> yields <span class="math notranslate nohighlight">\( 1 \)</span> if the logical proposition <span class="math notranslate nohighlight">\( \Psi \)</span> is true or <span class="math notranslate nohighlight">\( 0 \)</span>, otherwise.</p>
 <figure class="align-left" id="activation-functions">
 <a class="reference internal image-reference" href="_images/activation_functions.png"><img alt="_images/activation_functions.png" src="_images/activation_functions.png" style="height: 480px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 44 </span><span class="caption-text">Common non-linear activation functions (borrowed from <span id="id2">[]</span>). In contrast to traditional ones, modern activation functions are typically unbounded and can be computed very efficiently.</span><a class="headerlink" href="#activation-functions" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 31 </span><span class="caption-text">Common non-linear activation functions (borrowed from <span id="id2">[<a class="reference internal" href="bibliography.html#id18" title="Vivienne Sze, Yu-Hsin Chen, Tien-Ju Yang, and Joel S Emer. Efficient processing of deep neural networks: a tutorial and survey. Proceedings of the IEEE, 105(12):2295–2329, 2017.">14</a>]</span>). In contrast to traditional ones, modern activation functions are typically unbounded and can be computed very efficiently.</span><a class="headerlink" href="#activation-functions" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Modern activation functions are unbounded such that their output values do not saturate and their derivatives do not collapse to zero for larger activation values (see <a class="reference internal" href="#sigmoid-function"><span class="std std-numref">Fig. 45</span></a> and <a class="reference internal" href="#relu-function"><span class="std std-numref">Fig. 46</span></a>). This is paramount in deep neural networks, since the activation values might become bigger and bigger as the feed input features <span class="math notranslate nohighlight">\( \lbrace x_{i} \rbrace \)</span> are forwarded over the network. Moreover, unbounded activation functions – with non-zero derivatives – are crucial for the deep learning itself. As we will see shortly (in the backpropagation procedure), the network weights are updated in order to minimize some loss function <span class="math notranslate nohighlight">\( L(y,\hat{y}) \)</span>. Specifically, each weight is updated using the back propagated derivatives of the loss function in respect to the weight itself. To accomplish this, the chain rule of calculus is applied several times over potentially long branches of the associated computational graph linking the parameter to the network outputs. Additionally, the product of chained derivatives might become smaller and smaller as derivatives are back propagated through the network. Note though that, when the activation function saturates, its derivative becomes close to zero. Thus, if that happens in all paths between a network parameter and the network outputs, this parameter will become insensitive to the improvements in the loss function and will not be updated anymore, i.e. the network will not learn to perform its task based on this parameter.</p>
-<p><a class="reference internal" href="#sigmoid-function"><span class="std std-numref">Fig. 45</span></a> and <a class="reference internal" href="#relu-function"><span class="std std-numref">Fig. 46</span></a> show respectively the sigmoid and ReLU activation functions and their derivatives.</p>
+<p>Modern activation functions are unbounded such that their output values do not saturate and their derivatives do not collapse to zero for larger activation values (see <a class="reference internal" href="#sigmoid-function"><span class="std std-numref">Fig. 32</span></a> and <a class="reference internal" href="#relu-function"><span class="std std-numref">Fig. 33</span></a>). This is paramount in deep neural networks, since the activation values might become bigger and bigger as the feed input features <span class="math notranslate nohighlight">\( \lbrace x_{i} \rbrace \)</span> are forwarded over the network. Moreover, unbounded activation functions – with non-zero derivatives – are crucial for the deep learning itself. As we will see shortly (in the backpropagation procedure), the network weights are updated in order to minimize some loss function <span class="math notranslate nohighlight">\( L(y,\hat{y}) \)</span>. Specifically, each weight is updated using the back propagated derivatives of the loss function in respect to the weight itself. To accomplish this, the chain rule of calculus is applied several times over potentially long branches of the associated computational graph linking the parameter to the network outputs. Additionally, the product of chained derivatives might become smaller and smaller as derivatives are back propagated through the network. Note though that, when the activation function saturates, its derivative becomes close to zero. Thus, if that happens in all paths between a network parameter and the network outputs, this parameter will become insensitive to the improvements in the loss function and will not be updated anymore, i.e. the network will not learn to perform its task based on this parameter.</p>
+<p><a class="reference internal" href="#sigmoid-function"><span class="std std-numref">Fig. 32</span></a> and <a class="reference internal" href="#relu-function"><span class="std std-numref">Fig. 33</span></a> show respectively the sigmoid and ReLU activation functions and their derivatives.</p>
 <figure class="align-left" id="sigmoid-function">
 <a class="reference internal image-reference" href="_images/sigmoid_d.png"><img alt="_images/sigmoid_d.png" src="_images/sigmoid_d.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 45 </span><span class="caption-text">Sigmoid activation function. The sigmoid derivative collapses to zero for large absolute values of the activation.</span><a class="headerlink" href="#sigmoid-function" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 32 </span><span class="caption-text">Sigmoid activation function. The sigmoid derivative collapses to zero for large absolute values of the activation.</span><a class="headerlink" href="#sigmoid-function" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-left" id="relu-function">
 <a class="reference internal image-reference" href="_images/relu_d.png"><img alt="_images/relu_d.png" src="_images/relu_d.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 46 </span><span class="caption-text">ReLU activation function. The ReLU function derivative remains constant for large positive activation values.</span><a class="headerlink" href="#relu-function" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 33 </span><span class="caption-text">ReLU activation function. The ReLU function derivative remains constant for large positive activation values.</span><a class="headerlink" href="#relu-function" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
 <div class="proof example admonition" id="example-1">
-<p class="admonition-title"><span class="caption-number">Example 24 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 25 </span></p>
 <section class="example-content" id="proof-content">
 <p>Suppose a linear activation function of the type <span class="math notranslate nohighlight">\( \phi(a) = \kappa a \)</span>. It can be shown that the resulting network can be actually reduced to a single linear neuron unit with properly adjusted weights <span class="math notranslate nohighlight">\( \tilde{\bf w} = \begin{bmatrix} \tilde{w}_{0} \equiv \tilde{b} &amp; \tilde{w}_{1} &amp; \ldots &amp; \tilde{w}_{D} \end{bmatrix} \)</span>, i.e. the network will not be able to approximate any function more complex than an affine transform <span class="math notranslate nohighlight">\( \hat{y} = f({\bf x}) = \tilde{\bf w}^{T} {\bf x} \)</span> of its inputs <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} {x}_{0} \equiv 1 &amp; {x}_{1} &amp; \ldots &amp; {x}_{D} \end{bmatrix} \)</span>. Thus, a non-linear activation function is required for the network to approximate more complex functions.</p>
-<p><a class="reference internal" href="#computational-graph4"><span class="std std-numref">Fig. 47</span></a> shows an example of a linear network with activation function <span class="math notranslate nohighlight">\( \phi(a) = a \)</span>.</p>
+<p><a class="reference internal" href="#computational-graph4"><span class="std std-numref">Fig. 34</span></a> shows an example of a linear network with activation function <span class="math notranslate nohighlight">\( \phi(a) = a \)</span>.</p>
 <figure class="align-left" id="computational-graph4">
 <a class="reference internal image-reference" href="_images/example_ANN_linear_02.png"><img alt="_images/example_ANN_linear_02.png" src="_images/example_ANN_linear_02.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 47 </span><span class="caption-text">The need for non-linearity. Computational graph comprising three linear neuron units on the left is equivalently to a single linear unit on the right.</span><a class="headerlink" href="#computational-graph4" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 34 </span><span class="caption-text">The need for non-linearity. Computational graph comprising three linear neuron units on the left is equivalently to a single linear unit on the right.</span><a class="headerlink" href="#computational-graph4" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Note that in this case we have</p>
-<div class="amsmath math notranslate nohighlight" id="equation-76be6523-497e-4f4d-8718-a7bead6c1dfb">
-<span class="eqno">(190)<a class="headerlink" href="#equation-76be6523-497e-4f4d-8718-a7bead6c1dfb" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-9e5932e1-e83c-4a14-86e9-bb49a84d46f7">
+<span class="eqno">(131)<a class="headerlink" href="#equation-9e5932e1-e83c-4a14-86e9-bb49a84d46f7" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 \hat{y} &amp;=&amp; w_{0,1}^{2} + \sum_{j=1}^2 w^{2}_{j,1} \left( \sum_{i=0}^D w^{1}_{i,j} x_{i} \right) \nonumber \\
 &amp;=&amp; \sum_{i=0}^D \tilde{w}_{i} x_{i}. \nonumber
 \end{eqnarray}\]</div>

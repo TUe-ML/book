@@ -385,6 +385,7 @@ plot_matrix(2*np.reshape(P2_, (1, P2_.shape[0])), axs[6])
 
 
 # ## Formal Problem Definition
+# We formalize the idea to obtain recommendations by compressing the data as the task to minimize the squared Frobenius-norm error of a low-rank matrix product and the data matrix.
 # `````{admonition} Task (Rank-r Matrix Factorization)
 # :class: tip
 # **Given** a data matrix $D\in\mathbb{R}^{n\times d}$ and a rank $r<\min\{n,d\}$.        
@@ -395,12 +396,13 @@ plot_matrix(2*np.reshape(P2_, (1, P2_.shape[0])), axs[6])
 # \end{align}
 # **Return** the low-dimensional approximation of the data $(X,Y)$.  
 # `````
-# ## Optimization
+# Note that the Rank-r matrix factorization task is not directly suitable to return recommendations. It only describes the task to compress a given data matrix into a low-dimensional product. To provide recommendations, we need to fill in missing values. We will discuss later how we can do this with a low dimensional matrix factorization.    
+# First, we analyze properties of the objective, as it turns out, the low-dimensional matrix factorization task is nonconvex. 
 # ````{prf:theorem}
 # The rank-$r$ matrix factorization problem, defined for a matrix $D\in\mathbb{R}^{n\times d}\neq\mathbf{0}$ and a rank $1\leq r<\min\{n,d\}$ as           
-# \begin{align}
+# \begin{align*}
 #     \min_{X,Y}& RSS(X,Y)=\lVert D- YX^\top\rVert^2 & \text{s.t. } X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}
-# \end{align}
+# \end{align*}
 # is a **nonconvex optimization problem**.
 # ````
 # The proof follows from the fact that the set of global minimizers is not a convex set.
@@ -417,14 +419,18 @@ plot_matrix(2*np.reshape(P2_, (1, P2_.shape[0])), axs[6])
 #     &= RSS\left(\tfrac12(1+\gamma) X, \tfrac12(1+ \tfrac1\gamma) Y\right)\\
 #     &=\lVert D-\tfrac14(1+\gamma)(1+\tfrac1\gamma)YX^\top\rVert^2.
 # \end{align*}
-# We observe that the approximation error in the last equation goes to infinity if $\gamma\rightarrow \infty$. Hence, there exists multiple $\gamma>0$ for which the $RSS$ of the convex combination of two global miinimizers is larger than zero. This contradicts the assumption that the $RSS(X,Y)$ is convex.
+# We observe that the approximation error in the last equation goes to infinity if $\gamma\rightarrow \infty$. Hence, there exists multiple $\gamma>0$ for which the $RSS$ of the convex combination of two global minimizers is larger than zero. This contradicts the assumption that the $RSS(X,Y)$ is convex.
 # ```
 # ````
-# ````{prf:example} One-dimensional matrix factorization    
-# $f(x_1,x_2) = (1-x_1x_2)^2$
+# We observe from the proof that there are infinitely many global minimizers for the low-dimensional matrix factorization task. Let's explore this set of global minimizers by means of an example in one dimension.
+# ````{prf:example} One-dimensional matrix factorization   
+# The most _easy_ case of a low-dimensional matrix factorization is the factorization of a single number. Let's take for example the factorization of the number one into a product of two factors $x_1$ and $x_2$, having the objective function  $f(x_1,x_2) = (1-x_1x_2)^2$. We plot the graph of the objective function together with three solutions: $(x_1,x_2)=(2,0.5)$, $(1,1)$, and $(0.5,2)$.
 # ```{tikz}
 # \begin{tikzpicture}
 # \begin{axis}[width=1.4\textwidth,xlabel=$x_1$,ylabel=$x_2$,zlabel=$y$,zmin=0,axis lines = center,zmax=4.1,xmin=0,xmax=2.5,ymin=0,ymax=2.5,view={45}{45},
+# x label style={at={(xticklabel* cs:1,-0.1)},anchor=north},
+# y label style={at={(yticklabel* cs:1.2,0)},anchor=north},
+# z label style={at={(zticklabel* cs:1.1,0.1)},anchor=north},
 # yticklabels={,,},xticklabels={,,},zticklabels={,,}]
 # \addplot3[
 #     mesh, samples=15, domain=0:2.5,
@@ -436,9 +442,11 @@ plot_matrix(2*np.reshape(P2_, (1, P2_.shape[0])), axs[6])
 # \end{axis}
 # \end{tikzpicture}
 # ```
+# We can observe the nonconvexity of this function by connecting the solution of $(0.5,2)$ with $(2,0.5)$ with a straight line. If the function would be convex, then the graph ofthe function would be under or on the line. Under the line is not possible in this case, since the solution points we picked are global minimizers. Hence, the graph should be flat ($y$-value equal to zero) on the line between the two solutions, but we see that the loss increases to the right. However, we also see that the loss function doesn't look as if there is a multitude of valleys, that are local minima. That gives us hope, that the low-rank matrix factorization task is not that difficult to solve.   
 # ````
-# The rank-$r$ MF problem is nonconvex. Does that mean that we can only determine local minimizers? 
-# No, the global minimum is given by truncated SVD.
+# ## Optimization
+# 
+# In most cases, nonconvexity of an objective implies that we probably have to live with the fact that we can not determine the global minimum, and that we can only hope to get good local minima by numerical optimization methods such as gradient descent. The rank-$r$ matrix factorization problem is here an exemption to the rule, since we can derive one global minimum by SVD. 
 # 
 # ````{prf:theorem} Truncated SVD
 # Let $D=U\Sigma V^\top\in\mathbb{R}^{n\times d}$ be the singular decomposition of $D$. Then the global minimizers $X$ and $Y$  of the rank-$r$ MF problem 
@@ -453,9 +461,9 @@ plot_matrix(2*np.reshape(P2_, (1, P2_.shape[0])), axs[6])
 # ````{prf:proof}
 # The proof follows from
 # the orthogonal invariance of the Frobenius norm, yielding:
-# \begin{align}
+# \begin{align*}
 #     \min_{X,Y}&\lVert D-YX^\top\rVert^2 = \lVert \Sigma - U^\top YX^\top V\rVert^2 
-# \end{align}
+# \end{align*}
 # ````
 # 
 
