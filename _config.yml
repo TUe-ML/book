@@ -62,9 +62,7 @@ sphinx:
           "tr": "\\mathrm{tr}"
           "argmin": "\\mathrm{arg\\,min}"
           "argmax": "\\mathrm{arg\\,max}"
-          "minimize": "\\mathrm{minimize}"
-          "maximize": "\\mathrm{maximize}"
-          "sgn": "\\mathrm{sgn}"
+          "sign": "\\mathrm{sign}"
           "softmax": "\\mathrm{softmax}"
           "vvec": ["\\mathbf{#1}",1]
           "bm": ["{\\boldsymbol #1}",1]

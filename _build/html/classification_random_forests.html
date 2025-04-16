@@ -51,7 +51,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -595,26 +595,38 @@ title="Print to PDF"
     </div>
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#inference">
-   Inference
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Random Forests
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#training">
-   Training
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#bootstrapping">
-     Bootstrapping
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#inference">
+     Inference
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training">
+     Training
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#bootstrapping">
+       Bootstrapping
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#out-of-bag-error-estimate">
+     Out Of Bag Error Estimate
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#aggregating">
-   Aggregating
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decision-boundary">
+   Decision boundary
   </a>
  </li>
 </ul>
@@ -636,26 +648,38 @@ title="Print to PDF"
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#inference">
-   Inference
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Random Forests
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#training">
-   Training
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#bootstrapping">
-     Bootstrapping
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#inference">
+     Inference
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training">
+     Training
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#bootstrapping">
+       Bootstrapping
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#out-of-bag-error-estimate">
+     Out Of Bag Error Estimate
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#aggregating">
-   Aggregating
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decision-boundary">
+   Decision boundary
   </a>
  </li>
 </ul>
@@ -670,16 +694,16 @@ title="Print to PDF"
                 
   <section id="random-forests">
 <h1>Random Forests<a class="headerlink" href="#random-forests" title="Permalink to this headline">#</a></h1>
-<p>The performance of a decision tree depends on its structure, that is determined by a greedy method, for example with the CART algorithm. The greedy selection of the best split tends to overfit on the training data, as greedy methods quickly get lost in details because they operate only on local views of the data. We can overcome the tendency to overfit by choosing an early stopping criterion, but we can do even better by combining various trees into an ensemble – called a random forest. The disadvantage is that we lose the interpretability of a single tree, but on the other hand, we obtain one of the strongest classifiers to this date.</p>
+<p>The performance of a decision tree depends on its structure, that is determined by a greedy method, for example with the CART algorithm. The greedy selection of the best split tends to overfit on the training data, as greedy methods quickly get lost in details since they operate only on local views of the data. We can overcome the tendency to overfit by choosing an early stopping criterion, but we can do even better by combining various overfitting trees into an ensemble – called a random forest. The disadvantage is that we lose the interpretability of a single tree, but on the other hand, we obtain one of the strongest classifiers to this date.</p>
 <p>The theoretical motivation for the random forest is the bias-variance tradeoff for classification (to be discussed in detail in <a class="reference internal" href="classification_evaluation.html#class-evaluation"><span class="std std-ref">Estimating the true classification error</span></a>). Similar to the bias-variance tradeoff in regression, a complex model tends to overfit and consequently has a high variance and low bias. In turn, a simple model has a high bias and low variance. If we now train a couple of overfitting decision trees, for example by setting the stopping criteria pretty lax, such that we get big trees, and if we aggregate the results of those trees, then we get an low bias, low variance classifier.</p>
 <section id="inference">
 <h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">#</a></h2>
 <div class="proof definition admonition" id="definition-0">
 <p class="admonition-title"><span class="caption-number">Definition 22 </span> (Random Forest)</p>
 <section class="definition-content" id="proof-content">
-<p>A Random Forest classifier is an ensemble of <span class="math notranslate nohighlight">\(m\)</span> decision trees <span class="math notranslate nohighlight">\(f_{dt1},\ldots,f_{dtm}\)</span>, aggregating their predictions. Let <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})\in\{0,1\}^c\)</span> denote the one-hot encoded argmax function (also called hardmax), such that <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})_y=1\)</span> if and only if <span class="math notranslate nohighlight">\(y = \argmax_{1\leq l\leq c} p_l\)</span>. We define then the random forest classifier as
+<p>A Random Forest classifier is an ensemble of <span class="math notranslate nohighlight">\(m\)</span> decision trees <span class="math notranslate nohighlight">\(f_{dt1},\ldots,f_{dtm}\)</span> that aggregates predictions of single trees via a mahority vote. Let <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})\in\{0,1\}^c\)</span> denote the one-hot encoded argmax function (also called hardmax), such that <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})_y=1\)</span> if and only if <span class="math notranslate nohighlight">\(y = \argmax_{1\leq l\leq c} p_l\)</span>. We define then the random forest classifier as
 <div class="math notranslate nohighlight">
-\[ f_{rf}(\vvec{x})= \frac{1}{m}\sum_{j=1}^m \mathbb{1}(f_{dtj}).\]</div>
+\[ f_{rf}(\vvec{x})= \frac{1}{m}\sum_{j=1}^m \mathbb{1}(f_{dtj}(\vvec{x})).\]</div>
 
 As a result, the random forest predicts the class that wins the majority vote of all decision trees.</p>
 <div class="amsmath math notranslate nohighlight">
@@ -688,39 +712,44 @@ As a result, the random forest predicts the class that wins the majority vote of
 &amp;= \mathrm{mode}(\{\hat{y}_{dtj}\mid 1\leq j\leq m\})
 \end{align*}\]</div>
 </section>
-</div></section>
-<section id="training">
-<h2>Training<a class="headerlink" href="#training" title="Permalink to this headline">#</a></h2>
-<p>We generate multiple trees from one dataset with a technique called <strong>bootstrapping</strong>.</p>
-<ul class="simple">
-<li><p><strong>Bootstrapping:</strong> use several randomized versions or bootstraps <span class="math notranslate nohighlight">\( \lbrace {\cal D}^{(b)} \rbrace \)</span>, <span class="math notranslate nohighlight">\( b \in \lbrace 1, \ldots, B \rbrace \)</span>, of the training dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span> to build different decision trees <span class="math notranslate nohighlight">\( \lbrace {\cal T}^{(b)} \rbrace \)</span> using the CART algorithm <span id="id1">[<a class="reference internal" href="bibliography.html#id2" title="Leo Breiman. Random forests. Machine learning, 45:5–32, 2001.">2</a>]</span>. We can also randomize the CART algorithm parameters. For example, we can select a particular set of features <span class="math notranslate nohighlight">\( {\cal F}^{(b)} \subset \lbrace 1, \ldots, D \rbrace \)</span> to build each tree <span class="math notranslate nohighlight">\( {\cal T}^{(b)} \)</span>; and</p></li>
-</ul>
-<p>That leads to one of the most powerful existing classifiers today to work with <em>unstructured</em> data: the random forests (RFs).</p>
+</div><p>The inference of a radom forest is a simple majority vote of the decision trees. For any ensemble of classifiers, predicting the class over a majority vote, we can derive an error bound that details which characteristics of the base classifiers make a strong ensemble. The error bound considers each tree the outcome of a random variable <span class="math notranslate nohighlight">\(\omega\)</span>, that describes the training set of the tree and other random elements that made the tree how it is.</p>
 <div class="proof theorem admonition" id="theorem-1">
 <p class="admonition-title"><span class="caption-number">Theorem 15 </span> (expected prediction error bound)</p>
 <section class="theorem-content" id="proof-content">
-<p>Defining the margin function of a random forest as
+<p>Let</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+s(\vvec{x},y) = \argmax_{l\neq y} p_\omega(\hat{y}_\omega(\vvec{x})=l)
+\end{align*}\]</div>
+<p>be the most frequently predicted label that is not the actual label of the random forest.
+We define the margin function of a random forest as
 <div class="math notranslate nohighlight">
 \[m(\vvec{x},y) = p_\omega(f(\vvec{x};\omega)=y)-\max_{l\neq y}p_\omega(f(\vvec{x};\omega)=l),\]</div>
 
-and the strength of a random forest as the expected margin
-<span class="math notranslate nohighlight">\(\mu = \mathbb{E}_{\vvec{x},y}m(\vvec{x},y)\)</span>.
-Assuming that the expected margin is nonnegative <span class="math notranslate nohighlight">\(\mu\geq 0\)</span>, then the expected prediction error of a random forest is bounded by
+and the margin function of a tree specified by <span class="math notranslate nohighlight">\(\omega\)</span> as
 <div class="math notranslate nohighlight">
-\[EPE = p(y\neq \argmax_l f_{\mathrm{rf}}(\vvec{x})_l) \leq \rho\frac{1-\mu^2}{\mu^2},\]</div>
+\[m_\omega(\vvec{x},y)= L_{01}(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y))-L_{01}(\hat{y}_\omega(\vvec{x}),y).\]</div>
 
-where</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\rho = \)</span></p></li>
-</ul>
+Further we define the strength of a random forest as the expected margin
+<span class="math notranslate nohighlight">\(\mu(m) = \mathbb{E}_{\vvec{x},y}m(\vvec{x},y)\)</span>.
+Assuming that the expected margin is nonnegative (<span class="math notranslate nohighlight">\(\mu\geq 0\)</span>), then the expected prediction error of a random forest is bounded by
+<div class="math notranslate nohighlight">
+\[EPE = p\left(y\neq \hat{y}_{\omega}(\vvec{x})\right) \leq \bar{\rho}(m_\omega,m_\hat{\omega})\frac{1-\mu(m)^2}{\mu(m)^2},\]</div>
+
+where
+<div class="math notranslate nohighlight">
+\[\bar{\rho}(m_\omega,m_\hat{\omega}) = \frac{\rho(m_\omega,m_\hat{\omega})\sigma(m_\omega)\sigma(m_\hat{\omega})}{\mathbb{E}_{\omega,\hat{\omega}}[\sigma(m_\omega)\sigma(m_\hat{\omega})]}\]</div>
+
+is the mean Pearson correlation coefficient of two i.i.d. sampled trees specified by <span class="math notranslate nohighlight">\(\omega\)</span> and <span class="math notranslate nohighlight">\(\hat{\omega}\)</span>.</p>
 </section>
-</div><div class="proof admonition" id="proof">
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
 <p>Proof. If the margin is negative, then the prediction of the random forest is not correct. Hence, we can write that the expected prediction error is the probability that the margin is negative</p>
 <div class="math notranslate nohighlight" id="equation-eq-epe-margin">
 <span class="eqno">(62)<a class="headerlink" href="#equation-eq-epe-margin" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 EPE &amp;= p_{\vvec{x},y}(m(\vvec{x},y)&lt;0)\\
-&amp;= p_{\vvec{x},y}(m(\vvec{x},y)-\mu &lt; -\mu)\\
-&amp;= p_{\vvec{x},y}(\mu - m(\vvec{x},y) &gt; \mu)
+&amp;= p_{\vvec{x},y}(m(\vvec{x},y)-\mu(m) &lt; -\mu(m))\\
+&amp;= p_{\vvec{x},y}(\mu(m) - m(\vvec{x},y) &gt; \mu(m))
 \end{align*}\end{split}\]</div>
 <p>We can apply Chebychev’s inequality to the probability above. Chebychev’s inequality states that
 <div class="math notranslate nohighlight">
@@ -730,131 +759,196 @@ where <span class="math notranslate nohighlight">\(\mu\)</span> is the expected 
 We apply this to  Eq. <a class="reference internal" href="#equation-eq-epe-margin">(62)</a></p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-EPE&amp;\leq  p_{\vvec{x},y}(\lvert\mu - m(\vvec{x},y)\rvert &gt; \mu)
-\leq \frac{\sigma^2}{\mu^2}.
+EPE&amp;\leq  p_{\vvec{x},y}(\lvert\mu(m) - m(\vvec{x},y)\rvert &gt; \mu(m))
+\leq \frac{\sigma^2(m)}{\mu(m)^2}.
 \end{align*}\]</div>
-<p>Now we define the second most frequently predicted label of the random forest as</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-s(\vvec{x},y) = \argmax_{l\neq y} p_\omega(\hat{y}_\omega(\vvec{x})=l)
-\end{align*}\]</div>
-<p>We introduce the Kronecker delta that returns one if two integers <span class="math notranslate nohighlight">\(i=j\)</span> and zero otherwise
+<p>Hence, the EPE is bounded above by the variance of the margin divided my the strength of the classifier. Since the variance of the margin does not have a good interpretation with regard to a random forest, we derive now a bound for the variance.</p>
+<p>We rewrite the margin of the random forest in dependence of the margin of the trees as</p>
+<div class="math notranslate nohighlight" id="equation-eq-margin-raw">
+<span class="eqno">(63)<a class="headerlink" href="#equation-eq-margin-raw" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+m(\vvec{x},y)&amp;= p_\omega(L_{01}(\hat{y}_\omega(\vvec{x}),y)=0) - p_\omega(L_{01}(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y))=0)\\
+&amp;=\mathbb{E}_\omega[L_{01}(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y)) - L_{01}(\hat{y}_\omega(\vvec{x}),y)],
+\end{align*}\end{split}\]</div>
+<p>where the last equation derives from the linearity of the expected value and the fact that the expected value of binary random variable is equal to the probability that the binary random variable is equal to one.
+From Eq. <a class="reference internal" href="#equation-eq-margin-raw">(63)</a> follows that the expected value of the tree margin function over <span class="math notranslate nohighlight">\(\omega\)</span> is the margin function <span class="math notranslate nohighlight">\(\mathbb{E}_\omega[m_\omega(\vvec{x},y)]=m(\vvec{x},y)\)</span>.
+We can now write the variance of the margin with respect to single trees as</p>
+<div class="math notranslate nohighlight" id="equation-eq-var-omega">
+<span class="eqno">(64)<a class="headerlink" href="#equation-eq-var-omega" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+\sigma^2(m) &amp;= \mathbb{E}_{\vvec{x},y}[(m(\vvec{x},y)-\mu(m))^2]\\
+&amp;= \mathbb{E}_{\vvec{x},y}[(\mathbb{E}_\omega[m_\omega(\vvec{x},y)-\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)])^2].
+\end{align*}\end{split}\]</div>
+<p>Since we have for any variable of function <span class="math notranslate nohighlight">\(h_\omega\)</span>, and i.i.d. random variables <span class="math notranslate nohighlight">\(\omega\)</span> and <span class="math notranslate nohighlight">\(\hat{\omega}\)</span>
 <div class="math notranslate nohighlight">
-\[\begin{split}\delta(i,j) = \begin{cases}
-1 &amp; \text{ if } i=j\\
-0 &amp; \text{ if } i\neq j
-\end{cases}.\end{split}\]</div>
+\[(\mathbb{E}_\omega[h_\omega])^2 =\mathbb{E}_\omega[h_\omega]\mathbb{E}_\hat{\omega}[h_\hat{\omega}] = \mathbb{E}_{\omega,\hat{\omega}}[h_\omega h_\hat{\omega}], \]</div>
 
-Using this notation, we can write the margin as</p>
+we can write Eq. <a class="reference internal" href="#equation-eq-var-omega">(64)</a> as</p>
+<div class="math notranslate nohighlight" id="equation-eq-var2">
+<span class="eqno">(65)<a class="headerlink" href="#equation-eq-var2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+\sigma^2(m) &amp;= \mathbb{E}_{\vvec{x},y} \mathbb{E}_{\omega,\hat{\omega}}\left[(m_\omega(\vvec{x},y)-\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)])(m_\hat{\omega}(\vvec{x},y)-\mathbb{E}_{\vvec{x},y}[m_\hat{\omega}(\vvec{x},y)])\right] \\
+&amp;= \mathbb{E}_{\omega,\hat{\omega}}[\rho(m_\omega,m_\hat{\omega})\sigma(m_\omega)\sigma(m_\hat{\omega})]
+\end{align*}\end{split}\]</div>
+<p>The last equation derives from the fact that the inner expected value subject to <span class="math notranslate nohighlight">\(\omega,\hat{\omega}\)</span> is the covariance of <span class="math notranslate nohighlight">\(m_\omega\)</span> and <span class="math notranslate nohighlight">\(m_{\hat{\omega}}\)</span>. The covariance can be expressed as the Pearson correlation coefficient multiplied with the corresponding standard deviations. Dividing and multiplying Eq. <a class="reference internal" href="#equation-eq-var2">(65)</a> with <span class="math notranslate nohighlight">\(\mathbb{E}_\omega[\sigma_\omega]^2 = \mathbb{E}_{\omega,\hat{\omega}}[\sigma(m_\omega) \sigma(m_\hat{\omega})]\)</span> yields</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-m(\vvec{x},y)&amp;= p_\omega(\delta(\hat{y}_\omega(\vvec{x}),y)=1) - p_\omega(\delta(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y)=1))\\
-&amp;=\mathbb{E}_\omega[\delta(\hat{y}_\omega(\vvec{x}),y) -\delta(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y)) ]
+\sigma^2(m) 
+&amp;= \bar{\rho}(m_\omega,m_\hat{\omega})\mathbb{E}_\omega[\sigma(m_\omega)]^2\leq \mathbb{E}_\omega[\sigma^2(m_\omega)]
 \end{align*}\]</div>
-<p>because of the linearity of the expected value and</p>
+<p>where the last inequality stems from Jenssens inequality applied to the convex function <span class="math notranslate nohighlight">\(x^2\)</span>.</p>
+<div class="math notranslate nohighlight" id="equation-eq-var3">
+<span class="eqno">(66)<a class="headerlink" href="#equation-eq-var3" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+\mathbb{E}_\omega[\sigma^2(m_\omega)] &amp;= \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2] - \mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]^2\right]\\
+&amp;= \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2]\right] - \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]^2\right]
+\end{align*}\end{split}\]</div>
+<p>We apply again Jenssens inequality and get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]^2\right]\geq \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]\right]^2 = \mu(m)^2
+\end{align*}\]</div>
+<p>Further, we have <span class="math notranslate nohighlight">\(\mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2]\right]\leq 1\)</span> because <span class="math notranslate nohighlight">\(m_\omega(\vvec{x},y)\in\{-1,0,1\}\)</span>. As a result, we can bound Eq. <a class="reference internal" href="#equation-eq-var3">(66)</a> as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{E}_\omega[\sigma^2(m_\omega)] &amp;\leq 1-\mu(m)^2.
+\end{align*}\]</div>
+<p>This concludes our result.</p>
 </div>
-<p>The higher the margin, the more confidently a random forest predicts the correct class <span class="math notranslate nohighlight">\(y\)</span> for observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span>.</p>
+</div>
+<p>The theorem, published in <span id="id1">[<a class="reference internal" href="bibliography.html#id2" title="Leo Breiman. Random forests. Machine learning, 45:5–32, 2001.">2</a>]</span>, identifies two properties of the decision trees that bound the EPE of a random forest:</p>
+<ul class="simple">
+<li><p>The strength of the random forest classifier <span class="math notranslate nohighlight">\(\mu(m)=\mathbb{E}_{\vvec{x},y}\mathbb{E}_\omega[m_\omega(\vvec{x},y)]\)</span>: the higher the expected margin of the decision trees, the better. A high margin indicates that the random forest confidently predicts the correct classes.</p></li>
+<li><p>The correlation between the trees: the lower the correlation is between trees, the better. Note that the correlation is measured in the prediction confidences of the tree for all classes.</p></li>
+</ul>
+<p>The main implication of the EPE bound is that we do not necessarily need an ensemble of highly accurate (high strength) decision trees to make a strong random forest, but that we can also lower the error bound by learning trees that do not correlate much, but make in average still good predictions. This incentivizes strategies to increase the diversity of trees in a random forest.</p>
+</section>
+<section id="training">
+<h2>Training<a class="headerlink" href="#training" title="Permalink to this headline">#</a></h2>
+<p>The training procedure of the random forest follows the theoretical motivations for strong ensemble learners. The rough procedure is to sample training data from the given dataset, learn trees that overfit on the dataset samples, and to incorporate further measures to decrease the correlation of trees. For example, by considering for each split only on a sampled subset of the features.
+In detail, the learning algorithm for random forests look as follows.</p>
+<div class="proof algorithm admonition" id="algorithm-2">
+<p class="admonition-title"><span class="caption-number">Algorithm 9 </span> (Random Forest Training)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Input</strong>: training data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, number of features <span class="math notranslate nohighlight">\(\hat{d}&lt;d\)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{DT}\gets\emptyset\)</span> # Initialize the set of trees</p></li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(j\in\{1,\ldots, m\}\)</span></p>
+<ol class="simple">
+<li><p>Draw a bootstrap sample <span class="math notranslate nohighlight">\(\mathcal{D}_j\)</span> from <span class="math notranslate nohighlight">\(\mathcal{D}\)</span></p></li>
+<li><p>Train the decision tree <span class="math notranslate nohighlight">\(f_{dtj}\)</span> on <span class="math notranslate nohighlight">\(\mathcal{D}_j\)</span> with the following specifications:</p>
+<ul class="simple">
+<li><p>Set as stopping criterion that the minimum number of samples per split is one (train untill maximum depth is reached).</p></li>
+<li><p>Select for each split randomly <span class="math notranslate nohighlight">\(\hat{d}\)</span> features that are considered for finding the best split</p></li>
+</ul>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{DT}\gets \mathcal{DT}\cup\{f_{dtj}\}\)</span></p></li>
+</ol>
+</li>
+</ol>
+</section>
+</div><p>Random forests use a specific sampling procedure to imitate various training datasets from one given training dataset. The employed sampling technique is called <strong>bootstrapping</strong>.</p>
 <section id="bootstrapping">
 <h3>Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">#</a></h3>
-<p>Based on the previous discussion regarding the bias-variance trade off, we can improve the performance of an isolated DT classifier by exploring the average behavior – bias of the prediction error – of several DT classifiers trained using different datasets. First, let us create <span class="math notranslate nohighlight">\( B \)</span> randomized versions – bootstraps – <span class="math notranslate nohighlight">\( \lbrace {\cal D}^{(b)} \rbrace \)</span>, <span class="math notranslate nohighlight">\( b \in \lbrace 1, 2, \ldots, B \rbrace \)</span>, of the training dataset</p>
-<div class="amsmath math notranslate nohighlight" id="equation-63682b76-944c-464b-bb53-15891a4f762e">
-<span class="eqno">(63)<a class="headerlink" href="#equation-63682b76-944c-464b-bb53-15891a4f762e" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-{\cal D} &amp;=&amp; \bigcup_{i=1}^{N} \lbrace \underbrace{\left( {\bf x}_{i}, y_{i} \right)}_{{\cal D}_{i}} \rbrace \nonumber \\
-&amp;=&amp; \lbrace {\cal D}_{1}, {\cal D}_{2}, {\cal D}_{3}, {\cal D}_{4}, {\cal D}_{5}, {\cal D}_{6}, {\cal D}_{7}, \ldots , {\cal D}_{N} \rbrace \nonumber
-\end{eqnarray}\]</div>
-<p>by sampling pairs <span class="math notranslate nohighlight">\( {\cal D}_{i} \triangleq \left( {\bf x}_{i}, y_{i} \right) \)</span> from <span class="math notranslate nohighlight">\( {\cal D} \)</span> with replacement – which means that multiple repetitions of the same pair are allowed in each bootstrap. Specifically, let the p.m.f. <span class="math notranslate nohighlight">\( U_{\cal A}(a) \)</span> denote an uniform distribution over the elements of a finite alphabet <span class="math notranslate nohighlight">\( {\cal A} \)</span> such that <span class="math notranslate nohighlight">\( U_{\cal A}(a) = \frac{1}{|{\cal A}|} \)</span>, <span class="math notranslate nohighlight">\( \forall a \in {\cal A} \)</span>. We build the <span class="math notranslate nohighlight">\(b\)</span>-th bootstrap by making <div class="math notranslate nohighlight">
-\[ {\cal D}^{(b)}_{j} \gets {\cal D}_{i_{j}} \]</div>
- where the index <span class="math notranslate nohighlight">\( i_{j} \)</span> is drawn from an uniform distribution over the set <span class="math notranslate nohighlight">\( \lbrace 1, \ldots, N \rbrace \)</span>, i.e. <div class="math notranslate nohighlight">
-\[ i_{j} \sim U_{\lbrace 1, \ldots, N \rbrace}(\xi), \]</div>
- for each <span class="math notranslate nohighlight">\( j \in \lbrace 1, 2, \ldots N \rbrace \)</span>.</p>
-<p>We repeat this procedure for <span class="math notranslate nohighlight">\( b \in \lbrace 1, \ldots, B \rbrace \)</span> to obtain <span class="math notranslate nohighlight">\( B \)</span> bootstraps as illustrated below</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a4daa54e-a0fd-43a4-91df-49f4ce1ecf7c">
-<span class="eqno">(64)<a class="headerlink" href="#equation-a4daa54e-a0fd-43a4-91df-49f4ce1ecf7c" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-{\cal D}^{(1)} &amp;=&amp; \underbrace{\lbrace {\cal D}_{9}, {\cal D}_{8}, {\cal D}_{9}, {\cal D}_{6}, {\cal D}_{2}, {\cal D}_{7}, {\cal D}_{1}, \ldots \rbrace}_{N} \nonumber \\
-{\cal D}^{(2)} &amp;=&amp; \underbrace{\lbrace {\cal D}_{11}, {\cal D}_{6}, {\cal D}_{7}, {\cal D}_{7}, {\cal D}_{1}, {\cal D}_{14}, {\cal D}_{20}, \ldots \rbrace}_{N} \nonumber \\
-{\cal D}^{(3)} &amp;=&amp; \underbrace{\lbrace {\cal D}_{3}, {\cal D}_{9}, {\cal D}_{2}, {\cal D}_{4}, {\cal D}_{17}, {\cal D}_{11}, {\cal D}_{16}, \ldots \rbrace}_{N} \nonumber \\
-&amp;\vdots&amp; \nonumber \\
-{\cal D}^{(B)} &amp;=&amp; \underbrace{\lbrace {\cal D}_{5}, {\cal D}_{18}, {\cal D}_{7}, {\cal D}_{5}, {\cal D}_{1}, {\cal D}_{12}, {\cal D}_{7}, \ldots \rbrace}_{N}. \nonumber
-\end{eqnarray}\]</div>
-<div class="proof remark admonition" id="remark-2">
-<p class="admonition-title"><span class="caption-number">Remark 4 </span></p>
-<section class="remark-content" id="proof-content">
-<p>Note that each pair <span class="math notranslate nohighlight">\( {\cal D}_{i} \in {\cal D} \)</span>, <span class="math notranslate nohighlight">\( \forall i \in \lbrace 1, \ldots, N \rbrace \)</span>, can appear multiple times in the same bootstrap. For <span class="math notranslate nohighlight">\( B \rightarrow \infty \)</span>, only <span class="math notranslate nohighlight">\( 1 - \frac{1}{e} \approx 63.21 \)</span> % of the original samples will be presented at each bootstrap. Note also that bootstraps follow aleatory sequences with respect to the sequence of pairs <span class="math notranslate nohighlight">\( \lbrace {\cal D}_{1}, {\cal D}_{2}, {\cal D}_{3}, \ldots \rbrace \)</span> in the original dataset <span class="math notranslate nohighlight">\( {\cal D} \)</span>.</p>
+<p>Bootstrapping is similar to the dataset division known from cross valiadation, only that in bootstrapping the generated datasets overlap, that is, various data points are present in multiple dataset samples.</p>
+<div class="proof definition admonition" id="definition-3">
+<p class="admonition-title"><span class="caption-number">Definition 23 </span> (Bootstrapping)</p>
+<section class="definition-content" id="proof-content">
+<p>Given a dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}\)</span> containing <span class="math notranslate nohighlight">\(n\)</span> datapoints. A bootstrap sample <span class="math notranslate nohighlight">\(\mathcal{D}_j=\{(\vvec{x}_{i_b},y_{i_b})\mid 1\leq b\leq n\}\subseteq\mathcal{D}\)</span> gathers <span class="math notranslate nohighlight">\(n\)</span> uniformly distributed samples (<span class="math notranslate nohighlight">\(i_b \sim\mathcal{U}\{1, \dots, n\}\)</span>) from <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>. Hence, <span class="math notranslate nohighlight">\(\mathcal{D}_j\)</span> may contain various duplicates of data points.</p>
 </section>
-</div><p>We can follow a similar procedure to create a subset of features <span class="math notranslate nohighlight">\( {\cal F}^{(b)} \subset \lbrace 1, 2, \ldots, D \rbrace \)</span> but restricted to a smaller number of features such that <span class="math notranslate nohighlight">\( | {\cal F}^{(b)} | &lt; D \)</span>.</p>
-<p>Finally, we create an ensemble <span class="math notranslate nohighlight">\( {\cal E} = \lbrace {\cal T}^{(b)} \rbrace \)</span>, <span class="math notranslate nohighlight">\( b \in \lbrace 1, 2, \ldots, B \rbrace \)</span>, of decision trees using the CART algorithm. In particular, the <span class="math notranslate nohighlight">\(b\)</span>-th decision tree is created by running the CART algorithm <div class="math notranslate nohighlight">
-\[ {\cal T}^{(b)} \gets CART({\cal D}^{(b)}, \infty; k_{max}; \delta_{min}; {\cal F}^{(b)}) \]</div>
- passing the bootstrap <span class="math notranslate nohighlight">\( {\cal D}^{(b)} \)</span> as input and using a randomized subset of features selected by the parameter <span class="math notranslate nohighlight">\( {\cal F}^{(b)} \)</span>. Eventually, we can also randomize the stop criteria – governed by the parameters <span class="math notranslate nohighlight">\( k_{max} \)</span> and <span class="math notranslate nohighlight">\( \delta_{min} \)</span> – or the set of possible decisions evaluated at each dimension <span class="math notranslate nohighlight">\( d \)</span> of the feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span>.</p>
-<aside class="margin sidebar">
-<p class="sidebar-title"></p>
-<div class="admonition note">
+</div><div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Typically, we create ensembles containing <span class="math notranslate nohighlight">\( B = 100, 200, 500, \dots \)</span> randomized decision trees and use a third of the features to train each decision tree <span class="math notranslate nohighlight">\( {\cal T}^{(b)} \)</span> such that <span class="math notranslate nohighlight">\( | {\cal F}^{(b)} | = \frac{D}{3} \)</span>.</p>
+<p>It’s common to define datasets as mathematical sets, as we have done in this book. However, a mathematical set has no duplicates in general. Datasets on the other hand may contain duplicate data points and in bootstrapping samples this is most often the case. Hence, in order to not get confused, you can also imagine a dataset as a set of thrupels <span class="math notranslate nohighlight">\((i,\vvec{x}_i,y_i)\)</span> where <span class="math notranslate nohighlight">\(i\)</span> is an index that is uniquely assigned to each datapoint. We just omit the index from our dataset notation to shorten it.</p>
 </div>
-</aside>
+<p>Let’s write a simple example demonstrating what bootstrap samples look like:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Original dataset</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Number of bootstrap samples</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># feel free to increase this</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original data D&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Bootstrap samples:&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="c1"># Sample with replacement</span>
+    <span class="n">bootstrap_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;D</span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">bootstrap_sample</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original data D [1 2 3 4 5]
+
+Bootstrap samples:
+D1: [4 1 5 3 2]
+D2: [3 5 4 1 2]
+D3: [3 1 5 5 2]
+D4: [1 2 2 5 2]
+D5: [5 1 5 1 3]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We see how some data points are duplicates in the bootstrap samples and other are not occurring at all. A data point is not chosen for a bootstrap sample with probability <span class="math notranslate nohighlight">\((1-\frac1n)^n\)</span> (<span class="math notranslate nohighlight">\(n\)</span> times, the data point hasn’t been selected, which has a probability of <span class="math notranslate nohighlight">\(1-\frac1n\)</span>). If <span class="math notranslate nohighlight">\(n\rightarrow \infty\)</span> we have <span class="math notranslate nohighlight">\((1-\frac1n)^n\rightarrow \exp(-1)\approx 1/3\)</span>. Hence, very roughly one third of all datapoints is missing from one bootstrap sample (in a big dataset).</p>
 </section>
 </section>
-<section id="aggregating">
-<h2>Aggregating<a class="headerlink" href="#aggregating" title="Permalink to this headline">#</a></h2>
-<p>Let <span class="math notranslate nohighlight">\( \lbrace \hat{y}^{(b)} \rbrace \)</span> collect the predicted labels obtained by the ensemble <span class="math notranslate nohighlight">\( {\cal E} \)</span>. We can select the final ensemble prediction <span class="math notranslate nohighlight">\( \hat{y} \)</span> by allowing the individual trees <span class="math notranslate nohighlight">\( \lbrace {\cal T}^{(b)} \rbrace \)</span> to vote. Specifically, for an arbitrary feature vector <span class="math notranslate nohighlight">\( {\bf x} \)</span>, the Random Forest (RF) classifier selects the most frequent predicted label</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c5d6fbb0-2280-481c-b9af-3927eabfb898">
-<span class="eqno">(65)<a class="headerlink" href="#equation-c5d6fbb0-2280-481c-b9af-3927eabfb898" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
- h_{RF}({\bf x}) &amp;=&amp; \argmax_{y \in {\cal Y} } Fr(y; \lbrace \hat{y}^{(b)} \rbrace) \nonumber \\
-\hat{y}^{(b)} &amp;=&amp; h_{DT}({\bf x}; {\cal T}^{(b)}), \,\, \forall b \in \lbrace 1, \ldots, B \rbrace, \nonumber
-\end{eqnarray}\]</div>
-<p>where the function <span class="math notranslate nohighlight">\( Fr(a; {\cal A}) \triangleq \sum_{a' \in {\cal A}} \left[ a' = a \right] \)</span> counts the frequency of the value <span class="math notranslate nohighlight">\( a \)</span> in a finite set <span class="math notranslate nohighlight">\( {\cal A} \)</span>.</p>
-<div class="proof remark admonition" id="remark-3">
-<p class="admonition-title"><span class="caption-number">Remark 5 </span></p>
-<section class="remark-content" id="proof-content">
-<p>Assume that the decision trees in <span class="math notranslate nohighlight">\( {\cal E} \)</span> were designed to perform a regression task instead of a classification task. A decision tree <span class="math notranslate nohighlight">\( {\cal T}^{(b)} \in {\cal E} \)</span> can do that by storing training samples from <span class="math notranslate nohighlight">\( {\cal D}^{(b)} \)</span> at the leaves. In particular, let the training dataset split <div class="math notranslate nohighlight">
-\[ {\cal D}_{\boldsymbol{\ell}}^{(b)} = \bigcup_{i=1}^{| {\cal D}_{\boldsymbol{\ell}}^{(b)} | } \lbrace \left( {\bf x}_{i}, z_{i} \right) \rbrace \]</div>
- collect the data items at the leaf <span class="math notranslate nohighlight">\( \boldsymbol{\ell} \)</span> associated with an input data item <span class="math notranslate nohighlight">\( {\bf x} \)</span>. Recap: the binary sequence <span class="math notranslate nohighlight">\( \boldsymbol{\ell} \)</span> indicates which decisions were satisfied (<span class="math notranslate nohighlight">\(1\)</span>) or not (<span class="math notranslate nohighlight">\(0\)</span>) by <span class="math notranslate nohighlight">\( {\bf x} \)</span> along the branch from the root to its corresponding leaf and therefore uniquely identifies the leaf itself. We can use e.g. a convex combination <div class="math notranslate nohighlight">
-\[ h_{DT}({\bf x}; {\cal T}^{(b)}) = \sum_{i=1}^{| {\cal D}_{\boldsymbol{\ell}}^{(b)} |} \alpha_{i}({\bf x}; {\bf x}_{i}) z_{i} \]</div>
- to compute the predicted value such that <span class="math notranslate nohighlight">\( \alpha_{i}({\bf x}; {\bf x}_{i}) \propto || {\bf x} - {\bf x}_{i} || \)</span> and <span class="math notranslate nohighlight">\( \sum_{i=1}^{| {\cal D}_{\boldsymbol{\ell}}^{(b)} |} \alpha_{i}({\bf x}; {\bf x}_{i}) = 1 \)</span>. In this case, we can combine the predicted values <span class="math notranslate nohighlight">\( \lbrace \hat{z}^{(b)} \rbrace \)</span> obtained by the ensemble <span class="math notranslate nohighlight">\( {\cal E} \)</span> by simply averaging. Thus, for a given feature vector <span class="math notranslate nohighlight">\( {\bf x} \)</span>, we can write</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7f61da6d-e49c-4f24-9de0-73ef79cd0a8d">
-<span class="eqno">(66)<a class="headerlink" href="#equation-7f61da6d-e49c-4f24-9de0-73ef79cd0a8d" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
- h_{RF}({\bf x}) &amp;=&amp; \frac{1}{B} \sum_{b=1}^{B} \hat{z}^{(b)} \nonumber \\
-\hat{z}^{(b)} &amp;=&amp; h_{DT}({\bf x}; {\cal T}^{(b)}), \,\, \forall b \in \lbrace 1, \ldots, B \rbrace. \nonumber
-\end{eqnarray}\]</div>
-</section>
-</div><div class="proof remark admonition" id="remark-4">
-<p class="admonition-title"><span class="caption-number">Remark 6 </span></p>
-<section class="remark-content" id="proof-content">
-<p>Let <span class="math notranslate nohighlight">\( CE_{test}^{(b)} \)</span> denote the empirical classification error of the DT classifier associated with the <span class="math notranslate nohighlight">\(b\)</span>-th decision tree <span class="math notranslate nohighlight">\( {\cal T}^{(b)} \)</span> trained based on the boostrap <span class="math notranslate nohighlight">\( {\cal D}^{(b)} \)</span> and evaluated against a testing dataset <span class="math notranslate nohighlight">\( {\cal D}_{test} \)</span>. As the testing dataset <span class="math notranslate nohighlight">\( {\cal D}_{test} \)</span> contains realizations of the unknown distribution <span class="math notranslate nohighlight">\( p^{\ast}({\bf x}, y) \)</span>, the empirical error <span class="math notranslate nohighlight">\( CE_{test}^{(b)} \)</span> is also a realization of some random variable <span class="math notranslate nohighlight">\( W_{b} \sim p_{b}(w_{b}) \)</span> with variance <span class="math notranslate nohighlight">\( \sigma_{b}^{2} = E_{W_{b} \sim p_{b}} \lbrace (W_{b} - \mu_{b})^{2} \rbrace  \)</span> and mean <span class="math notranslate nohighlight">\( \mu_{b} = E_{W_{b} \sim p_{b}} \lbrace W_{b} \rbrace \)</span>. Analogously, we also assume that the empirical classification error <span class="math notranslate nohighlight">\( CE_{test} \)</span> of the ensemble <span class="math notranslate nohighlight">\( {\cal E} \)</span> is a realization of a random variable <span class="math notranslate nohighlight">\( W_{e} \sim p_{e}(w_{e}) \)</span> with variance <span class="math notranslate nohighlight">\( \sigma_{e}^{2} = E_{W_{e} \sim p_{e}} \lbrace (W_{e} - \mu_{e})^{2} \rbrace \)</span> and mean <span class="math notranslate nohighlight">\( \mu_{e} = E_{W_{e} \sim p_{e}} \lbrace W_{e} \rbrace \)</span>. Note that, by combining the predicted labels of the ensemble, we expect that the variance <span class="math notranslate nohighlight">\( \sigma_{e}^{2} \)</span> associated with the empirical classification error <span class="math notranslate nohighlight">\( CE_{test} \)</span> of the ensemble will be smaller than any variance <span class="math notranslate nohighlight">\( \lbrace \sigma_{b}^{2} \rbrace \)</span> associated with the classification errors <span class="math notranslate nohighlight">\( \lbrace CE_{test}^{(b)} \rbrace \)</span> of the individual decision trees <span class="math notranslate nohighlight">\( \lbrace {\cal T}^{(b)} \rbrace \)</span>. In addition to this, let us assume that in the best case scenario – for some aggregation procedure – <span class="math notranslate nohighlight">\( W_{e} \)</span> is given by the average of the random variables <span class="math notranslate nohighlight">\( \lbrace W_{b} \rbrace \)</span>, we expect then that – in this scenario – the variance <span class="math notranslate nohighlight">\( \sigma_{e}^{2} \)</span> associated with the ensemble <span class="math notranslate nohighlight">\( {\cal E} \)</span> will be the average of the variances <span class="math notranslate nohighlight">\( \lbrace \sigma_{b}^{2} \rbrace \)</span> associated with the individual classifiers. To summarize the discussion, for an arbitrary aggregation procedure, we write <div class="math notranslate nohighlight">
-\[ \frac{1}{B} \sum_{b=1}^{B} \sigma_{b}^{2} \leq \sigma_{e}^{2} \leq \sigma_{1}^{2}, \sigma_{2}^{2}, \ldots, \sigma_{B}^{2}, \]</div>
- i.e. the aggregation procedure reduces the variance associated with the individual classifiers leading to a more robust ensemble classifier in the sense its empirical error <span class="math notranslate nohighlight">\( CE_{test} \)</span> is less sensitive to the employed training and testing datasets: <span class="math notranslate nohighlight">\( {\cal D} \)</span> and <span class="math notranslate nohighlight">\( {\cal D}_{test} \)</span>. Finally, it is worth stressing that this discussion aims to motivate the ensemble approach, it does not intend to offer a rigorous proof regarding the ensemble performance.</p>
-</section>
-</div><p>Additive ensembles <span class="math notranslate nohighlight">\(f(x) = \sum_{i=1}^M w_i h_i(x)\)</span> wobei <span class="math notranslate nohighlight">\(w_i \in \mathbb R\)</span> und <span class="math notranslate nohighlight">\(h_i\)</span> sind DTs<br />
-Theorie: Die Rademacherkomplexität eines additiven Ensembles ist der gewichtete Durchschnitt der Einzelkomplexitäten jedes Baumes ⇒ im Durchschnitt kleine Bäume ⇒ gute Bound</p>
-<ul class="simple">
-<li><p>Beweis für den gewichteten Durchschnitt https://proceedings.mlr.press/v32/cortesb14.html</p></li>
-<li><p>Abschätzung über die Komplexität von Bäumen https://arxiv.org/abs/2111.04409</p></li>
-</ul>
-<p>Boosting: Trainiere kleine (in der Theorie stumps, in der Praxis Tiefe &lt;= 5) trees in Runden</p>
-<ul>
-<li><p>AdaBoost: Trainiere Klassifikationsbäume # In der Praxis vermutlich komplett durch XGBoost und Co. ersetzt</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-            h_{i+1} &amp;= \arg\min_h L(\sum_{i=1}^M w_i h_i(x) + h(x), D) \text{# Finde ein h}\\
-            w_{i+1}  &amp;= \arg\min_h L(\sum_{i=1}^M w_i h_i(x) + wh(x), D) \text{# Liniensuche für das optimale Gewicht}
-    \end{align*}\]</div>
-</li>
-<li><p>Gradient boosting: Trainiere Regressionsbäume (für ein Klassifikationsproblem)
+<section id="out-of-bag-error-estimate">
+<h2>Out Of Bag Error Estimate<a class="headerlink" href="#out-of-bag-error-estimate" title="Permalink to this headline">#</a></h2>
+<p>Although random forests are generally very robust, they can be somewhat sensitive to setting the parameter <span class="math notranslate nohighlight">\(\hat{d}\)</span>. Considering only a small subset of variables for each split reduces correlation (good) but can also reduce the strength of the trees (bad). In contrast, if you choose a high number of variables considered in each split, then the correlation is probably high (bad), but the strength might be increased (good). The number of features can be determined in random forests by means of the Out Of Bag (OOB) error estimate, which works similar to cross validation.</p>
+<p>Each bootstrap dataset <span class="math notranslate nohighlight">\(\mathcal{D}_j\)</span> generates a test set <span class="math notranslate nohighlight">\(\mathcal{T}_j=\mathcal{D}\setminus \mathcal{D}_j\)</span> containing those datapoints the tree hasn’t been trained on. Similarly to cross-validation, we can use the repeated splits into train and testset to obtain a fairly good estimate of the EPE. The Out Of Bag (OOB) error rate averages the random forest predictions, using for each prediction only those trees that haven’t seen the data point in training:
 <div class="math notranslate nohighlight">
-\[h_{i+t} = \arg\min_h L(\sum_{i=1}^M w_i h_i(x) + wh(x), D)\]</div>
- wobei D der Datensatz ist und w ein festes Gewicht  # Liniensuche wird meistens nicht mehr gemacht</p>
-<ul class="simple">
-<li><p>Bekannte Frameworks/Variationen: XGBoost (GPU Support + Regularisierung im Loss), LightGBM (GPU + sampling based DT Algorithmus), CatBoost (GPU + besonderes Loss für kategorische Variable)</p></li>
-</ul>
-</li>
-<li><p>Random Forest: Trainiere große Klassifikationsbäume parallel (Bagging + weitere Randomisierung beim Lernen der Bäume)
-(!) Das funktioniert gut entgegen der PAC Bound oben<br />
-Einzelne große Bäume = “Starke Lerner” ⇒ niedriger Bias, hohe Varianz
-Der Generalisierungsfehler eines RF ist die <span class="math notranslate nohighlight">\(\rho (1-s^2) / s^2\)</span> wobei <span class="math notranslate nohighlight">\(\rho\)</span> die Korrelation zwischen den Bäumen und s^2 den Bias der Bäume misst
-https://link.springer.com/article/10.1023/A:1010933404324<br />
-Eine weitere Erklärung für die Robustheit von RF gegenüber Noise in den Daten ist, dass RF effektiv interpolieren: Korrekte Datenpunkte kommen vermutlich in den meisten Bootstrap samples vor, sodass die meisten Bäume diese korrekt identifizieren, wobei noisy Punkte nur vereinzelnd vorkommen. Diese werden in jedem Baum isoliert (da jeder Baum overfittet) https://arxiv.org/abs/1504.07676</p></li>
-</ul>
+\[OOB = \frac1n\sum_{i=1}^n L_{01}(\mathrm{mode}(\{\hat{y}_{dtj}\mid (\vvec{x}_i,y_i)\in\mathcal{T}_j\}),y_i) \]</div>
+
+Since a third of the data points is not chosen for a bootstrap sample, we have for large datasets approximately <span class="math notranslate nohighlight">\(\frac n3\)</span> data points in each test set.</p>
+<p>Using the OOB, instead of cross-validation, is favorable for decision trees, since it makes efficient use of the created dataset splits during random forest training.</p>
 </section>
+</section>
+<section id="decision-boundary">
+<h1>Decision boundary<a class="headerlink" href="#decision-boundary" title="Permalink to this headline">#</a></h1>
+<p>We plot the decision boundary of a random forest for the two moons classification dataset. Below, we train 10 decision trees, considering only one randomly sampled feature for each split (since the dimensionality of the data is two, we can’t go higher if we want to restrict the number of features considered for each split).  We observe how the majority vote between the trees fracture the decision boundary in the area between the moons. The decision boundary indicates to us that the random forest is able to capture much more complex decision boundaries than a single tree. However, in this case, we do observe some overfitting areas where the decision boundary is adapting a lot to the points that reach into the other class. However, if you increase the number of trees in the forest, this behavior diminishes and the decision boundary becomes more smooth (in tendency).</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span><span class="p">,</span> <span class="n">LinearSegmentedColormap</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span>
+
+
+<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#a0c3ff&quot;</span><span class="p">,</span> <span class="s2">&quot;#ffa1cf&quot;</span><span class="p">])</span>
+<span class="n">cm_points</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#007bff&quot;</span><span class="p">,</span> <span class="s2">&quot;magenta&quot;</span><span class="p">])</span>
+<span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_features</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">oob_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">disp</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
+    <span class="n">rf</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">,</span>
+    <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
+    <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span>
+    <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cm_points</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Two moons classification Random Forest</span><span class="se">\n</span><span class="s2">OOB Acc </span><span class="si">{</span><span class="n">rf</span><span class="o">.</span><span class="n">oob_score_</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;scaled&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/classification_random_forests_4_0.png" src="_images/classification_random_forests_4_0.png" />
+</div>
+</div>
 </section>
 
     <script type="text/x-thebe-config">

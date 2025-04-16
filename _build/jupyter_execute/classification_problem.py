@@ -42,7 +42,7 @@
 # The goal is to find a classifier that predicts the correct labels $\hat{y}_i = y_i$.
 # `````
 # 
-# 
+# Classifiers, similar to regression models, are defined by their inference and their training. Inference describes how the model performs prediction of (unseen) data points. The training or learning describes how the model is generated, given the training data. 
 # ### Theoretical Optimality of a Classifier
 # ````{prf:property} i.i.d. Class Distribution
 # Under the i.i.d. class distribution assumption, we assume that the dataset samples are _identically_ distributed and _independently_ drawn from an _unknown_ probability distribution $ p^{\ast}({\bf x}, y) $, i.e. 

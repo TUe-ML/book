@@ -51,7 +51,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -255,7 +255,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_problem.html">
-     Classification Problem
+     Classification Objective
     </a>
    </li>
    <li class="toctree-l2">
@@ -270,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_naive_bayes.html">
-     Naïve Bayes
+     Naive Bayes
     </a>
    </li>
    <li class="toctree-l2">
@@ -395,6 +395,11 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bibliography.html">
+   Bibliography
+  </a>
  </li>
 </ul>
 
@@ -635,7 +640,7 @@ function <span class="math notranslate nohighlight">\(\lVert\cdot\rVert:\mathcal
 \end{align*}\]</div>
 <p>Two vectors are called <strong>orthonormal</strong> if they are orthogonal and have unit norm <span class="math notranslate nohighlight">\(\lVert \vvec{v}\rVert = \lVert\vvec{w}\rVert =1\)</span>.</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-368fd7c8d4ab3016ac8459acb5b21d73b9fb9250.svg" alt="Figure made with TikZ" /></p>
-</div><p>The inner product of a vector <span class="math notranslate nohighlight">\(\vvec{v}\)</span> and a normalized vector <span class="math notranslate nohighlight">\(\frac{\vvec{w}}{\lVert\vvec{w}\rVert}\)</span> computes the length of the <strong>projection</strong> <span class="math notranslate nohighlight">\(\vvec{p_v}\)</span> of <span class="math notranslate nohighlight">\(\vvec{v}\)</span> onto <span class="math notranslate nohighlight">\(\vvec{w}\)</span>:</p>
+</div><p id="lina-projection">The inner product of a vector <span class="math notranslate nohighlight">\(\vvec{v}\)</span> and a normalized vector <span class="math notranslate nohighlight">\(\frac{\vvec{w}}{\lVert\vvec{w}\rVert}\)</span> computes the length of the <strong>projection</strong> <span class="math notranslate nohighlight">\(\vvec{p_v}\)</span> of <span class="math notranslate nohighlight">\(\vvec{v}\)</span> onto <span class="math notranslate nohighlight">\(\vvec{w}\)</span>:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \cos(\phi)&amp;= \frac{\lVert\vvec{p}_v\rVert}{\lVert \vvec{v}\rVert}\\ 
@@ -761,10 +766,10 @@ $$X= U\Sigma V^\top, \text{ where}$$
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-0.6,  0.4, -0.1, -0.7],
-       [-0.3, -0.9, -0. , -0.3],
-       [-0.1,  0. ,  1. , -0. ],
-       [-0.8,  0.1, -0.1,  0.6]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-0.2,  0.6, -0.1, -0.8],
+       [-0.7, -0.6, -0.4, -0.2],
+       [-0.3, -0.2,  0.9, -0.1],
+       [-0.6,  0.5,  0. ,  0.6]])
 </pre></div>
 </div>
 </div>
@@ -776,10 +781,10 @@ $$X= U\Sigma V^\top, \text{ where}$$
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.0e+00,  6.4e-17,  2.3e-17, -2.1e-17],
-       [ 6.4e-17,  1.0e+00,  1.5e-17, -4.8e-18],
-       [ 2.3e-17,  1.5e-17,  1.0e+00,  8.0e-18],
-       [-2.1e-17, -4.8e-18,  8.0e-18,  1.0e+00]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.0e+00, -1.3e-16, -6.7e-17, -1.9e-16],
+       [-1.3e-16,  1.0e+00, -1.0e-16, -1.4e-16],
+       [-6.7e-17, -1.0e-16,  1.0e+00, -3.0e-17],
+       [-1.9e-16, -1.4e-16, -3.0e-17,  1.0e+00]])
 </pre></div>
 </div>
 </div>
@@ -791,8 +796,8 @@ $$X= U\Sigma V^\top, \text{ where}$$
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.5, 0. ],
-       [0. , 0.4]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.6, 0. ],
+       [0. , 0.3]])
 </pre></div>
 </div>
 </div>
@@ -805,8 +810,8 @@ $$X= U\Sigma V^\top, \text{ where}$$
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.5, 0. ],
-       [0. , 0.4],
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.6, 0. ],
+       [0. , 0.3],
        [0. , 0. ],
        [0. , 0. ]])
 </pre></div>

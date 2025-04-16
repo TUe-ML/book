@@ -91,6 +91,7 @@ np.set_printoptions(precision=1)
 # \node at (0.6,0.3) {$\frac{\pi}{2}$};
 # \end{tikzpicture}
 # ```
+# (lina_projection)=
 # The inner product of a vector $\vvec{v}$ and a normalized vector $\frac{\vvec{w}}{\lVert\vvec{w}\rVert}$ computes the length of the **projection** $\vvec{p_v}$ of $\vvec{v}$ onto $\vvec{w}$:
 # \begin{align*}
 # \cos(\phi)&= \frac{\lVert\vvec{p}_v\rVert}{\lVert \vvec{v}\rVert}\\ 

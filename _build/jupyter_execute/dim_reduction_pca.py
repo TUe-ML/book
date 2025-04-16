@@ -300,7 +300,7 @@ from JSAnimation import IPython_display
 from matplotlib import animation
 from IPython.display import HTML
 def animatePCA(i):
-    ax.cla()
+    ax.cla()#clear axes
     ax.axis('equal')
     ax.grid()
     global α,D,R

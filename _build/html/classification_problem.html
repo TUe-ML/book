@@ -51,7 +51,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -270,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_naive_bayes.html">
-     Naïve Bayes
+     Naive Bayes
     </a>
    </li>
    <li class="toctree-l2">
@@ -395,6 +395,11 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bibliography.html">
+   Bibliography
+  </a>
  </li>
 </ul>
 
@@ -687,8 +692,8 @@ title="Print to PDF"
 <section id="training-examples">
 <h2>Training examples<a class="headerlink" href="#training-examples" title="Permalink to this headline">#</a></h2>
 <p>Now let</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3fcfaf06-31ca-4759-aeeb-a87dc207951c">
-<span class="eqno">(39)<a class="headerlink" href="#equation-3fcfaf06-31ca-4759-aeeb-a87dc207951c" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-38971f02-dc2d-46a1-855b-94f0ae32c716">
+<span class="eqno">(39)<a class="headerlink" href="#equation-38971f02-dc2d-46a1-855b-94f0ae32c716" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\cal D} &amp;\triangleq&amp; \bigcup_{i=1}^{N} \lbrace \left( {\bf x}_{i}, y_{i} \right) \rbrace \\
 &amp;\equiv&amp; \lbrace \left( {\bf x}_{1}, y_{1} \right), \left( {\bf x}_{2}, y_{2} \right), \ldots, \left( {\bf x}_{N}, y_{N} \right) \rbrace \nonumber
 \end{eqnarray}\]</div>
@@ -713,6 +718,7 @@ title="Print to PDF"
 
 The goal is to find a classifier that predicts the correct labels <span class="math notranslate nohighlight">\(\hat{y}_i = y_i\)</span>.</p>
 </div>
+<p>Classifiers, similar to regression models, are defined by their inference and their training. Inference describes how the model performs prediction of (unseen) data points. The training or learning describes how the model is generated, given the training data.</p>
 </section>
 <section id="theoretical-optimality-of-a-classifier">
 <h2>Theoretical Optimality of a Classifier<a class="headerlink" href="#theoretical-optimality-of-a-classifier" title="Permalink to this headline">#</a></h2>
@@ -766,8 +772,8 @@ the Expected Prediction Error (EPE) of classifiers is the expected error</p>
 <span class="eqno">(44)<a class="headerlink" href="#equation-ml-estimator" title="Permalink to this equation">#</a></span>\[h^{\ast}({\bf x}) = \argmax_{y \in {\cal Y}} p^{\ast} ( y \mid {\bf x}),\]</div>
 <p>where <span class="math notranslate nohighlight">\( p^{\ast} ( y \mid {\bf x}) \)</span> is the true likelihood function. In this case, it indicates how likely a particular label <span class="math notranslate nohighlight">\( y \)</span> represents the true class value given that a feature vector <span class="math notranslate nohighlight">\( {\bf x} \)</span> was observed.</p>
 <p>Note that we can multiply the right-hand side of <a class="reference internal" href="#equation-ml-estimator">(44)</a> by the true marginal distribution <span class="math notranslate nohighlight">\( p^{\ast}({\bf x}) \)</span> without affecting the result</p>
-<div class="amsmath math notranslate nohighlight" id="equation-173fb352-1ff5-4a78-a124-952cd790a2af">
-<span class="eqno">(45)<a class="headerlink" href="#equation-173fb352-1ff5-4a78-a124-952cd790a2af" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-373871dc-6ea3-4c83-9527-d4c8f3953a73">
+<span class="eqno">(45)<a class="headerlink" href="#equation-373871dc-6ea3-4c83-9527-d4c8f3953a73" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 h^{\ast}({\bf x}) &amp;=&amp; \argmax_{y \in {\cal Y}} p^{\ast} ( y \mid {\bf x}) \, p^{\ast}({\bf x}) \nonumber \\
 &amp;=&amp; \argmax_{y \in {\cal Y}} p^{\ast} ({\bf x}, y) \nonumber
 \end{eqnarray}\]</div>

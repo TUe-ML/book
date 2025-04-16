@@ -22,6 +22,7 @@ import matplotlib.pyplot as plt
 from sklearn.inspection import DecisionBoundaryDisplay
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 from sklearn.datasets import make_moons
+mpl.rcParams['figure.dpi'] = 200
 
 
 X,y = make_moons(noise=0.3, random_state=0, n_samples=200)
@@ -29,41 +30,42 @@ X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.4, random_state=42
     )
 
-fig, axs = plt.subplots(ncols=2, figsize=(12, 5))
-cm_0 = LinearSegmentedColormap.from_list("mycmap", ["#ffffff","#a0c3ff"])
-cm_1 = LinearSegmentedColormap.from_list("mycmap", ["#ffffff", "#ffa1cf"])
-cmaps = [cm_0,cm_1]
+_, ax = plt.subplots(ncols=1, figsize=(12, 5))
+cm = ListedColormap(["#a0c3ff", "#ffa1cf"])
 cm_points = ListedColormap(["#007bff", "magenta"])
-for ax, k in zip(axs, (0,1)):
-    gnb = GaussianNB()
-    y_pred = gnb.fit(X_train, y_train)
-    x = np.arange(-2, 3, 0.05)
-    y = np.arange(-2, 3, 0.05)
+gnb = GaussianNB()
+y_pred = gnb.fit(X_train, y_train)
+disp = DecisionBoundaryDisplay.from_estimator(
+    gnb,
+    X_test,
+    response_method="predict",
+    plot_method="pcolormesh",
+    shading="auto",
+    alpha=0.5,
+    ax=ax,
+    cmap=cm,
+)
+scatter = disp.ax_.scatter(X_train[:, 0], X_train[:, 1], c=y_train, edgecolors="k",cmap = cm_points)
+_ = disp.ax_.set_title(
+    f"Two moons classification Gaussian Naive Bayes\nTest Acc {np.mean(gnb.predict(X_test) == y_test)}"
+)
+ax.axis('scaled')
 
-    xx, yy = np.meshgrid(x, y)
-    X = np.array([xx,yy]).reshape(2,x.shape[0]*y.shape[0]).T
-    Z = gnb.predict_joint_log_proba(np.c_[xx.ravel(), yy.ravel()])
-    h = ax.contourf(x,y,Z[:,k].reshape((y.shape[0],x.shape[0])),cmap=cmaps[k])
-
-    ax.axis('scaled')
-    scatter = ax.scatter(X_train[:, 0], X_train[:, 1], c=y_train, edgecolors="k",cmap = cm_points)
-    _ = ax.set_title(
-        f"Two moons log p(x,y={k}) Gaussian Naive Bayes"
-    )
-    
 plt.show()
 
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-Input [0;32mIn [3][0m, in [0;36m<cell line: 18>[0;34m()[0m
-[1;32m     17[0m cm_points [38;5;241m=[39m ListedColormap([[38;5;124m"[39m[38;5;124m#007bff[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mmagenta[39m[38;5;124m"[39m])
-[1;32m     18[0m [38;5;28;01mfor[39;00m ax, k [38;5;129;01min[39;00m [38;5;28mzip[39m(axs, ([38;5;241m0[39m,[38;5;241m1[39m)):
-[0;32m---> 19[0m     gnb [38;5;241m=[39m [43mGaussianNB[49m()
-[1;32m     20[0m     y_pred [38;5;241m=[39m gnb[38;5;241m.[39mfit(X_train, y_train)
-[1;32m     21[0m     x [38;5;241m=[39m np[38;5;241m.[39marange([38;5;241m-[39m[38;5;241m2[39m, [38;5;241m3[39m, [38;5;241m0.05[39m)
+Input [0;32mIn [4][0m, in [0;36m<cell line: 6>[0;34m()[0m
+[1;32m      4[0m [38;5;28;01mfrom[39;00m [38;5;21;01mmatplotlib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mcolors[39;00m [38;5;28;01mimport[39;00m ListedColormap, LinearSegmentedColormap
+[1;32m      5[0m [38;5;28;01mfrom[39;00m [38;5;21;01msklearn[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdatasets[39;00m [38;5;28;01mimport[39;00m make_moons
+[0;32m----> 6[0m [43mmpl[49m[38;5;241m.[39mrcParams[[38;5;124m'[39m[38;5;124mfigure.dpi[39m[38;5;124m'[39m] [38;5;241m=[39m [38;5;241m200[39m
+[1;32m      9[0m X,y [38;5;241m=[39m make_moons(noise[38;5;241m=[39m[38;5;241m0.3[39m, random_state[38;5;241m=[39m[38;5;241m0[39m, n_samples[38;5;241m=[39m[38;5;241m200[39m)
+[1;32m     10[0m X_train, X_test, y_train, y_test [38;5;241m=[39m train_test_split(
+[1;32m     11[0m         X, y, test_size[38;5;241m=[39m[38;5;241m0.4[39m, random_state[38;5;241m=[39m[38;5;241m42[39m
+[1;32m     12[0m     )
 
-[0;31mNameError[0m: name 'GaussianNB' is not defined
-NameError: name 'GaussianNB' is not defined
+[0;31mNameError[0m: name 'mpl' is not defined
+NameError: name 'mpl' is not defined
 

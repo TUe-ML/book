@@ -193,6 +193,7 @@ import matplotlib.pyplot as plt
 from sklearn.inspection import DecisionBoundaryDisplay
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 from sklearn.datasets import make_moons
+mpl.rcParams['figure.dpi'] = 200
 
 
 X,y = make_moons(noise=0.3, random_state=0, n_samples=200)
@@ -217,7 +218,7 @@ disp = DecisionBoundaryDisplay.from_estimator(
 )
 scatter = disp.ax_.scatter(X_train[:, 0], X_train[:, 1], c=y_train, edgecolors="k",cmap = cm_points)
 _ = disp.ax_.set_title(
-    f"Two moons classification Gaussian Naive Bayes"
+    f"Two moons classification Gaussian Naive Bayes\nTest Acc {np.mean(gnb.predict(X_test) == y_test)}"
 )
 ax.axis('scaled')
 

@@ -2,126 +2,422 @@
 # coding: utf-8
 
 # ## Support Vector Machines
+# The classifiers we have seen so far have used various ways to define a decision boundary. KNN classifiers use a local view given by the neighbors, resulting in a nonlinear, typically fractured decision boundary, Naive Bayes has used elliptic (Gaussian) definitions of the likelihood to delineate between classes, and decision trees use hypercubed to define their decision boundary. Support Vector Machines (SVMs) use a hyperplane to delineate the classes, and the main motivation of the SVM is to ask what the best hyperplane is if the classes is separable. Let's have a look at a simple example with two classes and some options for defining the separating hyperplane.
 # 
-# ### A word on hyperplanes
+
+# In[1]:
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from JSAnimation import IPython_display
+from matplotlib import animation
+from IPython.display import HTML
+from sklearn import svm
+def animateHyperplane(i):
+    ax.cla()#clear axes
+    ax.axis('equal')
+    ax.grid()
+    ax.set_ylim(-2.5,12)
+    global D,y,slope,intercept
+    ax.scatter(D[y == 0][:, 0], D[y == 0][:, 1], color='blue', s=10)
+    ax.scatter(D[y == 1][:, 0], D[y == 1][:, 1], color='magenta', s=10)
+    # plot hyperplane
+    x_vals = np.linspace(D[:, 0].min() - 5, D[:, 0].max() + 5, 100)
+    y_vals = slope[i] * x_vals + intercept[i]
+    
+    ax.plot(x_vals, y_vals,'k-',label=f'Hyperplane {i+1}')
+    ax.set_title('What is the best separating hyperplane?')
+    ax.legend()
+    return
+
+# Generate synthetic 2D data
+D, y = make_blobs(n_samples=50, centers=2, cluster_std=1.0, random_state=42)
+clf = svm.SVC(kernel='linear')
+clf.fit(D, y)
+w = clf.coef_[0]
+b = clf.intercept_[0]
+slope = [1,2,-w[0]/w[1],0.1,8]
+intercept=[7,0,-b/w[1],4.5,-6]
+
+fig = plt.figure()
+ax = plt.axes()
+
+anim = animation.FuncAnimation(fig, animateHyperplane, frames=5, interval=200, blit=False)
+
+plt.close()
+HTML(anim.to_jshtml())
+
+
+# What do you think is the best hyperplane? Think about what happens if we consider test data points of the two blobs. The test data might reach a bit outwards from the training data blobs. Hence, we don't want that the hyperplane is too close to one of the blobs. The best hyperplane is the one that is equidistant to both blobs, Hyperplane 3. Mathematically, this is expressed by the idea to maximize the margin, 
+
+# In[2]:
+
+
+dist = np.abs(D@w+b)/np.linalg.norm(w)
+np.argmin(dist)
+
+
+# In[3]:
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.svm import SVC
+
+# 1. Create toy data
+X, y = make_blobs(n_samples=40, centers=2, cluster_std=1.0, random_state=42)
+
+# 2. Train linear SVM
+clf = SVC(kernel="linear", C=1)
+clf.fit(X, y)
+
+# 3. Extract weights and bias
+w = clf.coef_[0]
+b = clf.intercept_[0]
+
+# 4. Define decision boundary and margin functions
+def decision_function(x):
+    return -(w[0]*x + b) / w[1]
+
+def plot_margin(ax, X, y, w, b):
+    # Plot decision boundary and margins
+    x_vals = np.linspace(X[:, 0].min() - 1, X[:, 0].max() + 1, 500)
+    ax.plot(x_vals, decision_function(x_vals), 'k-', label="decision boundary")
+    ax.plot(x_vals, decision_function(x_vals - 1/np.linalg.norm(w)), 'k--', label="margin -1")
+    ax.plot(x_vals, decision_function(x_vals + 1/np.linalg.norm(w)), 'k--', label="margin +1")
+
+# 5. Plot
+fig, ax = plt.subplots(figsize=(7, 5))
+
+# Plot points
+ax.scatter(X[y == 0][:, 0], X[y == 0][:, 1], color='blue', label='Class 0')
+ax.scatter(X[y == 1][:, 0], X[y == 1][:, 1], color='red', label='Class 1')
+
+# Plot decision boundary and margins
+plot_margin(ax, X, y, w, b)
+
+# Highlight support vectors
+ax.scatter(clf.support_vectors_[:, 0], clf.support_vectors_[:, 1], 
+           s=100, facecolors='none', edgecolors='black', label='Support Vectors')
+
+# Optional: draw arrows (distances) to hyperplane
+def signed_distance(x):
+    return (np.dot(x, w) + b) / np.linalg.norm(w)
+
+for x in clf.support_vectors_:
+    proj = x - signed_distance(x) * w / np.linalg.norm(w)
+    ax.annotate('', xy=proj, xytext=x, arrowprops=dict(arrowstyle='->', color='gray'))
+
+ax.set_xlim(X[:, 0].min() - 1, X[:, 0].max() + 1)
+ax.set_ylim(X[:, 1].min() - 1, X[:, 1].max() + 1)
+ax.set_title("SVM Decision Boundary and Margins")
+ax.set_xlabel("x1")
+ax.set_ylabel("x2")
+ax.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+
+# In[4]:
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.svm import SVC
+
+# Generate 2D data
+X, y = make_blobs(n_samples=40, centers=2, random_state=42)
+
+# Train SVM
+clf = SVC(kernel="linear", C=1)
+clf.fit(X, y)
+w = clf.coef_[0]
+b = clf.intercept_[0]
+
+# Decision boundary function
+def f(x): return -(w[0]*x + b)/w[1]
+
+# Margin offset
+margin = 1 / np.linalg.norm(w)
+
+# X range
+x_vals = np.linspace(X[:, 0].min() - 1, X[:, 0].max() + 1, 500)
+
+# Create margin boundaries
+lower_margin = f(x_vals) - margin
+upper_margin = f(x_vals) + margin
+
+# Plot
+fig, ax = plt.subplots(figsize=(7, 5))
+ax.scatter(X[y == 0][:, 0], X[y == 0][:, 1], color='blue', label='Class 0')
+ax.scatter(X[y == 1][:, 0], X[y == 1][:, 1], color='red', label='Class 1')
+
+# Fill margin area
+ax.fill_between(x_vals, lower_margin, upper_margin, color='c', alpha=0.2)
+
+# Decision boundary and margins
+ax.plot(x_vals, f(x_vals), 'k-', label='Decision Boundary')
+ax.plot(x_vals, upper_margin, 'k--', label='Margin +1')
+ax.plot(x_vals, lower_margin, 'k--', label='Margin -1')
+
+# Support vectors
+ax.scatter(clf.support_vectors_[:, 0], clf.support_vectors_[:, 1],
+           s=100, facecolors='none', edgecolors='black', label='Support Vectors')
+ax.set_title("SVM with Margin Highlighted")
+ax.set_xlabel("x1")
+ax.set_ylabel("x2")
+ax.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+
+# ### Defining Hyperplanes Mathematically
+# A hyperplane is a generalization of a line (in 2D) or a plane (in 3D) to any number of dimensions.
+# In $\mathbb{R}^d$, a hyperplane is a flat, $(d−1)$-dimensional subspace that divides the space into two halves.
+# ```{prf:definition}
+# Given a vector $\vvec{w}\in\mathbb{R}^d$ and value $b\in\mathbb{R}$, then
+# a hyperplane is defined as the set of all points satisfying the equation
+# $$\mathcal{H}_{\vvec{w},b} = \{\vvec{x}\in\mathbb{R}^d\mid\vvec{w}^\top \vvec{x}+b=0\}.$$
+# The vector $\vvec{w}$ is called the **normal vector** and $b$ is called **bias**.
+# ```
+# Why are hyperplanes defined like that? We first have a look at a hyperplane with no bias ($b=0$). The plot below shows a hyperplane defined as $\vvec{w}^\top \vvec{x}=0$ and the normal vector $\vvec{w}$. Recall from {ref}`lina_projection` that a vector product with a norm one vector $\tilde{\vvec{w}}=\vvec{w}/\lVert \vvec{w}\rVert$ has a geometric interpretation as the length of the projection of $\vvec{x}$ onto $\tilde{\vvec{w}}$. Hence, all vectors satisfying
+# $$\vvec{w}^\top\vvec{x}=0\Leftrightarrow \frac{\vvec{w}^\top}{\lVert \vvec{w}\rVert}\vvec{x}=0\Leftrightarrow \tilde{\vvec{w}}^\top\vvec{x}=0$$
+# land on the origin when being projected onto $\vvec{w}$.
+# ```{tikz}
+# \begin{tikzpicture}[scale=1.2, thick, >=Stealth]
 # 
-# Let the expression $$ {\bf w}^{T} {\bf x} - b = 0 $$ -- parameterized by a coefficient vector $ {\bf w} = \begin{bmatrix} w_{1} & w_{2} & \ldots & w_{D} \end{bmatrix}^{T} $ and an offset term $ b $ -- denote a hyperplane in the space $ {\cal X} $. Note that $$ {\bf w}^{T} {\bf x} = w_{1}x_{1} + w_{2}x_{2} + \ldots + w_{D}x_{D} $$ is the inner product of vectors $ {\bf w} $ and $ {\bf x} $ such that $$ {\bf w}^{T} {\bf x} = 0 \Leftrightarrow {\bf w} \perp {\bf x}. $$ Hence, vectors $ {\bf x} = \begin{bmatrix} x_{1} & x_{2} & \ldots & x_{D} \end{bmatrix}^{T} $ satisfying $ {\bf w}^{T} {\bf x} - b = 0 $ determine a  hyperplane orthogonal to $ {\bf w} $. Reciprocally, the coefficient vector $ {\bf w} $ determines the orientation of the hyperplane $ {\bf w}^{T} {\bf x} - b = 0 $.
+#   % Axes
+#   \draw[->,thin] (-1, 0) -- (4, 0) node[anchor=west] {$x_1$};
+#   \draw[->,thin] (0, -2) -- (0, 4) node[anchor=south] {$x_2$};
 # 
-# Moreover, we assume that $ {\bf w} $ is oriented to the positive side of the hyperplane. In this sense, the hyperplane segments the space into a *negative* side and a *positive* side. Specifically, a vector $ {\bf x} $ resides in the hyperplane when it satisfies the equality $ {\bf w}^{T} {\bf x} - b = 0 $. On the other hand, it falls in the *negative* or *positive* -- actually, non-negative -- sides when one of the following inequalities holds
+#   % Normal vector w = (2,1)
+#   \coordinate (origin) at (0,0);
+#   \coordinate (w) at (2,1);
+#   \draw[->, ultra thick, magenta] (origin) -- (3,1.5) node[anchor=south east] {$\mathbf{w}$};
+# 
+#   % Hyperplane: 2x + y  = 0 → y = -2x  sqrt(5)
+#   \draw[black, thick, domain=1:-2] plot (\x, {-2*\x}) node[anchor=north west, right =4pt] {$\tilde{\mathbf{w}}^\top \mathbf{x} = 0$};
+# 
+# \end{tikzpicture}
+# ```
+
+# In[5]:
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the normal vector w (e.g., 2D)
+w = np.array([2, 1])  # change this to try different orientations
+
+# Generate x values
+x_vals = np.linspace(-5, 5, 100)
+
+# Hyperplane: w^T x = 0 → w1*x + w2*y = 0 → y = -w1/w2 * x
+slope = -w[0] / w[1]
+y_vals = slope * x_vals
+
+# Plot
+fig, ax = plt.subplots(figsize=(6, 6))
+ax.plot(x_vals, y_vals, 'k-', label=r'$w^\top x = 0$ (hyperplane)')
+
+# Plot the normal vector from origin
+ax.quiver(0, 0, w[0], w[1], angles='xy', scale_units='xy', scale=1, color='magenta')
+
+# Format
+ax.set_xlim(-3, 5)
+ax.set_ylim(-2, 4)
+ax.axhline(0, color='gray', linewidth=0.5)
+ax.axvline(0, color='gray', linewidth=0.5)
+ax.set_aspect('equal')
+ax.grid(True)
+ax.set_title("Hyperplane (no bias) and Normal Vector")
+ax.legend()
+plt.tight_layout()
+plt.show()
+
+
+# Now, we can define all kinds of lengths that the projection onto $\tilde{\vvec{w}}$ shall have. For example, we can define the hyperplane that's orthogonal to the normal vector $\vvec{w}$ from the plot above, and that has distance two to the origin as the hyperplane 
+# $$\frac{\vvec{w}^\top}{\lVert\vvec{w}\rVert} \vvec{x}=2\Leftrightarrow \tilde{\vvec{w}}^\top\vvec{x}=2.$$
+# This hyperplane is plotted below.
+# ```{tikz}
+# \begin{tikzpicture}[scale=1.2, thick, >=Stealth]
+# 
+#   % Axes
+#   \draw[->,thin] (-1, 0) -- (4, 0) node[anchor=west] {$x_1$};
+#   \draw[->,thin] (0, -2) -- (0, 4) node[anchor=south] {$x_2$};
+# 
+#   % Normal vector w = (2,1)
+#   \coordinate (origin) at (0,0);
+#   \coordinate (w) at (2,1);
+#   \draw[->, ultra thick, magenta] (origin) -- (3,1.5) node[anchor=south east] {$\mathbf{w}$};
+# 
+#   % Hyperplane: 2x + y - 2 sqrt(5) = 0 → y = -2x + 2 sqrt(5)
+#   \draw[black, thick, domain=2.8:0.2] plot (\x, {-2*\x + 2*sqrt(5)}) node[anchor=north west, right =4pt] {$\tilde{\mathbf{w}}^\top \mathbf{x} = 2$};
+# 
+#   % Projection of origin onto hyperplane
+#   % Formula: p = b * w / ||w||^2 → with w = (2,1), b = 2
+#   \coordinate (proj) at ($(2/2.23*2, 2/2.23*1)$); % = (-0.8, -0.4)
+# 
+#   % Brace-like annotation
+#   \draw [decorate,decoration={brace,mirror,raise=6pt}, blue, ultra thick] (origin) -- (proj) node[midway, right=13pt, below=12pt, blue] {$\displaystyle \frac{|b|}{\|w\|}=2$};
+# 
+# \end{tikzpicture}
+# ```
+
+# In[6]:
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Normal vector w and bias b
+w = np.array([2, 1])*1.5
+b = -2*np.linalg.norm(w)  # nonzero bias
+
+
+# Hyperplane: w^T x + b = 0 → y = -(w1*x + b)/w2
+x_vals = np.linspace(-5, 5, 100)
+y_vals = -(w[0] * x_vals + b) / w[1]
+
+# Distance from origin to hyperplane
+margin = abs(b) / np.linalg.norm(w)
+projection = -b * w / np.dot(w, w)  # projection of origin onto hyperplane
+
+# Plot
+fig, ax = plt.subplots(figsize=(6, 6))
+
+# Hyperplane
+ax.plot(x_vals, y_vals, 'k-', label=r'Hyperplane: $\tilde{w}^\top x  = 2$')
+
+# Normal vector
+ax.quiver(0, 0, w[0], w[1], angles='xy', scale_units='xy', scale=1, color='magenta')
+
+# Simulated brace using a rotated "{" character
+brace_x, brace_y = projection / 2
+ax.text(brace_x, brace_y-0.1, '{', fontsize=80, ha='center', va='center', rotation=115, color='blue')
+
+# Distance label next to the brace
+ax.text(brace_x + 0.5, brace_y-1.1, f"{margin:.0f}", fontsize=20, color='blue', va='center')
+
+# Plot settings
+ax.set_xlim(-3, 5)
+ax.set_ylim(-2, 4)
+ax.axhline(0, color='gray', linewidth=0.5)
+ax.axvline(0, color='gray', linewidth=0.5)
+ax.set_aspect('equal')
+ax.grid(True)
+ax.set_title("Hyperplane with Bias")
+ax.legend()
+plt.tight_layout()
+plt.show()
+
+
+# The hyperplane from the plot above is likewise defined as the points $\vvec{x}$ satisfying
+# $$\vvec{w}^\top \vvec{x} - 2\lVert\vvec{w}\rVert=0,$$
+# which adheres to the general definition of a hyperplane with $b=-2\lVert\vvec{w}\rVert$. Keep in mind, that we can interpret this hyperplane equation when dividing by the norm of the vector $\vvec{w}$.
+# As a result, geometrically we can say that $\vvec{w}$ controls the orientation of the hyperplane, and $b$ controls the offset from the origin.
+
+# ### Inference of a Linear SVM for Binary Classification
+# A hyperplane divides a space into two halves. Assuming now that we have only two classes (a binary classification problem). The hyperplane should be positioned such that one class is on one side and the other class is on the other. We can call the sides *positive* and *negative*, the positive side is the one the normal vector points to and the negative is the other side. 
+# 
 # \begin{eqnarray}
-# {\bf w}^{T} {\bf x} - b &<& 0\,\, \mbox{(negative side)} \nonumber \\
-# {\bf w}^{T} {\bf x} - b &\geq& 0\,\, \mbox{(positive side)}. \nonumber
+# {\bf w}^{T} {\bf x} + b &<& 0\,\, \mbox{(negative side)} \nonumber \\
+# {\bf w}^{T} {\bf x} + b &\geq& 0\,\, \mbox{(positive side)}. \nonumber
 # \end{eqnarray}
 # 
-# ```{figure} /images/classification/distance_hyperplane_02.png
-# ---
-# height: 320px
-# name: distance_hyperplane_02_fig
-# align: left
-# ---
-# Hyperplane splitting a bidimensional space with $ {\bf x} = \begin{bmatrix} x_{1} & x_{2} \end{bmatrix}^{T} $. The *positive* and *negative* sides of the hyperplane are highlighted in light blue and light red colors, respectively. The coefficients vector $ {\bf w} $ is normal to the hyperplane by construction. We also assume that it is oriented towards the *positive* side of the hyperplane.
+# ```{tikz}
+# \begin{tikzpicture}[scale=1.2, thick, every node/.style={font=\large}]
+#   % Limit the drawing area
+#   \clip (-5, -4) rectangle (4.5, 3.5);
+#   % Define the hyperplane: (2x + y)/sqrt(5) = 2 → y = -2x +2/sqrt(5)
+#   \def\slope{-2}
+#   \def\intercept{2/2.23}
+# 
+#   % Draw two colored regions
+#   \fill[blue!10] (-3,{\slope*(-2) + \intercept}) -- (4,{\slope*(-3) + \intercept})-- (4,{\slope*4 + \intercept}) -- cycle;
+#   \fill[red!10] (-3,{\slope*3 + \intercept}) -- (3,{\slope*3 + \intercept}) -- (-3,{\slope*(-3) + \intercept}) -- cycle;
+# 
+#   % Draw the hyperplane
+#   \draw[black, thick] (-2, {\slope*(-2) + \intercept}) -- (2, {\slope*2 + \intercept}) node[anchor=north west,below=2pt] {$\mathbf{w}^\top \mathbf{x} + b = 0$};
+# 
+#   % Axes
+#   \draw[->,thin] (-3, 0) -- (3, 0) node[anchor=west] {$x_1$};
+#   \draw[->,thin] (0, -3.5) -- (0, 3) node[anchor=south] {$x_2$};
+# 
+#   % Normal vector w = (2,1)
+#   \draw[->, ultra thick, magenta] (0, 0) -- (1, 0.5) node[anchor=south west] {$\mathbf{w}$};
+#   \node at (2, 2) {$\mathbf{w}^\top \mathbf{x} + b > 0$};
+#   \node at (-1.5, -1.5) {$\mathbf{w}^\top \mathbf{x} + b < 0$};
+# \end{tikzpicture}
 # ```
-# 
-# Now, let the function
-# \begin{equation}
-# d({\bf x}; {\bf w}, b) = \frac{ {\bf w}^{T} {\bf x} - b }{|| {\bf w} ||}
-# \end{equation}
-# define the *signed* distance between an input vector $ {\bf x} $ and the hyperplane defined by $ {\bf w} $ and $ b $, where the operator $ || \cdot || $ denotes the $ L_{2} $ (Euclidean) norm. Note that the signal of this distance measurement indicates whether the input vector $ {\bf x} $ resides on the negative -- $ d({\bf x}; {\bf w}, b) < 0 $ -- or positive -- $ d({\bf x}; {\bf w}, b) > 0 $ -- side of the hyperplane. Lastly, the offset term $ b $ determines the signed distance of the hyperplane from the origin of the feature space, since $$ d({\bf 0}; {\bf w}, b) = \frac{b}{|| {\bf w} ||}. $$
-# 
-# ```{figure} /images/classification/distance_hyperplane_06.png
-# ---
-# height: 320px
-# name: distance_hyperplane_06_fig
-# align: left
-# ---
-# Hyperplane splitting a bidimensional feature space with $ {\bf x} = \begin{bmatrix} x_{1} & x_{2} \end{bmatrix}^{T} $. Note that the offset term $ b $ determines the distance of the hyperplane from the origin $ {\bf 0} = \begin{bmatrix} 0 & 0 \end{bmatrix}^{T} $. In this case, $ b < 0 $ as the origin falls on the *negative* side of the hyperplane.
+# This way, we can define the inference of the SVM for the binary classification problem
+# ```{prf:definition} SVM for binary Classification
+# An SVM classifier for a binary classification problem ($y\in\{-1,1\}$) reflects the distance to the decision boundary $\vvec{w}^\top \vvec{x}+b=0$
+# $$f_{svm}(\vvec{x}) = \vvec{w}^\top \vvec{x}+b.$$
+# If $f_{svm}(\vvec{x})$ is positive, then we predict class 1, and otherwise class -1. Using the sign function
+# $$ \sign(a) = \begin{cases} +1 & \text{ if } a \geq 0 \\ -1 & \text{ otherwise}  \end{cases}, $$ 
+# we define the class prediction as
+# $$\hat{y} = \sign(\vvec{w}^\top \vvec{x}+b).$$
 # ```
-# 
-# ### Basic principle
-# 
-# Support Vector Machines (SVMs) use hyperplanes to separate data items from multiple classes. For the sake of simplicity, let us restrict the discussion first to the binary classification problem, i.e $ {\cal Y} = \lbrace \ell_{1}, \ell_{2} \rbrace $. Now, let us further assume that the training dataset $$ {\cal D} = \bigcup_{i=1}^{N} \lbrace \left( {\bf x}_{i}, y_{i} \right) \rbrace, $$ in which $ {\bf x}_{i} \in {\cal X} $ and $ y_{i} \in {\cal Y} $, $ \forall i \in \lbrace 1, 2, \ldots N \rbrace $, is linearly separable in the sense that there is at least one hyperplane $$ {\bf w}^{T} {\bf x} - b = 0 $$ in the feature space $ {\cal X} $ that is able to separate the training examples such that data items in $ {\cal D} $ assigned to different labels $ \ell_{1} $ and $ \ell_{2} $ are in different sides of the hyperplane. In precise mathematical terms, $ \exists {\bf w} \in \mathbb{R}^{D} \wedge b \in \mathbb{R} $ such that the following holds $ \forall i \in \lbrace 1, 2, \ldots, N \rbrace $
-# ```{math}
-# :label: cond1
-# {\bf w}^{T} {\bf x}_{i} - b < 0\,\, \mbox{ if } y_{i} = \ell_{1}
-# ```
-# ```{math}
-# :label: cond2
-# {\bf w}^{T} {\bf x}_{i} - b \geq 0\,\, \mbox{ if } y_{i} = \ell_{2}.
-# ```
-# 
-# Alternatively, let the function $$ \sgn(a) = \left\lbrace \begin{matrix} +1 & \mbox{if } a \geq 0 \\ -1 & \mbox{otherwise} \end{matrix} \right. $$ indicate the sign of a real number $ a \in \mathbb{R} $. For a linearly separable binary classification problem, we can find a hyperplane defined by parameters $ \tilde{\bf w} $ and $ \tilde{b} $ that satisfies the conditions {eq}`cond1` and {eq}`cond2` and use then this hyperplane to build a classifier by plugging $ \tilde{\bf w} $ and $ \tilde{b} $ into
-# ```{math}
-# :label: hyperplane_classifier
-# h({\bf x}; {\bf w}, b) = \sgn({\bf w}^{T} {\bf x}_{i} - b)
-# ```
-# such that labels $ \ell_{1} = -1 $ and $ \ell_{2} = +1 $.
-# 
-# ````{prf:remark}
-# In general, there are multiple hyperplanes satisfying conditions {eq}`cond1` and {eq}`cond2`. Thus, we need to setup some optimization criteria to select the best hyperplane.
-# 
-# ```{figure} /images/classification/svm_hyperplane_1.svg
-# ---
-# height: 320px
-# name: svm_hyperplane_1_fig
-# align: left
-# ---
-# A hyperplane parameterized by $ \tilde{\bf w}$ and $ \tilde{b} $ separating the training samples in $ {\cal D} $. Training data items colored in <span style="color: red;">red</span> and <span style="color: blue;">blue</span> are assigned to labels $ \ell_{1} = -1 $ and $ \ell_{2} = +1 $, respectively. The observed data item $ \check{\bf x} $ is assigned to a label $ \hat{y} = h(\check{\bf x}; \tilde{\bf w}, \tilde{b}) $ according to the side of the hyperplane -- illustrated by the solid line -- it resides. The proposed classifier works fine for the particular samples in $ {\cal D} $, but its hyperplane seems too close to some <span style="color: red;">red</span> samples.
-# ```
-# ````
-# 
-# Now, let the dataset partitions $$ {\cal D}_{-1} = \lbrace \left( {\bf x}', y' \right) \in {\cal D} \mid y' = -1 \rbrace $$ and $$ {\cal D}_{+1} = \lbrace \left( {\bf x}', y' \right) \in {\cal D} \mid y' = +1 \rbrace $$ collect the training samples assigned respectively to the class labels $ \ell_{1} = -1 $ and $ \ell_{2} = +1 $.
-# 
-# We define the margin as the distance between two parallel hyperplanes touching the dataset partitions $ {\cal D}_{-1} $ and $ {\cal D}_{+1} $ such that none of the training samples in $ {\cal D} $ fall within the region between the two hyperplanes. The decision boundary correspond to a hyperplane with parameters $ {\bf w} $ and $ b $ equidistant to these parallel hyperplanes.
-# 
-# We seek to select the decision boundary that maximizes the margin between $ {\cal D}_{-1} $ and $ {\cal D}_{+1} $. Equivalently, we seek to select parameters $ {\bf w}^{\ast} $ and $ b^{\ast} $ defining a linear decision boundary such that the equidistant hyperplanes touching the dataset partitions $ {\cal D}_{-1} $ and $ {\cal D}_{+1} $ have maximum distance. 
-# 
-# More precisely, let $$ m_{-1}({\bf w}, b) = \min_{\left( {\bf x}', y' \right) \in {\cal D}_{-1}} - d({\bf x}'; {\bf w}, b) $$ and $$ m_{+1}({\bf w}, b) = \min_{\left( {\bf x}', y' \right) \in {\cal D}_{+1}} d({\bf x}'; {\bf w}, b) $$ denote the *non-signed* distances between the hyperplane defined by $ {\bf w} $ and $ b $ and the closest point(s) in the dataset partitions $ {\cal D}_{-1} $ and $ {\cal D}_{+1} $, respectively. The parameters of the hyperplane that provides the maximum margin between the dataset partitions $ {\cal D}_{-1} $ and $ {\cal D}_{+1} $ are given by
-# ```{math}
-# :label: svm_form_1
-# \begin{eqnarray}
-# \left( {\bf w}^{\ast}, b^{\ast} \right) &=& \argmax_{\left( {\bf w}, b \right) \in \mathbb{R}^{D+1}} \left\lbrace m_{-1}({\bf w}, b) + m_{+1}({\bf w}, b) \right\rbrace \\
-# s.t. && m_{-1}({\bf w}, b) = m_{+1}({\bf w}, b) \\
-# && h({\bf x}_{i}; {\bf w}, b) = y_{i}, \,\,\, \forall \left( {\bf x}_{i}, y_{i} \right) \in {\cal D}.
-# \end{eqnarray}
-# ```
-# 
-# For a linearly separable training dataset $ {\cal D} $, the maximum margin $ m_{-1}({\bf w}^{\ast}, b^{\ast}) + m_{+1}({\bf w}^{\ast}, b^{\ast}) $ is achieved for a unique pair of parameters $ {\bf w}^{\ast} $ and $ b^{\ast} $. Moreover, the solution is fully determined by a subset of the feature vectors in the dataset partitions $ {\cal D}_{-1} $ and $ {\cal D}_{+1} $ which **support** the hyperplane with maximum margin defined by $ {\bf w}^{\ast} $ and $ b^{\ast} $. These feature vectors are called **support vectors** and, therefore, the classifiers built using this principle are called Support Vector Machines (SVMs). For an arbitrary feature vector $ {\bf x} $, the SVM classifier is obtained by plugging the maximum margin hyperplane parameters $ {\bf w}^{\ast} $ and $ b^{\ast} $ into {eq}`hyperplane_classifier`
+# ### Training of an SVM when Classes are Separable
+# We assume for now that the classes are linearly separable, as in our initial example with the two blobs. That means that we can find a hyperplane (defined now as a set)
+# $\mathcal{H}_{\vvec{w},b}$
+# such that all training data points of the positive class are on the positive side, and the training data points of the negative class are on the negative side. That is, we can find $\vvec{w}$ and $b$ such that
+# \begin{align*}
+# \vvec{w}^\top \vvec{x}_i+b <0 & \text{ for all } i \text{ with }y_i=-1\\
+# \vvec{w}^\top \vvec{x}_i+b >0 & \text{ for all } i \text{ with }y_i=1.
+# \end{align*}
+# The equations above are satisfied if we have for all training data points
 # $$
-# h_{SVM}({\bf x}) \triangleq h({\bf x}; {\bf w}^{\ast}, b^{\ast}).
+# (\vvec{w}^\top \vvec{x}_i+b)y_i >0.
 # $$
+# The goal of the SVM is to find the hyperplane with maximum margin among all the separable hyperplanes. Hence, the SVM hyperplane maximizes the distance to the closest training data point. This way, we can define our SVM task.
+# `````{admonition} Task (hard-margin SVM)
+# :class: tip
+# **Given** a binary classification training data set $\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n, y_i\in\{-1,1\}\}$.       
 # 
-# ```{figure} /images/classification/max_margin_decision_boundary.svg
-# ---
-# height: 320px
-# name: max_margin_decision_boundary_fig
-# align: left
-# ---
-# The maximum margin linear decision boundary separating the <span style="color: red;">red</span> and <span style="color: blue;">blue</span> training samples in $ {\cal D}_{-1} $ and $ {\cal D}_{+1} $, respectively. The data items highlighted with <span style="color: green;">green</span> borders correspond to the support vectors. The dashed lines illustrate the two parallel hyperplanes with maximum margin between them which are in turn uniquely defined by the support vectors. Note that the dashed lines can touch multiple support vectors of the training dataset splits $ {\cal D}_{-1} $ and $ {\cal D}_{+1} $. Lastly, the solid line indicates the decision boundary, i.e. the single hyperplane equidistant to the parallel hyperplanes that maximizes the margin between $ {\cal D}_{-1} $ and $ {\cal D}_{+1} $.
+# **Find** the hyperplane defined as all points in the set $\mathcal{H}_{\vvec{w},b}\{\vvec{x}\mid\vvec{w}^\top\vvec{x}+b=0\}$ separating the classes and having maximum margin (maximizing the distance of the hyperplane to its closest training data point indicated by $dist$).
+# $$\max_{\vvec{w},b}\min_{1\leq i\leq n}dist(\mathcal{H}_{\vvec{w},b},\vvec{x}_i)\text{ s.t. } y_i(\vvec{w}^\top\vvec{x}_i+b)\geq 0$$
+# **Return** the hyperplane defining parameters $\vvec{w},b$ 
+# `````
+# To formalize the SVM task, we need to know how we compute the distance of a point to a hyperplane. Geometrically, this works by projecting the point on the normal vector $\vvec{w}$, giving the distance from the origin to the projection onto $\vvec{w}$. From this distance, we subtract the offset $b$ and we have the distance to the hyperplane.  
+# ```{tikz}
+# \begin{tikzpicture}[scale=1.2, thick, >=Stealth]
+# 
+#   % Axes
+#   \draw[->,thin] (-1, 0) -- (4, 0) node[anchor=west] {$x_1$};
+#   \draw[->,thin] (0, -2) -- (0, 4) node[anchor=south] {$x_2$};
+# 
+#   % Normal vector w = (2,1)
+#   \coordinate (origin) at (0,0);
+#   \coordinate (w) at (2,1);
+#   \draw[->, ultra thick, magenta] (origin) -- (3,1.5) node[anchor=south east] {$\mathbf{w}$};
+# 
+#   % Hyperplane: 2x + y - 2 sqrt(5) = 0 → y = -2x + 2 sqrt(5)
+#   \draw[black, thick, domain=2.8:0.2] plot (\x, {-2*\x + 2*sqrt(5)}) node[anchor=north west, right =4pt] {$\tilde{\mathbf{w}}^\top \mathbf{x} = 2$};
+# 
+#   % Projection of origin onto hyperplane
+#   % Formula: p = b * w / ||w||^2 → with w = (2,1), b = 2
+#   \coordinate (proj) at ($(2/2.23*2, 2/2.23*1)$); % = (-0.8, -0.4)
+# 
+#   % Brace-like annotation
+#   \draw [decorate,decoration={brace,mirror,raise=6pt}, blue, ultra thick] (origin) -- (proj) node[midway, right=13pt, below=12pt, blue] {$\displaystyle \frac{|b|}{\|w\|}=2$};
+#   % Plot point
+#   \draw (3,3) circle[radius=2pt] node[right=3pt]{$\mathbf{x}$}; 
+#   \fill (3,3) circle[radius=2pt];
+# \end{tikzpicture}
 # ```
-# 
-# ````{prf:remark}
-# Real-world training datasets are often not linearly separable. Specifically, for a non-linearly separable training dataset $ {\cal D} $, there is no hyperplane with parameters $ {\bf w} $ and $ b $ such that, $ \forall \left( {\bf x}_{i}, y_{i} \right) \in {\bf D} $,
-# \begin{equation}
-# h({\bf x}_{i}; {\bf w}, b) = y_{i}.
-# \end{equation}
-# Multiple causes may lead to non-linearly separable training datasets
-# * The training dataset $ {\cal D} $ contains noise due to miss classifications performed by a human supervisor -- responsible for assigning *true* labels $ y_{i} $ to the data items $ {\bf x}_{i} $ within the training dataset;
-# * Too much noise in the observed data itself -- each feature vector $ {\bf x}_{i} $ in $ {\cal D} $ contains noisy observations of the features describing a real-world object to be classified -- is preventing the training dataset $ {\cal D} $ to be linearly separable in the feature space $ {\cal X} $; and
-# * The data items from different classes are not linearly separable at all in the current feature space $ {\cal X} $ -- perhaps we need more features -- i.e. a higher dimensional feature space $ {\cal X}' $ -- or to apply some transformation to the feature space $ {\cal X} $ to turn it into a linearly separable classification problem.
-# 
-# ```{figure} /images/classification/noisy_training_dataset.svg
-# ---
-# height: 320px
-# name: noisy_training_dataset_fig
-# align: left
-# ---
-# Noisy training dataset $ {\cal D} $. Circles filled in <span style="color: red;">red</span> and <span style="color: blue;">blue</span> represent labeled data items from the set partitions  $ {\cal D}_{-1} $ and $ {\cal D}_{+1} $, respectively. In particular, the <span style="color: red;">red</span> circle with <span style="color: blue;">blue</span> border corresponds to a data item assigned to the wrong label. On the other hand, the <span style="color: blue;">blue</span> circle with <span style="color: yellow;">yellow</span> border corresponds to a high-noise observed data item in $ {\cal D}_{+1} $ which fell too far in the region of the feature space $ {\cal X} $ containing data items from $ {\cal D}_{-1} $. Note that there is no way to change the dashed line representing a possible linear decision boundary so that it separates $ {\cal D}_{-1} $ from $ {\cal D}_{+1} $.
+# ```{prf:theorem}
+# The following objective is equivalent to the objective
+# $$\min_{\vvec{w},b}\lVert \vvec{w}\rVert^2\text{ s.t. } y_i(\vvec{w}^\top\vvec{x}_i+b)\geq 1$$
 # ```
-# ````
-# 
-# ### Learning with hard-constraints
-# 
-# The problem formulation in {eq}`svm_form_1` seeks to find the parameters $ {\bf w}^{\ast} $ and $ b^{\ast} $ that maximize the distances between the training samples $ \left( {\bf x}_{i}, y_{i} \right) \in {\cal D} $ to the hyperplane $ {\bf w}^{T} {\bf x} - b = 0 $ subjected to the correct classification of all training samples, i.e. $ h({\bf x}_{i}; {\bf w}, b) = y_{i} $, $ \forall i \in \lbrace 1, 2, \ldots, N \rbrace $. Unfortunately, this optimization problem is still too abstract for a practical optimizer to solve it. Thus, we need to reformulate it using geometric principles to turn it into a solvable optimization problem.
 # 
 # Let us consider first the following two parallel hyperplanes
 # \begin{eqnarray}
@@ -181,8 +477,16 @@
 # 
 # In summary, we transformed the non-convex optimization problem of maximizing the margin in {eq}`svm_form_1` into a convex optimization problem of minimizing the squared norm $ \frac{1}{2}||{\bf w}||^{2} $ in {eq}`svm_form_4` which is subjected in turn to several margin constraints $$ y_{i} \left( {\bf w}^{T} {\bf x}_{i} - b \right) \geq +1, $$ for $ i \in \lbrace 1, 2, \ldots, N \rbrace $.
 # 
-# ### Learning with soft-constraints
+# #### SVM for Two Non-Separable Classes
+# `````{admonition} Task (soft-margin SVM)
+# :class: tip
+# **Given** a binary classification training data set $\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n, y_i\in\{-1,1\}\}$ and parameter $s>0$.       
 # 
+# **Find** the hyperplane defined as all points in the set $\{\vvec{x}\mid\vvec{w}^\top\vvec{x}+b=0\}$ separating the classes and having maximum margin.
+# $$\min_{\vvec{w},b}\lVert \vvec{w}\rVert^2+s\sum_{i=1}^n\xi_i\text{ s.t. } y_i(\vvec{w}^\top\vvec{x}_i+b)\geq 1 -\xi_i$$
+# **Return** the hyperplane defining parameters $\vvec{w},b$ 
+# `````
+# The parameter $s$ balances margin size vs classification error.
 # Unfortunately, the hard-margin formulation still requires a linearly separable training dataset $ {\cal D} $ so that the linear constraints $$ y_{i} \left( {\bf w}^{T} {\bf x}_{i} - b \right) \geq +1, $$ $ i \in \lbrace 1, 2, \ldots, N \rbrace $, can be satisfied. To overcome this limitation, we can relax the linear constraints by discounting a fixed amount $ \xi_{i} \geq 0 $ from each constraint as $$ y_{i} \left( {\bf w}^{T} {\bf x}_{i} - b \right) \geq +1 - \xi_{i} $$ such that the original constraint is fully imposed for $ \xi_{i} = 0 $ and it is incrementally relaxed as $ \xi_{i} $ grows for $ \xi_{i} > 0 $. Let the vector $ \boldsymbol{\xi} = \begin{bmatrix} \xi_{1} & \xi_{2} & \ldots & \xi_{N} \end{bmatrix}^{T} $ collect all $ N $ *slack* variables. Thus, we can rewrite the optimization problem in {eq}`svm_form_4` assuming relaxed linear constraints as
 # ```{math}
 # :label: svm_form_5
@@ -239,73 +543,6 @@
 # align: left
 # ---
 # Linearly non-separable dataset.
-# ```
-# ````
-# 
-# ### A word on duality
-# 
-# Consider first the **primal** optimization problem of minimizing an objective function $ f:{\cal Z} \rightarrow \mathbb{R} $ across some space $ {\cal Z} $ subjected to several constraints. We can write down this problem using the standard format as
-# ```{math}
-# :label: primal_prob1
-# \begin{eqnarray}
-# \minimize_{{\bf z} \in {\cal Z}} &&  f({\bf z}) \\
-# s.t. \,\,\, &&  g_{i} ({\bf z}) \leq 0,\,\,\, \forall i \in \lbrace 1, 2, \ldots, N \rbrace,
-# \end{eqnarray}
-# ```
-# in which we omitted equality constraints of the type $ h_{j}({\bf z}) = 0 $, $ j \in \lbrace 1, 2, \ldots M \rbrace $, for convenience. Now, let
-# ```{math}
-# :label: lagrandian
-# {\cal L}({\bf z}, \boldsymbol{\lambda}) = f({\bf z}) + \sum_{i=1}^{N} \lambda_{i} g_{i}({\bf z})
-# ```
-# be the Lagrangian of the primal problem as stated in {eq}`primal_prob1` in which the vector $ \boldsymbol{\lambda} \triangleq \begin{bmatrix} \lambda_{1} & \lambda_{2} & \ldots & \lambda_{N} \end{bmatrix}^{T} $ collect the so-called Lagrange multipliers $ \lbrace \lambda_{i} \rbrace $ corresponding to the constraints $ \lbrace  g_{i} ({\bf z}) \leq 0 \rbrace $, $ i \in \lbrace 1, 2, \ldots, N \rbrace $. The $ i $-th Lagrangian multiplier determines how much penalty is assigned to the violation of the constraint $ g_{i} ({\bf z}) \leq 0 $ such that any violation is allowed for $ \lambda_{i} = 0 $ and no violation is allowed at all for $ \lambda_{i} \rightarrow \infty $. Thus, the hard constraints in {eq}`primal_prob1` can be enforced in {eq}`lagrandian` by chosen sufficiently high values for the Lagrange multipliers.
-# 
-# Let us define
-# ```{math}
-# :label: lagrandian_primal
-# {\cal L}_{primal}({\bf z}) = \max_{\boldsymbol{\lambda} \geq {\bf 0}} {\cal L}({\bf z}, \boldsymbol{\lambda})
-# ```
-# as the maximum of the Lagrangian in {eq}`lagrandian` for some value of $ {\bf z} \in {\cal Z} $. 
-# 
-# Assume that all constraints $ \lbrace g_{i} ({\bf z}') \leq 0 \rbrace $, $ \forall i \in \lbrace 1, 2, \ldots, N \rbrace $, are satisfied for a feasible $ {\bf z}' $, then all $ \lbrace g_{i} ({\bf z}') \rbrace $ in the right-hand side of {eq}`lagrandian` will be negative and the best thing we can do to maximize the Lagrangian $ {\cal L}({\bf z}', \boldsymbol{\lambda}) $ in {eq}`lagrandian_primal` is to choose $ \boldsymbol{\lambda} = {\bf 0} $. On the other hand, let us assume that $ {\bf z}' $ is an unfeasible point that violates at least one of the constraints, let us say the $i$-th constraint. In this case, the best thing we can do to maximize the Lagrangian $ {\cal L}({\bf z}', \boldsymbol{\lambda}) $ in {eq}`lagrandian_primal` is to allow the $ i $-th Lagrange multiplier to grow unbounded, i.e. to make $ \lambda_{i} \rightarrow \infty $. 
-# 
-# As the maximization in {eq}`lagrandian_primal` strongly penalizes unfeasible points, we can restate then the **primal** problem {eq}`primal_prob1` using the Lagrangian {eq}`lagrandian` as
-# ```{math}
-# :label: primal_prob2
-# \min_{{\bf z} \in {\cal Z}} {\cal L}_{primal}({\bf z}).
-# ```
-# 
-# In the sequel, let 
-# ```{math}
-# :label: lagrandian_dual
-# {\cal L}_{dual}(\boldsymbol{\lambda}) = \min_{{\bf z} \in {\cal Z}} {\cal L}({\bf z}, \boldsymbol{\lambda})
-# ```
-# be the minimum of Lagrangian in {eq}`lagrandian` for some $ \boldsymbol{\lambda} \geq {\bf 0} $. In this case, for a fixed vector $ \boldsymbol{\lambda}' $ modulating how strongly violations to the constraints $ \lbrace g_{i} ({\bf z}') \leq 0 \rbrace $, $ \forall i \in \lbrace 1, 2, \ldots, N \rbrace $ shall be penalized, we find some point $ {\bf z} \in {\cal Z} $ in {eq}`lagrandian_dual` that minimizes the Lagrangian $ {\cal L}({\bf z}, \boldsymbol{\lambda}') $.
-# 
-# Additionally, one can show that $ \forall \boldsymbol{\lambda} \geq {\bf 0} $
-# ```{math}
-# :label: dual_prob2
-# {\cal L}_{dual}(\boldsymbol{\lambda}) \leq \min_{{\bf z} \in {\cal Z}} {\cal L}_{primal}({\bf z}).
-# ```
-# That is, the **primal** problem in {eq}`primal_prob2` is lower bounded by $ {\cal L}_{dual}(\boldsymbol{\lambda}) $. Hence, one can find a tighter lower bound to the solution of the original problem by finding the Lagrangian multipliers $ \boldsymbol{\lambda} $ that maximizes {eq}`lagrandian_dual`. Specifically, the following tighter lower-bound holds
-# ```{math}
-# :label: lower_bound
-# \max_{\boldsymbol{\lambda} \geq {\bf 0}} {\cal L}_{dual}(\boldsymbol{\lambda}) \leq \min_{{\bf z} \in {\cal Z}} {\cal L}_{primal}({\bf z}).
-# ```
-# 
-# The alternative formulation
-# ```{math}
-# :label: dual_prob1
-# \max_{\boldsymbol{\lambda} \geq {\bf 0}} {\cal L}_{dual}(\boldsymbol{\lambda})
-# ```
-# from the left-hand side of {eq}`dual_prob1` is called the **dual** problem and has some amenable properties. In particular, it is a lower bound to the **primal** problem. Finally, it is worth noting that solving the **dual** problem in {eq}`dual_prob1` is equivalent to finding the Lagrange multipliers in $ \boldsymbol{\lambda} \geq {\bf 0} $ that lead to the tightest (best) lower bound in {eq}`dual_prob2`.
-# 
-# ```{prf:remark}
-# From {eq}`lower_bound`, we conclude that, for any $ {\bf z} \in {\cal Z} $ and $ \boldsymbol{\lambda} \geq {\bf 0} $, $$ {\cal L}_{dual}(\boldsymbol{\lambda}) \leq {\cal L}_{primal}({\bf z}). $$ Thus, in general, the **dual** problem $$ \max_{\boldsymbol{\lambda} \geq {\bf 0}} {\cal L}_{dual}(\boldsymbol{\lambda}) $$ is a lower bound to the **primal** problem. Alternatively, we can write $$ \max_{\boldsymbol{\lambda} \geq {\bf 0}} {\cal L}_{dual}(\boldsymbol{\lambda}) \leq \min_{{\bf z} \in {\cal Z}} {\cal L}_{primal}({\bf z}). $$ However, for convex optimization problems, the **primal** and **dual** problems are tight, i.e. their optimal values are the same $$ \max_{\boldsymbol{\lambda} \geq {\bf 0}} {\cal L}_{dual}(\boldsymbol{\lambda}) = \min_{{\bf z} \in {\cal Z}} {\cal L}_{primal}({\bf z}). $$ Thus, in some cases, the **dual** problem also provides a solution to the **primal** one.
-# ```
-# 
-# ````{margin}
-# ```{note}
-# The **dual** formulation in {eq}`dual_prob1` is also useful even when the **primal** and **dual** problems are not tight. Sometimes the solution to the **primal** problem is hard to achieve while the **dual** problem has a computationally efficient solution. Thus, we can solve the **dual** problem to evaluate how close to the lower bound an iterative solution to the **primal** problem was able to reach so far and use it as a stop criteria.
 # ```
 # ````
 # 
@@ -568,3 +805,15 @@
 # SVMs and Kernels were hot research topics in the 90's and early 2000's. Nevertheless, Kernelized SVMs still one of the strongest classifiers today.
 # ```
 # ````
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+

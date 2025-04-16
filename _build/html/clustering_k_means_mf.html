@@ -51,7 +51,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -677,7 +677,7 @@ Given a cluster indicator matrix <span class="math notranslate nohighlight">\(Y\
     = D^\top Y (Y^\top Y)^{-1}.
 \end{align*}\]</div>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 21 </span> (<span class="math notranslate nohighlight">\(k\)</span>-means MF objective)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 22 </span> (<span class="math notranslate nohighlight">\(k\)</span>-means MF objective)</p>
 <section class="theorem-content" id="proof-content">
 <p>The <span class="math notranslate nohighlight">\(k\)</span>- means objective in Eq.~\eqref{eq:k-means} is equivalent to</p>
 <div class="amsmath math notranslate nohighlight">
@@ -691,7 +691,7 @@ Given a cluster indicator matrix <span class="math notranslate nohighlight">\(Y\
 <div class="proof admonition" id="proof">
 <p>Proof. The matrix <span class="math notranslate nohighlight">\(Y\)</span> is a cluster-indicator matrix, indicating a partition of the <span class="math notranslate nohighlight">\(n\)</span> data points into <span class="math notranslate nohighlight">\(r\)</span> sets. For every data point with index <span class="math notranslate nohighlight">\(i\in\{1,\ldots,n\}\)</span>, there exists one cluster index <span class="math notranslate nohighlight">\(s_i\)</span>, such that <span class="math notranslate nohighlight">\(Y_{i s_i}=1\)</span> and <span class="math notranslate nohighlight">\(Y_{i s}=0\)</span> for <span class="math notranslate nohighlight">\(s\neq s_i\)</span> (point <span class="math notranslate nohighlight">\(i\)</span> is assigned to cluster <span class="math notranslate nohighlight">\(s_i\)</span>). Using this notation, the objective function in Eq.~\eqref{eq:kmeansCentroid}, returning the distance of every point to its cluster centroid, is equal to</p>
 <div class="amsmath math notranslate nohighlight" id="equation-b784e1d4-fa02-4ea2-9acc-7d6cb41dfe3f">
-<span class="eqno">(186)<a class="headerlink" href="#equation-b784e1d4-fa02-4ea2-9acc-7d6cb41dfe3f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(172)<a class="headerlink" href="#equation-b784e1d4-fa02-4ea2-9acc-7d6cb41dfe3f" title="Permalink to this equation">#</a></span>\[\begin{align}
     {\color{magenta}\sum_{s=1}^r}\sum_{i\in{\color{magenta}\mathcal{C}_s}}\lVert D_{i\cdot}-{\color{magenta}X_{\cdot s}^\top}\rVert^2 
     &amp;= \sum_{i=1}^n{\color{magenta}\sum_{s=1}^r Y_{is}} \lVert D_{i\cdot}-{\color{magenta}X_{\cdot s}^\top}\rVert^2 &amp;\text{(use indicator matrix)}\nonumber\\
     &amp;= \sum_{i=1}^n \lVert D_{i\cdot}-{\color{magenta}X_{\cdot {s_i}}^\top}\rVert^2&amp;\text{(only $Y_{i s_i}=1$)}\nonumber\\ 
@@ -724,7 +724,7 @@ The matrix <span class="math notranslate nohighlight">\(X\)</span> gathers the c
 <p class="admonition-title"><span class="caption-number">Example 28 </span> (k-means matrix factorization for recommender systems)</p>
 <section class="example-content" id="proof-content">
 <div class="amsmath math notranslate nohighlight" id="equation-7216c112-80d0-4bd9-8936-c8d3f32a856d">
-<span class="eqno">(187)<a class="headerlink" href="#equation-7216c112-80d0-4bd9-8936-c8d3f32a856d" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(173)<a class="headerlink" href="#equation-7216c112-80d0-4bd9-8936-c8d3f32a856d" title="Permalink to this equation">#</a></span>\[\begin{align}
   \begin{pmatrix}
     5 &amp; \mu &amp; 1 &amp; 1 \\
     \mu &amp; 1 &amp; 5 &amp; \mu  \\\
@@ -749,7 +749,7 @@ The matrix <span class="math notranslate nohighlight">\(X\)</span> gathers the c
 \end{align}\]</div>
 <p>Every user’s preferences are approximated by a linear combination of the rows in the second matrix:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-dff7ceee-f8d7-44b7-ac0b-4105f9dfdfa9">
-<span class="eqno">(188)<a class="headerlink" href="#equation-dff7ceee-f8d7-44b7-ac0b-4105f9dfdfa9" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(174)<a class="headerlink" href="#equation-dff7ceee-f8d7-44b7-ac0b-4105f9dfdfa9" title="Permalink to this equation">#</a></span>\[\begin{align}
     \begin{pmatrix}
         5 &amp; \mu &amp; 1 &amp; 1 
     \end{pmatrix}
@@ -774,11 +774,11 @@ kmeans.fit(M)
 </section>
 </div><p>Ok, so <span class="math notranslate nohighlight">\(k\)</span>-means is an instance of the rank-<span class="math notranslate nohighlight">\(r\)</span> matrix factorization problem. Can we also characterize the global minimizers of <span class="math notranslate nohighlight">\(k\)</span>-means like we did it for the rank-r matrix factorization problem with truncated SVD? Unfortunately not. However, we can characterize the global minimizers of the objective when we fix one of the factor matrices.</p>
 <div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 22 </span> (Centroids as minimizers)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 23 </span> (Centroids as minimizers)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> and <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span>, the minimizer of the optimization problem</p>
 <div class="amsmath math notranslate nohighlight" id="equation-ab581130-8a8e-4cce-b5c1-227bfbb1a206">
-<span class="eqno">(189)<a class="headerlink" href="#equation-ab581130-8a8e-4cce-b5c1-227bfbb1a206" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(175)<a class="headerlink" href="#equation-ab581130-8a8e-4cce-b5c1-227bfbb1a206" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_X&amp; \lVert D-YX^\top \rVert^2 &amp; \text{s.t. } X\in\mathbb{R}^{d\times r}\label{eq:minX}
 \end{align}\]</div>
 <p>is given by the centroid matrix <span class="math notranslate nohighlight">\(X=D^\top Y(Y^\top Y)^{-1}\)</span>.</p>
@@ -787,18 +787,18 @@ kmeans.fit(M)
 <div class="proof admonition" id="proof">
 <p>Proof. Show that the objective in Eq.~\eqref{eq:minX} is  convex. The minimizer is then given by the stationary point:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-44dc249b-a5cc-471d-bd78-61c959a9df85">
-<span class="eqno">(190)<a class="headerlink" href="#equation-44dc249b-a5cc-471d-bd78-61c959a9df85" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(176)<a class="headerlink" href="#equation-44dc249b-a5cc-471d-bd78-61c959a9df85" title="Permalink to this equation">#</a></span>\[\begin{align}
     \nabla_X \lVert D-YX^\top\rVert^2 = -2(D-YX^\top)^\top Y &amp;=0\\
     \Leftrightarrow D^\top Y(Y^\top Y)^{-1} &amp;= X 
 \end{align}\]</div>
 </div>
 </div>
 <div class="proof theorem admonition" id="theorem-3">
-<p class="admonition-title"><span class="caption-number">Theorem 23 </span> (Nearest centroid assignments as minimizers)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 24 </span> (Nearest centroid assignments as minimizers)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> and <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{d\times r}\)</span>, the minimizer of the optimization problem</p>
 <div class="amsmath math notranslate nohighlight" id="equation-7adff825-17bb-4714-9714-76c9e8ab7a90">
-<span class="eqno">(191)<a class="headerlink" href="#equation-7adff825-17bb-4714-9714-76c9e8ab7a90" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(177)<a class="headerlink" href="#equation-7adff825-17bb-4714-9714-76c9e8ab7a90" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_Y&amp; \lVert D-YX^\top \rVert^2 &amp; \text{s.t. } Y\in\mathbb{1}^{n\times r}
 \end{align}\]</div>
 <p>is the matrix, assigning every point to the nearest centroid:
@@ -820,7 +820,7 @@ kmeans.fit(M)
 </div>
 <p>Lloyds’ algorithm actually performs an alternating minimization, also called block coordinate descent:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-46a1a3b4-a1ef-404b-a098-af58d6ab94ef">
-<span class="eqno">(192)<a class="headerlink" href="#equation-46a1a3b4-a1ef-404b-a098-af58d6ab94ef" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(178)<a class="headerlink" href="#equation-46a1a3b4-a1ef-404b-a098-af58d6ab94ef" title="Permalink to this equation">#</a></span>\[\begin{align}
     X_{k+1} &amp; \leftarrow \argmin_{X\in\mathbb{R}^{d\times r}}\lVert D-Y_kX^\top\rVert^2\\
     Y_{k+1} &amp;\leftarrow \argmin_{Y\in \mathbb{1}^{n\times r}}\lVert D-YX_{k+1}^\top\rVert^2
 \end{align}\]</div>
@@ -829,11 +829,11 @@ kmeans.fit(M)
 \[RSS(X_0,Y_0)&gt;RSS(X_1,Y_1)&gt;RSS(X_2,Y_2)&gt;\ldots \geq 0 .\]</div>
 </p>
 <div class="proof theorem admonition" id="theorem-4">
-<p class="admonition-title"><span class="caption-number">Theorem 24 </span> (Equivalent <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 25 </span> (Equivalent <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
 <section class="theorem-content" id="proof-content">
 <p>The following objectives are equivalent</p>
 <div class="amsmath math notranslate nohighlight" id="equation-84965a2c-0481-499d-8d2e-784dca07774f">
-<span class="eqno">(193)<a class="headerlink" href="#equation-84965a2c-0481-499d-8d2e-784dca07774f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(179)<a class="headerlink" href="#equation-84965a2c-0481-499d-8d2e-784dca07774f" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y}\ \sum_{s=1}^r\sum_{i=1}^nY_{is}\|D_{i\cdot}-X_{\cdot s}^\top\|^2 &amp;\text{ s.t. } X\in\mathbb{R}^{d\times r}, Y\in\mathbb{1}^{n\times r}\\ 
 &amp;\min_{Y}\ \|D-YX^\top\|^2 &amp;\text{ s.t. } X= D^\top Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \\
 &amp;\min_{Y,X}\ \|D-YX^\top\|^2 &amp;\text{ s.t. }  X\in\mathbb{R}^{d\times r},Y\in\mathbb{1}^{n\times r} 

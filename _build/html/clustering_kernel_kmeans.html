@@ -51,7 +51,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "minimize": "\\mathrm{minimize}", "maximize": "\\mathrm{maximize}", "sgn": "\\mathrm{sgn}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -689,7 +689,7 @@ the kernel matrix is given by
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>, a feature transformation <span class="math notranslate nohighlight">\(\phi:\mathbb{R}^{d}\rightarrow \mathbb{R}^p\)</span> mapping into a <span class="math notranslate nohighlight">\(p\)</span>-dimensional feature space, where <span class="math notranslate nohighlight">\(p\in\mathbb{N}\cup\{\infty\}\)</span>, and the number of clusters <span class="math notranslate nohighlight">\(r\)</span>.<br />
 <strong>Find</strong> clusters indicated by the matrix <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span> which minimize the within cluster scatter in the transformed feature space</p>
 <div class="amsmath math notranslate nohighlight" id="equation-0e7bfd55-43d1-49fa-9b5d-4566865cb097">
-<span class="eqno">(194)<a class="headerlink" href="#equation-0e7bfd55-43d1-49fa-9b5d-4566865cb097" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(180)<a class="headerlink" href="#equation-0e7bfd55-43d1-49fa-9b5d-4566865cb097" title="Permalink to this equation">#</a></span>\[\begin{align}
 \min_{Y} \|{\bm\phi}(D)-YX^\top\|^2 \text{  s.t. } X= {\bm\phi}(D^\top) Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMPhi}
 \end{align}\]</div>
 <p><strong>Return</strong> the clustering <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span></p>
@@ -699,12 +699,12 @@ the kernel matrix is given by
 <h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
 <p>If we want to apply the kernel trick, then we need to state the kernel <span class="math notranslate nohighlight">\(k\)</span>-means objective with respect to the inner product of data points.</p>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 25 </span> (<span class="math notranslate nohighlight">\(k\)</span>-means trace objective)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 26 </span> (<span class="math notranslate nohighlight">\(k\)</span>-means trace objective)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>,
 the following objectives are equivalent <span class="math notranslate nohighlight">\(k\)</span>-means objectives:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-2a702ee8-82fe-48f4-bac4-36096b067ed9">
-<span class="eqno">(195)<a class="headerlink" href="#equation-2a702ee8-82fe-48f4-bac4-36096b067ed9" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(181)<a class="headerlink" href="#equation-2a702ee8-82fe-48f4-bac4-36096b067ed9" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y} \lVert D-YX^\top\rVert^2 \text{  s.t. } X= D^\top Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:km}\\
 &amp;\max_{Y} \tr(Z^\top DD^\top Z)\qquad\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} \label{eq:kmeansTr}
 \end{align}\]</div>
@@ -754,12 +754,12 @@ Points within one cluster need to be similar:
 </div>
 </div>
 <div class="proof theorem admonition" id="theorem-1">
-<p class="admonition-title"><span class="caption-number">Theorem 26 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 27 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given the kernel matrix <span class="math notranslate nohighlight">\(K={\bm\phi}(D){\bm\phi}(D)^\top\)</span>,
 the following objectives are equivalent:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-3eae20d1-b549-4227-a17e-9c8125604732">
-<span class="eqno">(196)<a class="headerlink" href="#equation-3eae20d1-b549-4227-a17e-9c8125604732" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(182)<a class="headerlink" href="#equation-3eae20d1-b549-4227-a17e-9c8125604732" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y} \|{\bm\phi}(D)-YX^\top\|^2 \text{  s.t. } X= {\bm\phi}(D^\top) Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMPhi1}\\
 &amp;\max_{Y} \tr(Z^\top K Z)\qquad\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMtr}
 \end{align}\]</div>
@@ -767,7 +767,7 @@ the following objectives are equivalent:</p>
 </div><p>Problem: We do not know how to optimize Eq. \eqref{eq:kernelKMtr}, we only know how to optimize Eq. \eqref{eq:kernelKMPhi1}, but we do not want to compute <span class="math notranslate nohighlight">\(\phi\)</span>!</p>
 <p>Idea: We go the other way round: from the kernel matrix to the inner product.</p>
 <div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 27 </span> (Eigendecomposition of symmetric matrices)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 28 </span> (Eigendecomposition of symmetric matrices)</p>
 <section class="theorem-content" id="proof-content">
 <p>For every symmetric matrix <span class="math notranslate nohighlight">\(K=K^\top\in\mathbb{R}^{n\times n}\)</span> there exists an orthogonal matrix <span class="math notranslate nohighlight">\(V\in\mathbb{R}^{n\times n}\)</span> and a diagonal matrix <span class="math notranslate nohighlight">\(\Lambda=\diag(\lambda_1,\ldots,\lambda_n)\)</span> where <span class="math notranslate nohighlight">\(\lvert \lambda_1\rvert\geq \ldots \geq \lvert \lambda_n\rvert\)</span> such that
 <div class="math notranslate nohighlight">
@@ -778,19 +778,19 @@ the following objectives are equivalent:</p>
 <p>This is equivalent to <span class="math notranslate nohighlight">\(K\)</span> being positive semi-definite.
 Kernel matrices are positive semi-definite!</p>
 <div class="proof theorem admonition" id="theorem-3">
-<p class="admonition-title"><span class="caption-number">Theorem 28 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 29 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a kernel matrix and its symmetric decomposition <span class="math notranslate nohighlight">\(K=AA^\top\)</span>,
 the following objectives are equivalent:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-09fa271d-73cf-4285-8735-e6d8910c67fc">
-<span class="eqno">(197)<a class="headerlink" href="#equation-09fa271d-73cf-4285-8735-e6d8910c67fc" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(183)<a class="headerlink" href="#equation-09fa271d-73cf-4285-8735-e6d8910c67fc" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y}\ \|A-YX^\top\|^2 &amp;\text{ s.t. } X= A^\top Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r}\label{eq:kmeansA} \\
 &amp;\max_{Y}\ \tr(Z^\top K Z)&amp;\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} 
 \end{align}\]</div>
 </section>
 </div><p>Algorithm Idea: Use the objective in Eq.~\eqref{eq:kmeansA}: compute a symmetric decomposition <span class="math notranslate nohighlight">\(AA^\top=K\)</span> by means of the eigendecomposition <span class="math notranslate nohighlight">\(A=V\Lambda^{1/2}\)</span> and run <span class="math notranslate nohighlight">\(k\)</span>-means on <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <div class="proof algorithm admonition" id="algorithm-4">
-<p class="admonition-title"><span class="caption-number">Algorithm 13 </span> (kernel k-means)</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 14 </span> (kernel k-means)</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Input</strong>: kernel matrix <span class="math notranslate nohighlight">\(K\)</span>, number of clusters <span class="math notranslate nohighlight">\(r\)</span></p>
 <ol class="simple">
