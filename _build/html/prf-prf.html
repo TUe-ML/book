@@ -261,11 +261,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -288,6 +283,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -541,6 +551,7 @@ title="Open an issue"
 
    <div class="modindex-jumpbox">
    <a href="#cap-algorithm-0"><strong>algorithm-0</strong></a> | 
+   <a href="#cap-algorithm-1"><strong>algorithm-1</strong></a> | 
    <a href="#cap-algorithm-2"><strong>algorithm-2</strong></a> | 
    <a href="#cap-algorithm-3"><strong>algorithm-3</strong></a> | 
    <a href="#cap-algorithm-4"><strong>algorithm-4</strong></a> | 
@@ -553,22 +564,23 @@ title="Open an issue"
    <a href="#cap-convex_function"><strong>convex_function</strong></a> | 
    <a href="#cap-convex_set"><strong>convex_set</strong></a> | 
    <a href="#cap-corollary-1"><strong>corollary-1</strong></a> | 
+   <a href="#cap-corollary-8"><strong>corollary-8</strong></a> | 
    <a href="#cap-definition-0"><strong>definition-0</strong></a> | 
    <a href="#cap-definition-1"><strong>definition-1</strong></a> | 
    <a href="#cap-definition-2"><strong>definition-2</strong></a> | 
    <a href="#cap-definition-3"><strong>definition-3</strong></a> | 
    <a href="#cap-definition-4"><strong>definition-4</strong></a> | 
    <a href="#cap-definition-5"><strong>definition-5</strong></a> | 
+   <a href="#cap-definition-6"><strong>definition-6</strong></a> | 
    <a href="#cap-dt_split"><strong>dt_split</strong></a> | 
    <a href="#cap-dt_training"><strong>dt_training</strong></a> | 
    <a href="#cap-dual_problem"><strong>dual_problem</strong></a> | 
    <a href="#cap-ex_vector_space"><strong>ex_vector_space</strong></a> | 
    <a href="#cap-example-0"><strong>example-0</strong></a> | 
    <a href="#cap-example-1"><strong>example-1</strong></a> | 
-   <a href="#cap-example-2"><strong>example-2</strong></a> | 
+   <a href="#cap-example-3"><strong>example-3</strong></a> | 
    <a href="#cap-example-4"><strong>example-4</strong></a> | 
-   <a href="#cap-example-5"><strong>example-5</strong></a> | 
-   <a href="#cap-example-7"><strong>example-7</strong></a> | 
+   <a href="#cap-example-6"><strong>example-6</strong></a> | 
    <a href="#cap-example_reg_p_larger_n"><strong>example_reg_p_larger_n</strong></a> | 
    <a href="#cap-expl_fonc"><strong>expl_fonc</strong></a> | 
    <a href="#cap-gradient_descent_alg"><strong>gradient_descent_alg</strong></a> | 
@@ -580,23 +592,23 @@ title="Open an issue"
    <a href="#cap-lemma-6"><strong>lemma-6</strong></a> | 
    <a href="#cap-lemma-7"><strong>lemma-7</strong></a> | 
    <a href="#cap-lemma-8"><strong>lemma-8</strong></a> | 
+   <a href="#cap-lemma-9"><strong>lemma-9</strong></a> | 
    <a href="#cap-minimizers"><strong>minimizers</strong></a> | 
    <a href="#cap-objective"><strong>objective</strong></a> | 
    <a href="#cap-observation-0"><strong>observation-0</strong></a> | 
+   <a href="#cap-observation-2"><strong>observation-2</strong></a> | 
    <a href="#cap-observation-3"><strong>observation-3</strong></a> | 
-   <a href="#cap-observation-4"><strong>observation-4</strong></a> | 
    <a href="#cap-prop:target_distr"><strong>prop:target_distr</strong></a> | 
    <a href="#cap-property-2"><strong>property-2</strong></a> | 
-   <a href="#cap-remark-0"><strong>remark-0</strong></a> | 
-   <a href="#cap-remark-3"><strong>remark-3</strong></a> | 
-   <a href="#cap-remark-5"><strong>remark-5</strong></a> | 
+   <a href="#cap-remark-1"><strong>remark-1</strong></a> | 
+   <a href="#cap-remark-2"><strong>remark-2</strong></a> | 
    <a href="#cap-theorem-0"><strong>theorem-0</strong></a> | 
    <a href="#cap-theorem-1"><strong>theorem-1</strong></a> | 
    <a href="#cap-theorem-2"><strong>theorem-2</strong></a> | 
    <a href="#cap-theorem-3"><strong>theorem-3</strong></a> | 
    <a href="#cap-theorem-4"><strong>theorem-4</strong></a> | 
-   <a href="#cap-theorem-6"><strong>theorem-6</strong></a> | 
-   <a href="#cap-theorem-9"><strong>theorem-9</strong></a> | 
+   <a href="#cap-theorem-5"><strong>theorem-5</strong></a> | 
+   <a href="#cap-theorem-7"><strong>theorem-7</strong></a> | 
    <a href="#cap-thm_convex"><strong>thm_convex</strong></a> | 
    <a href="#cap-true_classifier_error"><strong>true_classifier_error</strong></a>
    </div>
@@ -608,7 +620,15 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="dim_reduction_pca.html#algorithm-0"><code class="xref">algorithm-0</code></a> <em>(dim_reduction_pca)</em></td><td>
+       <a href="optimization_numerical.html#algorithm-0"><code class="xref">algorithm-0</code></a> <em>(optimization_numerical)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-algorithm-1"><td></td><td>
+       <strong>algorithm-1</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_lasso.html#algorithm-1"><code class="xref">algorithm-1</code></a> <em>(regression_lasso)</em></td><td>
        <em>algorithm</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-algorithm-2"><td></td><td>
@@ -707,12 +727,20 @@ title="Open an issue"
        <a href="classification_evaluation.html#corollary-1"><code class="xref">corollary-1</code></a> <em>(classification_evaluation)</em></td><td>
        <em>corollary</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-corollary-8"><td></td><td>
+       <strong>corollary-8</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="classification_svms.html#corollary-8"><code class="xref">corollary-8</code></a> <em>(classification_svms)</em></td><td>
+       <em>corollary</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-definition-0"><td></td><td>
        <strong>definition-0</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="classification_svms.html#definition-0"><code class="xref">definition-0</code></a> <em>(classification_svms)</em></td><td>
+       <a href="linalg_spaces.html#definition-0"><code class="xref">definition-0</code></a> <em>(linalg_spaces)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-definition-1"><td></td><td>
@@ -720,7 +748,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="classification_svms.html#definition-1"><code class="xref">definition-1</code></a> <em>(classification_svms)</em></td><td>
+       <a href="classification_problem.html#definition-1"><code class="xref">definition-1</code></a> <em>(classification_problem)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-definition-2"><td></td><td>
@@ -728,7 +756,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="optimization_convex.html#definition-2"><code class="xref">definition-2</code></a> <em>(optimization_convex)</em></td><td>
+       <a href="classification_kernel_svm.html#definition-2"><code class="xref">definition-2</code></a> <em>(classification_kernel_svm)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-definition-3"><td></td><td>
@@ -736,7 +764,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="classification_random_forests.html#definition-3"><code class="xref">definition-3</code></a> <em>(classification_random_forests)</em></td><td>
+       <a href="neuralnets_backprop.html#definition-3"><code class="xref">definition-3</code></a> <em>(neuralnets_backprop)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-definition-4"><td></td><td>
@@ -753,6 +781,14 @@ title="Open an issue"
        <td></td>
        <td>
        <a href="linalg_normed_vs.html#definition-5"><code class="xref">definition-5</code></a> <em>(linalg_normed_vs)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-definition-6"><td></td><td>
+       <strong>definition-6</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="linalg_normed_vs.html#definition-6"><code class="xref">definition-6</code></a> <em>(linalg_normed_vs)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-dt_split"><td></td><td>
@@ -803,12 +839,12 @@ title="Open an issue"
        <a href="neuralnets_func_approx.html#example-1"><code class="xref">example-1</code></a> <em>(neuralnets_func_approx)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-example-2"><td></td><td>
-       <strong>example-2</strong></td><td></td></tr>
+     <tr class="cap" id="cap-example-3"><td></td><td>
+       <strong>example-3</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="linalg_normed_vs.html#example-2"><code class="xref">example-2</code></a> <em>(linalg_normed_vs)</em></td><td>
+       <a href="linalg_spaces.html#example-3"><code class="xref">example-3</code></a> <em>(linalg_spaces)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-example-4"><td></td><td>
@@ -816,23 +852,15 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="classification_svms.html#example-4"><code class="xref">example-4</code></a> <em>(classification_svms)</em></td><td>
+       <a href="linalg_normed_vs.html#example-4"><code class="xref">example-4</code></a> <em>(linalg_normed_vs)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-example-5"><td></td><td>
-       <strong>example-5</strong></td><td></td></tr>
+     <tr class="cap" id="cap-example-6"><td></td><td>
+       <strong>example-6</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="classification_naive_bayes.html#example-5"><code class="xref">example-5</code></a> <em>(classification_naive_bayes)</em></td><td>
-       <em>example</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-example-7"><td></td><td>
-       <strong>example-7</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="classification_svms.html#example-7"><code class="xref">example-7</code></a> <em>(classification_svms)</em></td><td>
+       <a href="classification_svms.html#example-6"><code class="xref">example-6</code></a> <em>(classification_svms)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-example_reg_p_larger_n"><td></td><td>
@@ -923,6 +951,14 @@ title="Open an issue"
        <a href="optimization_convex.html#lemma-8"><code class="xref">lemma-8</code></a> <em>(optimization_convex)</em></td><td>
        <em>lemma</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-lemma-9"><td></td><td>
+       <strong>lemma-9</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_convex.html#lemma-9"><code class="xref">lemma-9</code></a> <em>(optimization_convex)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-minimizers"><td></td><td>
        <strong>minimizers</strong></td><td></td></tr>
      <tr>
@@ -947,20 +983,20 @@ title="Open an issue"
        <a href="neuralnets_intro.html#observation-0"><code class="xref">observation-0</code></a> <em>(neuralnets_intro)</em></td><td>
        <em>observation</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-observation-2"><td></td><td>
+       <strong>observation-2</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_optimization.html#observation-2"><code class="xref">observation-2</code></a> <em>(regression_optimization)</em></td><td>
+       <em>observation</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-observation-3"><td></td><td>
        <strong>observation-3</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
        <a href="regression_optimization.html#observation-3"><code class="xref">observation-3</code></a> <em>(regression_optimization)</em></td><td>
-       <em>observation</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-observation-4"><td></td><td>
-       <strong>observation-4</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="regression_optimization.html#observation-4"><code class="xref">observation-4</code></a> <em>(regression_optimization)</em></td><td>
        <em>observation</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-prop:target_distr"><td></td><td>
@@ -979,28 +1015,20 @@ title="Open an issue"
        <a href="classification_problem.html#property-2"><code class="xref">property-2</code></a> <em>(classification_problem)</em></td><td>
        <em>property</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-remark-0"><td></td><td>
-       <strong>remark-0</strong></td><td></td></tr>
+     <tr class="cap" id="cap-remark-1"><td></td><td>
+       <strong>remark-1</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="classification_problem.html#remark-0"><code class="xref">remark-0</code></a> <em>(classification_problem)</em></td><td>
+       <a href="neuralnets_intro.html#remark-1"><code class="xref">remark-1</code></a> <em>(neuralnets_intro)</em></td><td>
        <em>remark</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-remark-3"><td></td><td>
-       <strong>remark-3</strong></td><td></td></tr>
+     <tr class="cap" id="cap-remark-2"><td></td><td>
+       <strong>remark-2</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="classification_svms.html#remark-3"><code class="xref">remark-3</code></a> <em>(classification_svms)</em></td><td>
-       <em>remark</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-remark-5"><td></td><td>
-       <strong>remark-5</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="classification_svms.html#remark-5"><code class="xref">remark-5</code></a> <em>(classification_svms)</em></td><td>
+       <a href="neuralnets_intro.html#remark-2"><code class="xref">remark-2</code></a> <em>(neuralnets_intro)</em></td><td>
        <em>remark</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-theorem-0"><td></td><td>
@@ -1016,7 +1044,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="classification_random_forests.html#theorem-1"><code class="xref">theorem-1</code></a> <em>(classification_random_forests)</em></td><td>
+       <a href="linalg_spaces.html#theorem-1"><code class="xref">theorem-1</code></a> <em>(linalg_spaces)</em></td><td>
        <em>theorem</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-theorem-2"><td></td><td>
@@ -1024,7 +1052,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="classification_svms.html#theorem-2"><code class="xref">theorem-2</code></a> <em>(classification_svms)</em></td><td>
+       <a href="linalg_normed_vs.html#theorem-2"><code class="xref">theorem-2</code></a> <em>(linalg_normed_vs)</em></td><td>
        <em>theorem</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-theorem-3"><td></td><td>
@@ -1032,7 +1060,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="optimization_problems.html#theorem-3"><code class="xref">theorem-3</code></a> <em>(optimization_problems)</em></td><td>
+       <a href="classification_svms.html#theorem-3"><code class="xref">theorem-3</code></a> <em>(classification_svms)</em></td><td>
        <em>theorem</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-theorem-4"><td></td><td>
@@ -1040,23 +1068,23 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="optimization_problems.html#theorem-4"><code class="xref">theorem-4</code></a> <em>(optimization_problems)</em></td><td>
+       <a href="classification_svms.html#theorem-4"><code class="xref">theorem-4</code></a> <em>(classification_svms)</em></td><td>
        <em>theorem</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-theorem-6"><td></td><td>
-       <strong>theorem-6</strong></td><td></td></tr>
+     <tr class="cap" id="cap-theorem-5"><td></td><td>
+       <strong>theorem-5</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="classification_svms.html#theorem-6"><code class="xref">theorem-6</code></a> <em>(classification_svms)</em></td><td>
+       <a href="classification_svms.html#theorem-5"><code class="xref">theorem-5</code></a> <em>(classification_svms)</em></td><td>
        <em>theorem</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-theorem-9"><td></td><td>
-       <strong>theorem-9</strong></td><td></td></tr>
+     <tr class="cap" id="cap-theorem-7"><td></td><td>
+       <strong>theorem-7</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="optimization_problems.html#theorem-9"><code class="xref">theorem-9</code></a> <em>(optimization_problems)</em></td><td>
+       <a href="linalg_normed_vs.html#theorem-7"><code class="xref">theorem-7</code></a> <em>(linalg_normed_vs)</em></td><td>
        <em>theorem</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-thm_convex"><td></td><td>

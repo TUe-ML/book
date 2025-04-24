@@ -1,0 +1,93 @@
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/homebrew/Cellar/python@3.9/3.9.13_1/Frameworks/Python.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 647, in run_until_complete
+    return future.result()
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+from sklearn.inspection import DecisionBoundaryDisplay
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+from sklearn.datasets import make_moons
+
+
+X,y = make_moons(noise=0.3, random_state=0, n_samples=200)
+X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.4, random_state=42
+    )
+# Define two SVM classifiers
+svm_rbf = SVC(kernel='rbf', C=1.0, gamma=1.0)
+svm_poly = SVC(kernel='poly', degree=3, C=1.0, coef0=1)
+
+# Fit the models
+y_pred_rbf = svm_rbf.fit(X_train, y_train)
+y_pred_poly = svm_poly.fit(X_train, y_train)
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+cm = ListedColormap(["#a0c3ff", "#ffa1cf"])
+cm_points = ListedColormap(["#007bff", "magenta"])
+
+disp = DecisionBoundaryDisplay.from_estimator(
+    svm_rbf,
+    X,
+    response_method="predict",
+    plot_method="pcolormesh",
+    shading="auto",
+    alpha=0.5,
+    ax=axes[0],
+    cmap=cm,
+)
+scatter = axes[0].scatter(X_train[:, 0], X_train[:, 1], c=y_train, edgecolors="k",cmap = cm_points)
+_ = axes[0].set_title(
+    f"Two moons classification RBF Kernel SVM\nTest Acc {np.mean(svm_rbf.predict(X_test) == y_test)}"
+)
+axes[0].axis('scaled')
+
+disp = DecisionBoundaryDisplay.from_estimator(
+    svm_poly,
+    X,
+    response_method="predict",
+    plot_method="pcolormesh",
+    shading="auto",
+    alpha=0.5,
+    ax=axes[1],
+    cmap=cm,
+)
+scatter = axes[1].scatter(X_train[:, 0], X_train[:, 1], c=y_train, edgecolors="k",cmap = cm_points)
+_ = axes[1].set_title(
+    f"Two moons classification Poly Kernel SVM\nTest Acc {np.mean(svm_poly.predict(X_test) == y_test)}"
+)
+axes[0].axis('scaled')
+axes[1].axis('scaled')
+
+plt.show()
+
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mNameError[0m                                 Traceback (most recent call last)
+Input [0;32mIn [2][0m, in [0;36m<cell line: 13>[0;34m()[0m
+[1;32m      9[0m X_train, X_test, y_train, y_test [38;5;241m=[39m train_test_split(
+[1;32m     10[0m         X, y, test_size[38;5;241m=[39m[38;5;241m0.4[39m, random_state[38;5;241m=[39m[38;5;241m42[39m
+[1;32m     11[0m     )
+[1;32m     12[0m [38;5;66;03m# Define two SVM classifiers[39;00m
+[0;32m---> 13[0m svm_rbf [38;5;241m=[39m [43mSVC[49m(kernel[38;5;241m=[39m[38;5;124m'[39m[38;5;124mrbf[39m[38;5;124m'[39m, C[38;5;241m=[39m[38;5;241m1.0[39m, gamma[38;5;241m=[39m[38;5;241m1.0[39m)
+[1;32m     14[0m svm_poly [38;5;241m=[39m SVC(kernel[38;5;241m=[39m[38;5;124m'[39m[38;5;124mpoly[39m[38;5;124m'[39m, degree[38;5;241m=[39m[38;5;241m3[39m, C[38;5;241m=[39m[38;5;241m1.0[39m, coef0[38;5;241m=[39m[38;5;241m1[39m)
+[1;32m     16[0m [38;5;66;03m# Fit the models[39;00m
+
+[0;31mNameError[0m: name 'SVC' is not defined
+NameError: name 'SVC' is not defined
+

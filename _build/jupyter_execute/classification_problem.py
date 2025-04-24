@@ -2,34 +2,45 @@
 # coding: utf-8
 
 # ## Classification Objective
+# Classification is a supervised learning task where the goal is to predict a discrete class label for each input. A typical toy dataset in classification is the Iris dataset, where the task is to classify flower  species based on physical features of the plant.
+
+# In[1]:
+
+
+from sklearn.datasets import load_iris
+import pandas as pd
+
+# Load the dataset
+iris = load_iris()
+X = pd.DataFrame(iris.data, columns=iris.feature_names)
+y = pd.Series(iris.target, name="target")
+
+# Preview the dataset
+X.head()
+
+
+# The Iris dataset contains 150 data points, having 4 features: sepal length, sepal width, petal length, and petal width. The target classes are:
 # 
-# ### Feature space
+# * $y=0$: setosa
+# * $y=1$: versicolor
+# * $y=2$: virginica
 # 
-# Let $ {\bf x} $ denote a feature vector residing in a multidimensional space $ {\cal X} $ comprising several  features. We describe the data items -- i.e. the objects we are trying to classify -- by feature vectors in $ {\cal X} $. Note that the vector $ {\bf x} \in {\cal X} $ describing a given data item may comprise either continuous (e.g. length, height, weight) or discrete (e.g. color code) features.
+# All features in the Iris dataset are continuous numerical values, as they represent physical measurements of the flower in centimeters. However, classification datasets may also have discrete features such as male/female or color (green, red, blue).     
 # 
+# ### Classification Challenges
+# Even though the Iris dataset is relatively “clean,” it still allows us to discuss core challenges in classification tasks.
 # 
-# ### Class labels
-# 
-# Moreover, let $ y $ be a discrete variable indicating the class label (target) among the set of possible labels $ {\cal Y} $, where $ {\cal Y} \triangleq \lbrace \ell_{1}, \ell_{2}, \ldots, \ell_{L} \rbrace $ is a finite set -- a.k.a. alphabet -- of $ L $ arbitrary labels. The variable $ y \in {\cal Y} $ indicates thus a class value (label) assigned to a data item. A label $ \ell $ can be either the class name or a unique identification number / code representing the class. However, for the sake of simplicity, the class labels are usually normalized as indexes spanning e.g. from $ 0 $ to $ L-1 $. 
-# 
-# 
-# ```{prf:remark}
-# We should pick up the set of features according to the particular classification problem we are trying to solve and also make sure that it really encloses sufficient information to help distinguishing data items / objects from different classes. Note therefore that the selection of classes and the selection of features are often entangled.
-# ```
-# 
-# ### Training examples
-# 
-# Now let
-# \begin{eqnarray}
-# {\cal D} &\triangleq& \bigcup_{i=1}^{N} \lbrace \left( {\bf x}_{i}, y_{i} \right) \rbrace \\
-# &\equiv& \lbrace \left( {\bf x}_{1}, y_{1} \right), \left( {\bf x}_{2}, y_{2} \right), \ldots, \left( {\bf x}_{N}, y_{N} \right) \rbrace \nonumber
-# \end{eqnarray}
-# denote a dataset of $ N $ training examples, i.e. the data items for which we already know the true classification. Specifically, the $ i $-th _known_ training example is represented by a pair $ {\cal D}_{i} \triangleq \left( {\bf x}_{i}, y_{i} \right) $ including both the feature vector $ {\bf x}_{i} $ and the associated class label $ y_{i} $. 
-# 
-# ```{prf:remark}
-# As we increase the number of features (more dimensions) or the granularity of the existing features (e.g. more values per discrete feature), the classifier might increase its ability to distinguish training examples from different classes. However, besides possibly increasing the computational burden to deal with all input features, the required number of training examples might significantly increase to prevent over fitting.
-# ```
-# 
+# #### Class Imbalance
+# In many real-world problems, one class dominates the others. Let's check the class distribution in Iris:
+
+# In[2]:
+
+
+y.value_counts(normalize=True)
+
+
+# Here, each class occurs exactly 50 times (1/3 of the data), making the Iris dataset a perfectly balanced classification dataset. Having one class dominate over others 
+
 # ### Classifier definition
 # 
 # `````{admonition} Task (Classification)
@@ -43,7 +54,27 @@
 # `````
 # 
 # Classifiers, similar to regression models, are defined by their inference and their training. Inference describes how the model performs prediction of (unseen) data points. The training or learning describes how the model is generated, given the training data. 
-# ### Theoretical Optimality of a Classifier
+# ### Evaluation
+# We quickly define the most straightforward classification evaluation metrics: the $L_{01}$-loss and the accuracy. Both put into relation how many errors/correct predictions a classifier makes in a dataset. 
+# 
+# ```{prf:definition} 0-1 Loss
+# Given a classifier $\hat{y}(\vvec{x})$ returning the predicted label. We define the **0-1 loss** as
+# $$L_{01}(y,\hat{y}) = \begin{cases}
+# 0, & \text{if } y\neq \hat{y}\\
+# 1, & \text{if } y=\hat{y}
+# \end{cases}$$
+# ```
+# The 0-1 loss indicates whether a classifier makes an error in its prediction. In contrast, the accuracy indicates how much a classifier gets right
+# ```{prf:definition} Accuracy
+# Given a classifier $\hat{y}(\vvec{x})$returning the predicted label. the accuracy of the classifier on dataset $\mathcal{D}$ containing $n$ data points is given as
+# 
+# \begin{align*}
+# \mathrm{Acc}(\hat{y},\mathcal{D}) &= \frac{\text{Correct predictions}}{\text{Total predictions}}\\
+# &= \frac1n \lvert\{(\vvec{x}_i,y_i)\in\mathcal{D}\mid \hat{y}(\vvec{x}_i)=y_i\}\rvert\\
+# &= 1- \frac1n\sum_{i=1}^n L_{01}(\hat{y}(\vvec{x}_i),y_i).
+# \end{align*}
+# ```
+# ### Theoretically Optimal Classifiers
 # ````{prf:property} i.i.d. Class Distribution
 # Under the i.i.d. class distribution assumption, we assume that the dataset samples are _identically_ distributed and _independently_ drawn from an _unknown_ probability distribution $ p^{\ast}({\bf x}, y) $, i.e. 
 # ```{math}
@@ -52,15 +83,9 @@
 # ```
 # ````
 # 
-# 
-# 
 # ````{prf:definition} Classifier EPE
 # :label: true_classifier_error
-# Given a classifier $f_\mathcal{D}:\mathbb{R}^d\rightarrow \mathbb{R}^c$ that has been trained on the dataset $\mathcal{D}$. We define the 0-1 loss as
-# $$L_{01}(y,\hat{y}) = \begin{cases}
-# 0, & \text{if } y\neq \hat{y}\\
-# 1, & \text{if } y=\hat{y}
-# \end{cases}$$
+# Given a classifier $f_\mathcal{D}:\mathbb{R}^d\rightarrow \mathbb{R}^c$ that has been trained on the dataset $\mathcal{D}$. 
 # the Expected Prediction Error (EPE) of classifiers is the expected error
 # ```{math}
 # :label: true_classification_error
@@ -86,41 +111,9 @@
 # y^\ast(\vvec{x}) = \argmax_{1\leq y\leq c} p^\ast (y\mid \vvec{x})
 # ```
 # ````
-# The Bayes classifier has the lowest EPE possible. 
-# `````{toggle}
-# ````{prf:proof}
-# From {eq}`true_classification_error`, we can write
-# ```{math}
-# :label: bayes_optimal_classifier
-# h^{\ast}({\bf x}) = \argmin_{h} {E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right] \rbrace
-# ```
-# where the argument $ h $ resides on the space of arbitrary functions of the type $ {\cal X} \rightarrow {\cal Y} $.
+# The Bayes classifier has the lowest EPE possible.     
 # 
-# We offer without proof that the solution to {eq}`bayes_optimal_classifier` is given by the maximum likelihood (ML) estimator 
-# ```{math}
-# :label: ml_estimator
-# h^{\ast}({\bf x}) = \argmax_{y \in {\cal Y}} p^{\ast} ( y \mid {\bf x}),
-# ```
-# where $ p^{\ast} ( y \mid {\bf x}) $ is the true likelihood function. In this case, it indicates how likely a particular label $ y $ represents the true class value given that a feature vector $ {\bf x} $ was observed.
 # 
-# Note that we can multiply the right-hand side of {eq}`ml_estimator` by the true marginal distribution $ p^{\ast}({\bf x}) $ without affecting the result
-# \begin{eqnarray}
-# h^{\ast}({\bf x}) &=& \argmax_{y \in {\cal Y}} p^{\ast} ( y \mid {\bf x}) \, p^{\ast}({\bf x}) \nonumber \\
-# &=& \argmax_{y \in {\cal Y}} p^{\ast} ({\bf x}, y) \nonumber
-# \end{eqnarray}
-# and finally write Eq. {eq}`final_estimator`. $ \blacksquare $
-# ````
-# `````
-# 
-# ````{margin}
-# ```{note}
-# As $ p^{\ast} $ is typically unknown in must practical applications, suitable learning algorithms must rely on different approaches aiming to minimize computable approximations to the true classification error and are therefore sub-optimal in a Bayesian sense.
-# ```
-# ````
-# 
-# ```{prf:definition} Excess risk
-# The excess risk of a given classifier $ h $ is given by $ R(h) - R(h^{\ast}) $, where $ R(h^{\ast}) $ is the risk of the Bayes optimal classifier $ h^{\ast} $. The excess risk of a consistent classifier $ h $ converges to zero as the number of training examples $ N $ grows unbounded, i.e. $ N \rightarrow \infty $.
-# ```
 
 # In[ ]:
 

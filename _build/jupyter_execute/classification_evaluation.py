@@ -3,10 +3,8 @@
 
 # ## Evaluation  
 # (class_evaluation)=
-# ### Estimating the true classification error
-# 
-# 
-# 
+# ### Bias Variance Tradeoff
+# Similar to the Bias-Variance Tradeoff in Regression, we can formulate the bias-variance tradeoff for classification. 
 # ```{prf:theorem} bias-variance tradeoff for classification
 # The EPE for any observation $\mathbf{x}_0$, having the label $y$ and prediction $\hat{y}_\mathcal{D}$ (depending on the training data $\mathcal{D}$) and most frequent prediction $\mathrm{mode}(\hat{y}_\mathcal{D})$ can be deconstructed into three parts:
 # \begin{align*}
@@ -22,6 +20,7 @@
 # \end{cases}
 # \end{align*}
 # ```
+# Just like in regression, we decompose the EPE into three parts: a noise, a bias and a variance term. The noise part is again inherent to the data and not dependent on the model. In classification, the noise describes how many labels are wrong in the dataset.
 # ```{prf:corollary} 
 # The classification noise random variable is equal to the probability that the label is not equal to the _true_ label
 # $$\mathbb{E}_y[L_{01}(y,y^*)]=p(y\neq y^*)$$
@@ -36,145 +35,163 @@
 # &=p(y\neq y^*)
 # \end{align*}
 # ```
+# The bias describes how far the predictions are from the true label when we aggregate the results over various classifiers. In regression, the aggregated regression model computed the mean over all regression models, in classification, the aggregated classifier predicts the majority vote of all classifiers. Lastly, the variance term describes the variance among the classifiers. Here, this is measured by the expected disagreement of the majority vote classifier and the indivdual classifiers.
 # 
-# {numref}`bias_variance_tradeoff1b_fig` plots the result of the following experiment. Given a set of training data sets $\mathcal{D}_1,\ldots \mathcal{D}_m$. We train one model on each training data set for varying levels of complexity. Each thin blue curve tracks how the prediction error changes when we vary the complexity of the model, while training on the same dataset. That is, we have as many blue curves as there are training data sets. The thick blue line represents the mean of the thin blue lines. The red curves track the prediction error on the test set 
+# {numref}`bias_variance_tradeoff1b_fig` plots the result of a simulation of the bias-variance computation. Given a set of training data sets $\mathcal{D}_1,\ldots \mathcal{D}_m$, we train one model on each training data set for varying levels of complexity. Each thin blue curve tracks how the prediction error changes when we vary the complexity of the model, while training on the same dataset. That is, we have as many blue curves as there are training data sets. The thick blue line represents the mean of the thin blue lines. The red curves track the prediction error on the test set and the thick red line averages the thin red lines. We can see how the models tend to overfit with increasing complexity, because they have a low training error but an increasing test error. The increase in the variance of the models increases the test error. For a low model complexity, the test error is largely increased by the training error, which indicates a high bias.   
 # ```{figure} /images/classification/e2.png
 # ---
 # height: 320px
 # name: bias_variance_tradeoff1b_fig
-# align: left
+# align: center
 # ---
 # The prediction error as a function of model complexity (borrowed from {cite}`hastie2009elements`). 
 # ```
+# Whether a classifier overfits or underfits depends on the model choice and their hyperparameters. For example, a linear classifier is not a good model choice for a nonlinear classification problem, or naive Bayes is not a good model choice if the features correlate. The table below lists the key parameters of our considered classifiers and how they influence over- and underfitting.
 # 
-# Key Insights
+# | Classifier      | Key Hyperparameter(s)        | Description                                                                 | Effect on Under/Overfitting                                 |
+# |-----------------|------------------------------|-----------------------------------------------------------------------------|--------------------------------------------------------------|
+# | **k-NN**        | `k`     | Number of neighbors considered for classification                          | Small `k` → overfitting (very local); large `k` → underfitting (too smooth) |
+# | **Naive Bayes** | `alpha`     | Laplace smoothing variable                       | large values flatten the probabilities → increases NB tendency to underfit      |
+# | **Decision Tree** | `max_depth`                 | Maximum depth of the tree                                                  | Large depth → overfitting; small depth → underfitting        |
+# |                 | `min_samples_split`, `min_samples_leaf` | Minimum samples to split or keep as leaf                        | Larger values → less overfitting           |
+# | **Random Forest** | `n_estimators`                   | Number of trees in the ensemble                                             | Too few → underfitting; more trees → lower variance (not overfit easily) |
+# |                  | `max_features`                   | Features considered per split         | Lower → more diversity, less overfitting                         |
+# | **SVM**         | `C`                           | Regularization strength: margin softness                                   | Large `C` → more regularization → less overfitting |
+# |                 | `kernel`                     | Type of transformation (e.g., `linear`, `rbf`, `poly`)                     | Complex kernels → higher risk of overfitting                 |
+# |                 | `gamma` (RBF kernels)   | Controls influence of single training examples                             | High `gamma` → points are similar if they are very close → more overfitting (focus on local effects)|
 # 
-# * Bias dominates when the model is too simple (underfitting)
-#         * Example: Linear classifiers on nonlinear data.
-# 
-# * Variance dominates when the model is too complex (overfitting)
-#         * Example: Deep neural networks trained on small datasets.
-# 
-# * There is an optimal tradeoff
-#         * Increasing model complexity reduces bias but increases variance.
-#         * Simplifying the model reduces variance but increases bias.
-# 
-# 
-# Recall that the true classification error of a classifier $ h $ is defined as
-# :::{math}
-# :label: true_classification_error2a
-# CE_{true} = Pr \lbrace Y \neq h({\bf X}) \rbrace.
-# :::
-# By definition $ Pr \lbrace Y \neq h({\bf X}) \rbrace \triangleq {E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right] \rbrace $. Thus, we can rewrite {eq}`true_classification_error2a` as
-# :::{math}
-# :label: true_classification_error2b
-# CE_{true} = {E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right].
-# :::
-# 
-# Without loss of generality, let us assume that the multidimensional feature space $ {\cal X} $ includes only continuous-valued features. Therefore, the expected value of the function $ \left[ Y \neq h(\bf X) \right] $ of $ {\bf X},Y $ w.r.t. the *mixed* probability distribution $ p^{\ast} $ can be written as
-# :::{math}
-# :label: expected_value
-# {E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right] \rbrace = \sum_{y \in {\cal Y}} \int_{{\bf x} \in {\cal X}} \left[ y \neq h({\bf x}) \right] p^{\ast} ({\bf x}, y) d {\bf x}.
-# :::
-# Note, however, that the underlying distribution $ p^{\ast} $ is *unknown*. Thus, in general, the true classification error can not be computed exactly as in {eq}`true_classification_error2b`. Even if we knew the true distribution $ p^{\ast} $, the integrals / summations in {eq}`expected_value` have often no closed form solution.
-# 
-# In practice, we approximate the true classification error by computing a Monte Carlo approximation of the integrals /summations on the right-hand side of {eq}`expected_value`. Specifically, let
-# \begin{eqnarray}
-# {\cal D}' &\triangleq& \bigcup_{i=1}^{M} \lbrace \left( \bar{\bf x}_{i}, \bar{y}_{i} \right) \rbrace \nonumber \\
-# &\equiv& \lbrace \left( \bar{\bf x}_{1}, \bar{y}_{1} \right), \left( \bar{\bf x}_{2}, \bar{y}_{2} \right), \ldots, \left( \bar{\bf x}_{M}, \bar{y}_{M} \right) \rbrace \nonumber
-# \end{eqnarray}
-# be a dataset containing $ M $ *testing* or *validation* examples also drawn from the underlying distribution $ p^{\ast} $. Note that we know the true label $ \bar{y}_{i} $ of each data item $ \bar{\bf x}_{i} $. From the law of large numbers, the integrals/summations on the right-hand side of {eq}`expected_value` can be computed as
-# :::{math}
-# :label: expected_value_approximation
-# \sum_{y \in {\cal Y}} \int_{{\bf x} \in {\cal X}} \left[ y \neq h(\bf x) \right] p^{\ast} ({\bf x}, y) d {\bf x} = \lim_{M \rightarrow \infty} \frac{1}{M} \sum_{i=1}^{M} \left[ \bar{y}_{i} \neq h(\bar{\bf x}_{i}) \right]
-# :::
-# with $ \bar{\bf x}_{i}, \bar{y}_{i} \sim p^{\ast} ({\bf x}, y) $, $ \forall M \in \lbrace 1, 2, 3, \ldots \rbrace $, since by definition $$ \sum_{y \in {\cal Y}} \int_{{\bf x} \in {\cal X}} p^{\ast} ({\bf x}, y) d {\bf x} = 1. $$
-# 
-# Thus, for a finite number of samples $ M $, the true classification error is typically approximated in a Monte Carlo sense using a very large *testing* or *validation* dataset $ {\cal D}' $ as
-# :::{math}
-# CE_{true} \approx \frac{1}{M} \sum_{i=1}^{M} \left[ \bar{y}_{i} \neq \hat{y}_{i} \right]
-# :::
-# with $ \hat{y}_{i} = h(\bar{\bf x}_{i}) $.
-# 
-# ::::{tip}
-# Using the training dataset to estimate true estimation error can lead to over fitting. Specifically, using the *training* examples to estimate the true classification error is too optimistic. A small training error does not imply good generalization, as the classifier can still perform poorly on samples not seen during training. To avoid over-fitting, we reserve therefore examples in a *testing* dataset to estimate the true classification error after training. This procedure avoids over-fitting since the *testing* examples are new to the classifier, i.e. they were not used in training. In addition to this, we can also reserve examples in a *validation* dataset to estimate the true classification error and tune any hyper-parameters of the classifier during training. In general, we split the set of available samples into training, validating and testing datasets using some proportion (e.g. $ 60 / 20 / 20 $ or $ 70/15/15 $).
-# 
-# 
-# Thus, for a given classifier $ h(\cdot) $, we can estimate the training, validation and testing classification errors respectively as 
-# \begin{eqnarray}
-# CE_{train} &=& \frac{1}{|{\cal D}_{train}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{train} } \left[ \bar{y} \neq h(\bar{\bf x}) \right] \nonumber \\
-# CE_{val} &=& \frac{1}{|{\cal D}_{val}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{val} } \left[ \bar{y} \neq h(\bar{\bf x}) \right] \nonumber \\
-# CE_{test} &=& \frac{1}{|{\cal D}_{test}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{test} } \left[ \bar{y} \neq h(\bar{\bf x}) \right]. \nonumber 
-# \end{eqnarray}
-# Note however that the training error $ CE_{train} $ and validation error $ CE_{val} $ are often too optimistic - especially, the training error -- whereas the testing error $ CE_{test} $ is a noisy estimation of the true classification error $ CE_{true} $ such that $ CE_{test} \rightarrow CE_{true} $ as the number of testing examples grows unbounded, i.e. $ | CE_{test} | \rightarrow \infty $.
-# ::::
-# 
-# :::{prf:remark}
-# Some works report the classification accuracy -- opposite of error -- instead of the classification error. The true accuracy is defined as 
-# \begin{eqnarray}
-# ACC_{true} &\triangleq& Pr \lbrace Y = h({\bf X}) \rbrace \label{eq:true_classification_accuracy} \\
-# &\equiv&  1 - CE_{true}. \nonumber
-# \end{eqnarray}
-# On the other hand, the training, validation and testing classification accuracies of a classifier $ h(\cdot) $ can be computed respectively as 
-# \begin{eqnarray}
-# ACC_{train} &=& \frac{1}{|{\cal D}_{train}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{train} } \left[ \bar{y} = h(\bar{\bf x}) \right] \nonumber \\
-# ACC_{val} &=& \frac{1}{|{\cal D}_{val}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{val} } \left[ \bar{y} = h(\bar{\bf x}) \right] \nonumber \\
-# ACC_{test} &=& \frac{1}{|{\cal D}_{test}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{test} } \left[ \bar{y} = h(\bar{\bf x}) \right]. \nonumber 
-# \end{eqnarray}
-# :::
-# 
-# ### Typical Machine Learning (ML) workflow
-# 
-# {numref}`train_validate_test_02` illustrates the typical procedure to learn a ML model. The training procedure under the **Repeat** rectangle is repeated over several training epochs considering different selections of the model hyper-parameters. Intermediate statistics -- training and validation errors -- are collected along the training epochs. Final statistics -- the testing error -- are computed for the model with the best validation error. Training and validation datasets may be also shuffled / randomized over the training epochs. The testing dataset in turn shall not play any role on the training procedure.
-# 
-# :::{figure} /images/classification/train_validate_test_02.png
+# ### Typical Classification workflow
+# The evaluation in classification has two purposes: finding the best hyperparameters for a model (tuning) and to assess the fit of the model (assessing overfitting and underfitting). Doing both, requires a nested evaluation and training technique, which is detailed in 
+# {numref}`train_validate_test_02`. The training procedure in the *Repeat* rectangle is used to tune the hyperparameters. The test error is computed for the model with the best validation error. 
+# ```{figure} /images/classification/train_validate_test_02.png
 # ---
-# height: 320px
+# height: 300px
 # name: train_validate_test_02
-# align: left
+# align: center
 # ---
 # A block diagram representing a typical ML workflow.
-# :::
+# ```
+# In the graphic, a train/validation/test split is used:
 # 
-# ::::{danger}
-# ** Avoid human-in-the-loop!** Dot not adjust the model parameters or hyper-parameters by guessing based on the testing accuracy / error. Do not allow the information containing in the testing data set leak to the training procedure.
+# - **Training set**: used to fit the model.
+# - **Validation set**: used to tune hyperparameters and make model selection decisions.
+# - **Test set**: used only once for final model evaluation.
 # 
-# :::{figure} /images/classification/train_validate_test_03.png
+# This approach may be sensitive to the choice of the specific validation and test set, but if we have large data and/or classifiers that take a long time to train, this is a valid approach. 
+# 
+# ```{tikz}
+# \begin{tikzpicture}
+# 
+# % Whole dataset block
+# \node[draw, minimum width=12cm, minimum height=1cm, fill=gray!10] (data) {};
+# 
+# % Train, val, test blocks
+# \node[draw, minimum width=6cm, minimum height=1cm, fill=blue!20, anchor=west] at (data.west) (train) {Training Set};
+# \node[draw, minimum width=3cm, minimum height=1cm, fill=green!30, anchor=west] at (train.east) (val) {Validation Set};
+# \node[draw, minimum width=3cm, minimum height=1cm, fill=red!30, anchor=west] at (val.east) (test) {Test Set};
+# 
+# % Labels
+# \node[below=0.2cm of train] {\small e.g., 60\%};
+# \node[below=0.2cm of val] {\small e.g., 20\%};
+# \node[below=0.2cm of test] {\small e.g., 20\%};
+# 
+# \end{tikzpicture}
+# ```
+# 
+# However, we can of course also perform cross validation, as we have already discussed it for regression (averaging an evaluation metric instead of the MSE). Whether we should use cross validation instead of a simple split, largely depends on whether we can afford it, based on training time and size of the dataset. 
+# 
+# In classification, we often use **stratified** k-fold cross-validation to preserve the class distribution in each fold. This is particularly important for imbalanced datasets.
+# 
+# ````{warning} Avoid the human-in-the-loop 
+# Do not adjust the model parameters or hyper-parameters by guessing based on the testing accuracy / error. Do not allow the information containing in the testing data set leak to the training procedure.
+# 
+# ```{figure} /images/classification/train_validate_test_03.png
 # ---
 # height: 320px
 # name: train_validate_test_03
-# align: left
-# ---
-# Human feedback plugging the testing dataset into the training procedure. A naive human -- thirsty for good results -- may change the model parameters / hyper-parameters to improve the training error. The resulting test error will therefore under estimate the true error leading to an over-confident model. Conversely, the model generalization ability to deal with unseen samples will be over-estimated.
-# :::
-# ::::
+# align: center
+# ```
+# ````
 # 
-# ### Confusion matrix
+# ### Evaluation Metrics
 # 
-# Let 
-# \begin{equation}
-# {\bf CM} = \begin{bmatrix}
-# c_{1,1} & c_{1,2} & \ldots & c_{1,L} \\
-# c_{2,1} & c_{2,2} & \ldots & c_{2,L} \\
-# \vdots &  \vdots & & \vdots \\
-# c_{L,1} & c_{L,2} & \ldots & c_{L,L}
-# \end{bmatrix}
-# \end{equation}
-# define a $L \times L$ confusion matrix such that, $ \forall i,j \in \lbrace 1, 2, \ldots, L \rbrace $, $ c_{i,j} \in {\cal Y} \triangleq \lbrace \ell_{1}, \ell_{2}, \ldots, \ell_{L} \rbrace $ and 
-# \begin{equation}
-# c_{i,j} = \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}' } \left[ h(\bar{\bf x}) = \ell_{j} \wedge  \bar{y} = \ell_{i} \right]
-# \end{equation}
-# for some *validation* or *training* dataset $$ {\cal D}' = \bigcup_{i=1}^{M} \lbrace \left( \bar{\bf x}_{i}, \bar{y}_{i} \right) \rbrace. $$ The matrix element $ c_{i,j} $ indicates therefore how frequently the true class value associated with a data item $ \bar{\bf x} $ in $ {\cal D}' $ is $ \bar{y} = \ell_{i} $ while the classifier predicts $ h(\bar{\bf x}) = \ell_{j} $ with $ \ell_{i}, \ell_{j} \in {\cal Y} $. Note that the diagonal elements $ \lbrace c_{i,j} \rbrace $, $ i = j $, correspond to accurate predictions while off-diagonal elements $ \lbrace c_{i,j} \rbrace $, $ i \neq j $, correspond to erroneous classifier predictions.
+# Straightforward evaluation metrics are the $L_{01}$-loss and the accuracy, that put into relation how many errors/correct predictions a classifier makes in a dataset. Given a classifier $\hat{y}(\vvec{x})$, the accuracy of the classifier on dataset $\mathcal{D}$ containing $n$ data points is given as
 # 
-# Alternatively, the confusion matrix can be normalized such that, $ \forall i \in \lbrace 1, 2, \ldots, L \rbrace $,
-# \begin{equation}
-# \sum_{j=1}^{L} c_{i,j} = 1. \nonumber
-# \end{equation}
-# In this case, each matrix element $ c_{i,j} $ stores an empirical approximation to the probability $ Pr \left\lbrace h({\bf x}) = \ell_{j} \mid {y} = \ell_{i} \right\rbrace $ of the classifier predicting $ \ell_{j} $ given that the true class value is $ \ell_{i} $.
+# \begin{align*}
+# \mathrm{Acc}(\hat{y},\mathcal{D}) &= \frac{\text{Correct predictions}}{\text{Total predictions}}\\
+# &= \frac1n \lvert\{(\vvec{x}_i,y_i)\in\mathcal{D}\mid \hat{y}(\vvec{x}_i)=y_i\}\rvert\\
+# &= 1- \frac1n\sum_{i=1}^n L_{01}(\hat{y}(\vvec{x}_i),y_i).
+# \end{align*}
+# The accuracy is a very simple metric that is often used because it's easy to understand. However, it may be misleading when classes are imbalanced.    
+# For example, consider a binary classification problem, where we have 950 data points belonging to class 1 and 50 data points belonging to class 2. If our classifier always predicts class 1, that is if it didn't learn anything, the accuracy is still 0.95, which is quite high. To take special cases of datasets and their evaluation into account, various evaluation metrics have been proposed. 
+# #### Confusion Matrix
+# The confusion matrix provides a visualizable overview of the performance of a classifier by considering all outcomes of the true label vs. the predicted label. Assuming that we have a binary classification problem with a positive and a negative class, the confusion matrix returns the following table:
 # 
-# ::::{prf:example}
-# The confusion matrix is a convenient tool for a human to quickly evaluate a classifier performance by comparing its diagonal and off-diagonal elements.
+# |              | Predicted Positive | Predicted Negative |
+# |--------------|--------------------|--------------------|
+# | **Actual Positive** | True Positive (TP)     | False Negative (FN)     |
+# | **Actual Negative** | False Positive (FP)    | True Negative (TN)      |
 # 
-# A $ 4 \times 4 $ confusion matrix for a classifier $ h:{\cal X} \rightarrow {\cal Y} $ such that $ {\cal Y} = \lbrace \ell_{1}, \ell_{2}, \ell_{3} , \ell_{4} \rbrace $. The $i$-th row stores either frequencies or approximations to the empirical probabilities $ \lbrace Pr \left\lbrace h({\bf x}) = \ell_{j} \mid y = \ell_{i} \right\rbrace \rbrace $, $ j \in \lbrace 1, 2, 3, 4 \rbrace $. Note that $ Pr \left\lbrace h({\bf x}) = \ell_{j} \mid y = \ell_{i} \right\rbrace $ is the probability of the classifier $ h(\cdot) $ returning $ \ell_{j} $ given that the true class value is $ \ell_{i} $ and $ \sum_{j=1}^{4} Pr \left\lbrace h({\bf x}) = \ell_{j} \mid y = \ell_{i} \right\rbrace = 1$, $ \forall i \in \lbrace 1, 2, 3, 4 \rbrace $.
-# :::
-# ::::
+# In the general case where we have $c$ classes, the confusion matrix $C$ is a $c\times c$ matrix, where the entry $C_{y,l}$ counts how many data points with label $y$ are predicted to have label $l$
+# $$C_{y,l} = \lvert\{(\vvec{x},y)\in\mathcal{D}\mid \hat{y}(\vvec{x})=l\}\rvert $$
+# 
+# In the example below, we train a Gaussian Naive Bayes classifier on the Iris dataset, having three classes. The confusion matrix indicates that the first class is easy to distinguish from the other two classes, but the distinguishing between the other two classes is not too easy.
+# 
+
+# In[1]:
+
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
+
+# Load the full Iris dataset (3 classes)
+X, y = load_iris(return_X_y=True)
+
+# Split into training and test sets (stratified to preserve class proportions)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y
+)
+
+# Train an SVM classifier
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+# Predict on the test set
+y_pred = model.predict(X_test)
+
+# Compute the confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# Display the confusion matrix
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=model.classes_)
+fig, ax = plt.subplots(figsize=(6, 5))
+disp.plot(ax=ax, cmap='Blues')
+plt.title("Confusion Matrix for Iris Classification (3 classes)")
+plt.show()
+
+
+# #### Precision, Recall, and F1-Score
+# The confusion matrix shows on the diagonal the correct predictions and on the off-diagonal the errors of a classifier. In some applications, it matters what kind of error a classifier makes. For example, in the medical domain, it matters in cancer detection whether the classifier either fails to discover when a patient has cancer, or if the classifier discovers all cases of cancer but also sometimes predicts that a healthy patient has cancer. Having a false alarm is not as costly as a missed cancer diagnosis. In addition, knowing about the type of error that a classifier is susceptible to, helps in understanding when to trust the classifier and when we should take the prediction with a grain of salt. To that end, it makes sense to consider precision, recall and the F1-score: 
+# 
+# - **Precision**: \\( \frac{TP}{TP + FP}  = \frac{TP}{\text{Predicted Positive}}\\) — how many predicted positives were correct.
+# - **Recall** (Sensitivity): \\( \frac{TP}{TP + FN}  = \frac{TP}{\text{Actual Positive}}\\) — how many actual positives were identified.
+# - **F1-Score**: Harmonic mean of precision and recall:
+# 
+# $$
+# F1 = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+# $$
+# 
+# In a multiclass scenario, the precision can be computed class-wise as estimators of the probability that the class is actually $l$ if my classifier says so $p(y=l\mid\hat{y}=l)$. Correspondingly, the recall returns the estimated probability that my classifier predicts class $l$ if the actual class is actually $l$.  
+# 
+
+# #### ROC Curve and AUC
+# 
+# - The **ROC curve** plots the true positive rate (recall) against the false positive rate.
+# - The **Area Under the Curve (AUC)** summarizes the overall performance across thresholds.
+# 
+# AUC ranges from 0.5 (random) to 1.0 (perfect).
+# 
+# 

@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -669,27 +679,28 @@ title="Print to PDF"
 </div><p>A vector space is a structure where you can do most operations you know from real numbers, but not all. Let <span class="math notranslate nohighlight">\(\alpha\in\mathbb{R}, \vvec{v},\vvec{w}\in\mathcal{V}\)</span>. The following operations are well-defined:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\vvec{v}/\alpha = \frac1\alpha \vvec{v}\)</span> for <span class="math notranslate nohighlight">\(\alpha\neq 0\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\vvec{v}-\vvec{w}\)</span>
-What you can not do:</p></li>
+<li><p><span class="math notranslate nohighlight">\(\vvec{v}-\vvec{w}\)</span><br />
+However, the vector-vector product is not per se defined in a vector space and likewise, you can also not divide by a vector.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\vvec{v}\cdot \vvec{w}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\alpha/\vvec{v}\)</span></p></li>
 </ul>
-<div class="proof example admonition" id="example-1">
-<p class="admonition-title"><span class="caption-number">Example 1 </span> (The vector space <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span>)</p>
-<section class="example-content" id="proof-content">
-<p>The elements of the vector space <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> are <span class="math notranslate nohighlight">\(d\)</span>-dimensional vectors
+<div class="proof theorem admonition" id="theorem-1">
+<p class="admonition-title"><span class="caption-number">Theorem 1 </span> (<span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> is a vector space)</p>
+<section class="theorem-content" id="proof-content">
+<p>The elements of the space <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> are defined as <span class="math notranslate nohighlight">\(d\)</span>-dimensional vectors
 <div class="math notranslate nohighlight">
-\[\begin{split}\vvec{v} = \begin{pmatrix}v_1\\\vdots\\v_d\end{pmatrix},\quad v_i\in\mathbb{R} \text{ for } 1\leq i \leq d. \end{split}\]</div>
+\[\begin{split}\vvec{v} = \begin{pmatrix}v_1\\\vdots\\v_d\end{pmatrix},\quad v_i\in\mathbb{R} \text{ for } 1\leq i \leq d, \end{split}\]</div>
 
-For vectors, the addition between vectors and the scalar multiplication are defined for <span class="math notranslate nohighlight">\(\vvec{v},\vvec{w}\in\mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha\in\mathbb{R}\)</span> as</p>
+whose addition and the scalar multiplication are defined for <span class="math notranslate nohighlight">\(\vvec{v},\vvec{w}\in\mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha\in\mathbb{R}\)</span> as follows:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
     \vvec{v}+\vvec{w} = \begin{pmatrix}v_1+w_1\\\vdots\\v_d+w_d\end{pmatrix},
     \alpha\vvec{v} = \begin{pmatrix}\alpha v_1\\\vdots\\\alpha v_d\end{pmatrix} 
 \end{align*}\]</div>
+<p>The space <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> is a vector space.</p>
 </section>
 </div><div class="proof example admonition" id="ex_vector_space">
-<p class="admonition-title"><span class="caption-number">Example 2 </span> (The geometry of <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span>)</p>
+<p class="admonition-title"><span class="caption-number">Example 1 </span> (The geometry of <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span>)</p>
 <section class="example-content" id="proof-content">
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-b07c18aebe7ac88f02fa3429bf153d2c3f8ff770.svg" alt="Figure made with TikZ" /></p>
 </div><div class="amsmath math notranslate nohighlight">
@@ -707,11 +718,11 @@ Because data is represented as a matrix. A data table of <span class="math notra
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p>ID</p></th>
-<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_1\)</span></p></th>
-<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_2\)</span></p></th>
-<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_3\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{x}_1\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{x}_2\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{x}_3\)</span></p></th>
 <th class="head"><p><span class="math notranslate nohighlight">\(\ldots\)</span></p></th>
-<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{F}_d\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{x}_d\)</span></p></th>
 </tr>
 </thead>
 <tbody>
@@ -817,7 +828,7 @@ A_{n1} &amp;\ldots &amp; A_{nd}
 </div>
 </div>
 <div class="proof example admonition" id="example-3">
-<p class="admonition-title"><span class="caption-number">Example 3 </span> (The Vector Space <span class="math notranslate nohighlight">\(\mathbb{R}^{n\times d}\)</span>)</p>
+<p class="admonition-title"><span class="caption-number">Example 2 </span> (The Vector Space <span class="math notranslate nohighlight">\(\mathbb{R}^{n\times d}\)</span>)</p>
 <section class="example-content" id="proof-content">
 <p>The elements of the vector space <span class="math notranslate nohighlight">\(\mathbb{R}^{n\times d}\)</span> are <span class="math notranslate nohighlight">\((n\times d)\)</span>-dimensional matrices.</p>
 <p>The addition between matrices and the scalar multiplication are defined for <span class="math notranslate nohighlight">\(A,B\in\mathbb{R}^{n\times d}\)</span> and <span class="math notranslate nohighlight">\(\alpha\in\mathbb{R}\)</span> as</p>
@@ -1015,6 +1026,30 @@ Yah, it gets interesting with the matrix product.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>32
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span><span class="o">.</span><span class="n">T</span><span class="nd">@w</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>32
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">w</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1051,8 +1086,8 @@ Yah, it gets interesting with the matrix product.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.7, 0.9, 1.1, 1. , 1.1],
-       [0.8, 0.8, 0.8, 1.2, 1.1]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.6, 0.3, 0.4, 0.5, 0.1],
+       [0.4, 0.2, 0.3, 0.5, 0.1]])
 </pre></div>
 </div>
 </div>
@@ -1108,8 +1143,8 @@ The matrix product is the sum of outer products of corresponding column- and row
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.8, 0.3, 0.8],
-       [0.4, 0.9, 0.4]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.5, 0.6, 0.6],
+       [0.1, 0.4, 0.9]])
 </pre></div>
 </div>
 </div>
@@ -1121,8 +1156,8 @@ The matrix product is the sum of outer products of corresponding column- and row
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.8, 0.3, 0.8],
-       [0.4, 0.9, 0.4]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.5, 0.6, 0.6],
+       [0.1, 0.4, 0.9]])
 </pre></div>
 </div>
 </div>
@@ -1153,14 +1188,14 @@ Just sometimes, if the matrix has an <em>inverse</em>.</p>
 <div class="math notranslate nohighlight">
 \[AA^{-1} = A^{-1}A = I\]</div>
 
-Diagonal matrices with nonzero elements on the diagonal have an inverse:
-$$\begin{pmatrix} 1&amp; 0 &amp; 0\
-0 &amp; 2 &amp; 0\
-0 &amp; 0 &amp; 3\end{pmatrix}</p>
-<div class="amsmath math notranslate nohighlight" id="equation-01fd8e19-eb2f-40e3-a680-9c501a6fb75a">
-<span class="eqno">(1)<a class="headerlink" href="#equation-01fd8e19-eb2f-40e3-a680-9c501a6fb75a" title="Permalink to this equation">#</a></span>\[\begin{pmatrix}1&amp; 0 &amp; 0\\
+Diagonal matrices with nonzero elements on the diagonal have an inverse:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}\begin{pmatrix} 1&amp; 0 &amp; 0\\
+0 &amp; 2 &amp; 0\\
+0 &amp; 0 &amp; 3\end{pmatrix}
+\begin{pmatrix}1&amp; 0 &amp; 0\\
 0 &amp; \frac12 &amp; 0\\
-0 &amp; 0 &amp; \frac13\end{pmatrix}\]</div>
+0 &amp; 0 &amp; \frac13\end{pmatrix} = I\end{align*}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
@@ -1176,8 +1211,7 @@ $$\begin{pmatrix} 1&amp; 0 &amp; 0\
 </div>
 </div>
 </div>
-<p>Okay, but why is this now interesting?</p>
-<p>Because matrix multiplication is computable fast, and almost every data operation can be written as a matrix operation.</p>
+<p>In Machine Learning, almost everything is formulated in matrix notation, because matrix multiplication is computable fast and can be accelerated with Graphics Processing Units (GPUs).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">matrix_mult</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">):</span>
@@ -1202,8 +1236,8 @@ $$\begin{pmatrix} 1&amp; 0 &amp; 0\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution time of our naive implementation in seconds: 1.6495919227600098
-Execution time of the numpy implementation in seconds: 0.0007619857788085938
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution time of our naive implementation in seconds: 1.6266279220581055
+Execution time of the numpy implementation in seconds: 0.0008070468902587891
 </pre></div>
 </div>
 </div>

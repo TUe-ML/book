@@ -56,7 +56,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Naive Bayes" href="classification_naive_bayes.html" />
-    <link rel="prev" title="Evaluation" href="classification_evaluation.html" />
+    <link rel="prev" title="Classification Objective" href="classification_problem.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -258,11 +258,6 @@ const thebe_selector_output = ".output, .cell_output"
      Classification Objective
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      K-Nearest Neighbor
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -684,7 +694,7 @@ title="Print to PDF"
 \[dist(x,x_{i_j})\leq dist(x,x_i) \text{ for all } 1\leq i\leq n.\]</div>
 </p>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 16 </span> (kNN classifier)</p>
+<p class="admonition-title"><span class="caption-number">Definition 18 </span> (kNN classifier)</p>
 <section class="definition-content" id="proof-content">
 <p>The kNN classifier returns the class probabilities estimated from the <span class="math notranslate nohighlight">\(\kappa\)</span> neighbors:</p>
 <div class="amsmath math notranslate nohighlight">
@@ -772,7 +782,7 @@ but we can also integrate distance functions for discrete features, such as the 
 <h2>Bayes consistency<a class="headerlink" href="#bayes-consistency" title="Permalink to this headline">#</a></h2>
 <p>Although the <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier is very simple, it is theoretically sound in the sense that we can show that it converges to the Bayes-optimal classifier in theory.</p>
 <div class="proof theorem admonition" id="theorem-1">
-<p class="admonition-title"><span class="caption-number">Theorem 13 </span></p>
+<p class="admonition-title"><span class="caption-number">Theorem 15 </span></p>
 <section class="theorem-content" id="proof-content">
 <p>The kNN classifier converges to the Bayes classifier for <span class="math notranslate nohighlight">\(n\rightarrow \infty\)</span> when choosing <span class="math notranslate nohighlight">\(\kappa\)</span> such that</p>
 <ul class="simple">
@@ -811,11 +821,11 @@ but we can also integrate distance functions for discrete features, such as the 
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="classification_evaluation.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="classification_problem.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Evaluation</p>
+            <p class="prev-next-title">Classification Objective</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="classification_naive_bayes.html" title="next page">

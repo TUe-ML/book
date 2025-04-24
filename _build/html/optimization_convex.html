@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -638,7 +648,7 @@ title="Print to PDF"
 <h1>Convex Optimization<a class="headerlink" href="#convex-optimization" title="Permalink to this headline">#</a></h1>
 <p>Convex optimization represents a somewhat ideal scenario in optimization problems. With a convex objective, there is only one minimum to find, simplifying the task. Many optimization problems in machine learning are convex, or at least convex in certain coordinates when others are fixed. Knowing whether an objective is convex is valuable for understanding how to improve a model. If a model derived from minimizing the objective function performs poorly on other metrics, this may indicate that the objective does not fully capture what defines a good model. To establish convex optimization objectives, we first define convex sets and convex functions.</p>
 <div class="proof definition admonition" id="convex_set">
-<p class="admonition-title"><span class="caption-number">Definition 9 </span> (Convex set)</p>
+<p class="admonition-title"><span class="caption-number">Definition 10 </span> (Convex set)</p>
 <section class="definition-content" id="proof-content">
 <p>A <strong>set</strong> <span class="math notranslate nohighlight">\(\mathcal{X}\subseteq \mathbb{R}^d\)</span> is <strong>convex</strong> if and only if the line segment between every pair of points in the set is in the set.
 That is, if for all <span class="math notranslate nohighlight">\(x,y\in \mathcal{X}\)</span> and <span class="math notranslate nohighlight">\(\alpha\in[0,1]\)</span> we have
@@ -649,11 +659,11 @@ That is, if for all <span class="math notranslate nohighlight">\(x,y\in \mathcal
 </div><p>The definition states that in a convex set you can connect any two dots within the set and you will never leave the set when drawing that connecting line. The set on the left is convex, and the set on the right is not convex.</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-9f6a8c6cf8d54cc9a602dfa2ac2a7080c228fb47.svg" alt="Figure made with TikZ" /></p>
 </div><div class="proof definition admonition" id="convex_function">
-<p class="admonition-title"><span class="caption-number">Definition 10 </span> (Convex function)</p>
+<p class="admonition-title"><span class="caption-number">Definition 11 </span> (Convex function)</p>
 <section class="definition-content" id="proof-content">
 <p>A function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> is <strong>convex</strong> if and only if for every <span class="math notranslate nohighlight">\(\alpha \in[0,1]\)</span>, and <span class="math notranslate nohighlight">\(\vvec{x},\vvec{y}\in\mathbb{R}^d\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ad824678-db09-4153-b5b0-5ddaf9daa448">
-<span class="eqno">(3)<a class="headerlink" href="#equation-ad824678-db09-4153-b5b0-5ddaf9daa448" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e7bd202e-2bc7-494f-99b8-2314bde57a8c">
+<span class="eqno">(2)<a class="headerlink" href="#equation-e7bd202e-2bc7-494f-99b8-2314bde57a8c" title="Permalink to this equation">#</a></span>\[\begin{equation}
  f(\alpha \vvec{x}+ (1-\alpha)\vvec{y})\leq\alpha f(\vvec{x})+(1-\alpha)f(\vvec{y})\nonumber
 \end{equation}\]</div>
 </section>
@@ -661,7 +671,7 @@ That is, if for all <span class="math notranslate nohighlight">\(x,y\in \mathcal
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-e85bc54ebacb34fea0c46773f84f9685c4c4d545.svg" alt="Figure made with TikZ" /></p>
 </div><p>A convex optimization problem, or objective, is now characterized by two things: a convex objective function and a convex feasible set.</p>
 <div class="proof definition admonition" id="definition-2">
-<p class="admonition-title"><span class="caption-number">Definition 11 </span> (Convex optimization problem)</p>
+<p class="admonition-title"><span class="caption-number">Definition 12 </span> (Convex optimization problem)</p>
 <section class="definition-content" id="proof-content">
 <p>Given a convex objective function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span> and a convex feasible set <span class="math notranslate nohighlight">\(\mathcal{C}\subseteq\mathbb{R}^d\)</span>
 then the objective of a <strong>convex optimization problem</strong> can be written in the following form:</p>
@@ -682,13 +692,13 @@ we can write any constrained objective as the following unconstrained one:</p>
 \end{align*}\]</div>
 <p>Since the objective function above returns infinity for any <span class="math notranslate nohighlight">\(\vvec{x}\)</span> outside of the feasible set, any potential minimizer has to be feasible. If we now apply the definition of a convex function, then we require that the graph of the function is below the connecting line. However, if we have a nonconvex feasible set, then there exist two points in the feasible set whose connecting line is partially outside of the feasible set. On this part, where the connecting line is outside of the feasible set, the objective function returns infinity. Hence, the graph of the objective will not be under the connecting line. The example below illustrates this property further.</p>
 <div class="proof example admonition" id="example-3">
-<p class="admonition-title"><span class="caption-number">Example 12 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 10 </span></p>
 <section class="example-content" id="proof-content">
 <p>The figure below displays the function <span class="math notranslate nohighlight">\(f(x)=x^2 + \mathbb{1}_{\{\lvert x\rvert\geq 2\}}\)</span>. The feasible set <span class="math notranslate nohighlight">\(\{\lvert x\rvert\geq 2\}\)</span> is nonconvex, since the line connecting <span class="math notranslate nohighlight">\(x_1=-2.5\)</span> and <span class="math notranslate nohighlight">\(x_2=3.5\)</span> leaves the feasible set. We indicate domain where the function is returning infinity by the dashed vertical lines. If we now connect two function values as indicated by the red line, then the graph is above the line within the interval <span class="math notranslate nohighlight">\([-2,2]\)</span>. This shows that the function <span class="math notranslate nohighlight">\(f\)</span>, indicating an optimization objective with a convex objective function and a nonconvex feasible set is not a convex function.</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-e85e81b8b20b55065b588139b2fabfce5f91a354.svg" alt="Figure made with TikZ" /></p>
 </div></section>
 </div><div class="proof theorem admonition" id="thm_convex">
-<p class="admonition-title"><span class="caption-number">Theorem 4 </span></p>
+<p class="admonition-title"><span class="caption-number">Theorem 7 </span></p>
 <section class="theorem-content" id="proof-content">
 <p>If a function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> is convex, then every local minimizer <span class="math notranslate nohighlight">\(x^*\)</span> of <span class="math notranslate nohighlight">\(f\)</span> is a global minimizer.</p>
 </section>
@@ -705,7 +715,7 @@ f(\alpha x_{loc} + (1-\alpha)x^*)&amp;\leq \alpha f(x_{loc}) + (1-\alpha)f(x^*)\
 Hence <span class="math notranslate nohighlight">\(x_{loc}\)</span> is not a local minimizer.</p>
 </div>
 </div>
-<p>Since we can state any (constrained) optimization objective as an unconstrained objective by means of the indicator function as discussed above, we can apply <a class="reference internal" href="#thm_convex">Theorem 4</a> also to constrained optimization objectives and deduce that any local minimizer of a constrained objective is also a global one.</p>
+<p>Since we can state any (constrained) optimization objective as an unconstrained objective by means of the indicator function as discussed above, we can apply <a class="reference internal" href="#thm_convex">Theorem 7</a> also to constrained optimization objectives and deduce that any local minimizer of a constrained objective is also a global one.</p>
 <p>Conversely, not every function with one global minimum has to be convex. An example of a nonconvex function that has just one local, and therewith also global minimum is the Rosenbrock function.</p>
 <section id="properties-of-convex-functions">
 <h2>Properties of Convex Functions<a class="headerlink" href="#properties-of-convex-functions" title="Permalink to this headline">#</a></h2>
@@ -729,6 +739,48 @@ Hence <span class="math notranslate nohighlight">\(x_{loc}\)</span> is not a loc
 </div><div class="proof lemma admonition" id="lemma-6">
 <p class="admonition-title"><span class="caption-number">Lemma 2 </span></p>
 <section class="lemma-content" id="proof-content">
+<p>The squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x})=\lVert\vvec{x}\rVert^2\)</span> is convex.</p>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. Let <span class="math notranslate nohighlight">\(\vvec{x}_1,\vvec{x}_2\in\mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha\in[0,1]\)</span>. Then we have to show  that</p>
+<div class="math notranslate nohighlight" id="equation-eq-convex">
+<span class="eqno">(3)<a class="headerlink" href="#equation-eq-convex" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 \leq  \alpha\lVert\vvec{x}_1\rVert^2 + (1-\alpha)\lVert\vvec{x}_2\rVert^2
+\end{align}\]</div>
+<p>We apply the binomial formula for the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm, which derives directly from the definition of the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm by an inner product (see linear algebra lecture). Then we have:</p>
+<div class="math notranslate nohighlight" id="equation-eq-term">
+<span class="eqno">(4)<a class="headerlink" href="#equation-eq-term" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align}
+    \lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 &amp;=
+    \lVert\alpha\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +\lVert(1-\alpha)\vvec{x}_2\rVert^2\nonumber\\
+    &amp;=
+    \lvert\alpha\rvert^2\lVert\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +\lvert 1-\alpha\rvert^2\lVert\vvec{x}_2\rVert^2 &amp;\text{(homogenity of the norm)}\nonumber\\
+    &amp;=
+    \alpha^2\lVert\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +( 1-\alpha)^2\lVert\vvec{x}_2\rVert^2,
+\end{align}\end{split}\]</div>
+<p>where the last equation derives from the fact that the squared absolute value of a real value is equal to the  squared real value.</p>
+<p>What is standing above, is not yet what we want, and it is difficult to see which step has to be taken next to derive the Inequality <a class="reference internal" href="#equation-eq-convex">(3)</a>. Hence, we apply a trick. Instead of showing that  Inequality <a class="reference internal" href="#equation-eq-convex">(3)</a> holds as it stands, we show that an equivalent inequality holds:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 - \alpha\lVert\vvec{x}_1\rVert^2 - (1-\alpha)\lVert\vvec{x}_2\rVert^2\leq 0 
+\end{align*}\]</div>
+<p>We substitute now the result of Eq. <a class="reference internal" href="#equation-eq-term">(4)</a> into the term on the left of the inequality above:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    &amp;\lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 - \alpha\lVert\vvec{x}_1\rVert^2 - (1-\alpha)\lVert\vvec{x}_2\rVert^2\\ 
+     &amp;\quad=
+    \alpha^2\lVert\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +( 1-\alpha)^2\lVert\vvec{x}_2\rVert^2- \alpha\lVert\vvec{x}_1\rVert^2 - (1-\alpha)\lVert\vvec{x}_2\rVert^2
+    \\
+    &amp;\quad= -\alpha(1-\alpha)\lVert\vvec{x}_1\rVert^2  +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 -( 1-\alpha)(1-1+\alpha)\lVert\vvec{x}_2\rVert^2\\
+    &amp;\quad= - \alpha(1-\alpha) \lVert\vvec{x}_1-\vvec{x}_2\rVert^2&amp;\text{(binomial formula)}\\
+    &amp;\quad\leq 0
+\end{align*}\]</div>
+<p>This concludes what we wanted to show.</p>
+</div>
+</div>
+<div class="proof lemma admonition" id="lemma-7">
+<p class="admonition-title"><span class="caption-number">Lemma 3 </span></p>
+<section class="lemma-content" id="proof-content">
 <p>Every linear function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> is convex and concave (that is -<span class="math notranslate nohighlight">\(f\)</span> is convex).</p>
 </section>
 </div><div class="proof admonition" id="proof">
@@ -742,8 +794,8 @@ Hence <span class="math notranslate nohighlight">\(x_{loc}\)</span> is not a loc
 <p>The plot below shows the graph of a linear function. We can see how this is a special case, since any line connecting two function values lie exactly on the graph.</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-0fe7078480b8292bcdbcd79f87ba42a61b124934.svg" alt="Figure made with TikZ" /></p>
 </div><p>Further, there are some specific compositions of functions that result in convex functions.</p>
-<div class="proof lemma admonition" id="lemma-7">
-<p class="admonition-title"><span class="caption-number">Lemma 3 </span></p>
+<div class="proof lemma admonition" id="lemma-8">
+<p class="admonition-title"><span class="caption-number">Lemma 4 </span></p>
 <section class="lemma-content" id="proof-content">
 <p>Nonnegative weighted sums of convex functions are convex:<br />
 for all <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_k\geq 0\)</span> and convex functions <span class="math notranslate nohighlight">\(f_1,\ldots,f_k\)</span> the function
@@ -755,8 +807,8 @@ is convex.</p>
 </div><div class="proof admonition" id="proof">
 <p>Proof. Exercise</p>
 </div>
-<div class="proof lemma admonition" id="lemma-8">
-<p class="admonition-title"><span class="caption-number">Lemma 4 </span></p>
+<div class="proof lemma admonition" id="lemma-9">
+<p class="admonition-title"><span class="caption-number">Lemma 5 </span></p>
 <section class="lemma-content" id="proof-content">
 <p>If <span class="math notranslate nohighlight">\(g:\mathbb{R}^d\rightarrow \mathbb{R}^k\)</span> is an affine map (that is, <span class="math notranslate nohighlight">\(g\)</span> has the form <span class="math notranslate nohighlight">\(g(\vvec{x})=A\vvec{x}+\vvec{b}\)</span> for a matrix <span class="math notranslate nohighlight">\(A\)</span> and vector <span class="math notranslate nohighlight">\(\vvec{b}\)</span>), and <span class="math notranslate nohighlight">\(f:\mathbb{R}^k\rightarrow \mathbb{R}\)</span> is a convex function, then the composition
 <div class="math notranslate nohighlight">

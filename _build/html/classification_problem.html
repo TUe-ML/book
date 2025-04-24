@@ -55,7 +55,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Evaluation" href="classification_evaluation.html" />
+    <link rel="next" title="K-Nearest Neighbor" href="classification_knn.html" />
     <link rel="prev" title="Classification" href="classification.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -596,19 +606,16 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#feature-space">
-   Feature space
+  <a class="reference internal nav-link" href="#classification-challenges">
+   Classification Challenges
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#class-labels">
-   Class labels
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#training-examples">
-   Training examples
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#class-imbalance">
+     Class Imbalance
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#classifier-definition">
@@ -616,8 +623,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#theoretical-optimality-of-a-classifier">
-   Theoretical Optimality of a Classifier
+  <a class="reference internal nav-link" href="#evaluation">
+   Evaluation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#theoretically-optimal-classifiers">
+   Theoretically Optimal Classifiers
   </a>
  </li>
 </ul>
@@ -640,19 +652,16 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#feature-space">
-   Feature space
+  <a class="reference internal nav-link" href="#classification-challenges">
+   Classification Challenges
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#class-labels">
-   Class labels
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#training-examples">
-   Training examples
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#class-imbalance">
+     Class Imbalance
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#classifier-definition">
@@ -660,8 +669,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#theoretical-optimality-of-a-classifier">
-   Theoretical Optimality of a Classifier
+  <a class="reference internal nav-link" href="#evaluation">
+   Evaluation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#theoretically-optimal-classifiers">
+   Theoretically Optimal Classifiers
   </a>
  </li>
 </ul>
@@ -676,34 +690,118 @@ title="Print to PDF"
                 
   <section id="classification-objective">
 <h1>Classification Objective<a class="headerlink" href="#classification-objective" title="Permalink to this headline">#</a></h1>
-<section id="feature-space">
-<h2>Feature space<a class="headerlink" href="#feature-space" title="Permalink to this headline">#</a></h2>
-<p>Let <span class="math notranslate nohighlight">\( {\bf x} \)</span> denote a feature vector residing in a multidimensional space <span class="math notranslate nohighlight">\( {\cal X} \)</span> comprising several  features. We describe the data items – i.e. the objects we are trying to classify – by feature vectors in <span class="math notranslate nohighlight">\( {\cal X} \)</span>. Note that the vector <span class="math notranslate nohighlight">\( {\bf x} \in {\cal X} \)</span> describing a given data item may comprise either continuous (e.g. length, height, weight) or discrete (e.g. color code) features.</p>
+<p>Classification is a supervised learning task where the goal is to predict a discrete class label for each input. A typical toy dataset in classification is the Iris dataset, where the task is to classify flower  species based on physical features of the plant.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Load the dataset</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+
+<span class="c1"># Preview the dataset</span>
+<span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sepal length (cm)</th>
+      <th>sepal width (cm)</th>
+      <th>petal length (cm)</th>
+      <th>petal width (cm)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>1.4</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4.9</td>
+      <td>3.0</td>
+      <td>1.4</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4.7</td>
+      <td>3.2</td>
+      <td>1.3</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.6</td>
+      <td>3.1</td>
+      <td>1.5</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>3.6</td>
+      <td>1.4</td>
+      <td>0.2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The Iris dataset contains 150 data points, having 4 features: sepal length, sepal width, petal length, and petal width. The target classes are:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(y=0\)</span>: setosa</p></li>
+<li><p><span class="math notranslate nohighlight">\(y=1\)</span>: versicolor</p></li>
+<li><p><span class="math notranslate nohighlight">\(y=2\)</span>: virginica</p></li>
+</ul>
+<p>All features in the Iris dataset are continuous numerical values, as they represent physical measurements of the flower in centimeters. However, classification datasets may also have discrete features such as male/female or color (green, red, blue).</p>
+<section id="classification-challenges">
+<h2>Classification Challenges<a class="headerlink" href="#classification-challenges" title="Permalink to this headline">#</a></h2>
+<p>Even though the Iris dataset is relatively “clean,” it still allows us to discuss core challenges in classification tasks.</p>
+<section id="class-imbalance">
+<h3>Class Imbalance<a class="headerlink" href="#class-imbalance" title="Permalink to this headline">#</a></h3>
+<p>In many real-world problems, one class dominates the others. Let’s check the class distribution in Iris:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    0.333333
+1    0.333333
+2    0.333333
+Name: target, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, each class occurs exactly 50 times (1/3 of the data), making the Iris dataset a perfectly balanced classification dataset. Having one class dominate over others</p>
 </section>
-<section id="class-labels">
-<h2>Class labels<a class="headerlink" href="#class-labels" title="Permalink to this headline">#</a></h2>
-<p>Moreover, let <span class="math notranslate nohighlight">\( y \)</span> be a discrete variable indicating the class label (target) among the set of possible labels <span class="math notranslate nohighlight">\( {\cal Y} \)</span>, where <span class="math notranslate nohighlight">\( {\cal Y} \triangleq \lbrace \ell_{1}, \ell_{2}, \ldots, \ell_{L} \rbrace \)</span> is a finite set – a.k.a. alphabet – of <span class="math notranslate nohighlight">\( L \)</span> arbitrary labels. The variable <span class="math notranslate nohighlight">\( y \in {\cal Y} \)</span> indicates thus a class value (label) assigned to a data item. A label <span class="math notranslate nohighlight">\( \ell \)</span> can be either the class name or a unique identification number / code representing the class. However, for the sake of simplicity, the class labels are usually normalized as indexes spanning e.g. from <span class="math notranslate nohighlight">\( 0 \)</span> to <span class="math notranslate nohighlight">\( L-1 \)</span>.</p>
-<div class="proof remark admonition" id="remark-0">
-<p class="admonition-title"><span class="caption-number">Remark 1 </span></p>
-<section class="remark-content" id="proof-content">
-<p>We should pick up the set of features according to the particular classification problem we are trying to solve and also make sure that it really encloses sufficient information to help distinguishing data items / objects from different classes. Note therefore that the selection of classes and the selection of features are often entangled.</p>
 </section>
-</div></section>
-<section id="training-examples">
-<h2>Training examples<a class="headerlink" href="#training-examples" title="Permalink to this headline">#</a></h2>
-<p>Now let</p>
-<div class="amsmath math notranslate nohighlight" id="equation-38971f02-dc2d-46a1-855b-94f0ae32c716">
-<span class="eqno">(39)<a class="headerlink" href="#equation-38971f02-dc2d-46a1-855b-94f0ae32c716" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-{\cal D} &amp;\triangleq&amp; \bigcup_{i=1}^{N} \lbrace \left( {\bf x}_{i}, y_{i} \right) \rbrace \\
-&amp;\equiv&amp; \lbrace \left( {\bf x}_{1}, y_{1} \right), \left( {\bf x}_{2}, y_{2} \right), \ldots, \left( {\bf x}_{N}, y_{N} \right) \rbrace \nonumber
-\end{eqnarray}\]</div>
-<p>denote a dataset of <span class="math notranslate nohighlight">\( N \)</span> training examples, i.e. the data items for which we already know the true classification. Specifically, the <span class="math notranslate nohighlight">\( i \)</span>-th <em>known</em> training example is represented by a pair <span class="math notranslate nohighlight">\( {\cal D}_{i} \triangleq \left( {\bf x}_{i}, y_{i} \right) \)</span> including both the feature vector <span class="math notranslate nohighlight">\( {\bf x}_{i} \)</span> and the associated class label <span class="math notranslate nohighlight">\( y_{i} \)</span>.</p>
-<div class="proof remark admonition" id="remark-1">
-<p class="admonition-title"><span class="caption-number">Remark 2 </span></p>
-<section class="remark-content" id="proof-content">
-<p>As we increase the number of features (more dimensions) or the granularity of the existing features (e.g. more values per discrete feature), the classifier might increase its ability to distinguish training examples from different classes. However, besides possibly increasing the computational burden to deal with all input features, the required number of training examples might significantly increase to prevent over fitting.</p>
-</section>
-</div></section>
 <section id="classifier-definition">
 <h2>Classifier definition<a class="headerlink" href="#classifier-definition" title="Permalink to this headline">#</a></h2>
 <div class="tip admonition">
@@ -720,28 +818,49 @@ The goal is to find a classifier that predicts the correct labels <span class="m
 </div>
 <p>Classifiers, similar to regression models, are defined by their inference and their training. Inference describes how the model performs prediction of (unseen) data points. The training or learning describes how the model is generated, given the training data.</p>
 </section>
-<section id="theoretical-optimality-of-a-classifier">
-<h2>Theoretical Optimality of a Classifier<a class="headerlink" href="#theoretical-optimality-of-a-classifier" title="Permalink to this headline">#</a></h2>
-<div class="proof property admonition" id="property-2">
-<p class="admonition-title"><span class="caption-number">Property 2 </span> (i.i.d. Class Distribution)</p>
-<section class="property-content" id="proof-content">
-<p>Under the i.i.d. class distribution assumption, we assume that the dataset samples are <em>identically</em> distributed and <em>independently</em> drawn from an <em>unknown</em> probability distribution <span class="math notranslate nohighlight">\( p^{\ast}({\bf x}, y) \)</span>, i.e.</p>
-<div class="math notranslate nohighlight" id="equation-iid-assumption">
-<span class="eqno">(40)<a class="headerlink" href="#equation-iid-assumption" title="Permalink to this equation">#</a></span>\[{\bf x}_{i}, y_{i} \sim  p^{\ast}({\bf x}, y), \forall i \in \lbrace 1, \ldots, n \rbrace.\]</div>
-</section>
-</div><div class="proof definition admonition" id="true_classifier_error">
-<p class="admonition-title"><span class="caption-number">Definition 13 </span> (Classifier EPE)</p>
+<section id="evaluation">
+<h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">#</a></h2>
+<p>We quickly define the most straightforward classification evaluation metrics: the <span class="math notranslate nohighlight">\(L_{01}\)</span>-loss and the accuracy. Both put into relation how many errors/correct predictions a classifier makes in a dataset.</p>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 14 </span> (0-1 Loss)</p>
 <section class="definition-content" id="proof-content">
-<p>Given a classifier <span class="math notranslate nohighlight">\(f_\mathcal{D}:\mathbb{R}^d\rightarrow \mathbb{R}^c\)</span> that has been trained on the dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>. We define the 0-1 loss as
+<p>Given a classifier <span class="math notranslate nohighlight">\(\hat{y}(\vvec{x})\)</span> returning the predicted label. We define the <strong>0-1 loss</strong> as
 <div class="math notranslate nohighlight">
 \[\begin{split}L_{01}(y,\hat{y}) = \begin{cases}
 0, &amp; \text{if } y\neq \hat{y}\\
 1, &amp; \text{if } y=\hat{y}
 \end{cases}\end{split}\]</div>
-
+</p>
+</section>
+</div><p>The 0-1 loss indicates whether a classifier makes an error in its prediction. In contrast, the accuracy indicates how much a classifier gets right</p>
+<div class="proof definition admonition" id="definition-1">
+<p class="admonition-title"><span class="caption-number">Definition 15 </span> (Accuracy)</p>
+<section class="definition-content" id="proof-content">
+<p>Given a classifier <span class="math notranslate nohighlight">\(\hat{y}(\vvec{x})\)</span>returning the predicted label. the accuracy of the classifier on dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> containing <span class="math notranslate nohighlight">\(n\)</span> data points is given as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathrm{Acc}(\hat{y},\mathcal{D}) &amp;= \frac{\text{Correct predictions}}{\text{Total predictions}}\\
+&amp;= \frac1n \lvert\{(\vvec{x}_i,y_i)\in\mathcal{D}\mid \hat{y}(\vvec{x}_i)=y_i\}\rvert\\
+&amp;= 1- \frac1n\sum_{i=1}^n L_{01}(\hat{y}(\vvec{x}_i),y_i).
+\end{align*}\]</div>
+</section>
+</div></section>
+<section id="theoretically-optimal-classifiers">
+<h2>Theoretically Optimal Classifiers<a class="headerlink" href="#theoretically-optimal-classifiers" title="Permalink to this headline">#</a></h2>
+<div class="proof property admonition" id="property-2">
+<p class="admonition-title"><span class="caption-number">Property 2 </span> (i.i.d. Class Distribution)</p>
+<section class="property-content" id="proof-content">
+<p>Under the i.i.d. class distribution assumption, we assume that the dataset samples are <em>identically</em> distributed and <em>independently</em> drawn from an <em>unknown</em> probability distribution <span class="math notranslate nohighlight">\( p^{\ast}({\bf x}, y) \)</span>, i.e.</p>
+<div class="math notranslate nohighlight" id="equation-iid-assumption">
+<span class="eqno">(38)<a class="headerlink" href="#equation-iid-assumption" title="Permalink to this equation">#</a></span>\[{\bf x}_{i}, y_{i} \sim  p^{\ast}({\bf x}, y), \forall i \in \lbrace 1, \ldots, n \rbrace.\]</div>
+</section>
+</div><div class="proof definition admonition" id="true_classifier_error">
+<p class="admonition-title"><span class="caption-number">Definition 16 </span> (Classifier EPE)</p>
+<section class="definition-content" id="proof-content">
+<p>Given a classifier <span class="math notranslate nohighlight">\(f_\mathcal{D}:\mathbb{R}^d\rightarrow \mathbb{R}^c\)</span> that has been trained on the dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>.
 the Expected Prediction Error (EPE) of classifiers is the expected error</p>
 <div class="math notranslate nohighlight" id="equation-true-classification-error">
-<span class="eqno">(41)<a class="headerlink" href="#equation-true-classification-error" title="Permalink to this equation">#</a></span>\[p( y \neq \argmax_{k} f(\vvec{x})_k ) = \mathbb{E}_{\vvec{x},y,\mathcal{D}} [L (y, \argmax_k f_\mathcal{D}(\vvec{x}) )] ,\]</div>
+<span class="eqno">(39)<a class="headerlink" href="#equation-true-classification-error" title="Permalink to this equation">#</a></span>\[p( y \neq \argmax_{k} f(\vvec{x})_k ) = \mathbb{E}_{\vvec{x},y,\mathcal{D}} [L (y, \argmax_k f_\mathcal{D}(\vvec{x}) )] ,\]</div>
 <p>over three random variables:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\vvec{x}\)</span> is the random variable of a feature vector in the test set.</p></li>
@@ -754,45 +873,14 @@ the Expected Prediction Error (EPE) of classifiers is the expected error</p>
 <p>The probability of miss-classification <span class="math notranslate nohighlight">\( p( y \neq \argmax_k f(\vvec{x})) \)</span> is also known as the risk <span class="math notranslate nohighlight">\( R(f) \)</span> of the classifier <span class="math notranslate nohighlight">\( f \)</span>.</p>
 </div>
 <div class="proof definition admonition" id="bayes_optimal_classifier">
-<p class="admonition-title"><span class="caption-number">Definition 14 </span> (Bayes optimal classifier)</p>
+<p class="admonition-title"><span class="caption-number">Definition 17 </span> (Bayes optimal classifier)</p>
 <section class="definition-content" id="proof-content">
 <p>The <strong>Bayes classifier</strong> is the optimal classifier that minimizes the probability of misclassification</p>
 <div class="math notranslate nohighlight" id="equation-final-estimator">
-<span class="eqno">(42)<a class="headerlink" href="#equation-final-estimator" title="Permalink to this equation">#</a></span>\[y^\ast(\vvec{x}) = \argmax_{1\leq y\leq c} p^\ast (y\mid \vvec{x})\]</div>
+<span class="eqno">(40)<a class="headerlink" href="#equation-final-estimator" title="Permalink to this equation">#</a></span>\[y^\ast(\vvec{x}) = \argmax_{1\leq y\leq c} p^\ast (y\mid \vvec{x})\]</div>
 </section>
 </div><p>The Bayes classifier has the lowest EPE possible.</p>
-<div class="toggle docutils container">
-<div class="proof admonition" id="proof">
-<p>Proof. From <a class="reference internal" href="#equation-true-classification-error">(41)</a>, we can write</p>
-<div class="math notranslate nohighlight" id="equation-bayes-optimal-classifier">
-<span class="eqno">(43)<a class="headerlink" href="#equation-bayes-optimal-classifier" title="Permalink to this equation">#</a></span>\[h^{\ast}({\bf x}) = \argmin_{h} {E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right] \rbrace\]</div>
-<p>where the argument <span class="math notranslate nohighlight">\( h \)</span> resides on the space of arbitrary functions of the type <span class="math notranslate nohighlight">\( {\cal X} \rightarrow {\cal Y} \)</span>.</p>
-<p>We offer without proof that the solution to <a class="reference internal" href="#equation-bayes-optimal-classifier">(43)</a> is given by the maximum likelihood (ML) estimator</p>
-<div class="math notranslate nohighlight" id="equation-ml-estimator">
-<span class="eqno">(44)<a class="headerlink" href="#equation-ml-estimator" title="Permalink to this equation">#</a></span>\[h^{\ast}({\bf x}) = \argmax_{y \in {\cal Y}} p^{\ast} ( y \mid {\bf x}),\]</div>
-<p>where <span class="math notranslate nohighlight">\( p^{\ast} ( y \mid {\bf x}) \)</span> is the true likelihood function. In this case, it indicates how likely a particular label <span class="math notranslate nohighlight">\( y \)</span> represents the true class value given that a feature vector <span class="math notranslate nohighlight">\( {\bf x} \)</span> was observed.</p>
-<p>Note that we can multiply the right-hand side of <a class="reference internal" href="#equation-ml-estimator">(44)</a> by the true marginal distribution <span class="math notranslate nohighlight">\( p^{\ast}({\bf x}) \)</span> without affecting the result</p>
-<div class="amsmath math notranslate nohighlight" id="equation-373871dc-6ea3-4c83-9527-d4c8f3953a73">
-<span class="eqno">(45)<a class="headerlink" href="#equation-373871dc-6ea3-4c83-9527-d4c8f3953a73" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-h^{\ast}({\bf x}) &amp;=&amp; \argmax_{y \in {\cal Y}} p^{\ast} ( y \mid {\bf x}) \, p^{\ast}({\bf x}) \nonumber \\
-&amp;=&amp; \argmax_{y \in {\cal Y}} p^{\ast} ({\bf x}, y) \nonumber
-\end{eqnarray}\]</div>
-<p>and finally write Eq. <a class="reference internal" href="#equation-final-estimator">(42)</a>. <span class="math notranslate nohighlight">\( \blacksquare \)</span></p>
-</div>
-</div>
-<aside class="margin sidebar">
-<p class="sidebar-title"></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>As <span class="math notranslate nohighlight">\( p^{\ast} \)</span> is typically unknown in must practical applications, suitable learning algorithms must rely on different approaches aiming to minimize computable approximations to the true classification error and are therefore sub-optimal in a Bayesian sense.</p>
-</div>
-</aside>
-<div class="proof definition admonition" id="definition-5">
-<p class="admonition-title"><span class="caption-number">Definition 15 </span> (Excess risk)</p>
-<section class="definition-content" id="proof-content">
-<p>The excess risk of a given classifier <span class="math notranslate nohighlight">\( h \)</span> is given by <span class="math notranslate nohighlight">\( R(h) - R(h^{\ast}) \)</span>, where <span class="math notranslate nohighlight">\( R(h^{\ast}) \)</span> is the risk of the Bayes optimal classifier <span class="math notranslate nohighlight">\( h^{\ast} \)</span>. The excess risk of a consistent classifier <span class="math notranslate nohighlight">\( h \)</span> converges to zero as the number of training examples <span class="math notranslate nohighlight">\( N \)</span> grows unbounded, i.e. <span class="math notranslate nohighlight">\( N \rightarrow \infty \)</span>.</p>
 </section>
-</div></section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -829,10 +917,10 @@ h^{\ast}({\bf x}) &amp;=&amp; \argmax_{y \in {\cal Y}} p^{\ast} ( y \mid {\bf x}
             <p class="prev-next-title">Classification</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="classification_evaluation.html" title="next page">
+    <a class='right-next' id="next-link" href="classification_knn.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Evaluation</p>
+        <p class="prev-next-title">K-Nearest Neighbor</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

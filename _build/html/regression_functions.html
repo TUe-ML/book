@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -669,9 +679,9 @@ title="Print to PDF"
 <p>The possibilities to select a class of functions that are suited to model a given regression task are numerous. Typical function choices are exponential, logarithmic, polynomial functions or any composition of those. How can we make a machine learn which function would be best when we have so many choices?</p>
 <p>The trick which is used in regression is to learn a linear combiation of predefined functions. For example, if we are unsure if the feature-target relation is exponential or logarithmic, then we can define our regression function as a weighted sum of exponential and logarithmic functions:</p>
 <div class="math notranslate nohighlight" id="equation-eq-regression-f">
-<span class="eqno">(7)<a class="headerlink" href="#equation-eq-regression-f" title="Permalink to this equation">#</a></span>\[f(x) = \beta_1 \log(x) + \beta_2 \exp(x) \]</div>
+<span class="eqno">(8)<a class="headerlink" href="#equation-eq-regression-f" title="Permalink to this equation">#</a></span>\[f(x) = \beta_1 \log(x) + \beta_2 \exp(x) \]</div>
 <p>This formalization allows us to learn a function <span class="math notranslate nohighlight">\(f\)</span> by means of the parameters <span class="math notranslate nohighlight">\(\beta_1\)</span> and <span class="math notranslate nohighlight">\(\beta_2\)</span>. Those parameters can then be optimized after we define a loss function for the regression task <span class="math notranslate nohighlight">\(\ell(f(x),y)\)</span>. The functions which we use to compose our function <span class="math notranslate nohighlight">\(f\)</span> (here <span class="math notranslate nohighlight">\(\log(x)\)</span> and <span class="math notranslate nohighlight">\(\exp(x)\)</span>) are called <strong>basis functions</strong>.</p>
-<p>The  main insight (which we will discuss in the following for various basis functions) is that nonlinear functions such as <span class="math notranslate nohighlight">\(f(x)\)</span> in Eq. <a class="reference internal" href="#equation-eq-regression-f">(7)</a> can be represented as linear functions in a <em>transformed feature space</em>. Linear functions <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span> have the form
+<p>The  main insight (which we will discuss in the following for various basis functions) is that nonlinear functions such as <span class="math notranslate nohighlight">\(f(x)\)</span> in Eq. <a class="reference internal" href="#equation-eq-regression-f">(8)</a> can be represented as linear functions in a <em>transformed feature space</em>. Linear functions <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span> have the form
 <div class="math notranslate nohighlight">
 \[f(\vvec{x}) = \beta_d x_d + \ldots + \beta_1x = \bm\beta^\top \vvec{x},\]</div>
 
@@ -680,7 +690,7 @@ that is, they are defined by an inner product of the weights <span class="math n
 <h2>Affine Functions<a class="headerlink" href="#affine-functions" title="Permalink to this headline">#</a></h2>
 <p>We start with a simple function class: the affine functions. Affine functions are linear functions with a bias term.</p>
 <div class="proof example admonition" id="example-0">
-<p class="admonition-title"><span class="caption-number">Example 13 </span> (Affine functions in two dimensions)</p>
+<p class="admonition-title"><span class="caption-number">Example 11 </span> (Affine functions in two dimensions)</p>
 <section class="example-content" id="proof-content">
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-4df6b99598b6845bce1ae9fe5a73a499b2c3c359.svg" alt="Figure made with TikZ" /></p>
 </div><p>An affine function <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R}, f(x)= \beta_1x+\beta_0\)</span> has a slope <span class="math notranslate nohighlight">\(\beta_1\)</span> and a bias term <span class="math notranslate nohighlight">\(\beta_0\)</span>. The slope is visible in the graph: if we move one to the right on the horizontal axis, then we go the slope value up (or down, if the slope is negative). The bias term indicates the value where the graph meets the vertical axis. We can write an affine function mapping from the real values as a linear function mapping from the <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span>.</p>
@@ -695,7 +705,7 @@ that is, they are defined by an inner product of the weights <span class="math n
 <p>The function <span class="math notranslate nohighlight">\(\bm{\phi}(x)=\begin{pmatrix}1\\x\end{pmatrix}\)</span> is called a feature transformation, the vector <span class="math notranslate nohighlight">\(\bm\beta\in\mathbb{R}^{2}\)</span> determines the parameters of the function.</p>
 </section>
 </div><div class="proof example admonition" id="example-1">
-<p class="admonition-title"><span class="caption-number">Example 14 </span> (Affine Functions in Three Dimensions (d=2))</p>
+<p class="admonition-title"><span class="caption-number">Example 12 </span> (Affine Functions in Three Dimensions (d=2))</p>
 <section class="example-content" id="proof-content">
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-56e1bba04900b49bd092c78a15e868da416fe634.svg" alt="Figure made with TikZ" /></p>
 </div><p>An affine function <span class="math notranslate nohighlight">\(f:\mathbb{R}^2\rightarrow\mathbb{R}, f(\vvec{x})= \beta_2x_2+\beta_1x_1+\beta_0\)</span> has two slopes <span class="math notranslate nohighlight">\(\beta_1,\beta_2\)</span> and a bias term <span class="math notranslate nohighlight">\(\beta_0\)</span>. In direction of the <span class="math notranslate nohighlight">\(x_1\)</span> coordinate, the function has slope <span class="math notranslate nohighlight">\(\beta_1\)</span> and in direction of the <span class="math notranslate nohighlight">\(x_2\)</span> coordinate it has the slope <span class="math notranslate nohighlight">\(\beta_2\)</span>. As a result, an affine function in two variables looks like a flat surface. The bias term incates again the value where the graph meets the horizontal axis. We can write an affine function mapping from <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span> as a linear function mapping from the <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span>.</p>
@@ -728,7 +738,7 @@ that is, they are defined by an inner product of the weights <span class="math n
 <h2>Polynomials<a class="headerlink" href="#polynomials" title="Permalink to this headline">#</a></h2>
 <p>Functions that contain curvature can be modelled as a linear function in a transformed function space. Here we explore the function class of polynomials.</p>
 <div class="proof example admonition" id="example-2">
-<p class="admonition-title"><span class="caption-number">Example 15 </span> (Polynomials of Degree k=2 (d=1))</p>
+<p class="admonition-title"><span class="caption-number">Example 13 </span> (Polynomials of Degree k=2 (d=1))</p>
 <section class="example-content" id="proof-content">
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-84b02abc6b3263fe5526455c7c4adc90a65234fc.svg" alt="Figure made with TikZ" /></p>
 </div><p>A function <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R},\ f(x)= a(x-b)^2+c\)</span>, mapping a real value to a polynomial of degree two, is defined over three parameters <span class="math notranslate nohighlight">\((a,b,c)\)</span>. The minimizer is given by the point <span class="math notranslate nohighlight">\((b,c)\)</span> and the value of <span class="math notranslate nohighlight">\(a\)</span> determines how narrow or wide the parabola is. We can write this function as a linear function in a three-dimensional transformed feature space.</p>
@@ -748,7 +758,7 @@ that is, they are defined by an inner product of the weights <span class="math n
 <p>The feature transformation <span class="math notranslate nohighlight">\(\bm{\phi}(x)=\begin{pmatrix}1\\ x\\ x^2\end{pmatrix}\)</span> maps to three basis functions <span class="math notranslate nohighlight">\(f_1(x)=1\)</span>, <span class="math notranslate nohighlight">\(f_2(x)=x\)</span> and <span class="math notranslate nohighlight">\(f_3(x)=x^2\)</span>. A weighted sum of these basis functions defines then the parabola, where the parameters are given by the vector <span class="math notranslate nohighlight">\(\bm\beta\in\mathbb{R}^{3}\)</span>. Note that we can’t directly read the properties of the parabola from the <span class="math notranslate nohighlight">\(\beta\)</span>-parameters as we did with the parameters <span class="math notranslate nohighlight">\((a,b,c)\)</span>. If needed, we could compute the original parameters from <span class="math notranslate nohighlight">\(\beta\)</span> though.</p>
 </section>
 </div><div class="proof example admonition" id="example-3">
-<p class="admonition-title"><span class="caption-number">Example 16 </span> (Polynomials of Degree k (d=1))</p>
+<p class="admonition-title"><span class="caption-number">Example 14 </span> (Polynomials of Degree k (d=1))</p>
 <section class="example-content" id="proof-content">
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-8972d0b4e06d1fb897f3589abab997f4b05254f0.svg" alt="Figure made with TikZ" /></p>
 </div><p>The parametrization of a parabola over the linear product of the basis functions and a weight vector <span class="math notranslate nohighlight">\(\bm\beta\)</span> is easily generalizable to the parametrization of a polynomial of degree <span class="math notranslate nohighlight">\(k\)</span>. We consider here still only functions <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R}\)</span>, mapping from the one-dimensional space.</p>
@@ -763,7 +773,7 @@ that is, they are defined by an inner product of the weights <span class="math n
 <p>The feature transformation is here <span class="math notranslate nohighlight">\(\bm{\phi}(x)=\begin{pmatrix}1\\ x\\\vdots\\x^k\end{pmatrix}\)</span>, and the parameter vector is <span class="math notranslate nohighlight">\(\bm\beta\in\mathbb{R}^{k+1}\)</span>.</p>
 </section>
 </div><div class="proof example admonition" id="example-4">
-<p class="admonition-title"><span class="caption-number">Example 17 </span> (Multivariate Polynomials of Degree k (d=2))</p>
+<p class="admonition-title"><span class="caption-number">Example 15 </span> (Multivariate Polynomials of Degree k (d=2))</p>
 <section class="example-content" id="proof-content">
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-04bbde9d4f437f91c7870b7d84c028161ff07990.svg" alt="Figure made with TikZ" /></p>
 </div><p>We discuss now a degree <span class="math notranslate nohighlight">\(k\)</span> polynomial <span class="math notranslate nohighlight">\(f:\mathbb{R}^2\rightarrow \mathbb{R}\)</span> mapping from the two-dimensional space <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span>. There are actually various ways to define the polynomial in a vector space. A popular way to define a polynomial in more than two variables is over a weighted sum of all combinations of the one-dimensional basis functions. Using now a multi index, a polynomial in two variables is defined as</p>
@@ -807,7 +817,7 @@ The sklearn function to obtain polynomial features uses this definition. This fe
 
 Those parameters (<span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\bm\mu\)</span>) have to be set by the user. We can’t learn them in the linear regression framework, since we can only learn coefficients of the basis functions. The parameters <span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\bm\mu\)</span> are however within the exponential term.</p>
 <div class="proof example admonition" id="example-5">
-<p class="admonition-title"><span class="caption-number">Example 18 </span> (Local Gaussian Radial Basis Functions)</p>
+<p class="admonition-title"><span class="caption-number">Example 16 </span> (Local Gaussian Radial Basis Functions)</p>
 <section class="example-content" id="proof-content">
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-2c0ebadeb461fde3859af19f1970f8dbdde5a447.svg" alt="Figure made with TikZ" /></p>
 </div><p>The plot above shows the graph that we get when defining our function as <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R}, \ f(x)=0.5\exp(-(x-0.5)^2) + \exp(-(x-3)^2)\)</span>. The graph of the added Gaussians has two maxima. Approximating a graph with a polynomial that has two maximizers requires a degree of four, which translates to five basis functions. With Gaussian basis functions, we need only two.</p>

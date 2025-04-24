@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -652,12 +662,12 @@ f(x)=\beta_1 x + \beta_0 =\phi_{aff}(x)^\top \bm\beta,
 \end{align*}\]</div>
 <p>We have seen in the lecture videos, that the global minimizer(s) <span class="math notranslate nohighlight">\(\beta\)</span> which minimize the residual sum of squares are given by the solver(s) of the following system of linear equations:</p>
 <div class="math notranslate nohighlight" id="equation-eq-sysbeta">
-<span class="eqno">(37)<a class="headerlink" href="#equation-eq-sysbeta" title="Permalink to this equation">#</a></span>\[\{\bm\beta\mid X^\top X\bm\beta = X^\top y\}.\]</div>
+<span class="eqno">(36)<a class="headerlink" href="#equation-eq-sysbeta" title="Permalink to this equation">#</a></span>\[\{\bm\beta\mid X^\top X\bm\beta = X^\top y\}.\]</div>
 <p>The minimizer <span class="math notranslate nohighlight">\(\beta\)</span> is uniquely defined if <span class="math notranslate nohighlight">\(X^\top X\)</span> is invertible. This is here the case.</p>
 <p>You can either compute the inverse <span class="math notranslate nohighlight">\((X^\top X)^{-1}\)</span> (via Python or manually) and compute the regression vector <span class="math notranslate nohighlight">\(\beta\)</span> by the formula</p>
 <div class="math notranslate nohighlight" id="equation-eq-betainv">
-<span class="eqno">(38)<a class="headerlink" href="#equation-eq-betainv" title="Permalink to this equation">#</a></span>\[\bm\beta = (X^\top X)^{-1}X^\top y,\]</div>
-<p>or you solve the system of linear equations defined in Eq. <a class="reference internal" href="#equation-eq-sysbeta">(37)</a>. We have
+<span class="eqno">(37)<a class="headerlink" href="#equation-eq-betainv" title="Permalink to this equation">#</a></span>\[\bm\beta = (X^\top X)^{-1}X^\top y,\]</div>
+<p>or you solve the system of linear equations defined in Eq. <a class="reference internal" href="#equation-eq-sysbeta">(36)</a>. We have
 <div class="math notranslate nohighlight">
 \[\begin{split} X^\top X = \begin{pmatrix}
 3 &amp; 9\\
@@ -666,7 +676,7 @@ f(x)=\beta_1 x + \beta_0 =\phi_{aff}(x)^\top \bm\beta,
 10\\28
 \end{pmatrix}.\end{split}\]</div>
 
-Hence, we have to solve the following system of linear equations according to Eq. <a class="reference internal" href="#equation-eq-sysbeta">(37)</a>:</p>
+Hence, we have to solve the following system of linear equations according to Eq. <a class="reference internal" href="#equation-eq-sysbeta">(36)</a>:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
     3\beta_0 + 9\beta_1 &amp;= 10\\
@@ -722,7 +732,7 @@ X = \begin{pmatrix}
 10\\28\\98
 \end{pmatrix},\end{split}\]</div>
 
-and solve the system of linear equation in Eq. <a class="reference internal" href="#equation-eq-sysbeta">(37)</a> or compute the inverse of <span class="math notranslate nohighlight">\(X^\top X\)</span> and compute <span class="math notranslate nohighlight">\(\beta\)</span> by Eq. <a class="reference internal" href="#equation-eq-betainv">(38)</a>. As a result we get
+and solve the system of linear equation in Eq. <a class="reference internal" href="#equation-eq-sysbeta">(36)</a> or compute the inverse of <span class="math notranslate nohighlight">\(X^\top X\)</span> and compute <span class="math notranslate nohighlight">\(\beta\)</span> by Eq. <a class="reference internal" href="#equation-eq-betainv">(37)</a>. As a result we get
 <div class="math notranslate nohighlight">
 \[\begin{split}\bm\beta \approx \begin{pmatrix}
 0.125\\ 3.5\\-0.625

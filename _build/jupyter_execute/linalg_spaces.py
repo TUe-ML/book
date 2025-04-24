@@ -16,19 +16,20 @@
 # 
 # A vector space is a structure where you can do most operations you know from real numbers, but not all. Let $\alpha\in\mathbb{R}, \vvec{v},\vvec{w}\in\mathcal{V}$. The following operations are well-defined:
 # * $\vvec{v}/\alpha = \frac1\alpha \vvec{v}$ for $\alpha\neq 0$
-# * $\vvec{v}-\vvec{w}$
-# What you can not do:
+# * $\vvec{v}-\vvec{w}$     
+# However, the vector-vector product is not per se defined in a vector space and likewise, you can also not divide by a vector. 
 # * $\vvec{v}\cdot \vvec{w}$
 # * $\alpha/\vvec{v}$
 # 
-# ````{prf:example} The vector space $\mathbb{R}^2$
-# The elements of the vector space $\mathbb{R}^d$ are $d$-dimensional vectors
-# $$\vvec{v} = \begin{pmatrix}v_1\\\vdots\\v_d\end{pmatrix},\quad v_i\in\mathbb{R} \text{ for } 1\leq i \leq d. $$
-#     For vectors, the addition between vectors and the scalar multiplication are defined for $\vvec{v},\vvec{w}\in\mathbb{R}^d$ and $\alpha\in\mathbb{R}$ as
+# ````{prf:theorem} $\mathbb{R}^d$ is a vector space
+# The elements of the space $\mathbb{R}^d$ are defined as $d$-dimensional vectors
+# $$\vvec{v} = \begin{pmatrix}v_1\\\vdots\\v_d\end{pmatrix},\quad v_i\in\mathbb{R} \text{ for } 1\leq i \leq d, $$
+# whose addition and the scalar multiplication are defined for $\vvec{v},\vvec{w}\in\mathbb{R}^d$ and $\alpha\in\mathbb{R}$ as follows:
 # \begin{align*}
 #     \vvec{v}+\vvec{w} = \begin{pmatrix}v_1+w_1\\\vdots\\v_d+w_d\end{pmatrix},
 #     \alpha\vvec{v} = \begin{pmatrix}\alpha v_1\\\vdots\\\alpha v_d\end{pmatrix} 
 # \end{align*}
+# The space $\mathbb{R}^d$ is a vector space.
 # ````
 # ````{prf:example} The geometry of $\mathbb{R}^2$
 # :label: ex_vector_space
@@ -66,7 +67,7 @@
 # Why are matrices important?
 # Because data is represented as a matrix. A data table of $n$ observations of $d$ features is represented by a $(n\times d)$ matrix.
 # 
-# |ID | $\mathtt{F}_1$ | $\mathtt{F}_2$ | $\mathtt{F}_3$ | $\ldots$ | $\mathtt{F}_d$|
+# |ID | $\mathtt{x}_1$ | $\mathtt{x}_2$ | $\mathtt{x}_3$ | $\ldots$ | $\mathtt{x}_d$|
 # |---|----------------|----------------|----------------|----------|---------------|
 # |1  |5.1 | 3.5 | 1.4 | $\ldots$ | 0.2 |
 # |2 | 6.4 | 3.5 | 4.5 | $\ldots$ | 1.2 |
@@ -269,6 +270,18 @@ np.inner(v,w)
 # In[12]:
 
 
+np.dot(v,w)
+
+
+# In[13]:
+
+
+v.T@w
+
+
+# In[14]:
+
+
 np.outer(v,w)
 
 
@@ -279,26 +292,26 @@ np.outer(v,w)
 # Every element $C_{ji}$ is computed by the inner product of row $j$ and column $i$ (_row-times-column_)
 # $$C_{ji}=A_{j\cdot}B_{\cdot i} = \sum_{s=1}^r A_{js}B_{si}$$
 
-# In[13]:
+# In[15]:
 
 
 np.set_printoptions(precision=1)
 
 
-# In[14]:
+# In[16]:
 
 
 A = np.random.rand(2,3)
 B = np.random.rand(3,5)
 
 
-# In[15]:
+# In[17]:
 
 
 A@B
 
 
-# In[16]:
+# In[18]:
 
 
 (A@B).shape
@@ -316,20 +329,20 @@ A@B
 # Given $A\in\mathbb{R}^{n\times d}$, and $I_n$ the $(n\times n)$ identity matrix and $I_d$ the $(d\times d)$ identity matrix, then we have
 # $$I_n A = A = AI_d $$
 
-# In[17]:
+# In[19]:
 
 
 I = np.eye(3)
 I
 
 
-# In[18]:
+# In[20]:
 
 
 A@I
 
 
-# In[19]:
+# In[21]:
 
 
 A
@@ -361,25 +374,23 @@ A
 # The **inverse matrix** to a matrix $A\in\mathbb{R}^{n\times n}$ is a matrix $A^{-1}$ satisfying
 # $$AA^{-1} = A^{-1}A = I$$
 # Diagonal matrices with nonzero elements on the diagonal have an inverse:
-# $$\begin{pmatrix} 1& 0 & 0\\
+# \begin{align*}\begin{pmatrix} 1& 0 & 0\\
 # 0 & 2 & 0\\
 # 0 & 0 & 3\end{pmatrix}
 # \begin{pmatrix}1& 0 & 0\\
 # 0 & \frac12 & 0\\
-# 0 & 0 & \frac13\end{pmatrix} = I$$
+# 0 & 0 & \frac13\end{pmatrix} = I\end{align*}
 
-# In[20]:
+# In[22]:
 
 
 A = np.diag([1,2,3])
 np.linalg.inv(A)
 
 
-# Okay, but why is this now interesting?
-# 
-# Because matrix multiplication is computable fast, and almost every data operation can be written as a matrix operation.
+# In Machine Learning, almost everything is formulated in matrix notation, because matrix multiplication is computable fast and can be accelerated with Graphics Processing Units (GPUs).
 
-# In[21]:
+# In[23]:
 
 
 def matrix_mult(A,B):

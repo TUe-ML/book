@@ -55,8 +55,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="K-Nearest Neighbor" href="classification_knn.html" />
-    <link rel="prev" title="Classification Objective" href="classification_problem.html" />
+    <link rel="next" title="Exercises" href="classification_exercises.html" />
+    <link rel="prev" title="Kernel SVM" href="classification_kernel_svm.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -258,11 +258,6 @@ const thebe_selector_output = ".output, .cell_output"
      Classification Objective
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     Evaluation
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -596,19 +606,31 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#estimating-the-true-classification-error">
-   Estimating the true classification error
+  <a class="reference internal nav-link" href="#bias-variance-tradeoff">
+   Bias Variance Tradeoff
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#typical-machine-learning-ml-workflow">
-   Typical Machine Learning (ML) workflow
+  <a class="reference internal nav-link" href="#typical-classification-workflow">
+   Typical Classification workflow
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#confusion-matrix">
-   Confusion matrix
+  <a class="reference internal nav-link" href="#evaluation-metrics">
+   Evaluation Metrics
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#confusion-matrix">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#precision-recall-and-f1-score">
+     Precision, Recall, and F1-Score
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -630,19 +652,31 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#estimating-the-true-classification-error">
-   Estimating the true classification error
+  <a class="reference internal nav-link" href="#bias-variance-tradeoff">
+   Bias Variance Tradeoff
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#typical-machine-learning-ml-workflow">
-   Typical Machine Learning (ML) workflow
+  <a class="reference internal nav-link" href="#typical-classification-workflow">
+   Typical Classification workflow
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#confusion-matrix">
-   Confusion matrix
+  <a class="reference internal nav-link" href="#evaluation-metrics">
+   Evaluation Metrics
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#confusion-matrix">
+     Confusion Matrix
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#precision-recall-and-f1-score">
+     Precision, Recall, and F1-Score
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -656,10 +690,11 @@ title="Print to PDF"
                 
   <section id="evaluation">
 <h1>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">#</a></h1>
-<section id="estimating-the-true-classification-error">
-<span id="class-evaluation"></span><h2>Estimating the true classification error<a class="headerlink" href="#estimating-the-true-classification-error" title="Permalink to this headline">#</a></h2>
+<section id="bias-variance-tradeoff">
+<span id="class-evaluation"></span><h2>Bias Variance Tradeoff<a class="headerlink" href="#bias-variance-tradeoff" title="Permalink to this headline">#</a></h2>
+<p>Similar to the Bias-Variance Tradeoff in Regression, we can formulate the bias-variance tradeoff for classification.</p>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 12 </span> (bias-variance tradeoff for classification)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 23 </span> (bias-variance tradeoff for classification)</p>
 <section class="theorem-content" id="proof-content">
 <p>The EPE for any observation <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>, having the label <span class="math notranslate nohighlight">\(y\)</span> and prediction <span class="math notranslate nohighlight">\(\hat{y}_\mathcal{D}\)</span> (depending on the training data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>) and most frequent prediction <span class="math notranslate nohighlight">\(\mathrm{mode}(\hat{y}_\mathcal{D})\)</span> can be deconstructed into three parts:</p>
 <div class="amsmath math notranslate nohighlight">
@@ -677,8 +712,9 @@ c_2&amp;= \begin{cases}
 \end{cases}
 \end{align*}\]</div>
 </section>
-</div><div class="proof corollary admonition" id="corollary-1">
-<p class="admonition-title"><span class="caption-number">Corollary 2 </span></p>
+</div><p>Just like in regression, we decompose the EPE into three parts: a noise, a bias and a variance term. The noise part is again inherent to the data and not dependent on the model. In classification, the noise describes how many labels are wrong in the dataset.</p>
+<div class="proof corollary admonition" id="corollary-1">
+<p class="admonition-title"><span class="caption-number">Corollary 3 </span></p>
 <section class="corollary-content" id="proof-content">
 <p>The classification noise random variable is equal to the probability that the label is not equal to the <em>true</em> label
 <div class="math notranslate nohighlight">
@@ -698,135 +734,193 @@ we have</p>
 &amp;=p(y\neq y^*)
 \end{align*}\]</div>
 </div>
-<p><a class="reference internal" href="#bias-variance-tradeoff1b-fig"><span class="std std-numref">Fig. 7</span></a> plots the result of the following experiment. Given a set of training data sets <span class="math notranslate nohighlight">\(\mathcal{D}_1,\ldots \mathcal{D}_m\)</span>. We train one model on each training data set for varying levels of complexity. Each thin blue curve tracks how the prediction error changes when we vary the complexity of the model, while training on the same dataset. That is, we have as many blue curves as there are training data sets. The thick blue line represents the mean of the thin blue lines. The red curves track the prediction error on the test set</p>
-<figure class="align-left" id="bias-variance-tradeoff1b-fig">
+<p>The bias describes how far the predictions are from the true label when we aggregate the results over various classifiers. In regression, the aggregated regression model computed the mean over all regression models, in classification, the aggregated classifier predicts the majority vote of all classifiers. Lastly, the variance term describes the variance among the classifiers. Here, this is measured by the expected disagreement of the majority vote classifier and the indivdual classifiers.</p>
+<p><a class="reference internal" href="#bias-variance-tradeoff1b-fig"><span class="std std-numref">Fig. 11</span></a> plots the result of a simulation of the bias-variance computation. Given a set of training data sets <span class="math notranslate nohighlight">\(\mathcal{D}_1,\ldots \mathcal{D}_m\)</span>, we train one model on each training data set for varying levels of complexity. Each thin blue curve tracks how the prediction error changes when we vary the complexity of the model, while training on the same dataset. That is, we have as many blue curves as there are training data sets. The thick blue line represents the mean of the thin blue lines. The red curves track the prediction error on the test set and the thick red line averages the thin red lines. We can see how the models tend to overfit with increasing complexity, because they have a low training error but an increasing test error. The increase in the variance of the models increases the test error. For a low model complexity, the test error is largely increased by the training error, which indicates a high bias.</p>
+<figure class="align-center" id="bias-variance-tradeoff1b-fig">
 <a class="reference internal image-reference" href="_images/e2.png"><img alt="_images/e2.png" src="_images/e2.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 7 </span><span class="caption-text">The prediction error as a function of model complexity (borrowed from <span id="id1">[<a class="reference internal" href="bibliography.html#id9" title="Trevor Hastie, Robert Tibshirani, and Jerome Friedman. The elements of statistical learning. Cited on, pages 33, 2009.">6</a>]</span>).</span><a class="headerlink" href="#bias-variance-tradeoff1b-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">The prediction error as a function of model complexity (borrowed from <span id="id1">[<a class="reference internal" href="bibliography.html#id9" title="Trevor Hastie, Robert Tibshirani, and Jerome Friedman. The elements of statistical learning. Cited on, pages 33, 2009.">6</a>]</span>).</span><a class="headerlink" href="#bias-variance-tradeoff1b-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Key Insights</p>
+<p>Whether a classifier overfits or underfits depends on the model choice and their hyperparameters. For example, a linear classifier is not a good model choice for a nonlinear classification problem, or naive Bayes is not a good model choice if the features correlate. The table below lists the key parameters of our considered classifiers and how they influence over- and underfitting.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Classifier</p></th>
+<th class="head"><p>Key Hyperparameter(s)</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Effect on Under/Overfitting</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>k-NN</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">k</span></code></p></td>
+<td><p>Number of neighbors considered for classification</p></td>
+<td><p>Small <code class="docutils literal notranslate"><span class="pre">k</span></code> → overfitting (very local); large <code class="docutils literal notranslate"><span class="pre">k</span></code> → underfitting (too smooth)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Naive Bayes</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">alpha</span></code></p></td>
+<td><p>Laplace smoothing variable</p></td>
+<td><p>large values flatten the probabilities → increases NB tendency to underfit</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Decision Tree</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">max_depth</span></code></p></td>
+<td><p>Maximum depth of the tree</p></td>
+<td><p>Large depth → overfitting; small depth → underfitting</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code>, <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code></p></td>
+<td><p>Minimum samples to split or keep as leaf</p></td>
+<td><p>Larger values → less overfitting</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Random Forest</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">n_estimators</span></code></p></td>
+<td><p>Number of trees in the ensemble</p></td>
+<td><p>Too few → underfitting; more trees → lower variance (not overfit easily)</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">max_features</span></code></p></td>
+<td><p>Features considered per split</p></td>
+<td><p>Lower → more diversity, less overfitting</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>SVM</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">C</span></code></p></td>
+<td><p>Regularization strength: margin softness</p></td>
+<td><p>Large <code class="docutils literal notranslate"><span class="pre">C</span></code> → more regularization → less overfitting</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">kernel</span></code></p></td>
+<td><p>Type of transformation (e.g., <code class="docutils literal notranslate"><span class="pre">linear</span></code>, <code class="docutils literal notranslate"><span class="pre">rbf</span></code>, <code class="docutils literal notranslate"><span class="pre">poly</span></code>)</p></td>
+<td><p>Complex kernels → higher risk of overfitting</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">gamma</span></code> (RBF kernels)</p></td>
+<td><p>Controls influence of single training examples</p></td>
+<td><p>High <code class="docutils literal notranslate"><span class="pre">gamma</span></code> → points are similar if they are very close → more overfitting (focus on local effects)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="typical-classification-workflow">
+<h2>Typical Classification workflow<a class="headerlink" href="#typical-classification-workflow" title="Permalink to this headline">#</a></h2>
+<p>The evaluation in classification has two purposes: finding the best hyperparameters for a model (tuning) and to assess the fit of the model (assessing overfitting and underfitting). Doing both, requires a nested evaluation and training technique, which is detailed in
+<a class="reference internal" href="#train-validate-test-02"><span class="std std-numref">Fig. 12</span></a>. The training procedure in the <em>Repeat</em> rectangle is used to tune the hyperparameters. The test error is computed for the model with the best validation error.</p>
+<figure class="align-center" id="train-validate-test-02">
+<a class="reference internal image-reference" href="_images/train_validate_test_02.png"><img alt="_images/train_validate_test_02.png" src="_images/train_validate_test_02.png" style="height: 300px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">A block diagram representing a typical ML workflow.</span><a class="headerlink" href="#train-validate-test-02" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In the graphic, a train/validation/test split is used:</p>
 <ul class="simple">
-<li><p>Bias dominates when the model is too simple (underfitting)
-* Example: Linear classifiers on nonlinear data.</p></li>
-<li><p>Variance dominates when the model is too complex (overfitting)
-* Example: Deep neural networks trained on small datasets.</p></li>
-<li><p>There is an optimal tradeoff
-* Increasing model complexity reduces bias but increases variance.
-* Simplifying the model reduces variance but increases bias.</p></li>
+<li><p><strong>Training set</strong>: used to fit the model.</p></li>
+<li><p><strong>Validation set</strong>: used to tune hyperparameters and make model selection decisions.</p></li>
+<li><p><strong>Test set</strong>: used only once for final model evaluation.</p></li>
 </ul>
-<p>Recall that the true classification error of a classifier <span class="math notranslate nohighlight">\( h \)</span> is defined as</p>
-<div class="math notranslate nohighlight" id="equation-true-classification-error2a">
-<span class="eqno">(46)<a class="headerlink" href="#equation-true-classification-error2a" title="Permalink to this equation">#</a></span>\[CE_{true} = Pr \lbrace Y \neq h({\bf X}) \rbrace.\]</div>
-<p>By definition <span class="math notranslate nohighlight">\( Pr \lbrace Y \neq h({\bf X}) \rbrace \triangleq {E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right] \rbrace \)</span>. Thus, we can rewrite <a class="reference internal" href="#equation-true-classification-error2a">(46)</a> as</p>
-<div class="math notranslate nohighlight" id="equation-true-classification-error2b">
-<span class="eqno">(47)<a class="headerlink" href="#equation-true-classification-error2b" title="Permalink to this equation">#</a></span>\[CE_{true} = {E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right].\]</div>
-<p>Without loss of generality, let us assume that the multidimensional feature space <span class="math notranslate nohighlight">\( {\cal X} \)</span> includes only continuous-valued features. Therefore, the expected value of the function <span class="math notranslate nohighlight">\( \left[ Y \neq h(\bf X) \right] \)</span> of <span class="math notranslate nohighlight">\( {\bf X},Y \)</span> w.r.t. the <em>mixed</em> probability distribution <span class="math notranslate nohighlight">\( p^{\ast} \)</span> can be written as</p>
-<div class="math notranslate nohighlight" id="equation-expected-value">
-<span class="eqno">(48)<a class="headerlink" href="#equation-expected-value" title="Permalink to this equation">#</a></span>\[{E}_{{\bf X},Y \sim p^{\ast}} \lbrace \left[ Y \neq h(\bf X) \right] \rbrace = \sum_{y \in {\cal Y}} \int_{{\bf x} \in {\cal X}} \left[ y \neq h({\bf x}) \right] p^{\ast} ({\bf x}, y) d {\bf x}.\]</div>
-<p>Note, however, that the underlying distribution <span class="math notranslate nohighlight">\( p^{\ast} \)</span> is <em>unknown</em>. Thus, in general, the true classification error can not be computed exactly as in <a class="reference internal" href="#equation-true-classification-error2b">(47)</a>. Even if we knew the true distribution <span class="math notranslate nohighlight">\( p^{\ast} \)</span>, the integrals / summations in <a class="reference internal" href="#equation-expected-value">(48)</a> have often no closed form solution.</p>
-<p>In practice, we approximate the true classification error by computing a Monte Carlo approximation of the integrals /summations on the right-hand side of <a class="reference internal" href="#equation-expected-value">(48)</a>. Specifically, let</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ede0f2d2-fb1e-4d60-b0cf-efec4ba4bd2d">
-<span class="eqno">(49)<a class="headerlink" href="#equation-ede0f2d2-fb1e-4d60-b0cf-efec4ba4bd2d" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-{\cal D}' &amp;\triangleq&amp; \bigcup_{i=1}^{M} \lbrace \left( \bar{\bf x}_{i}, \bar{y}_{i} \right) \rbrace \nonumber \\
-&amp;\equiv&amp; \lbrace \left( \bar{\bf x}_{1}, \bar{y}_{1} \right), \left( \bar{\bf x}_{2}, \bar{y}_{2} \right), \ldots, \left( \bar{\bf x}_{M}, \bar{y}_{M} \right) \rbrace \nonumber
-\end{eqnarray}\]</div>
-<p>be a dataset containing <span class="math notranslate nohighlight">\( M \)</span> <em>testing</em> or <em>validation</em> examples also drawn from the underlying distribution <span class="math notranslate nohighlight">\( p^{\ast} \)</span>. Note that we know the true label <span class="math notranslate nohighlight">\( \bar{y}_{i} \)</span> of each data item <span class="math notranslate nohighlight">\( \bar{\bf x}_{i} \)</span>. From the law of large numbers, the integrals/summations on the right-hand side of <a class="reference internal" href="#equation-expected-value">(48)</a> can be computed as</p>
-<div class="math notranslate nohighlight" id="equation-expected-value-approximation">
-<span class="eqno">(50)<a class="headerlink" href="#equation-expected-value-approximation" title="Permalink to this equation">#</a></span>\[\sum_{y \in {\cal Y}} \int_{{\bf x} \in {\cal X}} \left[ y \neq h(\bf x) \right] p^{\ast} ({\bf x}, y) d {\bf x} = \lim_{M \rightarrow \infty} \frac{1}{M} \sum_{i=1}^{M} \left[ \bar{y}_{i} \neq h(\bar{\bf x}_{i}) \right]\]</div>
-<p>with <span class="math notranslate nohighlight">\( \bar{\bf x}_{i}, \bar{y}_{i} \sim p^{\ast} ({\bf x}, y) \)</span>, <span class="math notranslate nohighlight">\( \forall M \in \lbrace 1, 2, 3, \ldots \rbrace \)</span>, since by definition <div class="math notranslate nohighlight">
-\[ \sum_{y \in {\cal Y}} \int_{{\bf x} \in {\cal X}} p^{\ast} ({\bf x}, y) d {\bf x} = 1. \]</div>
-</p>
-<p>Thus, for a finite number of samples <span class="math notranslate nohighlight">\( M \)</span>, the true classification error is typically approximated in a Monte Carlo sense using a very large <em>testing</em> or <em>validation</em> dataset <span class="math notranslate nohighlight">\( {\cal D}' \)</span> as</p>
-<div class="math notranslate nohighlight">
-\[CE_{true} \approx \frac{1}{M} \sum_{i=1}^{M} \left[ \bar{y}_{i} \neq \hat{y}_{i} \right]\]</div>
-<p>with <span class="math notranslate nohighlight">\( \hat{y}_{i} = h(\bar{\bf x}_{i}) \)</span>.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Using the training dataset to estimate true estimation error can lead to over fitting. Specifically, using the <em>training</em> examples to estimate the true classification error is too optimistic. A small training error does not imply good generalization, as the classifier can still perform poorly on samples not seen during training. To avoid over-fitting, we reserve therefore examples in a <em>testing</em> dataset to estimate the true classification error after training. This procedure avoids over-fitting since the <em>testing</em> examples are new to the classifier, i.e. they were not used in training. In addition to this, we can also reserve examples in a <em>validation</em> dataset to estimate the true classification error and tune any hyper-parameters of the classifier during training. In general, we split the set of available samples into training, validating and testing datasets using some proportion (e.g. <span class="math notranslate nohighlight">\( 60 / 20 / 20 \)</span> or <span class="math notranslate nohighlight">\( 70/15/15 \)</span>).</p>
-<p>Thus, for a given classifier <span class="math notranslate nohighlight">\( h(\cdot) \)</span>, we can estimate the training, validation and testing classification errors respectively as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7d9cd0ec-a6f5-438e-8187-3278ad13fc7c">
-<span class="eqno">(51)<a class="headerlink" href="#equation-7d9cd0ec-a6f5-438e-8187-3278ad13fc7c" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-CE_{train} &amp;=&amp; \frac{1}{|{\cal D}_{train}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{train} } \left[ \bar{y} \neq h(\bar{\bf x}) \right] \nonumber \\
-CE_{val} &amp;=&amp; \frac{1}{|{\cal D}_{val}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{val} } \left[ \bar{y} \neq h(\bar{\bf x}) \right] \nonumber \\
-CE_{test} &amp;=&amp; \frac{1}{|{\cal D}_{test}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{test} } \left[ \bar{y} \neq h(\bar{\bf x}) \right]. \nonumber 
-\end{eqnarray}\]</div>
-<p>Note however that the training error <span class="math notranslate nohighlight">\( CE_{train} \)</span> and validation error <span class="math notranslate nohighlight">\( CE_{val} \)</span> are often too optimistic - especially, the training error – whereas the testing error <span class="math notranslate nohighlight">\( CE_{test} \)</span> is a noisy estimation of the true classification error <span class="math notranslate nohighlight">\( CE_{true} \)</span> such that <span class="math notranslate nohighlight">\( CE_{test} \rightarrow CE_{true} \)</span> as the number of testing examples grows unbounded, i.e. <span class="math notranslate nohighlight">\( | CE_{test} | \rightarrow \infty \)</span>.</p>
-</div>
-<div class="proof remark admonition" id="remark-2">
-<p class="admonition-title"><span class="caption-number">Remark 3 </span></p>
-<section class="remark-content" id="proof-content">
-<p>Some works report the classification accuracy – opposite of error – instead of the classification error. The true accuracy is defined as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-16d4466e-1127-4a7a-aac4-5653063fbdaa">
-<span class="eqno">(52)<a class="headerlink" href="#equation-16d4466e-1127-4a7a-aac4-5653063fbdaa" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-ACC_{true} &amp;\triangleq&amp; Pr \lbrace Y = h({\bf X}) \rbrace \label{eq:true_classification_accuracy} \\
-&amp;\equiv&amp;  1 - CE_{true}. \nonumber
-\end{eqnarray}\]</div>
-<p>On the other hand, the training, validation and testing classification accuracies of a classifier <span class="math notranslate nohighlight">\( h(\cdot) \)</span> can be computed respectively as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-72f25672-aa7d-41a3-a655-a20fd5210a0d">
-<span class="eqno">(53)<a class="headerlink" href="#equation-72f25672-aa7d-41a3-a655-a20fd5210a0d" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-ACC_{train} &amp;=&amp; \frac{1}{|{\cal D}_{train}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{train} } \left[ \bar{y} = h(\bar{\bf x}) \right] \nonumber \\
-ACC_{val} &amp;=&amp; \frac{1}{|{\cal D}_{val}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{val} } \left[ \bar{y} = h(\bar{\bf x}) \right] \nonumber \\
-ACC_{test} &amp;=&amp; \frac{1}{|{\cal D}_{test}|} \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}_{test} } \left[ \bar{y} = h(\bar{\bf x}) \right]. \nonumber 
-\end{eqnarray}\]</div>
-</section>
-</div></section>
-<section id="typical-machine-learning-ml-workflow">
-<h2>Typical Machine Learning (ML) workflow<a class="headerlink" href="#typical-machine-learning-ml-workflow" title="Permalink to this headline">#</a></h2>
-<p><a class="reference internal" href="#train-validate-test-02"><span class="std std-numref">Fig. 8</span></a> illustrates the typical procedure to learn a ML model. The training procedure under the <strong>Repeat</strong> rectangle is repeated over several training epochs considering different selections of the model hyper-parameters. Intermediate statistics – training and validation errors – are collected along the training epochs. Final statistics – the testing error – are computed for the model with the best validation error. Training and validation datasets may be also shuffled / randomized over the training epochs. The testing dataset in turn shall not play any role on the training procedure.</p>
-<figure class="align-left" id="train-validate-test-02">
-<a class="reference internal image-reference" href="_images/train_validate_test_02.png"><img alt="_images/train_validate_test_02.png" src="_images/train_validate_test_02.png" style="height: 320px;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 8 </span><span class="caption-text">A block diagram representing a typical ML workflow.</span><a class="headerlink" href="#train-validate-test-02" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<div class="admonition danger">
-<p class="admonition-title">Danger</p>
-<p>** Avoid human-in-the-loop!** Dot not adjust the model parameters or hyper-parameters by guessing based on the testing accuracy / error. Do not allow the information containing in the testing data set leak to the training procedure.</p>
-<figure class="align-left" id="train-validate-test-03">
+<p>This approach may be sensitive to the choice of the specific validation and test set, but if we have large data and/or classifiers that take a long time to train, this is a valid approach.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-9777b3eb13a80c31ea9b81f85d8f7bb6a7611a67.svg" alt="Figure made with TikZ" /></p>
+</div><p>However, we can of course also perform cross validation, as we have already discussed it for regression (averaging an evaluation metric instead of the MSE). Whether we should use cross validation instead of a simple split, largely depends on whether we can afford it, based on training time and size of the dataset.</p>
+<p>In classification, we often use <strong>stratified</strong> k-fold cross-validation to preserve the class distribution in each fold. This is particularly important for imbalanced datasets.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Avoid the human-in-the-loop
+Do not adjust the model parameters or hyper-parameters by guessing based on the testing accuracy / error. Do not allow the information containing in the testing data set leak to the training procedure.</p>
+<figure class="align-center" id="train-validate-test-03">
 <a class="reference internal image-reference" href="_images/train_validate_test_03.png"><img alt="_images/train_validate_test_03.png" src="_images/train_validate_test_03.png" style="height: 320px;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Human feedback plugging the testing dataset into the training procedure. A naive human – thirsty for good results – may change the model parameters / hyper-parameters to improve the training error. The resulting test error will therefore under estimate the true error leading to an over-confident model. Conversely, the model generalization ability to deal with unseen samples will be over-estimated.</span><a class="headerlink" href="#train-validate-test-03" title="Permalink to this image">#</a></p>
-</figcaption>
 </figure>
 </div>
 </section>
+<section id="evaluation-metrics">
+<h2>Evaluation Metrics<a class="headerlink" href="#evaluation-metrics" title="Permalink to this headline">#</a></h2>
+<p>Straightforward evaluation metrics are the <span class="math notranslate nohighlight">\(L_{01}\)</span>-loss and the accuracy, that put into relation how many errors/correct predictions a classifier makes in a dataset. Given a classifier <span class="math notranslate nohighlight">\(\hat{y}(\vvec{x})\)</span>, the accuracy of the classifier on dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> containing <span class="math notranslate nohighlight">\(n\)</span> data points is given as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathrm{Acc}(\hat{y},\mathcal{D}) &amp;= \frac{\text{Correct predictions}}{\text{Total predictions}}\\
+&amp;= \frac1n \lvert\{(\vvec{x}_i,y_i)\in\mathcal{D}\mid \hat{y}(\vvec{x}_i)=y_i\}\rvert\\
+&amp;= 1- \frac1n\sum_{i=1}^n L_{01}(\hat{y}(\vvec{x}_i),y_i).
+\end{align*}\]</div>
+<p>The accuracy is a very simple metric that is often used because it’s easy to understand. However, it may be misleading when classes are imbalanced.<br />
+For example, consider a binary classification problem, where we have 950 data points belonging to class 1 and 50 data points belonging to class 2. If our classifier always predicts class 1, that is if it didn’t learn anything, the accuracy is still 0.95, which is quite high. To take special cases of datasets and their evaluation into account, various evaluation metrics have been proposed.</p>
 <section id="confusion-matrix">
-<h2>Confusion matrix<a class="headerlink" href="#confusion-matrix" title="Permalink to this headline">#</a></h2>
-<p>Let</p>
-<div class="amsmath math notranslate nohighlight" id="equation-61140187-7a12-443e-baab-ef1bb1d75bf7">
-<span class="eqno">(54)<a class="headerlink" href="#equation-61140187-7a12-443e-baab-ef1bb1d75bf7" title="Permalink to this equation">#</a></span>\[\begin{equation}
-{\bf CM} = \begin{bmatrix}
-c_{1,1} &amp; c_{1,2} &amp; \ldots &amp; c_{1,L} \\
-c_{2,1} &amp; c_{2,2} &amp; \ldots &amp; c_{2,L} \\
-\vdots &amp;  \vdots &amp; &amp; \vdots \\
-c_{L,1} &amp; c_{L,2} &amp; \ldots &amp; c_{L,L}
-\end{bmatrix}
-\end{equation}\]</div>
-<p>define a <span class="math notranslate nohighlight">\(L \times L\)</span> confusion matrix such that, <span class="math notranslate nohighlight">\( \forall i,j \in \lbrace 1, 2, \ldots, L \rbrace \)</span>, <span class="math notranslate nohighlight">\( c_{i,j} \in {\cal Y} \triangleq \lbrace \ell_{1}, \ell_{2}, \ldots, \ell_{L} \rbrace \)</span> and</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a12acdf5-5627-46c6-988d-ba8cbb3b52a9">
-<span class="eqno">(55)<a class="headerlink" href="#equation-a12acdf5-5627-46c6-988d-ba8cbb3b52a9" title="Permalink to this equation">#</a></span>\[\begin{equation}
-c_{i,j} = \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}' } \left[ h(\bar{\bf x}) = \ell_{j} \wedge  \bar{y} = \ell_{i} \right]
-\end{equation}\]</div>
-<p>for some <em>validation</em> or <em>training</em> dataset <div class="math notranslate nohighlight">
-\[ {\cal D}' = \bigcup_{i=1}^{M} \lbrace \left( \bar{\bf x}_{i}, \bar{y}_{i} \right) \rbrace. \]</div>
- The matrix element <span class="math notranslate nohighlight">\( c_{i,j} \)</span> indicates therefore how frequently the true class value associated with a data item <span class="math notranslate nohighlight">\( \bar{\bf x} \)</span> in <span class="math notranslate nohighlight">\( {\cal D}' \)</span> is <span class="math notranslate nohighlight">\( \bar{y} = \ell_{i} \)</span> while the classifier predicts <span class="math notranslate nohighlight">\( h(\bar{\bf x}) = \ell_{j} \)</span> with <span class="math notranslate nohighlight">\( \ell_{i}, \ell_{j} \in {\cal Y} \)</span>. Note that the diagonal elements <span class="math notranslate nohighlight">\( \lbrace c_{i,j} \rbrace \)</span>, <span class="math notranslate nohighlight">\( i = j \)</span>, correspond to accurate predictions while off-diagonal elements <span class="math notranslate nohighlight">\( \lbrace c_{i,j} \rbrace \)</span>, <span class="math notranslate nohighlight">\( i \neq j \)</span>, correspond to erroneous classifier predictions.</p>
-<p>Alternatively, the confusion matrix can be normalized such that, <span class="math notranslate nohighlight">\( \forall i \in \lbrace 1, 2, \ldots, L \rbrace \)</span>,</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d8b0e1b4-7c4d-471e-ad5a-490137c2f3a9">
-<span class="eqno">(56)<a class="headerlink" href="#equation-d8b0e1b4-7c4d-471e-ad5a-490137c2f3a9" title="Permalink to this equation">#</a></span>\[\begin{equation}
-\sum_{j=1}^{L} c_{i,j} = 1. \nonumber
-\end{equation}\]</div>
-<p>In this case, each matrix element <span class="math notranslate nohighlight">\( c_{i,j} \)</span> stores an empirical approximation to the probability <span class="math notranslate nohighlight">\( Pr \left\lbrace h({\bf x}) = \ell_{j} \mid {y} = \ell_{i} \right\rbrace \)</span> of the classifier predicting <span class="math notranslate nohighlight">\( \ell_{j} \)</span> given that the true class value is <span class="math notranslate nohighlight">\( \ell_{i} \)</span>.</p>
-<div class="proof example admonition" id="example-3">
-<p class="admonition-title"><span class="caption-number">Example 20 </span></p>
-<section class="example-content" id="proof-content">
-<p>The confusion matrix is a convenient tool for a human to quickly evaluate a classifier performance by comparing its diagonal and off-diagonal elements.</p>
-<p>A <span class="math notranslate nohighlight">\( 4 \times 4 \)</span> confusion matrix for a classifier <span class="math notranslate nohighlight">\( h:{\cal X} \rightarrow {\cal Y} \)</span> such that <span class="math notranslate nohighlight">\( {\cal Y} = \lbrace \ell_{1}, \ell_{2}, \ell_{3} , \ell_{4} \rbrace \)</span>. The <span class="math notranslate nohighlight">\(i\)</span>-th row stores either frequencies or approximations to the empirical probabilities <span class="math notranslate nohighlight">\( \lbrace Pr \left\lbrace h({\bf x}) = \ell_{j} \mid y = \ell_{i} \right\rbrace \rbrace \)</span>, <span class="math notranslate nohighlight">\( j \in \lbrace 1, 2, 3, 4 \rbrace \)</span>. Note that <span class="math notranslate nohighlight">\( Pr \left\lbrace h({\bf x}) = \ell_{j} \mid y = \ell_{i} \right\rbrace \)</span> is the probability of the classifier <span class="math notranslate nohighlight">\( h(\cdot) \)</span> returning <span class="math notranslate nohighlight">\( \ell_{j} \)</span> given that the true class value is <span class="math notranslate nohighlight">\( \ell_{i} \)</span> and <span class="math notranslate nohighlight">\( \sum_{j=1}^{4} Pr \left\lbrace h({\bf x}) = \ell_{j} \mid y = \ell_{i} \right\rbrace = 1\)</span>, <span class="math notranslate nohighlight">\( \forall i \in \lbrace 1, 2, 3, 4 \rbrace \)</span>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<h3>Confusion Matrix<a class="headerlink" href="#confusion-matrix" title="Permalink to this headline">#</a></h3>
+<p>The confusion matrix provides a visualizable overview of the performance of a classifier by considering all outcomes of the true label vs. the predicted label. Assuming that we have a binary classification problem with a positive and a negative class, the confusion matrix returns the following table:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>Predicted Positive</p></th>
+<th class="head"><p>Predicted Negative</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Actual Positive</strong></p></td>
+<td><p>True Positive (TP)</p></td>
+<td><p>False Negative (FN)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Actual Negative</strong></p></td>
+<td><p>False Positive (FP)</p></td>
+<td><p>True Negative (TN)</p></td>
+</tr>
+</tbody>
+</table>
+<p>In the general case where we have <span class="math notranslate nohighlight">\(c\)</span> classes, the confusion matrix <span class="math notranslate nohighlight">\(C\)</span> is a <span class="math notranslate nohighlight">\(c\times c\)</span> matrix, where the entry <span class="math notranslate nohighlight">\(C_{y,l}\)</span> counts how many data points with label <span class="math notranslate nohighlight">\(y\)</span> are predicted to have label <span class="math notranslate nohighlight">\(l\)</span>
+<div class="math notranslate nohighlight">
+\[C_{y,l} = \lvert\{(\vvec{x},y)\in\mathcal{D}\mid \hat{y}(\vvec{x})=l\}\rvert \]</div>
+</p>
+<p>In the example below, we train a Gaussian Naive Bayes classifier on the Iris dataset, having three classes. The confusion matrix indicates that the first class is easy to distinguish from the other two classes, but the distinguishing between the other two classes is not too easy.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">ConfusionMatrixDisplay</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Load the full Iris dataset (3 classes)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Split into training and test sets (stratified to preserve class proportions)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span>
+<span class="p">)</span>
+
+<span class="c1"># Train an SVM classifier</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Predict on the test set</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Compute the confusion matrix</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+
+<span class="c1"># Display the confusion matrix</span>
+<span class="n">disp</span> <span class="o">=</span> <span class="n">ConfusionMatrixDisplay</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span> <span class="n">display_labels</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">classes_</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">disp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Confusion Matrix for Iris Classification (3 classes)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/classification_evaluation_1_0.png" src="_images/classification_evaluation_1_0.png" />
+</div>
+</div>
 </section>
-</div></section>
+<section id="precision-recall-and-f1-score">
+<h3>Precision, Recall, and F1-Score<a class="headerlink" href="#precision-recall-and-f1-score" title="Permalink to this headline">#</a></h3>
+<p>The confusion matrix shows on the diagonal the correct predictions and on the off-diagonal the errors of a classifier. In some applications, it matters what kind of error a classifier makes. For example, in the medical domain, it matters in cancer detection whether the classifier either fails to discover when a patient has cancer, or if the classifier discovers all cases of cancer but also sometimes predicts that a healthy patient has cancer. Having a false alarm is not as costly as a missed cancer diagnosis. In addition, knowing about the type of error that a classifier is susceptible to, helps in understanding when to trust the classifier and when we should take the prediction with a grain of salt. To that end, it makes sense to consider precision, recall and the F1-score:</p>
+<ul class="simple">
+<li><p><strong>Precision</strong>: \( \frac{TP}{TP + FP}  = \frac{TP}{\text{Predicted Positive}}\) — how many predicted positives were correct.</p></li>
+<li><p><strong>Recall</strong> (Sensitivity): \( \frac{TP}{TP + FN}  = \frac{TP}{\text{Actual Positive}}\) — how many actual positives were identified.</p></li>
+<li><p><strong>F1-Score</strong>: Harmonic mean of precision and recall:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+F1 = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+\]</div>
+<p>In a multiclass scenario, the precision can be computed class-wise as estimators of the probability that the class is actually <span class="math notranslate nohighlight">\(l\)</span> if my classifier says so <span class="math notranslate nohighlight">\(p(y=l\mid\hat{y}=l)\)</span>. Correspondingly, the recall returns the estimated probability that my classifier predicts class <span class="math notranslate nohighlight">\(l\)</span> if the actual class is actually <span class="math notranslate nohighlight">\(l\)</span>.</p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -856,17 +950,17 @@ c_{i,j} = \sum_{\left(\bar{\bf x}, \bar{y} \right) \in {\cal D}' } \left[ h(\bar
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="classification_problem.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="classification_kernel_svm.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Classification Objective</p>
+            <p class="prev-next-title">Kernel SVM</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="classification_knn.html" title="next page">
+    <a class='right-next' id="next-link" href="classification_exercises.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">K-Nearest Neighbor</p>
+        <p class="prev-next-title">Exercises</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

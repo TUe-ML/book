@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -725,57 +735,14 @@ The matrix <span class="math notranslate nohighlight">\(X\)</span> is called the
 </div>
 <section id="convexity-of-the-rss">
 <h2>Convexity of the RSS<a class="headerlink" href="#convexity-of-the-rss" title="Permalink to this headline">#</a></h2>
-<p>The RSS is a convex optimization objective. To see that, we show first that the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm is convex.</p>
-<div class="proof lemma admonition" id="lemma-0">
-<p class="admonition-title"><span class="caption-number">Lemma 5 </span></p>
-<section class="lemma-content" id="proof-content">
-<p>The squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x})=\lVert\vvec{x}\rVert^2\)</span> is convex.</p>
-</section>
-</div><div class="toggle docutils container">
-<div class="proof admonition" id="proof">
-<p>Proof. Let <span class="math notranslate nohighlight">\(\vvec{x}_1,\vvec{x}_2\in\mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha\in[0,1]\)</span>. Then we have to show  that</p>
-<div class="math notranslate nohighlight" id="equation-eq-convex">
-<span class="eqno">(8)<a class="headerlink" href="#equation-eq-convex" title="Permalink to this equation">#</a></span>\[\begin{align}
-    \lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 \leq  \alpha\lVert\vvec{x}_1\rVert^2 + (1-\alpha)\lVert\vvec{x}_2\rVert^2
-\end{align}\]</div>
-<p>We apply the binomial formula for the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm, which derives directly from the definition of the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm by an inner product (see linear algebra lecture). Then we have:</p>
-<div class="math notranslate nohighlight" id="equation-eq-term">
-<span class="eqno">(9)<a class="headerlink" href="#equation-eq-term" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align}
-    \lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 &amp;=
-    \lVert\alpha\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +\lVert(1-\alpha)\vvec{x}_2\rVert^2\nonumber\\
-    &amp;=
-    \lvert\alpha\rvert^2\lVert\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +\lvert 1-\alpha\rvert^2\lVert\vvec{x}_2\rVert^2 &amp;\text{(homogenity of the norm)}\nonumber\\
-    &amp;=
-    \alpha^2\lVert\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +( 1-\alpha)^2\lVert\vvec{x}_2\rVert^2,
-\end{align}\end{split}\]</div>
-<p>where the last equation derives from the fact that the squared absolute value of a real value is equal to the  squared real value.</p>
-<p>What is standing above, is not yet what we want, and it is difficult to see which step has to be taken next to derive the Inequality <a class="reference internal" href="#equation-eq-convex">(8)</a>. Hence, we apply a trick. Instead of showing that  Inequality <a class="reference internal" href="#equation-eq-convex">(8)</a> holds as it stands, we show that an equivalent inequality holds:</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-    \lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 - \alpha\lVert\vvec{x}_1\rVert^2 - (1-\alpha)\lVert\vvec{x}_2\rVert^2\leq 0 
-\end{align*}\]</div>
-<p>We substitute now the result of Eq. <a class="reference internal" href="#equation-eq-term">(9)</a> into the term on the left of the inequality above:</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-    &amp;\lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 - \alpha\lVert\vvec{x}_1\rVert^2 - (1-\alpha)\lVert\vvec{x}_2\rVert^2\\ 
-     &amp;\quad=
-    \alpha^2\lVert\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +( 1-\alpha)^2\lVert\vvec{x}_2\rVert^2- \alpha\lVert\vvec{x}_1\rVert^2 - (1-\alpha)\lVert\vvec{x}_2\rVert^2
-    \\
-    &amp;\quad= -\alpha(1-\alpha)\lVert\vvec{x}_1\rVert^2  +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 -( 1-\alpha)(1-1+\alpha)\lVert\vvec{x}_2\rVert^2\\
-    &amp;\quad= - \alpha(1-\alpha) \lVert\vvec{x}_1-\vvec{x}_2\rVert^2&amp;\text{(binomial formula)}\\
-    &amp;\quad\leq 0
-\end{align*}\]</div>
-<p>This concludes what we wanted to show.</p>
-</div>
-</div>
-<p>We can now show that the RSS is convex as it is a composition of an affine function and a convex function, which is again convex.</p>
-<div class="proof theorem admonition" id="theorem-1">
-<p class="admonition-title"><span class="caption-number">Theorem 7 </span></p>
+<p>The RSS is a convex optimization objective as it is a composition of an affine function and a convex function (the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm), which is again convex.</p>
+<div class="proof theorem admonition" id="theorem-0">
+<p class="admonition-title"><span class="caption-number">Theorem 10 </span></p>
 <section class="theorem-content" id="proof-content">
 <p>The function <span class="math notranslate nohighlight">\(RSS(\bm\beta)=\lVert \vvec{y}-X\bm{\beta}\rVert^2\)</span> is convex.</p>
 </section>
 </div><div class="proof admonition" id="proof">
-<p>Proof. We show that the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm <span class="math notranslate nohighlight">\(\lVert\cdot\rVert^2\)</span> is a convex function.</p>
+<p>Proof. The squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm <span class="math notranslate nohighlight">\(\lVert\cdot\rVert^2\)</span> is a convex function.</p>
 <p>The composition of the affine function <span class="math notranslate nohighlight">\(g(\bm{\beta})=\vvec{y}-X\bm{\beta}\)</span> with the convex function <span class="math notranslate nohighlight">\(\Vert\cdot\rVert^2\)</span>, given by the <span class="math notranslate nohighlight">\(RSS(\bm{\beta})=\lVert g(\bm{\beta})\rVert^2\)</span> is then also convex.</p>
 </div>
 <p>As a corollary, the linear regression optimization objective</p>
@@ -790,7 +757,7 @@ So, we have an unconstrained convex optimization problem with a smooth objective
 <h2>Minimizers of the RSS<a class="headerlink" href="#minimizers-of-the-rss" title="Permalink to this headline">#</a></h2>
 <p>We compute the stationary points by setting the gradient to zero. The gradient of the <span class="math notranslate nohighlight">\(RSS(\bm{\beta}) = \lVert \vvec{y}-X\bm{\beta}\rVert^2=f(\vvec{g}(\bm{\beta}))\)</span> is computed by the chain rule, as discussed in <a class="reference internal" href="optimization_exercises.html#opt-exercises-gradients"><span class="std std-ref">Computing the Gradients</span></a>.</p>
 <div class="math notranslate nohighlight" id="equation-eq-minimizers">
-<span class="eqno">(10)<a class="headerlink" href="#equation-eq-minimizers" title="Permalink to this equation">#</a></span>\[\begin{align*}
+<span class="eqno">(9)<a class="headerlink" href="#equation-eq-minimizers" title="Permalink to this equation">#</a></span>\[\begin{align*}
 \nabla_{\bm{\beta}} RSS(\bm{\beta})= -2X^\top(\vvec{y}-X\bm{\beta}) =0 
 \quad \Leftrightarrow \quad
      X^\top X{\bm{\beta}} = X^\top \vvec{y}
@@ -809,7 +776,7 @@ So, we have an unconstrained convex optimization problem with a smooth objective
 <h2>Getting all Regression Solvers<a class="headerlink" href="#getting-all-regression-solvers" title="Permalink to this headline">#</a></h2>
 <p>If the matrix <span class="math notranslate nohighlight">\(X^\top X\)</span> is not invertible, then we have infinitely many regression solvers. This is particularly the case when <span class="math notranslate nohighlight">\(p&gt;n\)</span>.</p>
 <div class="proof example admonition" id="example_reg_p_larger_n">
-<p class="admonition-title"><span class="caption-number">Example 19 </span> (Regression with <span class="math notranslate nohighlight">\(p&gt;n\)</span>)</p>
+<p class="admonition-title"><span class="caption-number">Example 17 </span> (Regression with <span class="math notranslate nohighlight">\(p&gt;n\)</span>)</p>
 <section class="example-content" id="proof-content">
 <p>We consider a toy regression task, where the data is given by following three data points (observations) of one feature.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>D = np.array([5,3,1])
@@ -877,16 +844,16 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
 \[\begin{align*}
     X^\top X = V\Sigma^\top \underbrace{U^\top U}_{=I} \Sigma V^\top = V\Sigma^\top \Sigma V^\top.
 \end{align*}\]</div>
-<p>Given the singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span>, we can try to solve Eq. <a class="reference internal" href="#equation-eq-minimizers">(10)</a> for <span class="math notranslate nohighlight">\(\bm\beta\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d4075666-7e49-4dba-a99e-42f65e34362a">
-<span class="eqno">(11)<a class="headerlink" href="#equation-d4075666-7e49-4dba-a99e-42f65e34362a" title="Permalink to this equation">#</a></span>\[\begin{align}
+<p>Given the singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span>, we can try to solve Eq. <a class="reference internal" href="#equation-eq-minimizers">(9)</a> for <span class="math notranslate nohighlight">\(\bm\beta\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-9c520458-257c-464b-b0c3-b8afb94c5b1a">
+<span class="eqno">(10)<a class="headerlink" href="#equation-9c520458-257c-464b-b0c3-b8afb94c5b1a" title="Permalink to this equation">#</a></span>\[\begin{align}
    X^\top X\bm{\beta} &amp;= X^\top \vvec{y} \quad 
    \Leftrightarrow \quad V\Sigma^\top\Sigma V^\top \bm{\beta}= V\Sigma^\top U^\top\vvec{y}
    \quad 
    \Leftrightarrow \quad \Sigma^\top\Sigma V^\top \bm{\beta}= \Sigma^\top U^\top\vvec{y}, \label{eq:beta1}
 \end{align}\]</div>
 <p>where the last equality follows from multiplying with <span class="math notranslate nohighlight">\(V^\top\)</span> from the left.</p>
-<div class="proof observation admonition" id="observation-3">
+<div class="proof observation admonition" id="observation-2">
 <p class="admonition-title"><span class="caption-number">Observation 1 </span> (Characterization of Regression solvers by SVD)</p>
 <section class="observation-content" id="proof-content">
 <p>The global minimizers <span class="math notranslate nohighlight">\(\bm{\beta}\)</span> to the <a class="reference internal" href="#regr-task"><span class="std std-ref">Linear Regression</span></a> task with design matrix <span class="math notranslate nohighlight">\(X\)</span>, having the SVD <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\)</span>, are given by
@@ -895,7 +862,7 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
 </p>
 </section>
 </div><p><span class="math notranslate nohighlight">\(\Sigma^\top\Sigma\in\mathbb{R}^{p\times p}\)</span> is a diagonal matrix, where not all elements on the diagonal are nonzero if <span class="math notranslate nohighlight">\(n&lt;p\)</span>. Hence, it does <strong>not</strong> have an inverse if <span class="math notranslate nohighlight">\(n&lt;p\)</span>. This becomes maye a bit more clear when we look at the following observation</p>
-<div class="proof observation admonition" id="observation-4">
+<div class="proof observation admonition" id="observation-3">
 <span id="obs-sigma-r"></span><p class="admonition-title"><span class="caption-number">Observation 2 </span> (Singular value matrix of rank <span class="math notranslate nohighlight">\(r\)</span>)</p>
 <section class="observation-content" id="proof-content">
 <p>Let <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{n\times p}\)</span> be a matrix with rank <span class="math notranslate nohighlight">\(r\)</span>, meaning that <span class="math notranslate nohighlight">\(X\)</span> has only <span class="math notranslate nohighlight">\(r\)</span> nonzero singular values. Let <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\)</span> be the SVD of <span class="math notranslate nohighlight">\(X\)</span>, then the matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> looks as follows:</p>
@@ -921,8 +888,8 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
 <p>The matrices <span class="math notranslate nohighlight">\(\vvec{0}\)</span> indicate here constant zero matrices whose dimensionalities are inferred from context. The constant zero matrix below <span class="math notranslate nohighlight">\(\Sigma_r\)</span> has a dimensionality of <span class="math notranslate nohighlight">\(n-r\times r\)</span> and the constant zero matrix on the right has a dimensionality of <span class="math notranslate nohighlight">\(n\times p-r\)</span>. Correspondingly, if <span class="math notranslate nohighlight">\(n=r\)</span>, then the lower zero matrix doesn’t exist and if <span class="math notranslate nohighlight">\(r=p\)</span>, then the zero matrix on the right doesn’t exist.</p>
 </section>
 </div><p>The notation of Observation <a class="reference internal" href="#obs-sigma-r"><span class="std std-ref"> (Singular value matrix of rank r)</span></a> helps us now to derive the set of all regression solvers.</p>
-<div class="proof theorem admonition" id="theorem-5">
-<p class="admonition-title"><span class="caption-number">Theorem 8 </span> (Set of all regression solvers)</p>
+<div class="proof theorem admonition" id="theorem-4">
+<p class="admonition-title"><span class="caption-number">Theorem 11 </span> (Set of all regression solvers)</p>
 <section class="theorem-content" id="proof-content">
 <p>Let <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\in\mathbb{R}^{n\times p}\)</span> be the SVD of the design matrix of the <a class="reference internal" href="#regr-task"><span class="std std-ref">Linear Regression</span></a> task. If only <span class="math notranslate nohighlight">\(r&lt;p\)</span> singular values of <span class="math notranslate nohighlight">\(X\)</span> are nonzero (<span class="math notranslate nohighlight">\(X\)</span> has a rank of <span class="math notranslate nohighlight">\(r\)</span>), then the set of global minimizers <span class="math notranslate nohighlight">\(\bm{\beta}\)</span> is given by
 <div class="math notranslate nohighlight">
@@ -933,8 +900,8 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
 </div><div class="toggle docutils container">
 <div class="proof admonition" id="proof">
 <p>Proof. We start at the characterization of regression solvers by SVD (Observation):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3aecb977-dc39-4b3a-9db4-a06d17a5e3dd">
-<span class="eqno">(12)<a class="headerlink" href="#equation-3aecb977-dc39-4b3a-9db4-a06d17a5e3dd" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-78d9cc86-d382-417a-b51f-0b21570c7d0f">
+<span class="eqno">(11)<a class="headerlink" href="#equation-78d9cc86-d382-417a-b51f-0b21570c7d0f" title="Permalink to this equation">#</a></span>\[\begin{align}
 \Sigma^\top\Sigma V^\top\bm\beta &amp;= \Sigma^\top U_r^\top y\\
 \Leftrightarrow
 \left(\begin{array}{cc}
@@ -952,8 +919,8 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
 \end{array}\right) U_r^\top y
 \end{align}\]</div>
 <p>We see here that only the first <span class="math notranslate nohighlight">\(r\)</span> equations are relevant, the remaining equations <span class="math notranslate nohighlight">\(0=0\)</span> are evidently true. We further shorten the notation by setting <span class="math notranslate nohighlight">\(\hat{\bm\beta}=V^\top\bm\beta\)</span>. We have then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1e44d23b-d721-4ceb-b90d-6de0452f41bd">
-<span class="eqno">(13)<a class="headerlink" href="#equation-1e44d23b-d721-4ceb-b90d-6de0452f41bd" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-66077797-89a9-49de-b224-25a96a687dae">
+<span class="eqno">(12)<a class="headerlink" href="#equation-66077797-89a9-49de-b224-25a96a687dae" title="Permalink to this equation">#</a></span>\[\begin{align}
 \Sigma_r\begin{pmatrix} \Sigma_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= \Sigma_r U_r^\top y\\ 
 \Leftrightarrow
 \begin{pmatrix} \Sigma_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= U_r^\top y\\ 
@@ -963,8 +930,8 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
 \hat{\bm\beta}_{0:r} &amp;= \Sigma_r^{-1} U_r^\top y
 \end{align}\]</div>
 <p>We see that only the first <span class="math notranslate nohighlight">\(r\)</span> coordinates of <span class="math notranslate nohighlight">\(\hat{\bm\beta}\)</span> are determined by the given equation. What we have in the rest of the coordinates is free to choose and the equation will still hold. We model the coordinates that are free to choose with the vector <span class="math notranslate nohighlight">\(z\)</span>. Then we have</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f7347e60-bded-4a13-98b4-1ff1b12ed5b9">
-<span class="eqno">(14)<a class="headerlink" href="#equation-f7347e60-bded-4a13-98b4-1ff1b12ed5b9" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8667a618-aea9-4749-8882-93cf8a39daf3">
+<span class="eqno">(13)<a class="headerlink" href="#equation-8667a618-aea9-4749-8882-93cf8a39daf3" title="Permalink to this equation">#</a></span>\[\begin{align}
 \hat{\bm\beta} &amp;= \begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}\\
 \Leftrightarrow V^\top\bm\beta &amp;= \begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}\\
 \Leftrightarrow \bm\beta &amp;= V\begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}
@@ -975,7 +942,7 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
 </section>
 <section id="example-determination-of-regression-solvers-by-svd">
 <h2>Example Determination of Regression Solvers by SVD<a class="headerlink" href="#example-determination-of-regression-solvers-by-svd" title="Permalink to this headline">#</a></h2>
-<p>We consider again the data from <a class="reference internal" href="#example_reg_p_larger_n">Example 19</a>. Yet, instead of computing the solution by hand, we implement now a general scheme to obtain the set of regression vectors. First, we compute the SVD of the design matrix <span class="math notranslate nohighlight">\(X\)</span></p>
+<p>We consider again the data from <a class="reference internal" href="#example_reg_p_larger_n">Example 17</a>. Yet, instead of computing the solution by hand, we implement now a general scheme to obtain the set of regression vectors. First, we compute the SVD of the design matrix <span class="math notranslate nohighlight">\(X\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>

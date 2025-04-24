@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -691,7 +701,7 @@ The general scheme of numerical optimization methods is typically</p>
 \[ f(\vvec{x}^{(0)})\geq f(\vvec{x}^{(1)})\geq f(\vvec{x}^{(2)})\geq\ldots\]</div>
 </p>
 <div class="proof example admonition" id="example-2">
-<p class="admonition-title"><span class="caption-number">Example 10 </span> (Coordinate descent of the Rosenbrock function)</p>
+<p class="admonition-title"><span class="caption-number">Example 8 </span> (Coordinate descent of the Rosenbrock function)</p>
 <section class="example-content" id="proof-content">
 <figure class="align-right" id="coord-desc-rosen">
 <a class="reference internal image-reference" href="_images/coordinateDescentRosenbrock.png"><img alt="_images/coordinateDescentRosenbrock.png" src="_images/coordinateDescentRosenbrock.png" style="height: 200px;" /></a>
@@ -699,7 +709,7 @@ The general scheme of numerical optimization methods is typically</p>
 <p><span class="caption-number">Fig. 2 </span><span class="caption-text">Coordinate descent updates</span><a class="headerlink" href="#coord-desc-rosen" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Let’s try to apply coordinate descent to find the minimum of the Rosenbrock function. From <a class="reference internal" href="optimization_problems.html#expl_fonc">Example 9</a> we know the partial derivatives of the function</p>
+<p>Let’s try to apply coordinate descent to find the minimum of the Rosenbrock function. From <a class="reference internal" href="optimization_problems.html#expl_fonc">Example 7</a> we know the partial derivatives of the function</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
     f(\vvec{x})&amp;= 100(x_2-x_1^2)^2 +(1-x_1)^2.\\
@@ -714,7 +724,7 @@ The general scheme of numerical optimization methods is typically</p>
       \frac{\partial}{\partial x_2}f(\vvec{x})&amp;=200(x_2-x_1^2)=0
       &amp;\Leftrightarrow x_2 =x_1^2
 \end{align*}\]</div>
-<p>We have here only one minimizer candidate for each coordinate, and since we know from <a class="reference internal" href="optimization_problems.html#expl_fonc">Example 9</a> that the function has only one minimizer (and no other maximizer or such), we know that the coordinate-wise minimizer candidates actually minimize the function in each coordinate. From this, we derive our update rules:</p>
+<p>We have here only one minimizer candidate for each coordinate, and since we know from <a class="reference internal" href="optimization_problems.html#expl_fonc">Example 7</a> that the function has only one minimizer (and no other maximizer or such), we know that the coordinate-wise minimizer candidates actually minimize the function in each coordinate. From this, we derive our update rules:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
     \argmin_{x_1\in\mathbb{R}} f(x_1,x_2) =1 \\
@@ -748,7 +758,7 @@ The general scheme of numerical optimization methods is typically</p>
 
 However, decreasing the function value in every step is in practice not neccessarily desirable. In particular in the beginning of the optimization, it’s useful to take larger steps to survey the landscape before converging to a local minimum.</p>
 <div class="proof example admonition" id="example-4">
-<p class="admonition-title"><span class="caption-number">Example 11 </span> (Gradient Descent on the Rosenbrock Function)</p>
+<p class="admonition-title"><span class="caption-number">Example 9 </span> (Gradient Descent on the Rosenbrock Function)</p>
 <section class="example-content" id="proof-content">
 <p>We illustrate the effect of the step-size by means of the Rosenbrock function. <a class="reference internal" href="#grad-desc-smallstep"><span class="std std-numref">Fig. 3</span></a> shows the trajectory when using a small step-size, <a class="reference internal" href="#grad-desc-goodstep"><span class="std std-numref">Fig. 4</span></a> shows a moderate step size and <a class="reference internal" href="#grad-desc-bigstep"><span class="std std-numref">Fig. 5</span></a> shows a larger step-size. We observe that all three step-sizes result in a sequence that converges to the minimim <span class="math notranslate nohighlight">\((1,1)\)</span>. However, in particular the very small step-size results in a trajectory that requires many many steps. The fastest convergence has the larger step-size, but even this one needs approximately 800 iterations. In comparison to coordinate descent, that just required to update each coordinate once, gradient descent is much more inefficient. We also observe that the trajectory for the larger step-size is already zig-zagging, which often indicates that the step-size is actually too large, since it overshoots in each step. Hence, this function is not very efficiently optimizable with gradient descent. But feel free to try it yourself.</p>
 <figure class="align-default" id="grad-desc-smallstep">

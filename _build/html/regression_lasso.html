@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -652,14 +662,14 @@ title="Print to PDF"
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>, a target vector <span class="math notranslate nohighlight">\(\vvec{y}\in\mathbb{R}^n\)</span>, the design matrix <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{n\times p}\)</span>, where <span class="math notranslate nohighlight">\(X_{i\cdot}=\bm\phi(D_{i\cdot}^\top)^\top\)</span> and a regularization weight <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span>.</p>
 <p><strong>Find</strong> the regression vector <span class="math notranslate nohighlight">\(\bm\beta\)</span>, solving the following objective</p>
 <div class="math notranslate nohighlight" id="equation-eq-lasso-obj">
-<span class="eqno">(26)<a class="headerlink" href="#equation-eq-lasso-obj" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(25)<a class="headerlink" href="#equation-eq-lasso-obj" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_1}(\bm\beta) &amp;= \lVert \vvec{y}-X\bm\beta\rVert^2 +\lambda \lvert\bm{\beta}\rvert.
 \end{align}\]</div>
 <p><strong>Return</strong> the predictor function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec{x})^\top\bm\beta\)</span>.</p>
 </div>
-<p>The drawback of using a <span class="math notranslate nohighlight">\(L_1\)</span>-regularization term is that the resulting objective function in Eq. <a class="reference internal" href="#equation-eq-lasso-obj">(26)</a> is not differentiable if any value of <span class="math notranslate nohighlight">\(\beta\)</span> is zero. However, we can generalize from the concept of a gradient to a subgradient, and the subgradient of the <span class="math notranslate nohighlight">\(L_1\)</span>-norm is given as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-74a211c0-43cd-4d86-8d93-96ced8a7b233">
-<span class="eqno">(27)<a class="headerlink" href="#equation-74a211c0-43cd-4d86-8d93-96ced8a7b233" title="Permalink to this equation">#</a></span>\[\begin{align}
+<p>The drawback of using a <span class="math notranslate nohighlight">\(L_1\)</span>-regularization term is that the resulting objective function in Eq. <a class="reference internal" href="#equation-eq-lasso-obj">(25)</a> is not differentiable if any value of <span class="math notranslate nohighlight">\(\beta\)</span> is zero. However, we can generalize from the concept of a gradient to a subgradient, and the subgradient of the <span class="math notranslate nohighlight">\(L_1\)</span>-norm is given as follows:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-98bd00bc-bad1-4dbc-9a2d-2051079809e0">
+<span class="eqno">(26)<a class="headerlink" href="#equation-98bd00bc-bad1-4dbc-9a2d-2051079809e0" title="Permalink to this equation">#</a></span>\[\begin{align}
     \frac{\partial\lvert\bm\beta\rvert}{\partial \beta_k} \in 
     \begin{cases}
         \{1\},&amp; \text{if } \beta_k&gt;0\\
@@ -673,15 +683,15 @@ Minimizers of objective functions which have a subgradient satisfy <span class="
 <h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
 <p>The FONC for subgradients would allow us in principle to find again the stationary points, that are also the minimizers of the Lasso task, because the Lasso objective is convex. Unfortunately, solving for the stationary points of the subgradient <span class="math notranslate nohighlight">\(\nabla RSS_{L_1}(\bm\beta)=0\)</span> is too complicated (feel free to try it yourself). Yet, the function is simple enough to do the next best thing, which is coordinate descent. We derive the minimizers subject to one coordinate as stated in the following theorem.</p>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 11 </span> (Coordinate-wise Lasso Minimizers)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 14 </span> (Coordinate-wise Lasso Minimizers)</p>
 <section class="theorem-content" id="proof-content">
 <p>The minimizer of Lasso subject to the coordinate <span class="math notranslate nohighlight">\(\beta_k\)</span>
 <div class="math notranslate nohighlight">
 \[\beta_k^* = \argmin_{\beta_k\in\mathbb{R}} \lVert\vvec{y}-X\bm\beta\rVert^2+\lambda\lvert\bm\beta\rvert\]</div>
 
 is given for <span class="math notranslate nohighlight">\(c_k =  X_{\cdot k}^\top \vvec{y}- \sum_{i\neq k}X_{\cdot k}^\top X_{\cdot i}\beta_i\)</span> by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5bfdaf13-e28a-4dd8-a39c-2906101a571f">
-<span class="eqno">(28)<a class="headerlink" href="#equation-5bfdaf13-e28a-4dd8-a39c-2906101a571f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-14305f85-03c8-4cc9-afd2-b422d4b11994">
+<span class="eqno">(27)<a class="headerlink" href="#equation-14305f85-03c8-4cc9-afd2-b422d4b11994" title="Permalink to this equation">#</a></span>\[\begin{align}
 \beta_k^*&amp;= \begin{cases}
 \frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k -\lambda) &amp; \text{if } c_k&gt;\lambda\\
 \frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k +\lambda) &amp; \text{if } c_k&lt;-\lambda\\
@@ -692,18 +702,18 @@ is given for <span class="math notranslate nohighlight">\(c_k =  X_{\cdot k}^\to
 </div><div class="toggle docutils container">
 <div class="proof admonition" id="proof">
 <p>Proof. FONC for subgradients <span class="math notranslate nohighlight">\(\vvec{0}\in \frac{\partial }{\partial \beta_k}RSS_{L_1}\)</span> yields the solutions to the coordinate-wise minimization problems.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a50fa266-08a4-4114-9dff-21b715e9417f">
-<span class="eqno">(29)<a class="headerlink" href="#equation-a50fa266-08a4-4114-9dff-21b715e9417f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-84d7de89-9648-4bdf-942b-88453211556a">
+<span class="eqno">(28)<a class="headerlink" href="#equation-84d7de89-9648-4bdf-942b-88453211556a" title="Permalink to this equation">#</a></span>\[\begin{align}
 \nabla RSS(\beta) &amp;= 2X^\top(X\beta-\vvec{y})\\
 \frac{\partial}{\partial \beta_k} RSS(\beta) &amp;= 2X_{\cdot k}^\top(X\beta-\vvec{y})
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-e6831249-b73b-4854-b32f-df8db0b88a92">
-<span class="eqno">(30)<a class="headerlink" href="#equation-e6831249-b73b-4854-b32f-df8db0b88a92" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f7f17981-42ca-4f83-a425-5c37d2f6a856">
+<span class="eqno">(29)<a class="headerlink" href="#equation-f7f17981-42ca-4f83-a425-5c37d2f6a856" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{\partial}{\partial \beta_k} RSS_{L1}(\beta) = 2X_{\cdot k}^\top(X\beta-\vvec{y}) + \lambda\frac{\partial\lvert\beta\rvert}{\partial \beta_k}
 \end{align}\]</div>
 <p>We compute the stationary points and set <span class="math notranslate nohighlight">\(\frac{\partial}{\partial \beta_k} RSS_{L1}(\beta)=0\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6eb0d696-d4ca-4e36-9072-1996f2383095">
-<span class="eqno">(31)<a class="headerlink" href="#equation-6eb0d696-d4ca-4e36-9072-1996f2383095" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f02a6a74-1e74-487b-b29b-1c210071a6f8">
+<span class="eqno">(30)<a class="headerlink" href="#equation-f02a6a74-1e74-487b-b29b-1c210071a6f8" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;&amp; 2X_{\cdot k}^\top(X\beta-\vvec{y}) + \lambda\frac{\partial\lvert\beta\rvert}{\partial \beta_k} = 0\\
 &amp;\Leftrightarrow\quad &amp; 2X_{\cdot k}^\top X\beta - 2X_{\cdot k}^\top\vvec{y} + \lambda\frac{\partial\lvert\beta\rvert}{\partial \beta_k} = 0\\
 &amp;\Leftrightarrow &amp; 2X_{\cdot k}^\top X\beta = 2X_{\cdot k}^\top\vvec{y} - \lambda\frac{\partial\lvert\beta\rvert}{\partial \beta_k}\\
@@ -716,8 +726,8 @@ is given for <span class="math notranslate nohighlight">\(c_k =  X_{\cdot k}^\to
 <p>We have now a characterization of the minimizers of <span class="math notranslate nohighlight">\(\beta_k\)</span> in dependence of the partial derivative of the <span class="math notranslate nohighlight">\(L_1\)</span> norm. The term <span class="math notranslate nohighlight">\(c_k\)</span> does not depend on the coordinate that we want to optimize, hence we can consider this term as a constant. The partial derivative depends on three cases: <span class="math notranslate nohighlight">\(\beta_k&gt;0, \beta_k&lt;0\)</span> and <span class="math notranslate nohighlight">\(\beta_k=0\)</span>. We have a look at these cases now.</p>
 <p><em>case 1: <span class="math notranslate nohighlight">\(\beta_k&gt;0\)</span></em><br />
 If <span class="math notranslate nohighlight">\(\beta_k&gt;0\)</span>, then the partial derivative is equal to <span class="math notranslate nohighlight">\(\frac{\partial\lvert\beta\rvert}{\partial \beta_k}=1\)</span>. That is, we have:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d03ab2ed-5f2b-4155-8b26-9cfe02c55e03">
-<span class="eqno">(32)<a class="headerlink" href="#equation-d03ab2ed-5f2b-4155-8b26-9cfe02c55e03" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-83988f4c-881c-4bbb-8346-a5345df5a7ba">
+<span class="eqno">(31)<a class="headerlink" href="#equation-83988f4c-881c-4bbb-8346-a5345df5a7ba" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\Leftrightarrow&amp; 0&lt;\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\cdot 1\right)\\
 &amp;\Leftrightarrow&amp; 0&lt;c_k - \frac \lambda 2\\
 &amp;\Leftrightarrow&amp; \frac \lambda 2 &lt; c_k 
@@ -749,7 +759,7 @@ If <span class="math notranslate nohighlight">\(\beta_k&gt;0\)</span>, then the 
 </section>
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">#</a></h2>
-<p>We use again the data from <a class="reference internal" href="regression_optimization.html#example_reg_p_larger_n">Example 19</a>, but now we apply Lasso with varying regularization weights.</p>
+<p>We use again the data from <a class="reference internal" href="regression_optimization.html#example_reg_p_larger_n">Example 17</a>, but now we apply Lasso with varying regularization weights.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -818,7 +828,7 @@ If <span class="math notranslate nohighlight">\(\beta_k&gt;0\)</span>, then the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.001 	 [-0.2189  0.5848 -0.1185]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.001 	 [-0.0418  0.4793 -0.1044]
 1 	 [-0.      0.4504 -0.1002]
 10 	 [ 0.      0.0334 -0.014 ]
 100 	 [ 0.     -0.     -0.0044]

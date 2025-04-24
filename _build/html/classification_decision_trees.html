@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -693,7 +703,7 @@ title="Print to PDF"
 <figure class="align-center" id="got-decision-tree">
 <a class="reference internal image-reference" href="_images/GOT_DT.png"><img alt="_images/GOT_DT.png" src="_images/GOT_DT.png" style="height: 500px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 10 </span><span class="caption-text">A decision tree Game of Thrones personality test.</span><a class="headerlink" href="#got-decision-tree" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">A decision tree Game of Thrones personality test.</span><a class="headerlink" href="#got-decision-tree" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Decision trees are a fundamental method in machine learning due to their inherently interpretable structure. They model decisions in a tree-like structure, where each internal node splits the outcomes based on a feature value, until we arrive at a leaf node that assigns a class prediction. This structure is so intuitive, that no further information is needed to perform the inference step. As an example, have a look at the Game of Thrones personality test decision tree above. You probably already got your character prediction without having to know what a decision tree is. This is particularly useful when you work in application domains where your project partners have no deepened mathematical training, for example in the medical domain. You can show a decision tree to experts of their field and they will be able to assess whether the predictions are sensible. Of course, this advantage gets lost if the decision tree is very big.</p>
@@ -701,7 +711,7 @@ title="Print to PDF"
 <section id="inference">
 <h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">#</a></h2>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 20 </span> (Decision Tree)</p>
+<p class="admonition-title"><span class="caption-number">Definition 22 </span> (Decision Tree)</p>
 <section class="definition-content" id="proof-content">
 <p>A Decision Tree is a directed binary tree that represents a classifying function <span class="math notranslate nohighlight">\(f_{dt}:\mathbb{R}^d\rightarrow [0,1]^c\)</span>. The classifying function is defined recursively:
 <div class="math notranslate nohighlight">
@@ -723,7 +733,7 @@ where</p>
 </section>
 </div><p>Although decision trees are often represented as if they only store the predicted label at a leaf, in practice, the class probabilities are stored. Class probabilities are useful as a confidence measure of the prediction <span class="math notranslate nohighlight">\( \hat{y} = \argmax_y\ f_{dt}(\vvec{x}) \)</span>.</p>
 <div class="proof example admonition" id="example-1">
-<p class="admonition-title"><span class="caption-number">Example 22 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 19 </span></p>
 <section class="example-content" id="proof-content">
 <p>The data underlying the GOT personality test dataset could for example have the features <span class="math notranslate nohighlight">\(\mathtt{x}_1,\ldots,\mathtt{x}_4\)</span>, where</p>
 <ul class="simple">
@@ -839,10 +849,10 @@ If the feature is continuous, then we can try as thresholds the midpoints betwee
 <h3>Information Gain<a class="headerlink" href="#information-gain" title="Permalink to this headline">#</a></h3>
 <p>The information gain measures how beneficial a split is to the classification task. A split is defined over a data sub-set <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> that is split into disjoint data sub-sets <span class="math notranslate nohighlight">\(\mathcal{L}=\mathcal{L}_0\cup\mathcal{L}_1\)</span>.  The more <em>pure</em> the split datasets <span class="math notranslate nohighlight">\(\mathcal{L}_0\)</span> and <span class="math notranslate nohighlight">\(\mathcal{L}_1\)</span> are in comparison to their parent dataset <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>, the higher the information gain.</p>
 <div class="math notranslate nohighlight" id="equation-information-gain">
-<span class="eqno">(61)<a class="headerlink" href="#equation-information-gain" title="Permalink to this equation">#</a></span>\[IG(\mathcal{L},{\cal L}_0, {\cal L}_1) = \mathrm{Impurity}({\cal L}) - \left\{ \frac{\lvert {\cal L}_0\rvert}{\lvert{\cal L}\rvert} \mathrm{Impurity}({\cal L}_0) + \frac{\lvert{\cal L}_1\rvert}{\lvert{\cal L}\rvert} \mathrm{Impurity}({\cal L}_{1}) \right\} \]</div>
+<span class="eqno">(45)<a class="headerlink" href="#equation-information-gain" title="Permalink to this equation">#</a></span>\[IG(\mathcal{L},{\cal L}_0, {\cal L}_1) = \mathrm{Impurity}({\cal L}) - \left\{ \frac{\lvert {\cal L}_0\rvert}{\lvert{\cal L}\rvert} \mathrm{Impurity}({\cal L}_0) + \frac{\lvert{\cal L}_1\rvert}{\lvert{\cal L}\rvert} \mathrm{Impurity}({\cal L}_{1}) \right\} \]</div>
 <p>The function <span class="math notranslate nohighlight">\(\mathrm{Impurity}\)</span> measures the uncertainty of the prediction of the class with the highest empirical disctribution <span class="math notranslate nohighlight">\(p_{\cal L}(y)\)</span>. If the empirical distribution is very high for one class and very low for the remaining classes, then the impurity is low. We consider the following definitions of impurity:</p>
 <div class="proof definition admonition" id="definition-4">
-<p class="admonition-title"><span class="caption-number">Definition 21 </span> (Impurity measures)</p>
+<p class="admonition-title"><span class="caption-number">Definition 23 </span> (Impurity measures)</p>
 <section class="definition-content" id="proof-content">
 <p>We define the following three impurity measures that can be used to compute the information gain:</p>
 <div class="amsmath math notranslate nohighlight">

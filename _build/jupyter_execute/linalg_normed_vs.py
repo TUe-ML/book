@@ -12,7 +12,7 @@ np.set_printoptions(precision=1)
 # ## Normed Vector Spaces
 # ````{prf:definition}
 # A normed vector space is a vector space $\mathcal{V}$ with a
-# function $\lVert\cdot\rVert:\mathcal{V}\rightarrow \mathbb{R}_+$, called \alert{norm}, satisfying the following properties for all $\vvec{v},\vvec{w}\in\mathcal{V}$ and $\alpha\in\mathbb{R}$:
+# function $\lVert\cdot\rVert:\mathcal{V}\rightarrow \mathbb{R}_+$, called **norm**, satisfying the following properties for all $\vvec{v},\vvec{w}\in\mathcal{V}$ and $\alpha\in\mathbb{R}$:
 # \begin{align*}
 #     \lVert \vvec{v}+\vvec{w}\rVert &\leq\lVert\vvec{v}\rVert +\lVert\vvec{w}\rVert &\text{(triangle inequality)}\\
 #     \lVert \alpha\vvec{v}\rVert &=\lvert\alpha\rvert\lVert\vvec{v}\rVert &\text{(homogeneity)}\\
@@ -21,7 +21,7 @@ np.set_printoptions(precision=1)
 # ````
 # The norm measures the length of vectors.
 # ````{prf:example}
-# The $d$-dimensional Euclidean space is the space of $\mathbb{R}^d$ with the \alert{Euclidean norm}:
+# The $d$-dimensional Euclidean space is the space of $\mathbb{R}^d$ with the **Euclidean norm**:
 # $$\lVert \vvec{v}\lVert_2 = \lVert \vvec{v}\rVert =\sqrt{\sum_{i=1}^d v_i^2}$$
 # ```{tikz}
 # \begin{tikzpicture}
@@ -47,10 +47,10 @@ np.set_printoptions(precision=1)
 # $$\lVert \vvec{v}\rVert^2 = v_1^2 + v_2^2$$
 # ````
 # 
-# The inner product is defined by the \alert{lengths} of the vectors and the cosine of the \alert{angle} between them.
+# The Euclidean norm introduces a geometric interpretation of the inner product of two vectors. The inner product is defined by the lengths of the vectors and the cosine of the angle between them.
 # \begin{align*}
-#     \vvec{v}^\top\vvec{w} &= \sum_{i=1}^dv_iw_i\\
-#     &= \cos\sphericalangle(\vvec{v},\vvec{w})\lVert\vvec{v}\rVert\lVert\vvec{w}\rVert
+#     \vvec{v}^\top\vvec{w} = \sum_{i=1}^dv_iw_i
+#     = \cos\sphericalangle(\vvec{v},\vvec{w})\lVert\vvec{v}\rVert\lVert\vvec{w}\rVert
 # \end{align*}
 # ```{tikz}
 # \pgfplotsset{compat=newest}
@@ -68,6 +68,7 @@ np.set_printoptions(precision=1)
 #  \node at (0.5,0.5) {$\phi$};
 # \end{tikzpicture}
 # ```
+# In Machine Learning, the inner product is often used as a similarity measure between two points. The idea is that two points facing in the same direction have a cosine close to one, and hence a larger inner product than two points looking into distint directions.
 # If two vectors are **orthogonal**, then $\cos\sphericalangle(\vvec{v},\vvec{w})=0$ and the inner product is zero
 # \begin{align*}
 # \vvec{v}^\top\vvec{w}
@@ -92,13 +93,10 @@ np.set_printoptions(precision=1)
 # \end{tikzpicture}
 # ```
 # (lina_projection)=
-# The inner product of a vector $\vvec{v}$ and a normalized vector $\frac{\vvec{w}}{\lVert\vvec{w}\rVert}$ computes the length of the **projection** $\vvec{p_v}$ of $\vvec{v}$ onto $\vvec{w}$:
+# ````{prf:theorem}
+# The inner product of a vector $\vvec{v}$ and a normalized vector $\frac{\vvec{w}}{\lVert\vvec{w}\rVert}$ computes the length of the **projection** $\vvec{p_v}$ of $\vvec{v}$ onto $\vvec{w}$. Using the notation of vectors from the image below, we have
 # \begin{align*}
-# \cos(\phi)&= \frac{\lVert\vvec{p}_v\rVert}{\lVert \vvec{v}\rVert}\\ 
-# \Leftrightarrow
-# \lVert \vvec{p}_v\rVert &=\cos(\phi)\lVert \vvec{v}\rVert =\vvec{v}^\top \frac{\vvec{w}}{\lVert \vvec{w}\rVert}\\
-# \Rightarrow \vvec{p}_v &=
-# \frac{\vvec{w}\vvec{w}^\top}{\lVert \vvec{w}\rVert^2} \vvec{v}
+# \lVert\vvec{p}_v\rVert = \vvec{v}^\top \frac{\vvec{w}}{\lVert\vvec{w}\rVert}
 # \end{align*}
 # ```{tikz}
 # \begin{tikzpicture}[dot/.style={circle,inner sep=1pt,fill,label={#1},name=#1},
@@ -119,6 +117,14 @@ np.set_printoptions(precision=1)
 # \pic [draw, -,angle radius=12mm, angle eccentricity=.8] {angle = Y--O--X};
 #  \node at (0.5,0.5) {$\phi$};
 # \end{tikzpicture}
+# ```
+# ````
+# ```{prf:proof}
+# From the definition of the cosine in a triangle follows that
+# \begin{align*}
+# \cos(\phi)= \frac{\lVert\vvec{p}_v\rVert}{\lVert \vvec{v}\rVert} 
+# &\Leftrightarrow \lVert \vvec{p}_v\rVert =\cos(\phi)\lVert \vvec{v}\rVert =\vvec{v}^\top \frac{\vvec{w}}{\lVert \vvec{w}\rVert} 
+# \end{align*}
 # ```
 # ````{prf:example} Manhattan norm
 # The Manhattan norm is defined as:
@@ -179,8 +185,8 @@ np.set_printoptions(precision=1)
 # 
 # Yes, matrix norms are the same but different.
 # 
-# ````{prf:example} Matrix norms
-# We can extend the $L_p$ vector normes to the \alert{element-wise $L_p$ matrix norms}:
+# ````{prf:definition} Matrix norms
+# We can extend the $L_p$ vector normes to the **element-wise $L_p$ matrix norms**:
 # \begin{align*}
 #     \lVert A\lVert_p & =\left(\sum_{i=1}^n\sum_{j=1}^m \lvert A_{ji}\rvert^p\right)^{1/p}
 # \end{align*}
@@ -189,21 +195,6 @@ np.set_printoptions(precision=1)
 #     \lVert A\rVert_{op} &=\max_{\lVert \vvec{v}\rVert=1} \lVert Av\rVert 
 # \end{align*}
 # ````
-# A matrix $A$ with orthogonal columns satisfies 
-# \begin{align*}
-#     A^\top A = \diag(\lVert A_{\cdot 1}\rVert^2, \ldots, \lVert A_{\cdot d}\rVert^2)
-# \end{align*}
-# A matrix $A$ with orthonormal columns satisfies 
-# \begin{align*}
-#     A^\top A = \diag(1, \ldots, 1)
-# \end{align*}
-# A square matrix $A\in \mathbb{R}^{n\times n}$ is called **orthogonal** if
-# $$A^\top A = AA^\top=I$$
-# A vector norm $\lVert\cdot \rVert$ is called **orthogonal invariant** if for all $\vvec{v}\in\mathbb{R}^n$ and orthogonal matrices $X\in\mathbb{R}^{n\times n}$ we have
-# $$\lVert X\vvec{v}\rVert = \lVert \vvec{v}\rVert$$
-# A matrix norm $\lVert\cdot \rVert$ is called **orthogonal invariant** if for all $V\in\mathbb{R}^{n\times d}$ and orthogonal matrices $X\in\mathbb{R}^{n\times n}$ we have
-# $$\lVert XV\rVert = \lVert V\rVert$$
-
 # ````{prf:definition} Trace
 # The **trace** sums the elements on the diagonal of a matrix.
 # Let $A\in\mathbb{R}^{n\times n}$, then
@@ -224,12 +215,29 @@ np.set_printoptions(precision=1)
 #     \lVert X-Y\rVert^2 &= \tr( (X-Y)^\top(X-Y)) = \lVert X\rVert^2 -2\langle X, Y\rangle +\lVert Y\rVert^2
 # \end{align*}
 # 
-# ````{prf:theorem}SVD
+# ### Orthogonal Matrices
+# A matrix $A$ with orthogonal columns satisfies 
+# \begin{align*}
+#     A^\top A = \diag(\lVert A_{\cdot 1}\rVert^2, \ldots, \lVert A_{\cdot d}\rVert^2)
+# \end{align*}
+# A matrix $A$ with orthonormal columns satisfies 
+# \begin{align*}
+#     A^\top A = \diag(1, \ldots, 1)
+# \end{align*}
+# A square matrix $A\in \mathbb{R}^{n\times n}$ is called **orthogonal** if
+# $$A^\top A = AA^\top=I$$
+# A vector norm $\lVert\cdot \rVert$ is called **orthogonal invariant** if for all $\vvec{v}\in\mathbb{R}^n$ and orthogonal matrices $X\in\mathbb{R}^{n\times n}$ we have
+# $$\lVert X\vvec{v}\rVert = \lVert \vvec{v}\rVert$$
+# A matrix norm $\lVert\cdot \rVert$ is called **orthogonal invariant** if for all $V\in\mathbb{R}^{n\times d}$ and orthogonal matrices $X\in\mathbb{R}^{n\times n}$ we have
+# $$\lVert XV\rVert = \lVert V\rVert$$
+
+# 
+# ```{prf:theorem} SVD
 # For every matrix $X\in\mathbb{R}^{n\times p}$ there exist orthogonal matrices $U\in\mathbb{R}^{n\times n}, V\in\mathbb{R}^{p\times p}$ and $\Sigma  \in\mathbb{R}^{n\times p}$ such that
 # $$X= U\Sigma V^\top, \text{ where}$$
 # * $U^\top U= UU^\top=I_n, V^\top V=VV^\top= I_p$
 # * $\Sigma$ is a rectangular diagonal matrix, $\Sigma_{11}\geq\ldots\geq \Sigma_{kk}$ where $k=\min\{n,p\}$
-# ````
+# ```
 # The column vectors $U_{\cdot s}$ and $V_{\cdot s}$ are called **left** and **right singular vectors** and the values $\sigma_i=\Sigma_{ii}$ are called **singular values** $(1\leq i\leq l)$. 
 
 # In[2]:
@@ -283,6 +291,60 @@ np.diag(σs)
 # AA^{-1} &= U\Sigma V^\top V\Sigma^{-1} U^\top = U\Sigma \Sigma^{-1} U^\top = UU^\top = I\\
 # A^{-1}A &= V \Sigma^{-1} U^\top U\Sigma V^\top = V \Sigma^{-1} \Sigma V^\top = V V^\top = I
 # \end{align*}
+
+# In[7]:
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create a grid of vectors (2D plane)
+x = np.linspace(-2, 2, 20)
+y = np.linspace(-2, 2, 20)
+X, Y = np.meshgrid(x, y)
+vectors = np.stack([X.ravel(), Y.ravel()], axis=0)
+
+# Define a matrix A (non-symmetric, non-orthogonal)
+A = np.array([[2, 1],
+              [1, 3]])
+
+# Compute SVD: A = U Σ V^T
+U, S, VT = np.linalg.svd(A)
+Sigma = np.diag(S)
+
+# Decompose transformations
+V = VT.T
+rotation1 = V
+scaling = Sigma
+rotation2 = U
+
+# Apply transformations step-by-step
+V_vectors = rotation1 @ vectors
+S_vectors = scaling @ V_vectors
+U_vectors = rotation2 @ S_vectors  # Final result: A @ vectors
+
+# Plotting setup
+fig, axs = plt.subplots(1, 4, figsize=(16, 4))
+
+def plot_vectors(ax, vecs, title):
+    ax.quiver(np.zeros_like(vecs[0]), np.zeros_like(vecs[1]),
+              vecs[0], vecs[1], angles='xy', scale_units='xy', scale=1,
+              color='blue', alpha=0.6)
+    ax.set_xlim(-5, 5)
+    ax.set_ylim(-5, 5)
+    ax.set_aspect('equal')
+    ax.set_title(title)
+    ax.grid(True)
+
+# Plot each step
+plot_vectors(axs[0], vectors, "Original Vectors $\mathbf{x}$")
+plot_vectors(axs[1], V_vectors, "Rotation 1: $V^T\mathbf{x}$")
+plot_vectors(axs[2], S_vectors, "Scaling: $\Sigma V^T\mathbf{x}$")
+plot_vectors(axs[3], U_vectors, "Rotation 2: $U\Sigma V^T\mathbf{x}=A \mathbf{x}$")
+
+plt.tight_layout()
+plt.show()
+
 
 # In[ ]:
 

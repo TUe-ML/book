@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -666,7 +676,7 @@ Be aware that the notation above is not used by all authors. Some authors define
 <p>Of course we could now consider more cases, like a function mapping a matrix to a matrix. Unfortunately, from this point on, it gets really complicated. There are multiple ways to define such derivatives - as tensors or as specifically structured matrices. We’re going to keep it comparatively simple and circumvent these cases in this course.<br />
 We can now concatenate these derivatives according to linearity and the chain rule for matrix derivatives.</p>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 5 </span> (The Jacobian is linear)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 8 </span> (The Jacobian is linear)</p>
 <section class="theorem-content" id="proof-content">
 <p>For any function whose Jacobian is defined as a matrix of partial derivatives <span class="math notranslate nohighlight">\(\frac{\partial \vvec{f}(\vvec{x})}{\partial \vvec{x}} = \begin{pmatrix}\frac{\partial f_j(\vvec{x})}{\partial x_i}\end{pmatrix}_{i,j}\)</span> for some indexes <span class="math notranslate nohighlight">\(i,j\)</span>, the Jacobian is linear:
 <div class="math notranslate nohighlight">
@@ -685,7 +695,7 @@ We can now concatenate these derivatives according to linearity and the chain ru
 \end{align*}\]</div>
 </div>
 <div class="proof theorem admonition" id="theorem-1">
-<p class="admonition-title"><span class="caption-number">Theorem 6 </span> (Chain Rule for the Jacobian)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 9 </span> (Chain Rule for the Jacobian)</p>
 <section class="theorem-content" id="proof-content">
 <p>For any continuously differentiable functions <span class="math notranslate nohighlight">\(\vvec{f}:\mathbb{R}^c\rightarrow \mathbb{R}^p\)</span> and <span class="math notranslate nohighlight">\(\vvec{g}:\mathbb{R}^d\rightarrow \mathbb{R}^c\)</span>, the Jacobian of the composition <span class="math notranslate nohighlight">\(\vvec{f}\circ\vvec{g}\)</span> is given by the chain rule:</p>
 <div class="amsmath math notranslate nohighlight">

@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -684,8 +694,8 @@ According to the definition of <span class="math notranslate nohighlight">\(f\)<
 \[f_i(\alpha\vvec{x}+(1-\alpha)\vvec{y})\leq \alpha f_i(\vvec{x})+(1-\alpha)f_i(\vvec{y}).\]</div>
 
 Now we multiply the inequality above with the nonnegative value <span class="math notranslate nohighlight">\(\lambda_i\)</span>. Note that here it becomes obvious why the coefficients have to be nonnegative. Multiplying an inequality with a negative value changes the direction of the inequality, that is a <span class="math notranslate nohighlight">\(\leq\)</span> becomes a <span class="math notranslate nohighlight">\(\geq\)</span> and vice versa. However, here we have only nonnegative values <span class="math notranslate nohighlight">\(\lambda_i\)</span> and thus, multiplying with the coefficient keeps the inequality intact:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7a37943d-14a4-498b-85df-bb8766833f88">
-<span class="eqno">(4)<a class="headerlink" href="#equation-7a37943d-14a4-498b-85df-bb8766833f88" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3b407aa1-58cf-437c-ab6f-a86f2d55f28d">
+<span class="eqno">(5)<a class="headerlink" href="#equation-3b407aa1-58cf-437c-ab6f-a86f2d55f28d" title="Permalink to this equation">#</a></span>\[\begin{align}
     \lambda_if_i(\alpha\vvec{x}+(1-\alpha)\vvec{y})&amp;\leq \lambda_i(\alpha f_i(\vvec{x})+(1-\alpha)f_i(\vvec{y}))\nonumber\\ 
     &amp;= \alpha \lambda_i f_i(\vvec{x})+(1-\alpha)\lambda_i f_i(\vvec{y}).\label{eq:ficonv}
 \end{align}\]</div>
@@ -898,14 +908,14 @@ Now we can apply the linearity of the partial derivative of <span class="math no
 <li><p>What is the gradient of the function <span class="math notranslate nohighlight">\(f:\mathbb{R}^{d\times r}\rightarrow \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(X)=\lVert D - YX^\top\rVert^2\)</span>, where <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}, Y\in\mathbb{R}^{n\times r}\)</span>?</p>
 <div class="toggle docutils container">
 <p>Let’s have first a look at the dimensionality of the resulting gradient. Since the function <span class="math notranslate nohighlight">\(f\)</span> is mapping to the real values, the dimensionality of the gradient is the same as the one of the input space: <span class="math notranslate nohighlight">\((n\times r)\)</span>. Since we do not know any gradients subject to matrices yet, we divide the problem and compute the gradient row-wise. Every row of <span class="math notranslate nohighlight">\(X\)</span> is mapped to the corresponding row of the gradient:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fbc484e8-bc65-46c8-ac3e-69801e0964dd">
-<span class="eqno">(5)<a class="headerlink" href="#equation-fbc484e8-bc65-46c8-ac3e-69801e0964dd" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a1450f5b-98b1-4ccb-830c-0fcc11865d33">
+<span class="eqno">(6)<a class="headerlink" href="#equation-a1450f5b-98b1-4ccb-830c-0fcc11865d33" title="Permalink to this equation">#</a></span>\[\begin{align}
     \nabla_Xf(X) = \begin{pmatrix}
 - &amp;\nabla_{X_{1\cdot }}f(X) &amp;-\\&amp;\vdots&amp;\\-&amp;\nabla_{X_{d\cdot }}f(X)&amp;-\end{pmatrix}.\label{eq:gradX}
 \end{align}\]</div>
 <p>The gradient with regard to  row <span class="math notranslate nohighlight">\(X_{ k\cdot}\)</span> of the function <span class="math notranslate nohighlight">\(f\)</span> is equal to</p>
-<div class="amsmath math notranslate nohighlight" id="equation-104fe134-39fd-44f4-a16a-943555ebc1ea">
-<span class="eqno">(6)<a class="headerlink" href="#equation-104fe134-39fd-44f4-a16a-943555ebc1ea" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-2756562c-344d-41e5-a806-866e663f22db">
+<span class="eqno">(7)<a class="headerlink" href="#equation-2756562c-344d-41e5-a806-866e663f22db" title="Permalink to this equation">#</a></span>\[\begin{align}
     \nabla_{X_{k \cdot }f(X)} &amp;= \nabla_{X_{k \cdot }}\lVert D-YX^\top\rVert^2\nonumber\\
     &amp;= \nabla_{X_{k\cdot }}\sum_{i=1}^d\lVert D_{\cdot i}-YX_{i\cdot }^\top\rVert^2\label{eq:normdecomp}\\ 
     &amp;= \nabla_{X_{k\cdot }}\lVert D_{\cdot k}-YX_{k\cdot }^\top\rVert^2, \label{eq:lingrad}

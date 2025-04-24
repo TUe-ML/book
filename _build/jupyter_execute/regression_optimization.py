@@ -118,56 +118,12 @@ np.set_printoptions(precision=2,suppress=True)
 # `````
 # 
 # ## Convexity of the RSS
-# The RSS is a convex optimization objective. To see that, we show first that the squared $L_2$-norm is convex. 
-# ````{prf:lemma}
-# The squared $L_2$-norm $f:\mathbb{R}^d\rightarrow \mathbb{R}$, $f(\vvec{x})=\lVert\vvec{x}\rVert^2$ is convex. 
-# ````
-# ````{toggle}
-# ```{prf:proof}
-# Let $\vvec{x}_1,\vvec{x}_2\in\mathbb{R}^d$ and $\alpha\in[0,1]$. Then we have to show  that
-# :::{math}
-# :label: eq:convex
-# \begin{align}
-#     \lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 \leq  \alpha\lVert\vvec{x}_1\rVert^2 + (1-\alpha)\lVert\vvec{x}_2\rVert^2
-# \end{align}
-# :::
-# We apply the binomial formula for the squared $L_2$-norm, which derives directly from the definition of the squared $L_2$-norm by an inner product (see linear algebra lecture). Then we have:
-# :::{math}
-# :label: eq:term
-# \begin{align}
-#     \lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 &=
-#     \lVert\alpha\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +\lVert(1-\alpha)\vvec{x}_2\rVert^2\nonumber\\
-#     &=
-#     \lvert\alpha\rvert^2\lVert\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +\lvert 1-\alpha\rvert^2\lVert\vvec{x}_2\rVert^2 &\text{(homogenity of the norm)}\nonumber\\
-#     &=
-#     \alpha^2\lVert\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +( 1-\alpha)^2\lVert\vvec{x}_2\rVert^2,
-# \end{align}
-# :::
-# where the last equation derives from the fact that the squared absolute value of a real value is equal to the  squared real value.
-# 
-# What is standing above, is not yet what we want, and it is difficult to see which step has to be taken next to derive the Inequality {eq}`eq:convex`. Hence, we apply a trick. Instead of showing that  Inequality {eq}`eq:convex` holds as it stands, we show that an equivalent inequality holds:
-# \begin{align*}
-#     \lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 - \alpha\lVert\vvec{x}_1\rVert^2 - (1-\alpha)\lVert\vvec{x}_2\rVert^2\leq 0 
-# \end{align*}
-# We substitute now the result of Eq. {eq}`eq:term` into the term on the left of the inequality above:
-# \begin{align*}
-#     &\lVert\alpha\vvec{x}_1 +(1-\alpha)\vvec{x}_2\rVert^2 - \alpha\lVert\vvec{x}_1\rVert^2 - (1-\alpha)\lVert\vvec{x}_2\rVert^2\\ 
-#      &\quad=
-#     \alpha^2\lVert\vvec{x}_1\rVert^2 +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 +( 1-\alpha)^2\lVert\vvec{x}_2\rVert^2- \alpha\lVert\vvec{x}_1\rVert^2 - (1-\alpha)\lVert\vvec{x}_2\rVert^2
-#     \\
-#     &\quad= -\alpha(1-\alpha)\lVert\vvec{x}_1\rVert^2  +2\alpha(1-\alpha)\vvec{x}_1\vvec{x}_2 -( 1-\alpha)(1-1+\alpha)\lVert\vvec{x}_2\rVert^2\\
-#     &\quad= - \alpha(1-\alpha) \lVert\vvec{x}_1-\vvec{x}_2\rVert^2&\text{(binomial formula)}\\
-#     &\quad\leq 0
-# \end{align*}
-# This concludes what we wanted to show.
-# ```
-# ````
-# We can now show that the RSS is convex as it is a composition of an affine function and a convex function, which is again convex.
+# The RSS is a convex optimization objective as it is a composition of an affine function and a convex function (the squared $L_2$-norm), which is again convex.
 # ````{prf:theorem}
 # The function $RSS(\bm\beta)=\lVert \vvec{y}-X\bm{\beta}\rVert^2$ is convex.
 # ````
 # ````{prf:proof}
-# We show that the squared $L_2$-norm $\lVert\cdot\rVert^2$ is a convex function. 
+# The squared $L_2$-norm $\lVert\cdot\rVert^2$ is a convex function. 
 # 
 # The composition of the affine function $g(\bm{\beta})=\vvec{y}-X\bm{\beta}$ with the convex function $\Vert\cdot\rVert^2$, given by the $RSS(\bm{\beta})=\lVert g(\bm{\beta})\rVert^2$ is then also convex.
 # ````

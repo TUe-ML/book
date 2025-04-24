@@ -31,12 +31,14 @@ chapters:
 - file: classification
   sections :
   - file: classification_problem
-  - file: classification_evaluation
   - file: classification_knn
   - file: classification_naive_bayes
   - file: classification_decision_trees
   - file: classification_random_forests
   - file: classification_svms
+  - file: classification_kernel_svm
+  - file: classification_evaluation
+  - file: classification_exercises
 - file: neuralnets
   sections:
   - file: neuralnets_intro

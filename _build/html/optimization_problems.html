@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -679,7 +689,7 @@ title="Print to PDF"
 <h2>Unconstrained Optimization Problems<a class="headerlink" href="#unconstrained-optimization-problems" title="Permalink to this headline">#</a></h2>
 <p>We define an optimization problem, also called <em>the objective</em> as follows.</p>
 <div class="proof definition admonition" id="objective">
-<p class="admonition-title"><span class="caption-number">Definition 4 </span> (unconstrained optimization objective)</p>
+<p class="admonition-title"><span class="caption-number">Definition 5 </span> (unconstrained optimization objective)</p>
 <section class="definition-content" id="proof-content">
 <p>Given an <strong>objective function</strong> <span class="math notranslate nohighlight">\(f:\mathbb{R}^n\rightarrow \mathbb{R}\)</span>, the <strong>objective of an unconstrained optimization problem</strong> is:
 <div class="math notranslate nohighlight">
@@ -695,7 +705,7 @@ We say that:</p>
 </section>
 </div><p>A minimizer can be <em>local</em> or <em>global</em>. Following our analogy, the global minimizer is the lowest valley and a local minimizer can be any valley.</p>
 <div class="proof definition admonition" id="minimizers">
-<p class="admonition-title"><span class="caption-number">Definition 5 </span> (minimizers)</p>
+<p class="admonition-title"><span class="caption-number">Definition 6 </span> (minimizers)</p>
 <section class="definition-content" id="proof-content">
 <p>Given an unconstrained objective as defined above. A <strong>global minimizer</strong> is a vector <span class="math notranslate nohighlight">\(\vvec{x}^*\)</span> satisfying
 <div class="math notranslate nohighlight">
@@ -714,7 +724,7 @@ where <span class="math notranslate nohighlight">\(\mathcal{N}_\epsilon(\vvec{x}
 <h3>FONC &amp; SONC<a class="headerlink" href="#fonc-sonc" title="Permalink to this headline">#</a></h3>
 <p>You probably know from your highschool math classes that every local minimizer <span class="math notranslate nohighlight">\(x_0\)</span> of a function <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R}\)</span> is a stationary point: <span class="math notranslate nohighlight">\(\frac{d}{dx}f(x_0)=0\)</span>. This is known as the first order neccessary condition. This property is easily understood, considering that the derivative indicates the slope of a function at a specified point. If we have a real-valued minimizer, then the slope is zero at that minimizer. If the slope would be positive, then we can go to the left to decrease the function value further, and if the slope is negative, we can go to the right. By means of this property, we can identify all the candidates that could be minimizers. Maximizers and saddle points are stationary points too. With the second order neccessary condition, we can filter further the minimizers from the pool of candidates. The second order neccessary condition states that at a minimizer the second derivative is nonnegative <span class="math notranslate nohighlight">\(\frac{d^2}{dx^2}f(x_0)\geq 0\)</span>. The second derivative is the slope of the slope. If we have a minimizer, then the slope increases: first we go down, and then we go up. Hence, we need that the slope of the slope does at least not decrease.</p>
 <div class="proof example admonition" id="example-2">
-<p class="admonition-title"><span class="caption-number">Example 8 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 6 </span></p>
 <section class="example-content" id="proof-content">
 <p>Let’s have a look at a seemingly simple example. The function <span class="math notranslate nohighlight">\(f(x) = \frac14x^4 + \frac13x^3 -x^2\)</span> is plotted below and we see that there are two minimizers <span class="math notranslate nohighlight">\(x_1=-2\)</span> and <span class="math notranslate nohighlight">\(x_2=1\)</span>. The question is just if those are all minimizers, or if there is another one beyond the scope of what is plotted here.</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-b2427c92aa6d74085e15433b634dd01ad375d2b1.svg" alt="Figure made with TikZ" /></p>
@@ -749,7 +759,7 @@ Given the plot, we already know which of these are minimizers, but to conclude o
 \end{align*}\]</div>
 <p>With the gradient, we get a first order neccessary condition (FONC) for functions mapping from a vector space <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.</p>
 <div class="proof theorem admonition" id="theorem-3">
-<p class="admonition-title"><span class="caption-number">Theorem 1 </span> (FONC)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 4 </span> (FONC)</p>
 <section class="theorem-content" id="proof-content">
 <p>If <span class="math notranslate nohighlight">\(\vvec{x}\)</span> is a local  minimizer of <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(f\)</span> is continuously
 differentiable in an open neighborhood of <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, then
@@ -759,7 +769,7 @@ differentiable in an open neighborhood of <span class="math notranslate nohighli
 </section>
 </div><p>Likewise, a vector <span class="math notranslate nohighlight">\(\vvec{x}\)</span> is called <em>stationary point</em> if <span class="math notranslate nohighlight">\(\nabla f(\vvec{x})=0\)</span>. The second order neccessary condition (SONC) uses the generation of the second order derivative to vector spaces, called the <em>Hessian</em>. We state this condition here for reasons of completeness, but we will not need this property for the machine learning models that we discuss in this course.</p>
 <div class="proof theorem admonition" id="theorem-4">
-<p class="admonition-title"><span class="caption-number">Theorem 2 </span> (SONC)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 5 </span> (SONC)</p>
 <section class="theorem-content" id="proof-content">
 <p>If <span class="math notranslate nohighlight">\(\vvec{x}\)</span> is a local  minimizer of <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(\nabla^2f\)</span> is continuous in an open
 neighborhood of <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, then
@@ -772,7 +782,7 @@ neighborhood of <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, 
 \[\vvec{x}^\top A \vvec{x}\geq 0 \text{ for all } \vvec{x}\in\mathbb{R}^d\]</div>
 </p>
 <div class="proof example admonition" id="expl_fonc">
-<p class="admonition-title"><span class="caption-number">Example 9 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 7 </span></p>
 <section class="example-content" id="proof-content">
 <figure class="align-left" id="rosenbrock">
 <a class="reference internal image-reference" href="_images/rosenbrock.png"><img alt="_images/rosenbrock.png" src="_images/rosenbrock.png" style="height: 200px;" /></a>
@@ -838,7 +848,7 @@ We conclude that the Hessian at our stationary point is positive semi-definite. 
 <section id="constrained-optimization-problems">
 <h2>Constrained Optimization Problems<a class="headerlink" href="#constrained-optimization-problems" title="Permalink to this headline">#</a></h2>
 <div class="proof definition admonition" id="constr_objective">
-<p class="admonition-title"><span class="caption-number">Definition 6 </span> (Constrained Objective)</p>
+<p class="admonition-title"><span class="caption-number">Definition 7 </span> (Constrained Objective)</p>
 <section class="definition-content" id="proof-content">
 <p>Given an objective function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span> and constraint functions <span class="math notranslate nohighlight">\(c_i,g_k:\mathbb{R}^d\rightarrow \mathbb{R}\)</span>, then  the <strong>objective</strong> of an constrained optimization problem is</p>
 <div class="amsmath math notranslate nohighlight">
@@ -859,9 +869,9 @@ We conclude that the Hessian at our stationary point is positive semi-definite. 
 </ol>
 <p>Boundary minimizers can be difficult to identify because traditional methods like the First-Order Necessary Condition (FONC) do not directly apply. However, by using the Lagrangian approach, we can transform a constrained objective into an (almost) unconstrained one, making it possible to find solutions at the boundary.</p>
 <div class="proof definition admonition" id="lagrangian">
-<p class="admonition-title"><span class="caption-number">Definition 7 </span> (Lagrangian)</p>
+<p class="admonition-title"><span class="caption-number">Definition 8 </span> (Lagrangian)</p>
 <section class="definition-content" id="proof-content">
-<p>Given a constrained optimization objective as in <a class="reference internal" href="#constr_objective">Definition 6</a>, then  the the <strong>Lagrangian function</strong> is defined as
+<p>Given a constrained optimization objective as in <a class="reference internal" href="#constr_objective">Definition 7</a>, then  the the <strong>Lagrangian function</strong> is defined as
 <div class="math notranslate nohighlight">
 \[\mathcal{L}(\vvec{x},\bm\lambda,\bm\mu) = f(\vvec{x}) - \sum_{i=1}^m\bm\lambda_i c_i(\vvec{x}) - \sum_{k=1}^l\bm\mu_k g_k(\vvec{x}).\]</div>
 
@@ -870,11 +880,11 @@ The parameters <span class="math notranslate nohighlight">\(\lambda_i\in\mathbb{
 </div><p>The Lagrangian introduces an adversarial approach to handling constraints. We remove the constraints on <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, allowing us to minimize over all <span class="math notranslate nohighlight">\(\vvec{x}\in\mathbb{R}^d\)</span>, while simultaneously maximizing over the Lagrange multipliers <span class="math notranslate nohighlight">\(\bm\lambda\in\mathbb{R}^m\)</span> and <span class="math notranslate nohighlight">\(\bm\mu\geq\vvec{0}\)</span>.</p>
 <p>Imagine a scenario where you are trying to minimize the Lagrangian by adjusting <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, while an “adversary” seeks to maximize it by adjusting <span class="math notranslate nohighlight">\(\bm\lambda\)</span> and <span class="math notranslate nohighlight">\(\bm\mu\)</span>. If <span class="math notranslate nohighlight">\(\vvec{x}\)</span> lies outside the feasible set, the adversary can exploit this by driving up the Lagrangian value. For instance, if a constraint <span class="math notranslate nohighlight">\(c_i(\vvec{x})=0.1\neq 0\)</span> is unmet, the adversary could set <span class="math notranslate nohighlight">\(\lambda_i=-10000\)</span>, raising the Lagrangian by <span class="math notranslate nohighlight">\(-(-10000)\cdot 0.1=1000\)</span>.</p>
 <p>To prevent these large increases, we need to ensure <span class="math notranslate nohighlight">\(\vvec{x}\)</span> is within the feasible set, effectively limiting the adversary’s ability to inflate the Lagrangian.</p>
-<p>The Lagrangian can be used to transform the <em>primal problem</em>, which is the original unconstrained objective from <a class="reference internal" href="#constr_objective">Definition 6</a>, to the dual problem.</p>
+<p>The Lagrangian can be used to transform the <em>primal problem</em>, which is the original unconstrained objective from <a class="reference internal" href="#constr_objective">Definition 7</a>, to the dual problem.</p>
 <div class="proof definition admonition" id="dual_problem">
-<p class="admonition-title"><span class="caption-number">Definition 8 </span> (Dual Problem)</p>
+<p class="admonition-title"><span class="caption-number">Definition 9 </span> (Dual Problem)</p>
 <section class="definition-content" id="proof-content">
-<p>Given a primal optimization objective as defined in <a class="reference internal" href="#constr_objective">Definition 6</a>, we define the <strong>dual objective function</strong> <span class="math notranslate nohighlight">\(\mathcal{L}_{dual}\)</span>, returning the minimum (infimum to be precise) of the Lagrangian, given any <span class="math notranslate nohighlight">\(\bm\lambda,\bm\mu\geq\vvec{0}\)</span>:
+<p>Given a primal optimization objective as defined in <a class="reference internal" href="#constr_objective">Definition 7</a>, we define the <strong>dual objective function</strong> <span class="math notranslate nohighlight">\(\mathcal{L}_{dual}\)</span>, returning the minimum (infimum to be precise) of the Lagrangian, given any <span class="math notranslate nohighlight">\(\bm\lambda,\bm\mu\geq\vvec{0}\)</span>:
 <div class="math notranslate nohighlight">
 \[\inf_{\vvec{x}\in\mathbb{R}^d}\mathcal{L}(\vvec{x},\bm\lambda,\bm\mu) = \mathcal{L}_{dual}(\bm\lambda,\bm\mu).\]</div>
  the <strong>dual optimization objective</strong> is defined as</p>
@@ -890,7 +900,7 @@ The parameters <span class="math notranslate nohighlight">\(\lambda_i\in\mathbb{
 </div>
 <p>The solution to the dual objective are saddle points: points <span class="math notranslate nohighlight">\((\vvec{x},\bm\lambda,\bm\mu)\)</span> that minimize the Lagrangian subject to <span class="math notranslate nohighlight">\(\vvec{x}\)</span> and maximize it subject to <span class="math notranslate nohighlight">\((\bm\lambda,\bm\mu)\)</span>. This allows us to formulate necessary conditions (similar to FONC), called the Karush-Kuhn-Tukker (KKT) conditions that have to be met for a solution to the dual problem.</p>
 <div class="proof theorem admonition" id="theorem-9">
-<p class="admonition-title"><span class="caption-number">Theorem 3 </span> (KKT conditions)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 6 </span> (KKT conditions)</p>
 <section class="theorem-content" id="proof-content">
 <p>Suppose that the objective function <span class="math notranslate nohighlight">\(\displaystyle f\colon \mathbb {R} ^{n}\rightarrow \mathbb {R}\)</span> and the constraint functions <span class="math notranslate nohighlight">\(\displaystyle c_{i}\colon \mathbb{R} ^{n}\rightarrow \mathbb {R} \)</span> and <span class="math notranslate nohighlight">\(\displaystyle g_{k}\colon \mathbb {R} ^{n}\rightarrow \mathbb{R}\)</span> are continuously differentiable. If <span class="math notranslate nohighlight">\( \vvec{x}^*\)</span> is a local minimum, and the constraint functions <span class="math notranslate nohighlight">\(c_{i},g_k\)</span> are affine functions, then there exist multipliers <span class="math notranslate nohighlight">\(\bm\lambda^*\)</span> and <span class="math notranslate nohighlight">\(\bm\mu^*\)</span> such that the following conditions hold:</p>
 <ol>

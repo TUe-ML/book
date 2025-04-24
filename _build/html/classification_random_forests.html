@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -695,11 +705,11 @@ title="Print to PDF"
   <section id="random-forests">
 <h1>Random Forests<a class="headerlink" href="#random-forests" title="Permalink to this headline">#</a></h1>
 <p>The performance of a decision tree depends on its structure, that is determined by a greedy method, for example with the CART algorithm. The greedy selection of the best split tends to overfit on the training data, as greedy methods quickly get lost in details since they operate only on local views of the data. We can overcome the tendency to overfit by choosing an early stopping criterion, but we can do even better by combining various overfitting trees into an ensemble – called a random forest. The disadvantage is that we lose the interpretability of a single tree, but on the other hand, we obtain one of the strongest classifiers to this date.</p>
-<p>The theoretical motivation for the random forest is the bias-variance tradeoff for classification (to be discussed in detail in <a class="reference internal" href="classification_evaluation.html#class-evaluation"><span class="std std-ref">Estimating the true classification error</span></a>). Similar to the bias-variance tradeoff in regression, a complex model tends to overfit and consequently has a high variance and low bias. In turn, a simple model has a high bias and low variance. If we now train a couple of overfitting decision trees, for example by setting the stopping criteria pretty lax, such that we get big trees, and if we aggregate the results of those trees, then we get an low bias, low variance classifier.</p>
+<p>The theoretical motivation for the random forest is the bias-variance tradeoff for classification (to be discussed in detail in <a class="reference internal" href="classification_evaluation.html#class-evaluation"><span class="std std-ref">Bias Variance Tradeoff</span></a>). Similar to the bias-variance tradeoff in regression, a complex model tends to overfit and consequently has a high variance and low bias. In turn, a simple model has a high bias and low variance. If we now train a couple of overfitting decision trees, for example by setting the stopping criteria pretty lax, such that we get big trees, and if we aggregate the results of those trees, then we get an low bias, low variance classifier.</p>
 <section id="inference">
 <h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">#</a></h2>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 22 </span> (Random Forest)</p>
+<p class="admonition-title"><span class="caption-number">Definition 24 </span> (Random Forest)</p>
 <section class="definition-content" id="proof-content">
 <p>A Random Forest classifier is an ensemble of <span class="math notranslate nohighlight">\(m\)</span> decision trees <span class="math notranslate nohighlight">\(f_{dt1},\ldots,f_{dtm}\)</span> that aggregates predictions of single trees via a mahority vote. Let <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})\in\{0,1\}^c\)</span> denote the one-hot encoded argmax function (also called hardmax), such that <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})_y=1\)</span> if and only if <span class="math notranslate nohighlight">\(y = \argmax_{1\leq l\leq c} p_l\)</span>. We define then the random forest classifier as
 <div class="math notranslate nohighlight">
@@ -714,7 +724,7 @@ As a result, the random forest predicts the class that wins the majority vote of
 </section>
 </div><p>The inference of a radom forest is a simple majority vote of the decision trees. For any ensemble of classifiers, predicting the class over a majority vote, we can derive an error bound that details which characteristics of the base classifiers make a strong ensemble. The error bound considers each tree the outcome of a random variable <span class="math notranslate nohighlight">\(\omega\)</span>, that describes the training set of the tree and other random elements that made the tree how it is.</p>
 <div class="proof theorem admonition" id="theorem-1">
-<p class="admonition-title"><span class="caption-number">Theorem 15 </span> (expected prediction error bound)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 17 </span> (expected prediction error bound)</p>
 <section class="theorem-content" id="proof-content">
 <p>Let</p>
 <div class="amsmath math notranslate nohighlight">
@@ -746,7 +756,7 @@ is the mean Pearson correlation coefficient of two i.i.d. sampled trees specifie
 <div class="proof admonition" id="proof">
 <p>Proof. If the margin is negative, then the prediction of the random forest is not correct. Hence, we can write that the expected prediction error is the probability that the margin is negative</p>
 <div class="math notranslate nohighlight" id="equation-eq-epe-margin">
-<span class="eqno">(62)<a class="headerlink" href="#equation-eq-epe-margin" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(46)<a class="headerlink" href="#equation-eq-epe-margin" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 EPE &amp;= p_{\vvec{x},y}(m(\vvec{x},y)&lt;0)\\
 &amp;= p_{\vvec{x},y}(m(\vvec{x},y)-\mu(m) &lt; -\mu(m))\\
 &amp;= p_{\vvec{x},y}(\mu(m) - m(\vvec{x},y) &gt; \mu(m))
@@ -756,7 +766,7 @@ EPE &amp;= p_{\vvec{x},y}(m(\vvec{x},y)&lt;0)\\
 \[p(\lvert x-\mu\rvert\geq w)\leq \frac{\sigma^2}{w^2},\]</div>
 
 where <span class="math notranslate nohighlight">\(\mu\)</span> is the expected value and <span class="math notranslate nohighlight">\(\sigma^2\)</span> is the variance of random variable <span class="math notranslate nohighlight">\(x\)</span>.
-We apply this to  Eq. <a class="reference internal" href="#equation-eq-epe-margin">(62)</a></p>
+We apply this to  Eq. <a class="reference internal" href="#equation-eq-epe-margin">(46)</a></p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 EPE&amp;\leq  p_{\vvec{x},y}(\lvert\mu(m) - m(\vvec{x},y)\rvert &gt; \mu(m))
@@ -765,15 +775,15 @@ EPE&amp;\leq  p_{\vvec{x},y}(\lvert\mu(m) - m(\vvec{x},y)\rvert &gt; \mu(m))
 <p>Hence, the EPE is bounded above by the variance of the margin divided my the strength of the classifier. Since the variance of the margin does not have a good interpretation with regard to a random forest, we derive now a bound for the variance.</p>
 <p>We rewrite the margin of the random forest in dependence of the margin of the trees as</p>
 <div class="math notranslate nohighlight" id="equation-eq-margin-raw">
-<span class="eqno">(63)<a class="headerlink" href="#equation-eq-margin-raw" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(47)<a class="headerlink" href="#equation-eq-margin-raw" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 m(\vvec{x},y)&amp;= p_\omega(L_{01}(\hat{y}_\omega(\vvec{x}),y)=0) - p_\omega(L_{01}(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y))=0)\\
 &amp;=\mathbb{E}_\omega[L_{01}(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y)) - L_{01}(\hat{y}_\omega(\vvec{x}),y)],
 \end{align*}\end{split}\]</div>
 <p>where the last equation derives from the linearity of the expected value and the fact that the expected value of binary random variable is equal to the probability that the binary random variable is equal to one.
-From Eq. <a class="reference internal" href="#equation-eq-margin-raw">(63)</a> follows that the expected value of the tree margin function over <span class="math notranslate nohighlight">\(\omega\)</span> is the margin function <span class="math notranslate nohighlight">\(\mathbb{E}_\omega[m_\omega(\vvec{x},y)]=m(\vvec{x},y)\)</span>.
+From Eq. <a class="reference internal" href="#equation-eq-margin-raw">(47)</a> follows that the expected value of the tree margin function over <span class="math notranslate nohighlight">\(\omega\)</span> is the margin function <span class="math notranslate nohighlight">\(\mathbb{E}_\omega[m_\omega(\vvec{x},y)]=m(\vvec{x},y)\)</span>.
 We can now write the variance of the margin with respect to single trees as</p>
 <div class="math notranslate nohighlight" id="equation-eq-var-omega">
-<span class="eqno">(64)<a class="headerlink" href="#equation-eq-var-omega" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(48)<a class="headerlink" href="#equation-eq-var-omega" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 \sigma^2(m) &amp;= \mathbb{E}_{\vvec{x},y}[(m(\vvec{x},y)-\mu(m))^2]\\
 &amp;= \mathbb{E}_{\vvec{x},y}[(\mathbb{E}_\omega[m_\omega(\vvec{x},y)-\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)])^2].
 \end{align*}\end{split}\]</div>
@@ -781,13 +791,13 @@ We can now write the variance of the margin with respect to single trees as</p>
 <div class="math notranslate nohighlight">
 \[(\mathbb{E}_\omega[h_\omega])^2 =\mathbb{E}_\omega[h_\omega]\mathbb{E}_\hat{\omega}[h_\hat{\omega}] = \mathbb{E}_{\omega,\hat{\omega}}[h_\omega h_\hat{\omega}], \]</div>
 
-we can write Eq. <a class="reference internal" href="#equation-eq-var-omega">(64)</a> as</p>
+we can write Eq. <a class="reference internal" href="#equation-eq-var-omega">(48)</a> as</p>
 <div class="math notranslate nohighlight" id="equation-eq-var2">
-<span class="eqno">(65)<a class="headerlink" href="#equation-eq-var2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(49)<a class="headerlink" href="#equation-eq-var2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 \sigma^2(m) &amp;= \mathbb{E}_{\vvec{x},y} \mathbb{E}_{\omega,\hat{\omega}}\left[(m_\omega(\vvec{x},y)-\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)])(m_\hat{\omega}(\vvec{x},y)-\mathbb{E}_{\vvec{x},y}[m_\hat{\omega}(\vvec{x},y)])\right] \\
 &amp;= \mathbb{E}_{\omega,\hat{\omega}}[\rho(m_\omega,m_\hat{\omega})\sigma(m_\omega)\sigma(m_\hat{\omega})]
 \end{align*}\end{split}\]</div>
-<p>The last equation derives from the fact that the inner expected value subject to <span class="math notranslate nohighlight">\(\omega,\hat{\omega}\)</span> is the covariance of <span class="math notranslate nohighlight">\(m_\omega\)</span> and <span class="math notranslate nohighlight">\(m_{\hat{\omega}}\)</span>. The covariance can be expressed as the Pearson correlation coefficient multiplied with the corresponding standard deviations. Dividing and multiplying Eq. <a class="reference internal" href="#equation-eq-var2">(65)</a> with <span class="math notranslate nohighlight">\(\mathbb{E}_\omega[\sigma_\omega]^2 = \mathbb{E}_{\omega,\hat{\omega}}[\sigma(m_\omega) \sigma(m_\hat{\omega})]\)</span> yields</p>
+<p>The last equation derives from the fact that the inner expected value subject to <span class="math notranslate nohighlight">\(\omega,\hat{\omega}\)</span> is the covariance of <span class="math notranslate nohighlight">\(m_\omega\)</span> and <span class="math notranslate nohighlight">\(m_{\hat{\omega}}\)</span>. The covariance can be expressed as the Pearson correlation coefficient multiplied with the corresponding standard deviations. Dividing and multiplying Eq. <a class="reference internal" href="#equation-eq-var2">(49)</a> with <span class="math notranslate nohighlight">\(\mathbb{E}_\omega[\sigma_\omega]^2 = \mathbb{E}_{\omega,\hat{\omega}}[\sigma(m_\omega) \sigma(m_\hat{\omega})]\)</span> yields</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \sigma^2(m) 
@@ -795,7 +805,7 @@ we can write Eq. <a class="reference internal" href="#equation-eq-var-omega">(64
 \end{align*}\]</div>
 <p>where the last inequality stems from Jenssens inequality applied to the convex function <span class="math notranslate nohighlight">\(x^2\)</span>.</p>
 <div class="math notranslate nohighlight" id="equation-eq-var3">
-<span class="eqno">(66)<a class="headerlink" href="#equation-eq-var3" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(50)<a class="headerlink" href="#equation-eq-var3" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 \mathbb{E}_\omega[\sigma^2(m_\omega)] &amp;= \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2] - \mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]^2\right]\\
 &amp;= \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2]\right] - \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]^2\right]
 \end{align*}\end{split}\]</div>
@@ -804,7 +814,7 @@ we can write Eq. <a class="reference internal" href="#equation-eq-var-omega">(64
 \[\begin{align*}
 \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]^2\right]\geq \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]\right]^2 = \mu(m)^2
 \end{align*}\]</div>
-<p>Further, we have <span class="math notranslate nohighlight">\(\mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2]\right]\leq 1\)</span> because <span class="math notranslate nohighlight">\(m_\omega(\vvec{x},y)\in\{-1,0,1\}\)</span>. As a result, we can bound Eq. <a class="reference internal" href="#equation-eq-var3">(66)</a> as</p>
+<p>Further, we have <span class="math notranslate nohighlight">\(\mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2]\right]\leq 1\)</span> because <span class="math notranslate nohighlight">\(m_\omega(\vvec{x},y)\in\{-1,0,1\}\)</span>. As a result, we can bound Eq. <a class="reference internal" href="#equation-eq-var3">(50)</a> as</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \mathbb{E}_\omega[\sigma^2(m_\omega)] &amp;\leq 1-\mu(m)^2.
@@ -848,7 +858,7 @@ In detail, the learning algorithm for random forests look as follows.</p>
 <h3>Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">#</a></h3>
 <p>Bootstrapping is similar to the dataset division known from cross valiadation, only that in bootstrapping the generated datasets overlap, that is, various data points are present in multiple dataset samples.</p>
 <div class="proof definition admonition" id="definition-3">
-<p class="admonition-title"><span class="caption-number">Definition 23 </span> (Bootstrapping)</p>
+<p class="admonition-title"><span class="caption-number">Definition 25 </span> (Bootstrapping)</p>
 <section class="definition-content" id="proof-content">
 <p>Given a dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}\)</span> containing <span class="math notranslate nohighlight">\(n\)</span> datapoints. A bootstrap sample <span class="math notranslate nohighlight">\(\mathcal{D}_j=\{(\vvec{x}_{i_b},y_{i_b})\mid 1\leq b\leq n\}\subseteq\mathcal{D}\)</span> gathers <span class="math notranslate nohighlight">\(n\)</span> uniformly distributed samples (<span class="math notranslate nohighlight">\(i_b \sim\mathcal{U}\{1, \dots, n\}\)</span>) from <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>. Hence, <span class="math notranslate nohighlight">\(\mathcal{D}_j\)</span> may contain various duplicates of data points.</p>
 </section>
@@ -882,11 +892,11 @@ In detail, the learning algorithm for random forests look as follows.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original data D [1 2 3 4 5]
 
 Bootstrap samples:
-D1: [4 1 5 3 2]
-D2: [3 5 4 1 2]
-D3: [3 1 5 5 2]
-D4: [1 2 2 5 2]
-D5: [5 1 5 1 3]
+D1: [2 1 2 2 3]
+D2: [2 5 1 2 3]
+D3: [2 1 5 4 2]
+D4: [2 5 1 2 3]
+D5: [3 3 2 4 2]
 </pre></div>
 </div>
 </div>

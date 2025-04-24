@@ -259,11 +259,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="classification_evaluation.html">
-     Evaluation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="classification_knn.html">
      K-Nearest Neighbor
     </a>
@@ -286,6 +281,21 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="classification_svms.html">
      Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
     </a>
    </li>
   </ul>
@@ -601,14 +611,14 @@ title="Print to PDF"
 <h1>L1 vs L2 Regularization<a class="headerlink" href="#l1-vs-l2-regularization" title="Permalink to this headline">#</a></h1>
 <p>Ok, but what is now better, <span class="math notranslate nohighlight">\(L_1\)</span>- or <span class="math notranslate nohighlight">\(L_2\)</span>-norm regularization? We will make an illustration of the regression solutions when we penalize with <span class="math notranslate nohighlight">\(L_1\)</span>- and <span class="math notranslate nohighlight">\(L_2\)</span>-norm. To make that illustration, using the constrained objective formulation is more suitable than the penalized one. As discussed in the <strong>Sparse Regression</strong> section, we can transform the penalized objective into a constrained one and vice versa.</p>
 <p>That is, for every <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span> there exists a radius <span class="math notranslate nohighlight">\(s&gt;0\)</span> and vice versa, such that the following optimization problems are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-399ebf43-b373-4ab9-830c-7b3482384e70">
-<span class="eqno">(33)<a class="headerlink" href="#equation-399ebf43-b373-4ab9-830c-7b3482384e70" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-472672dc-1071-4efb-84b0-33dcda90f874">
+<span class="eqno">(32)<a class="headerlink" href="#equation-472672dc-1071-4efb-84b0-33dcda90f874" title="Permalink to this equation">#</a></span>\[\begin{align}
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda \lVert\bm{\beta}\rVert^2 &amp; \text{s.t. }\bm{\beta}\in\mathbb{R}^p  \\
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 &amp; \text{s.t. } \lVert\bm{\beta}\rVert^2\leq s^2,\bm{\beta}\in\mathbb{R}^p  \\
 \end{align}\]</div>
 <p>Similarly, for every <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span> there exists a radius <span class="math notranslate nohighlight">\(s&gt;0\)</span> and vice versa, such that the following optimization problems are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2e696f64-2255-4af2-a547-4c24f06091df">
-<span class="eqno">(34)<a class="headerlink" href="#equation-2e696f64-2255-4af2-a547-4c24f06091df" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-746886fa-e00f-4637-85c2-4d85a84ff19e">
+<span class="eqno">(33)<a class="headerlink" href="#equation-746886fa-e00f-4637-85c2-4d85a84ff19e" title="Permalink to this equation">#</a></span>\[\begin{align}
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda \lvert\bm{\beta}\rvert &amp; \text{s.t. }\bm{\beta}\in\mathbb{R}^p  \\
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 &amp; \text{s.t. } \lvert\bm{\beta}\rvert\leq s,\bm{\beta}\in\mathbb{R}^p  \\
 \end{align}\]</div>
@@ -679,13 +689,13 @@ title="Print to PDF"
 </div>
 </div>
 <p>In summary, we considered the ridge regression objective</p>
-<div class="amsmath math notranslate nohighlight" id="equation-bc3c943b-4604-4a7b-a5ce-77fd7fea64f7">
-<span class="eqno">(35)<a class="headerlink" href="#equation-bc3c943b-4604-4a7b-a5ce-77fd7fea64f7" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-40a68a8c-8bcc-462c-862d-dffe0ba8bf66">
+<span class="eqno">(34)<a class="headerlink" href="#equation-40a68a8c-8bcc-462c-862d-dffe0ba8bf66" title="Permalink to this equation">#</a></span>\[\begin{align}
         \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_2}(\bm{\beta}) = \lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda\lVert\bm{\beta}\rVert^2
 \end{align}\]</div>
 <p>and the Lasso</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e1faa2b4-f034-44f0-a1a4-021041b8f160">
-<span class="eqno">(36)<a class="headerlink" href="#equation-e1faa2b4-f034-44f0-a1a4-021041b8f160" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-cdae01d7-4bd8-4a2a-a61f-eeb53d4aef97">
+<span class="eqno">(35)<a class="headerlink" href="#equation-cdae01d7-4bd8-4a2a-a61f-eeb53d4aef97" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_1}(\bm{\beta}) = \lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda\lvert\bm{\beta}\rvert
 \end{align}\]</div>
 <p>The solution of Ridge Regression is computable very fast, analyically. The Ridge Regression minimizer is uniquely defined, but usually not sparse.
