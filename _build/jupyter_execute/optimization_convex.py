@@ -155,6 +155,20 @@
 # 
 # Conversely, not every function with one global minimum has to be convex. An example of a nonconvex function that has just one local, and therewith also global minimum is the Rosenbrock function.
 # 
+# Convex objectives also often enable the minimization of the dual, as the following theorem shows.
+# 
+# ```{prf:theorem} Slater's Condition
+# Strong duality holds for any convex constrained objective function of the form
+# \begin{align*}
+#     \min_{x\in\mathbb{R}^n}&\ f(\vvec{x}) \\
+#     \text{s.t. } & A\vvec{x} =b  &\\
+#      &g_k(\vvec{x})\geq 0 &\text{ for }1\leq k\leq l
+# \end{align*}
+# having a point in the interior of the feasible set (not just on the boundary). That is, if the following set is not empty: 
+# $$\mathring{\mathcal{C}} = \{\vvec{x}\mid c_i(\vvec{x}) =0  \text{ for } 1\leq i \leq m,g_k(\vvec{x})> 0 \text{ for }1\leq k\leq l\}\neq \emptyset.$$
+# ```
+# Slater's condition says that the saddle point of the Langrangian, that is the optimizer of the dual objective, solves the primal objective. The condition that the interior of the feasible set should not be empty is satisfied in most cases. 
+# 
 # ### Properties of Convex Functions
 # We can show that a function is convex by applying the definition. However, in practice it's useful to rely on a couple of properties that allow to quickly assess whether a function is convex. First of all, there are some very basic convex functions, like affine functions and norms.
 # ```{prf:lemma}

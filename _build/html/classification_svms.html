@@ -165,13 +165,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_numerical.html">
-     Numerical Optimization
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_convex.html">
-     Convex Optimization
+    <a class="reference internal" href="optimization_analytic.html">
+     Analytic Solutions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
     </a>
    </li>
    <li class="toctree-l2">
@@ -892,42 +897,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_img55a77ee11fcf46e780593544156f321d">
+  <img id="_anim_img2e5cf33752014a31bef422b95aeb38af">
   <div class="anim-controls">
-    <input id="_anim_slider55a77ee11fcf46e780593544156f321d" type="range" class="anim-slider"
+    <input id="_anim_slider2e5cf33752014a31bef422b95aeb38af" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="anim55a77ee11fcf46e780593544156f321d.set_frame(parseInt(this.value));">
+           oninput="anim2e5cf33752014a31bef422b95aeb38af.set_frame(parseInt(this.value));">
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim55a77ee11fcf46e780593544156f321d.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim2e5cf33752014a31bef422b95aeb38af.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="anim55a77ee11fcf46e780593544156f321d.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="anim2e5cf33752014a31bef422b95aeb38af.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="anim55a77ee11fcf46e780593544156f321d.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="anim2e5cf33752014a31bef422b95aeb38af.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="anim55a77ee11fcf46e780593544156f321d.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="anim2e5cf33752014a31bef422b95aeb38af.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="anim55a77ee11fcf46e780593544156f321d.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="anim2e5cf33752014a31bef422b95aeb38af.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="anim55a77ee11fcf46e780593544156f321d.play_animation()">
+      <button title="Play" aria-label="Play" onclick="anim2e5cf33752014a31bef422b95aeb38af.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="anim55a77ee11fcf46e780593544156f321d.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="anim2e5cf33752014a31bef422b95aeb38af.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="anim55a77ee11fcf46e780593544156f321d.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="anim2e5cf33752014a31bef422b95aeb38af.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="anim55a77ee11fcf46e780593544156f321d.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="anim2e5cf33752014a31bef422b95aeb38af.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select55a77ee11fcf46e780593544156f321d"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select2e5cf33752014a31bef422b95aeb38af"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_55a77ee11fcf46e780593544156f321d"
+      <input type="radio" name="state" value="once" id="_anim_radio1_2e5cf33752014a31bef422b95aeb38af"
              >
-      <label for="_anim_radio1_55a77ee11fcf46e780593544156f321d">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_55a77ee11fcf46e780593544156f321d"
+      <label for="_anim_radio1_2e5cf33752014a31bef422b95aeb38af">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_2e5cf33752014a31bef422b95aeb38af"
              checked>
-      <label for="_anim_radio2_55a77ee11fcf46e780593544156f321d">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_55a77ee11fcf46e780593544156f321d"
+      <label for="_anim_radio2_2e5cf33752014a31bef422b95aeb38af">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_2e5cf33752014a31bef422b95aeb38af"
              >
-      <label for="_anim_radio3_55a77ee11fcf46e780593544156f321d">Reflect</label>
+      <label for="_anim_radio3_2e5cf33752014a31bef422b95aeb38af">Reflect</label>
     </form>
   </div>
 </div>
@@ -937,9 +942,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_img55a77ee11fcf46e780593544156f321d";
-    var slider_id = "_anim_slider55a77ee11fcf46e780593544156f321d";
-    var loop_select_id = "_anim_loop_select55a77ee11fcf46e780593544156f321d";
+    var img_id = "_anim_img2e5cf33752014a31bef422b95aeb38af";
+    var slider_id = "_anim_slider2e5cf33752014a31bef422b95aeb38af";
+    var loop_select_id = "_anim_loop_select2e5cf33752014a31bef422b95aeb38af";
     var frames = new Array(5);
 
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -2077,7 +2082,7 @@ AGNzAAAAAElFTkSuQmCC\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        anim55a77ee11fcf46e780593544156f321d = new Animation(frames, img_id, slider_id, 200.0,
+        anim2e5cf33752014a31bef422b95aeb38af = new Animation(frames, img_id, slider_id, 200.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -2272,42 +2277,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_img5067821d2f874a4fb9f3a42ce5c84b86">
+  <img id="_anim_imgecdd10885472475c9c06687a5696bbf6">
   <div class="anim-controls">
-    <input id="_anim_slider5067821d2f874a4fb9f3a42ce5c84b86" type="range" class="anim-slider"
+    <input id="_anim_sliderecdd10885472475c9c06687a5696bbf6" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="anim5067821d2f874a4fb9f3a42ce5c84b86.set_frame(parseInt(this.value));">
+           oninput="animecdd10885472475c9c06687a5696bbf6.set_frame(parseInt(this.value));">
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim5067821d2f874a4fb9f3a42ce5c84b86.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="animecdd10885472475c9c06687a5696bbf6.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="anim5067821d2f874a4fb9f3a42ce5c84b86.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="animecdd10885472475c9c06687a5696bbf6.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="anim5067821d2f874a4fb9f3a42ce5c84b86.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="animecdd10885472475c9c06687a5696bbf6.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="anim5067821d2f874a4fb9f3a42ce5c84b86.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="animecdd10885472475c9c06687a5696bbf6.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="anim5067821d2f874a4fb9f3a42ce5c84b86.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="animecdd10885472475c9c06687a5696bbf6.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="anim5067821d2f874a4fb9f3a42ce5c84b86.play_animation()">
+      <button title="Play" aria-label="Play" onclick="animecdd10885472475c9c06687a5696bbf6.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="anim5067821d2f874a4fb9f3a42ce5c84b86.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="animecdd10885472475c9c06687a5696bbf6.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="anim5067821d2f874a4fb9f3a42ce5c84b86.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="animecdd10885472475c9c06687a5696bbf6.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="anim5067821d2f874a4fb9f3a42ce5c84b86.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="animecdd10885472475c9c06687a5696bbf6.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select5067821d2f874a4fb9f3a42ce5c84b86"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectecdd10885472475c9c06687a5696bbf6"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_5067821d2f874a4fb9f3a42ce5c84b86"
+      <input type="radio" name="state" value="once" id="_anim_radio1_ecdd10885472475c9c06687a5696bbf6"
              >
-      <label for="_anim_radio1_5067821d2f874a4fb9f3a42ce5c84b86">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_5067821d2f874a4fb9f3a42ce5c84b86"
+      <label for="_anim_radio1_ecdd10885472475c9c06687a5696bbf6">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_ecdd10885472475c9c06687a5696bbf6"
              checked>
-      <label for="_anim_radio2_5067821d2f874a4fb9f3a42ce5c84b86">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_5067821d2f874a4fb9f3a42ce5c84b86"
+      <label for="_anim_radio2_ecdd10885472475c9c06687a5696bbf6">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_ecdd10885472475c9c06687a5696bbf6"
              >
-      <label for="_anim_radio3_5067821d2f874a4fb9f3a42ce5c84b86">Reflect</label>
+      <label for="_anim_radio3_ecdd10885472475c9c06687a5696bbf6">Reflect</label>
     </form>
   </div>
 </div>
@@ -2317,9 +2322,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_img5067821d2f874a4fb9f3a42ce5c84b86";
-    var slider_id = "_anim_slider5067821d2f874a4fb9f3a42ce5c84b86";
-    var loop_select_id = "_anim_loop_select5067821d2f874a4fb9f3a42ce5c84b86";
+    var img_id = "_anim_imgecdd10885472475c9c06687a5696bbf6";
+    var slider_id = "_anim_sliderecdd10885472475c9c06687a5696bbf6";
+    var loop_select_id = "_anim_loop_selectecdd10885472475c9c06687a5696bbf6";
     var frames = new Array(5);
 
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -3986,7 +3991,7 @@ UkoFkiYwpZRSgaQJTCmlVCD9f8UHeF2Odf+ZAAAAAElFTkSuQmCC\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        anim5067821d2f874a4fb9f3a42ce5c84b86 = new Animation(frames, img_id, slider_id, 200.0,
+        animecdd10885472475c9c06687a5696bbf6 = new Animation(frames, img_id, slider_id, 200.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -4029,8 +4034,8 @@ As a result, geometrically we can say that <span class="math notranslate nohighl
 <section id="inference-of-a-linear-svm-for-binary-classification">
 <h2>Inference of a Linear SVM for Binary Classification<a class="headerlink" href="#inference-of-a-linear-svm-for-binary-classification" title="Permalink to this headline">#</a></h2>
 <p>A hyperplane divides a space into two halves. Assuming now that we have only two classes (a binary classification problem). The hyperplane should be positioned such that one class is on one side and the other class is on the other. We can call the sides <em>positive</em> and <em>negative</em>, the positive side is the one the normal vector points to and the negative is the other side.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-be060630-9ba3-4f22-8821-a25e1c7b4a22">
-<span class="eqno">(51)<a class="headerlink" href="#equation-be060630-9ba3-4f22-8821-a25e1c7b4a22" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-bf4d2efe-8b5a-487c-a31b-36c138e44499">
+<span class="eqno">(51)<a class="headerlink" href="#equation-bf4d2efe-8b5a-487c-a31b-36c138e44499" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf w}^{T} {\bf x} + b &amp;&lt;&amp; 0\,\, \mbox{(negative side)} \nonumber \\
 {\bf w}^{T} {\bf x} + b &amp;\geq&amp; 0\,\, \mbox{(positive side)}. \nonumber
 \end{eqnarray}\]</div>
@@ -4214,7 +4219,7 @@ We can indentify the support vectors as those vectors <span class="math notransl
 <strong>Return</strong> the hyperplane defining parameters <span class="math notranslate nohighlight">\(\vvec{w},b\)</span></p>
 </div>
 <div class="proof example admonition" id="example-6">
-<p class="admonition-title"><span class="caption-number">Example 20 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 21 </span></p>
 <section class="example-content" id="proof-content">
 <p>The plot below shows the effect of the regularization weight <span class="math notranslate nohighlight">\(C\)</span> on the decision boundary. We state the decision boundaries for <span class="math notranslate nohighlight">\(C\in\{0.1,1,100\}\)</span>. Using large weights such as <span class="math notranslate nohighlight">\(C=100\)</span> is common for the SVM. The larger <span class="math notranslate nohighlight">\(C\)</span> is, the more does the decision boundary adapt to the points that are closest to it, which are the first to introduce a penalty on margin or decision boundary violations.</p>
 <figure class="align-left" id="effect-softmargin-sep-fig">

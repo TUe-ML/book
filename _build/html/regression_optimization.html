@@ -165,13 +165,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_numerical.html">
-     Numerical Optimization
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_convex.html">
-     Convex Optimization
+    <a class="reference internal" href="optimization_analytic.html">
+     Analytic Solutions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
     </a>
    </li>
    <li class="toctree-l2">
@@ -776,7 +781,7 @@ So, we have an unconstrained convex optimization problem with a smooth objective
 <h2>Getting all Regression Solvers<a class="headerlink" href="#getting-all-regression-solvers" title="Permalink to this headline">#</a></h2>
 <p>If the matrix <span class="math notranslate nohighlight">\(X^\top X\)</span> is not invertible, then we have infinitely many regression solvers. This is particularly the case when <span class="math notranslate nohighlight">\(p&gt;n\)</span>.</p>
 <div class="proof example admonition" id="example_reg_p_larger_n">
-<p class="admonition-title"><span class="caption-number">Example 17 </span> (Regression with <span class="math notranslate nohighlight">\(p&gt;n\)</span>)</p>
+<p class="admonition-title"><span class="caption-number">Example 18 </span> (Regression with <span class="math notranslate nohighlight">\(p&gt;n\)</span>)</p>
 <section class="example-content" id="proof-content">
 <p>We consider a toy regression task, where the data is given by following three data points (observations) of one feature.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>D = np.array([5,3,1])
@@ -845,8 +850,8 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
     X^\top X = V\Sigma^\top \underbrace{U^\top U}_{=I} \Sigma V^\top = V\Sigma^\top \Sigma V^\top.
 \end{align*}\]</div>
 <p>Given the singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span>, we can try to solve Eq. <a class="reference internal" href="#equation-eq-minimizers">(9)</a> for <span class="math notranslate nohighlight">\(\bm\beta\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9c520458-257c-464b-b0c3-b8afb94c5b1a">
-<span class="eqno">(10)<a class="headerlink" href="#equation-9c520458-257c-464b-b0c3-b8afb94c5b1a" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e0dc2e7e-7819-45c2-8224-60e0ee7ed96e">
+<span class="eqno">(10)<a class="headerlink" href="#equation-e0dc2e7e-7819-45c2-8224-60e0ee7ed96e" title="Permalink to this equation">#</a></span>\[\begin{align}
    X^\top X\bm{\beta} &amp;= X^\top \vvec{y} \quad 
    \Leftrightarrow \quad V\Sigma^\top\Sigma V^\top \bm{\beta}= V\Sigma^\top U^\top\vvec{y}
    \quad 
@@ -900,8 +905,8 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
 </div><div class="toggle docutils container">
 <div class="proof admonition" id="proof">
 <p>Proof. We start at the characterization of regression solvers by SVD (Observation):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-78d9cc86-d382-417a-b51f-0b21570c7d0f">
-<span class="eqno">(11)<a class="headerlink" href="#equation-78d9cc86-d382-417a-b51f-0b21570c7d0f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-652f3a03-0cc3-4f86-8445-05140be50394">
+<span class="eqno">(11)<a class="headerlink" href="#equation-652f3a03-0cc3-4f86-8445-05140be50394" title="Permalink to this equation">#</a></span>\[\begin{align}
 \Sigma^\top\Sigma V^\top\bm\beta &amp;= \Sigma^\top U_r^\top y\\
 \Leftrightarrow
 \left(\begin{array}{cc}
@@ -919,8 +924,8 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
 \end{array}\right) U_r^\top y
 \end{align}\]</div>
 <p>We see here that only the first <span class="math notranslate nohighlight">\(r\)</span> equations are relevant, the remaining equations <span class="math notranslate nohighlight">\(0=0\)</span> are evidently true. We further shorten the notation by setting <span class="math notranslate nohighlight">\(\hat{\bm\beta}=V^\top\bm\beta\)</span>. We have then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-66077797-89a9-49de-b224-25a96a687dae">
-<span class="eqno">(12)<a class="headerlink" href="#equation-66077797-89a9-49de-b224-25a96a687dae" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-06c7710c-669a-4940-8def-1f455ba42eb9">
+<span class="eqno">(12)<a class="headerlink" href="#equation-06c7710c-669a-4940-8def-1f455ba42eb9" title="Permalink to this equation">#</a></span>\[\begin{align}
 \Sigma_r\begin{pmatrix} \Sigma_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= \Sigma_r U_r^\top y\\ 
 \Leftrightarrow
 \begin{pmatrix} \Sigma_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= U_r^\top y\\ 
@@ -930,8 +935,8 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
 \hat{\bm\beta}_{0:r} &amp;= \Sigma_r^{-1} U_r^\top y
 \end{align}\]</div>
 <p>We see that only the first <span class="math notranslate nohighlight">\(r\)</span> coordinates of <span class="math notranslate nohighlight">\(\hat{\bm\beta}\)</span> are determined by the given equation. What we have in the rest of the coordinates is free to choose and the equation will still hold. We model the coordinates that are free to choose with the vector <span class="math notranslate nohighlight">\(z\)</span>. Then we have</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8667a618-aea9-4749-8882-93cf8a39daf3">
-<span class="eqno">(13)<a class="headerlink" href="#equation-8667a618-aea9-4749-8882-93cf8a39daf3" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e036f2be-1f74-4bb2-b7b0-95393e2b6c75">
+<span class="eqno">(13)<a class="headerlink" href="#equation-e036f2be-1f74-4bb2-b7b0-95393e2b6c75" title="Permalink to this equation">#</a></span>\[\begin{align}
 \hat{\bm\beta} &amp;= \begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}\\
 \Leftrightarrow V^\top\bm\beta &amp;= \begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}\\
 \Leftrightarrow \bm\beta &amp;= V\begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}
@@ -942,7 +947,7 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
 </section>
 <section id="example-determination-of-regression-solvers-by-svd">
 <h2>Example Determination of Regression Solvers by SVD<a class="headerlink" href="#example-determination-of-regression-solvers-by-svd" title="Permalink to this headline">#</a></h2>
-<p>We consider again the data from <a class="reference internal" href="#example_reg_p_larger_n">Example 17</a>. Yet, instead of computing the solution by hand, we implement now a general scheme to obtain the set of regression vectors. First, we compute the SVD of the design matrix <span class="math notranslate nohighlight">\(X\)</span></p>
+<p>We consider again the data from <a class="reference internal" href="#example_reg_p_larger_n">Example 18</a>. Yet, instead of computing the solution by hand, we implement now a general scheme to obtain the set of regression vectors. First, we compute the SVD of the design matrix <span class="math notranslate nohighlight">\(X\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>

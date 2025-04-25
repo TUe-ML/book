@@ -165,13 +165,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_numerical.html">
-     Numerical Optimization
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_convex.html">
-     Convex Optimization
+    <a class="reference internal" href="optimization_analytic.html">
+     Analytic Solutions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
     </a>
    </li>
    <li class="toctree-l2">
@@ -1086,8 +1091,8 @@ Yah, it gets interesting with the matrix product.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.6, 0.3, 0.4, 0.5, 0.1],
-       [0.4, 0.2, 0.3, 0.5, 0.1]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.2, 0.3, 0.2, 0.3, 0.3],
+       [0.8, 1.1, 0.8, 1. , 0.7]])
 </pre></div>
 </div>
 </div>
@@ -1143,8 +1148,8 @@ The matrix product is the sum of outer products of corresponding column- and row
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.5, 0.6, 0.6],
-       [0.1, 0.4, 0.9]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.2, 0.1, 0.2],
+       [0.2, 0.6, 0.8]])
 </pre></div>
 </div>
 </div>
@@ -1156,8 +1161,8 @@ The matrix product is the sum of outer products of corresponding column- and row
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.5, 0.6, 0.6],
-       [0.1, 0.4, 0.9]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.2, 0.1, 0.2],
+       [0.2, 0.6, 0.8]])
 </pre></div>
 </div>
 </div>
@@ -1236,8 +1241,8 @@ Diagonal matrices with nonzero elements on the diagonal have an inverse:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution time of our naive implementation in seconds: 1.6266279220581055
-Execution time of the numpy implementation in seconds: 0.0008070468902587891
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution time of our naive implementation in seconds: 1.6507070064544678
+Execution time of the numpy implementation in seconds: 0.0006649494171142578
 </pre></div>
 </div>
 </div>

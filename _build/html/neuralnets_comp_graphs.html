@@ -165,13 +165,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_numerical.html">
-     Numerical Optimization
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_convex.html">
-     Convex Optimization
+    <a class="reference internal" href="optimization_analytic.html">
+     Analytic Solutions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
     </a>
    </li>
    <li class="toctree-l2">
@@ -660,26 +665,26 @@ title="Print to PDF"
 </figcaption>
 </figure>
 <p>The <span class="math notranslate nohighlight">\(j\)</span>-th hidden unit computes the <em>unobserved</em> feature as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c568126e-5c79-40c3-a3f7-99e21bdda6c9">
-<span class="eqno">(63)<a class="headerlink" href="#equation-c568126e-5c79-40c3-a3f7-99e21bdda6c9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f75c1069-127a-4d23-8c83-20ae9a288cda">
+<span class="eqno">(63)<a class="headerlink" href="#equation-f75c1069-127a-4d23-8c83-20ae9a288cda" title="Permalink to this equation">#</a></span>\[\begin{equation}
 h_{j} = \phi \left( \sum_{i} w^{1}_{i,j} x_{i} \right). \nonumber
 \end{equation}\]</div>
 <p>Note that the superscript <span class="math notranslate nohighlight">\( 1 \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{1}_{i,j} \)</span> belongs to an unit at the <em>first</em> (hidden) layer. On the other hand, the subscripts <span class="math notranslate nohighlight">\( i,j \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{1}_{i,j} \)</span> corresponds to a synaptic connection between the <span class="math notranslate nohighlight">\(i\)</span>-th input unit and the <span class="math notranslate nohighlight">\(j\)</span>-th hidden unit. Lastly, the single output unit computes the network output as <div class="math notranslate nohighlight">
 \[ \hat{y} = \sum_{j} w^{2}_{j,1} h_j, \]</div>
  where the superscript <span class="math notranslate nohighlight">\( 2 \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{2}_{j,1} \)</span> belongs to the single unit <span class="math notranslate nohighlight">\( 1 \)</span> at the <em>second</em> (output) layer.</p>
 <p>Alternatively, let the vectors <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{0} = 1 &amp; x_{1} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> and <span class="math notranslate nohighlight">\( {\bf w}_{j}^{1} = \begin{bmatrix} w^{1}_{0,j} &amp; w^{1}_{1,j} &amp; \ldots &amp; w^{1}_{D,j} \end{bmatrix}^{T} \)</span> collect respectively the observed features and the corresponding weights at the <span class="math notranslate nohighlight">\(j\)</span>-th unit of the single hidden layer <span class="math notranslate nohighlight">\( 1 \)</span>. The <span class="math notranslate nohighlight">\(j\)</span>-th <em>unobserved</em> (or embedded) feature can be rewritten then as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e50fcf75-2041-4f80-b3e9-ee1699071f76">
-<span class="eqno">(64)<a class="headerlink" href="#equation-e50fcf75-2041-4f80-b3e9-ee1699071f76" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-d42f626e-5465-40d1-9131-4a56e619fe25">
+<span class="eqno">(64)<a class="headerlink" href="#equation-d42f626e-5465-40d1-9131-4a56e619fe25" title="Permalink to this equation">#</a></span>\[\begin{equation}
 h_{j} = \phi \left( ({\bf w}_{j}^{1})^{T} {\bf x} \right). \nonumber
 \end{equation}\]</div>
 <p>Analogously, let <span class="math notranslate nohighlight">\( {\bf h} = \begin{bmatrix} h_{1} &amp; h_{2} &amp; \ldots &amp; h_{H} \end{bmatrix}^{T} \)</span> collect the embedded features and let <span class="math notranslate nohighlight">\( {\bf w}_{1}^{2} = \begin{bmatrix} w^{2}_{1,1} &amp; w^{2}_{2,1} &amp; \ldots &amp; w^{2}_{H,1} \end{bmatrix}^{T} \)</span> collect the corresponding weights at the single unit of the output layer <span class="math notranslate nohighlight">\( 2 \)</span>, we can rewrite the network output as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-738d9e71-ad76-4ec2-990d-8102a622f07d">
-<span class="eqno">(65)<a class="headerlink" href="#equation-738d9e71-ad76-4ec2-990d-8102a622f07d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-eeec53e9-0afb-4350-97e7-6079ad1ca6bb">
+<span class="eqno">(65)<a class="headerlink" href="#equation-eeec53e9-0afb-4350-97e7-6079ad1ca6bb" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \hat{y} = ({\bf w}_{1}^{2})^{T} {\bf h}. \nonumber
 \end{equation}\]</div>
 <p>Now, let the matrices</p>
-<div class="amsmath math notranslate nohighlight" id="equation-53f1e3a2-6c06-454c-8515-f0fb1895e934">
-<span class="eqno">(66)<a class="headerlink" href="#equation-53f1e3a2-6c06-454c-8515-f0fb1895e934" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-43690439-1519-40d5-9dc8-4ca2e3211939">
+<span class="eqno">(66)<a class="headerlink" href="#equation-43690439-1519-40d5-9dc8-4ca2e3211939" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf W}^{1} &amp;=&amp; \begin{bmatrix} {\bf w}_{1}^{1} &amp; \ldots &amp; {\bf w}_{H}^{1} \end{bmatrix} \nonumber \\
 &amp;=&amp; \begin{bmatrix} 
 w^{1}_{0,1} &amp; \ldots &amp; w^{1}_{0,H} \\
@@ -689,8 +694,8 @@ w^{1}_{D,1} &amp; \ldots &amp; w^{1}_{D,H} \nonumber
 \end{bmatrix}
 \end{eqnarray}\]</div>
 <p>and</p>
-<div class="amsmath math notranslate nohighlight" id="equation-63746cad-96c9-4f85-9e10-72cabaa8ffd2">
-<span class="eqno">(67)<a class="headerlink" href="#equation-63746cad-96c9-4f85-9e10-72cabaa8ffd2" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-e5114f7b-d537-417c-9742-7a7fafc9d88d">
+<span class="eqno">(67)<a class="headerlink" href="#equation-e5114f7b-d537-417c-9742-7a7fafc9d88d" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf W}^{2} &amp;=&amp; \begin{bmatrix} {\bf w}_{1}^{2} \end{bmatrix} \nonumber \\
 &amp;=&amp; \begin{bmatrix} 
 w^{2}_{1,1} \\
@@ -699,8 +704,8 @@ w^{2}_{H,1} \nonumber
 \end{bmatrix}
 \end{eqnarray}\]</div>
 <p>collect all weights at layers <span class="math notranslate nohighlight">\( 1 \)</span> and <span class="math notranslate nohighlight">\( 2 \)</span>, respectively, such that the <span class="math notranslate nohighlight">\(j\)</span>-th column stores the weights <span class="math notranslate nohighlight">\( \lbrace w^{\ell}_{\bullet,j} \rbrace \)</span> of the <span class="math notranslate nohighlight">\(j\)</span>-th unit at the corresponding layer <span class="math notranslate nohighlight">\( \ell \)</span>. We can further rewrite the network output in compact vector-matrix notation as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-faa3675c-64ac-4df4-8d56-d6e7d916fb36">
-<span class="eqno">(68)<a class="headerlink" href="#equation-faa3675c-64ac-4df4-8d56-d6e7d916fb36" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-90bece30-f62b-4eee-9c54-ec98fb4197be">
+<span class="eqno">(68)<a class="headerlink" href="#equation-90bece30-f62b-4eee-9c54-ec98fb4197be" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 \hat{y} &amp;=&amp; ({\bf W}^{2})^{T} {\bf h} \nonumber \\
 &amp;=&amp; ({\bf W}^{2})^{T} \phi \left( {\bf a} \right) \nonumber \\
 &amp;=&amp; ({\bf W}^{2})^{T} \phi \left( ({\bf W}^{1})^{T} {\bf x} \right), \nonumber

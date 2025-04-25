@@ -55,8 +55,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Matrix Derivatives" href="optimization_gradients.html" />
-    <link rel="prev" title="Numerical Optimization" href="optimization_numerical.html" />
+    <link rel="next" title="Analytic Solutions" href="optimization_analytic.html" />
+    <link rel="prev" title="Optimization Problems" href="optimization_problems.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -164,14 +164,19 @@ const thebe_selector_output = ".output, .cell_output"
      Optimization Problems
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="optimization_numerical.html">
-     Numerical Optimization
-    </a>
-   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_analytic.html">
+     Analytic Solutions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
     </a>
    </li>
    <li class="toctree-l2">
@@ -662,8 +667,8 @@ That is, if for all <span class="math notranslate nohighlight">\(x,y\in \mathcal
 <p class="admonition-title"><span class="caption-number">Definition 11 </span> (Convex function)</p>
 <section class="definition-content" id="proof-content">
 <p>A function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> is <strong>convex</strong> if and only if for every <span class="math notranslate nohighlight">\(\alpha \in[0,1]\)</span>, and <span class="math notranslate nohighlight">\(\vvec{x},\vvec{y}\in\mathbb{R}^d\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e7bd202e-2bc7-494f-99b8-2314bde57a8c">
-<span class="eqno">(2)<a class="headerlink" href="#equation-e7bd202e-2bc7-494f-99b8-2314bde57a8c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c259b614-12b7-4862-8812-f9d2e7a632cf">
+<span class="eqno">(2)<a class="headerlink" href="#equation-c259b614-12b7-4862-8812-f9d2e7a632cf" title="Permalink to this equation">#</a></span>\[\begin{equation}
  f(\alpha \vvec{x}+ (1-\alpha)\vvec{y})\leq\alpha f(\vvec{x})+(1-\alpha)f(\vvec{y})\nonumber
 \end{equation}\]</div>
 </section>
@@ -692,13 +697,13 @@ we can write any constrained objective as the following unconstrained one:</p>
 \end{align*}\]</div>
 <p>Since the objective function above returns infinity for any <span class="math notranslate nohighlight">\(\vvec{x}\)</span> outside of the feasible set, any potential minimizer has to be feasible. If we now apply the definition of a convex function, then we require that the graph of the function is below the connecting line. However, if we have a nonconvex feasible set, then there exist two points in the feasible set whose connecting line is partially outside of the feasible set. On this part, where the connecting line is outside of the feasible set, the objective function returns infinity. Hence, the graph of the objective will not be under the connecting line. The example below illustrates this property further.</p>
 <div class="proof example admonition" id="example-3">
-<p class="admonition-title"><span class="caption-number">Example 10 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 6 </span></p>
 <section class="example-content" id="proof-content">
 <p>The figure below displays the function <span class="math notranslate nohighlight">\(f(x)=x^2 + \mathbb{1}_{\{\lvert x\rvert\geq 2\}}\)</span>. The feasible set <span class="math notranslate nohighlight">\(\{\lvert x\rvert\geq 2\}\)</span> is nonconvex, since the line connecting <span class="math notranslate nohighlight">\(x_1=-2.5\)</span> and <span class="math notranslate nohighlight">\(x_2=3.5\)</span> leaves the feasible set. We indicate domain where the function is returning infinity by the dashed vertical lines. If we now connect two function values as indicated by the red line, then the graph is above the line within the interval <span class="math notranslate nohighlight">\([-2,2]\)</span>. This shows that the function <span class="math notranslate nohighlight">\(f\)</span>, indicating an optimization objective with a convex objective function and a nonconvex feasible set is not a convex function.</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-e85e81b8b20b55065b588139b2fabfce5f91a354.svg" alt="Figure made with TikZ" /></p>
 </div></section>
 </div><div class="proof theorem admonition" id="thm_convex">
-<p class="admonition-title"><span class="caption-number">Theorem 7 </span></p>
+<p class="admonition-title"><span class="caption-number">Theorem 4 </span></p>
 <section class="theorem-content" id="proof-content">
 <p>If a function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> is convex, then every local minimizer <span class="math notranslate nohighlight">\(x^*\)</span> of <span class="math notranslate nohighlight">\(f\)</span> is a global minimizer.</p>
 </section>
@@ -715,12 +720,29 @@ f(\alpha x_{loc} + (1-\alpha)x^*)&amp;\leq \alpha f(x_{loc}) + (1-\alpha)f(x^*)\
 Hence <span class="math notranslate nohighlight">\(x_{loc}\)</span> is not a local minimizer.</p>
 </div>
 </div>
-<p>Since we can state any (constrained) optimization objective as an unconstrained objective by means of the indicator function as discussed above, we can apply <a class="reference internal" href="#thm_convex">Theorem 7</a> also to constrained optimization objectives and deduce that any local minimizer of a constrained objective is also a global one.</p>
+<p>Since we can state any (constrained) optimization objective as an unconstrained objective by means of the indicator function as discussed above, we can apply <a class="reference internal" href="#thm_convex">Theorem 4</a> also to constrained optimization objectives and deduce that any local minimizer of a constrained objective is also a global one.</p>
 <p>Conversely, not every function with one global minimum has to be convex. An example of a nonconvex function that has just one local, and therewith also global minimum is the Rosenbrock function.</p>
+<p>Convex objectives also often enable the minimization of the dual, as the following theorem shows.</p>
+<div class="proof theorem admonition" id="theorem-5">
+<p class="admonition-title"><span class="caption-number">Theorem 5 </span> (Slater’s Condition)</p>
+<section class="theorem-content" id="proof-content">
+<p>Strong duality holds for any convex constrained objective function of the form</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \min_{x\in\mathbb{R}^n}&amp;\ f(\vvec{x}) \\
+    \text{s.t. } &amp; A\vvec{x} =b  &amp;\\
+     &amp;g_k(\vvec{x})\geq 0 &amp;\text{ for }1\leq k\leq l
+\end{align*}\]</div>
+<p>having a point in the interior of the feasible set (not just on the boundary). That is, if the following set is not empty:
+<div class="math notranslate nohighlight">
+\[\mathring{\mathcal{C}} = \{\vvec{x}\mid c_i(\vvec{x}) =0  \text{ for } 1\leq i \leq m,g_k(\vvec{x})&gt; 0 \text{ for }1\leq k\leq l\}\neq \emptyset.\]</div>
+</p>
+</section>
+</div><p>Slater’s condition says that the saddle point of the Langrangian, that is the optimizer of the dual objective, solves the primal objective. The condition that the interior of the feasible set should not be empty is satisfied in most cases.</p>
 <section id="properties-of-convex-functions">
 <h2>Properties of Convex Functions<a class="headerlink" href="#properties-of-convex-functions" title="Permalink to this headline">#</a></h2>
 <p>We can show that a function is convex by applying the definition. However, in practice it’s useful to rely on a couple of properties that allow to quickly assess whether a function is convex. First of all, there are some very basic convex functions, like affine functions and norms.</p>
-<div class="proof lemma admonition" id="lemma-5">
+<div class="proof lemma admonition" id="lemma-6">
 <p class="admonition-title"><span class="caption-number">Lemma 1 </span></p>
 <section class="lemma-content" id="proof-content">
 <p>Every norm <span class="math notranslate nohighlight">\(\lVert\cdot\rVert:\mathbb{R}^d\rightarrow \mathbb{R}_+\)</span> is a convex function.</p>
@@ -736,7 +758,7 @@ Hence <span class="math notranslate nohighlight">\(x_{loc}\)</span> is not a loc
 </div>
 <p>The plot below shows the graphs of the <span class="math notranslate nohighlight">\(L_p\)</span> norm, which looks the same for <span class="math notranslate nohighlight">\(x\in\mathbb{R}\)</span>, regardless of <span class="math notranslate nohighlight">\(p\)</span> because <span class="math notranslate nohighlight">\(\lVert x\rVert = \sqrt[p]{\lvert x\rvert^p} = \lvert x\rvert\)</span>. We can clearly observe the typical convex function shape.</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-afed38ba647c36263b9408adc9ed01f6d257edf2.svg" alt="Figure made with TikZ" /></p>
-</div><div class="proof lemma admonition" id="lemma-6">
+</div><div class="proof lemma admonition" id="lemma-7">
 <p class="admonition-title"><span class="caption-number">Lemma 2 </span></p>
 <section class="lemma-content" id="proof-content">
 <p>The squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x})=\lVert\vvec{x}\rVert^2\)</span> is convex.</p>
@@ -778,7 +800,7 @@ Hence <span class="math notranslate nohighlight">\(x_{loc}\)</span> is not a loc
 <p>This concludes what we wanted to show.</p>
 </div>
 </div>
-<div class="proof lemma admonition" id="lemma-7">
+<div class="proof lemma admonition" id="lemma-8">
 <p class="admonition-title"><span class="caption-number">Lemma 3 </span></p>
 <section class="lemma-content" id="proof-content">
 <p>Every linear function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> is convex and concave (that is -<span class="math notranslate nohighlight">\(f\)</span> is convex).</p>
@@ -794,7 +816,7 @@ Hence <span class="math notranslate nohighlight">\(x_{loc}\)</span> is not a loc
 <p>The plot below shows the graph of a linear function. We can see how this is a special case, since any line connecting two function values lie exactly on the graph.</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-0fe7078480b8292bcdbcd79f87ba42a61b124934.svg" alt="Figure made with TikZ" /></p>
 </div><p>Further, there are some specific compositions of functions that result in convex functions.</p>
-<div class="proof lemma admonition" id="lemma-8">
+<div class="proof lemma admonition" id="lemma-9">
 <p class="admonition-title"><span class="caption-number">Lemma 4 </span></p>
 <section class="lemma-content" id="proof-content">
 <p>Nonnegative weighted sums of convex functions are convex:<br />
@@ -807,7 +829,7 @@ is convex.</p>
 </div><div class="proof admonition" id="proof">
 <p>Proof. Exercise</p>
 </div>
-<div class="proof lemma admonition" id="lemma-9">
+<div class="proof lemma admonition" id="lemma-10">
 <p class="admonition-title"><span class="caption-number">Lemma 5 </span></p>
 <section class="lemma-content" id="proof-content">
 <p>If <span class="math notranslate nohighlight">\(g:\mathbb{R}^d\rightarrow \mathbb{R}^k\)</span> is an affine map (that is, <span class="math notranslate nohighlight">\(g\)</span> has the form <span class="math notranslate nohighlight">\(g(\vvec{x})=A\vvec{x}+\vvec{b}\)</span> for a matrix <span class="math notranslate nohighlight">\(A\)</span> and vector <span class="math notranslate nohighlight">\(\vvec{b}\)</span>), and <span class="math notranslate nohighlight">\(f:\mathbb{R}^k\rightarrow \mathbb{R}\)</span> is a convex function, then the composition
@@ -849,17 +871,17 @@ is a convex function.</p>
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="optimization_numerical.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="optimization_problems.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Numerical Optimization</p>
+            <p class="prev-next-title">Optimization Problems</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="optimization_gradients.html" title="next page">
+    <a class='right-next' id="next-link" href="optimization_analytic.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Matrix Derivatives</p>
+        <p class="prev-next-title">Analytic Solutions</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

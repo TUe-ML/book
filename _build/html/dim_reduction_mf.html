@@ -165,13 +165,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_numerical.html">
-     Numerical Optimization
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_convex.html">
-     Convex Optimization
+    <a class="reference internal" href="optimization_analytic.html">
+     Analytic Solutions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
     </a>
    </li>
    <li class="toctree-l2">
@@ -873,8 +878,8 @@ Likewise, we identify a second pattern of movies that is popular among the group
 <p class="admonition-title">Task (Rank-r Matrix Factorization)</p>
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> and a rank <span class="math notranslate nohighlight">\(r&lt;\min\{n,d\}\)</span>.</p>
 <p><strong>Find</strong> matrices <span class="math notranslate nohighlight">\(X\in \mathbb{R}^{d\times r}\)</span> and <span class="math notranslate nohighlight">\(Y\in\mathbb{R}^{n\times r}\)</span> whose product approximates the data matrix:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-94fb7a54-2115-4154-851f-39aa175ed15b">
-<span class="eqno">(107)<a class="headerlink" href="#equation-94fb7a54-2115-4154-851f-39aa175ed15b" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-97aa8146-b858-496a-923c-451db5f70bb4">
+<span class="eqno">(107)<a class="headerlink" href="#equation-97aa8146-b858-496a-923c-451db5f70bb4" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{X,Y}&amp;\lVert D- YX^\top\rVert^2 &amp; \text{s.t. } X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}
 \end{align}\]</div>
 <p><strong>Return</strong> the low-dimensional approximation of the data <span class="math notranslate nohighlight">\((X,Y)\)</span>.</p>
@@ -895,8 +900,8 @@ First, we analyze properties of the objective, as it turns out, the low-dimensio
 <div class="toggle docutils container">
 <div class="proof admonition" id="proof">
 <p>Proof. We show that the <span class="math notranslate nohighlight">\(RSS(X,Y)\)</span> is not a convex function. Therefore we assume first that the <span class="math notranslate nohighlight">\(RSS(X,Y)\)</span> is a convex function and show then that this assumption leads to a contradiction. Assuming that the <span class="math notranslate nohighlight">\(RSS(X,Y)\)</span> is a convex function means that the following inequality has to hold for all matrices <span class="math notranslate nohighlight">\(X_1,X_2\in\mathbb{R}^{d\times r}\)</span> and <span class="math notranslate nohighlight">\(Y_1,Y_2\in\mathbb{R}^{n\times r}\)</span> and <span class="math notranslate nohighlight">\(\alpha\in[0,1]\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-17da1456-f333-4a26-9896-05c8ab9a0932">
-<span class="eqno">(108)<a class="headerlink" href="#equation-17da1456-f333-4a26-9896-05c8ab9a0932" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-320ffac3-9ac3-4bb7-a1e6-0e28d92a629b">
+<span class="eqno">(108)<a class="headerlink" href="#equation-320ffac3-9ac3-4bb7-a1e6-0e28d92a629b" title="Permalink to this equation">#</a></span>\[\begin{align}
         RSS(\alpha X_1+ (1-\alpha)X_2,\alpha Y_1 + (1-\alpha)Y_2) \leq \alpha RSS(X_1,Y_1) + (1-\alpha)RSS(X_2,Y_2).
 \end{align}\]</div>
 <p>For any global minimizer <span class="math notranslate nohighlight">\((X,Y)\)</span> of the rank-<span class="math notranslate nohighlight">\(r\)</span> MF problem, <span class="math notranslate nohighlight">\((\gamma X, \frac{1}{\gamma} Y)\)</span> is also a global minimizer for <span class="math notranslate nohighlight">\(\gamma\neq 0\)</span>.
@@ -912,7 +917,7 @@ However, for <span class="math notranslate nohighlight">\(\alpha=1/2\)</span> th
 </div>
 <p>We observe from the proof that there are infinitely many global minimizers for the low-dimensional matrix factorization task. Let’s explore this set of global minimizers by means of an example in one dimension.</p>
 <div class="proof example admonition" id="example-1">
-<p class="admonition-title"><span class="caption-number">Example 23 </span> (One-dimensional matrix factorization   )</p>
+<p class="admonition-title"><span class="caption-number">Example 24 </span> (One-dimensional matrix factorization   )</p>
 <section class="example-content" id="proof-content">
 <p>The most <em>easy</em> case of a low-dimensional matrix factorization is the factorization of a single number. Let’s take for example the factorization of the number one into a product of two factors <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span>, having the objective function  <span class="math notranslate nohighlight">\(f(x_1,x_2) = (1-x_1x_2)^2\)</span>. We plot the graph of the objective function together with three solutions: <span class="math notranslate nohighlight">\((x_1,x_2)=(2,0.5)\)</span>, <span class="math notranslate nohighlight">\((1,1)\)</span>, and <span class="math notranslate nohighlight">\((0.5,2)\)</span>.</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-8e5b26bf64acbe9c637716e4bc0ecf64fe70aafb.svg" alt="Figure made with TikZ" /></p>
@@ -926,13 +931,13 @@ However, for <span class="math notranslate nohighlight">\(\alpha=1/2\)</span> th
 <p class="admonition-title"><span class="caption-number">Theorem 26 </span> (Truncated SVD)</p>
 <section class="theorem-content" id="proof-content">
 <p>Let <span class="math notranslate nohighlight">\(D=U\Sigma V^\top\in\mathbb{R}^{n\times d}\)</span> be the singular decomposition of <span class="math notranslate nohighlight">\(D\)</span>. Then the global minimizers <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>  of the rank-<span class="math notranslate nohighlight">\(r\)</span> MF problem</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d87683f2-b4df-4848-89f7-66d72f954030">
-<span class="eqno">(109)<a class="headerlink" href="#equation-d87683f2-b4df-4848-89f7-66d72f954030" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-244980d3-902c-4384-bda4-7a253cda7599">
+<span class="eqno">(109)<a class="headerlink" href="#equation-244980d3-902c-4384-bda4-7a253cda7599" title="Permalink to this equation">#</a></span>\[\begin{align}
 \min_{X,Y}\lVert D-YX^\top\rVert^2 \text{s.t. } X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}.
 \end{align}\]</div>
 <p>satisfy</p>
-<div class="amsmath math notranslate nohighlight" id="equation-22c534d9-908e-46dc-9015-3dca96c01079">
-<span class="eqno">(110)<a class="headerlink" href="#equation-22c534d9-908e-46dc-9015-3dca96c01079" title="Permalink to this equation">#</a></span>\[\begin{align} 
+<div class="amsmath math notranslate nohighlight" id="equation-b4cecb59-8e17-4cb9-942d-3e80bbd73796">
+<span class="eqno">(110)<a class="headerlink" href="#equation-b4cecb59-8e17-4cb9-942d-3e80bbd73796" title="Permalink to this equation">#</a></span>\[\begin{align} 
 YX^\top = U_{\cdot \mathcal{R}}\Sigma_{\mathcal{R}\mathcal{R}}V_{\cdot \mathcal{R}}^\top, \text{ where }\mathcal{R}=\{1,\ldots, r\}.
 \end{align}\]</div>
 </section>
@@ -1097,8 +1102,8 @@ Fill missing values with the mean value and compute the truncated SVD.</p>
 </div>
 </div>
 </div>
-<div class="amsmath math notranslate nohighlight" id="equation-bceebaa1-5aee-4a5d-8f1c-609d33900aae">
-<span class="eqno">(111)<a class="headerlink" href="#equation-bceebaa1-5aee-4a5d-8f1c-609d33900aae" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-1e0e4300-e0a9-4567-9828-1bcd9c157c49">
+<span class="eqno">(111)<a class="headerlink" href="#equation-1e0e4300-e0a9-4567-9828-1bcd9c157c49" title="Permalink to this equation">#</a></span>\[\begin{align}
   \begin{pmatrix}
     5 &amp; \mu &amp; 1 &amp; 1 \\
     \mu &amp; 1 &amp; 5 &amp; \mu  \\\
@@ -1122,8 +1127,8 @@ Fill missing values with the mean value and compute the truncated SVD.</p>
 <h2>Interpretation of the Factorization<a class="headerlink" href="#interpretation-of-the-factorization" title="Permalink to this headline">#</a></h2>
 <p>The approximation matrix represented by the matrix product is composed by the two outer products (because the factorization rank is two). We visualize here the matrix decomposition by means of colors. The more saturated the color, the  higher is the absolute value of the corresponding element in the matrix. Positive values are green and negative values are pink.<br />
 The visualization makes the grid structure apparent which is induced by the outer product.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c955c5a9-fede-4bbd-935f-1c262dd6213e">
-<span class="eqno">(112)<a class="headerlink" href="#equation-c955c5a9-fede-4bbd-935f-1c262dd6213e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-10138930-0e45-4947-814c-1518463d4f46">
+<span class="eqno">(112)<a class="headerlink" href="#equation-10138930-0e45-4947-814c-1518463d4f46" title="Permalink to this equation">#</a></span>\[\begin{align}
   \begin{pmatrix}
     5 &amp; \mu &amp; 1 &amp; 1 \\
     \mu &amp; 1 &amp; 5 &amp; \mu  \\\
@@ -1147,8 +1152,8 @@ The visualization makes the grid structure apparent which is induced by the oute
   \end{pmatrix}
 \end{align}\]</div>
 <p>Every user’s preferences are approximated by a linear combination of the rows in the second matrix:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9fc5c33a-d576-40f0-bd70-9c8128945455">
-<span class="eqno">(113)<a class="headerlink" href="#equation-9fc5c33a-d576-40f0-bd70-9c8128945455" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e754d06b-0995-444e-8a3b-c3f8ec820c73">
+<span class="eqno">(113)<a class="headerlink" href="#equation-e754d06b-0995-444e-8a3b-c3f8ec820c73" title="Permalink to this equation">#</a></span>\[\begin{align}
     \begin{pmatrix}
         5 &amp; \mu &amp; 1 &amp; 1 
     \end{pmatrix}
@@ -1271,8 +1276,8 @@ The following approach has been used in the Netflix Price 2009 competition and m
 <p class="admonition-title">Task (Rank-r Matrix Factorization with Missing Values)</p>
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> having observed entries <span class="math notranslate nohighlight">\(D_{ik}\)</span> for <span class="math notranslate nohighlight">\((i,k)\in\mathcal{O}\subseteq \{1,\ldots,n\}\times \{1,\ldots d\}\)</span> the set of observed matrix entries, and a rank <span class="math notranslate nohighlight">\(r&lt;\min\{n,d\}\)</span>.</p>
 <p><strong>Find</strong> matrices <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{d\times r}\)</span> and <span class="math notranslate nohighlight">\(Y\in\mathbb{R}^{n\times r}\)</span> whose product approximates the data matrix only on observed entries, indicated by <span class="math notranslate nohighlight">\(\mathbb{1}_{\mathcal{O}}\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6d614733-2b7e-41b2-bfa0-9688f12b5eb0">
-<span class="eqno">(114)<a class="headerlink" href="#equation-6d614733-2b7e-41b2-bfa0-9688f12b5eb0" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-09ace492-0729-4103-b152-bf723dbc6006">
+<span class="eqno">(114)<a class="headerlink" href="#equation-09ace492-0729-4103-b152-bf723dbc6006" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{X,Y}&amp;\lVert \mathbb{1}_{\mathcal{O}}\circ(D- YX^\top)\rVert^2 =\sum_{(i,k)\in\mathcal{O}}(D_{ik}-Y_{i\cdot}X_{k\cdot}^\top)^2\\ 
     \text{s.t. }&amp; X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}
 \end{align}\]</div>

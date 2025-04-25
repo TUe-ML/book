@@ -165,13 +165,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_numerical.html">
-     Numerical Optimization
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_convex.html">
-     Convex Optimization
+    <a class="reference internal" href="optimization_analytic.html">
+     Analytic Solutions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
     </a>
    </li>
    <li class="toctree-l2">
@@ -630,8 +635,8 @@ title="Print to PDF"
 </figcaption>
 </figure>
 <p>Let <span class="math notranslate nohighlight">\( w^{\ell}_{i,j} \)</span> denote the artificial synaptic weight from the <span class="math notranslate nohighlight">\(i\)</span>-th unit in previous layer <span class="math notranslate nohighlight">\( \ell-1 \)</span> to the <span class="math notranslate nohighlight">\(j\)</span>-th unit in the current layer <span class="math notranslate nohighlight">\( \ell\)</span> and let vector <span class="math notranslate nohighlight">\( {\bf w}^{\ell}_{j} = \begin{bmatrix} w^{\ell}_{0,j} &amp; w^{\ell}_{1,j} &amp; \ldots &amp; w^{\ell}_{H_{\ell-1},j} \end{bmatrix}^{T}\)</span> collect all weights of the <span class="math notranslate nohighlight">\(j\)</span>-th unit at layer <span class="math notranslate nohighlight">\(\ell\)</span>. Additionally, for convenience, let <span class="math notranslate nohighlight">\( {\bf h}^{0} = \begin{bmatrix} 1 &amp; x_{1} &amp; x_{2} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> with <span class="math notranslate nohighlight">\( H_{0} = D \)</span> collect the observed features and let <span class="math notranslate nohighlight">\( {\bf h}^{\ell} = \begin{bmatrix} 1 &amp; h^{\ell}_{1} &amp; h^{\ell}_{2} &amp; \ldots &amp; h^{\ell}_{H_{\ell}} \end{bmatrix}^{T} \)</span> collect the embedded features for all <span class="math notranslate nohighlight">\( \ell \in \lbrace 1, \ldots, L \rbrace \)</span>. Thus, we can write the activation value of the <span class="math notranslate nohighlight">\(j\)</span>-th unit of the current layer <span class="math notranslate nohighlight">\( \ell \)</span> using vector notation as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9aa1814a-90dc-4d7c-81c1-c0d28229a53c">
-<span class="eqno">(77)<a class="headerlink" href="#equation-9aa1814a-90dc-4d7c-81c1-c0d28229a53c" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-b74f1438-1634-4ad9-a322-05d5471b9740">
+<span class="eqno">(77)<a class="headerlink" href="#equation-b74f1438-1634-4ad9-a322-05d5471b9740" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i} \nonumber \\
 &amp;=&amp; ({\bf w}_{j}^{\ell})^{T} {\bf h}^{\ell-1}. \nonumber
 \end{eqnarray}\]</div>
@@ -639,8 +644,8 @@ a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i
 \[ h^{\ell}_{j} = \phi_{\ell}\left( a^{\ell}_{j} \right). \]</div>
 </p>
 <p>Now, let the matrix <span class="math notranslate nohighlight">\( {\bf W}^{\ell} = \left[  w^{\ell}_{i,j} \right] \)</span> collect the weights of all units at the <span class="math notranslate nohighlight">\(\ell\)</span>-th layer such that its <span class="math notranslate nohighlight">\(j\)</span>-th column stores the weights associated with the <span class="math notranslate nohighlight">\(j\)</span>-th unit at layer <span class="math notranslate nohighlight">\(\ell\)</span>. Equivalently, we can write <span class="math notranslate nohighlight">\( {\bf W}^{\ell} = \begin{bmatrix} {\bf w}^{\ell}_{1} &amp; {\bf w}^{\ell}_{2} &amp; \ldots &amp; {\bf w}^{\ell}_{H_{\ell}} \end{bmatrix} \)</span>. Furthermore, let the vector <span class="math notranslate nohighlight">\( {\bf a}^{\ell} = \begin{bmatrix} a^{\ell}_{1} &amp; a^{\ell}_{2} &amp; \ldots &amp; a^{\ell}_{H_{\ell}} \end{bmatrix}^{T} \)</span> collect all activations <span class="math notranslate nohighlight">\(a^{\ell}_{j}\)</span> of layer <span class="math notranslate nohighlight">\(\ell\)</span>. Then, we can conveniently write <span class="math notranslate nohighlight">\({\bf a}^{\ell}\)</span> and <span class="math notranslate nohighlight">\( {\bf h}^{\ell} \)</span> as matrix-vector products</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ab815599-aa42-4998-bde6-af17dc884483">
-<span class="eqno">(78)<a class="headerlink" href="#equation-ab815599-aa42-4998-bde6-af17dc884483" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-22491dbb-ef41-4fff-96ce-9ccea677d58f">
+<span class="eqno">(78)<a class="headerlink" href="#equation-22491dbb-ef41-4fff-96ce-9ccea677d58f" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf a}^{\ell} &amp;=&amp; ({\bf W}^{\ell})^{T} \, {\bf h}^{\ell-1} \nonumber \\
 {\bf h}^{\ell} &amp;=&amp; \phi_{\ell}({\bf a}^{\ell}), \nonumber
 \end{eqnarray}\]</div>

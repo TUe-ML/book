@@ -165,13 +165,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_numerical.html">
-     Numerical Optimization
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_convex.html">
-     Convex Optimization
+    <a class="reference internal" href="optimization_analytic.html">
+     Analytic Solutions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
     </a>
    </li>
    <li class="toctree-l2">
@@ -698,8 +703,8 @@ the kernel matrix is given by
 <p class="admonition-title">Task (Kernel <span class="math notranslate nohighlight">\(k\)</span>-means)</p>
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>, a feature transformation <span class="math notranslate nohighlight">\(\phi:\mathbb{R}^{d}\rightarrow \mathbb{R}^p\)</span> mapping into a <span class="math notranslate nohighlight">\(p\)</span>-dimensional feature space, where <span class="math notranslate nohighlight">\(p\in\mathbb{N}\cup\{\infty\}\)</span>, and the number of clusters <span class="math notranslate nohighlight">\(r\)</span>.<br />
 <strong>Find</strong> clusters indicated by the matrix <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span> which minimize the within cluster scatter in the transformed feature space</p>
-<div class="amsmath math notranslate nohighlight" id="equation-65a219a5-c60e-4994-a6d2-30dfda6b050f">
-<span class="eqno">(139)<a class="headerlink" href="#equation-65a219a5-c60e-4994-a6d2-30dfda6b050f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7c207a1f-29d4-4aff-936c-26bcc616ae41">
+<span class="eqno">(139)<a class="headerlink" href="#equation-7c207a1f-29d4-4aff-936c-26bcc616ae41" title="Permalink to this equation">#</a></span>\[\begin{align}
 \min_{Y} \|{\bm\phi}(D)-YX^\top\|^2 \text{  s.t. } X= {\bm\phi}(D^\top) Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMPhi}
 \end{align}\]</div>
 <p><strong>Return</strong> the clustering <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span></p>
@@ -713,8 +718,8 @@ the kernel matrix is given by
 <section class="theorem-content" id="proof-content">
 <p>Given a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>,
 the following objectives are equivalent <span class="math notranslate nohighlight">\(k\)</span>-means objectives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e5bf312a-c77c-49d8-9176-d78b197f85ed">
-<span class="eqno">(140)<a class="headerlink" href="#equation-e5bf312a-c77c-49d8-9176-d78b197f85ed" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a2df6b6f-6192-4102-94bf-19b649da8aeb">
+<span class="eqno">(140)<a class="headerlink" href="#equation-a2df6b6f-6192-4102-94bf-19b649da8aeb" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y} \lVert D-YX^\top\rVert^2 \text{  s.t. } X= D^\top Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:km}\\
 &amp;\max_{Y} \tr(Z^\top DD^\top Z)\qquad\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} \label{eq:kmeansTr}
 \end{align}\]</div>
@@ -768,8 +773,8 @@ Points within one cluster need to be similar:
 <section class="theorem-content" id="proof-content">
 <p>Given the kernel matrix <span class="math notranslate nohighlight">\(K={\bm\phi}(D){\bm\phi}(D)^\top\)</span>,
 the following objectives are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1fc86103-8512-481c-bb7f-c9596759ae2f">
-<span class="eqno">(141)<a class="headerlink" href="#equation-1fc86103-8512-481c-bb7f-c9596759ae2f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-842cef98-ba22-4ca1-9900-8920455cf0ae">
+<span class="eqno">(141)<a class="headerlink" href="#equation-842cef98-ba22-4ca1-9900-8920455cf0ae" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y} \|{\bm\phi}(D)-YX^\top\|^2 \text{  s.t. } X= {\bm\phi}(D^\top) Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMPhi1}\\
 &amp;\max_{Y} \tr(Z^\top K Z)\qquad\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMtr}
 \end{align}\]</div>
@@ -792,8 +797,8 @@ Kernel matrices are positive semi-definite!</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a kernel matrix and its symmetric decomposition <span class="math notranslate nohighlight">\(K=AA^\top\)</span>,
 the following objectives are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-257e9a35-42e4-4240-aeb2-01ef2351f166">
-<span class="eqno">(142)<a class="headerlink" href="#equation-257e9a35-42e4-4240-aeb2-01ef2351f166" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e5be0274-0e7a-47fd-8a4c-ad0867b1097f">
+<span class="eqno">(142)<a class="headerlink" href="#equation-e5be0274-0e7a-47fd-8a4c-ad0867b1097f" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y}\ \|A-YX^\top\|^2 &amp;\text{ s.t. } X= A^\top Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r}\label{eq:kmeansA} \\
 &amp;\max_{Y}\ \tr(Z^\top K Z)&amp;\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} 
 \end{align}\]</div>

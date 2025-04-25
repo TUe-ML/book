@@ -165,13 +165,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_numerical.html">
-     Numerical Optimization
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="optimization_convex.html">
-     Convex Optimization
+    <a class="reference internal" href="optimization_analytic.html">
+     Analytic Solutions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
     </a>
    </li>
    <li class="toctree-l2">
@@ -681,8 +686,8 @@ title="Print to PDF"
 <p class="admonition-title">Task (Ridge Regression)</p>
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>, a target vector <span class="math notranslate nohighlight">\(\vvec{y}\in\mathbb{R}^n\)</span>, the design matrix <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{n\times p}\)</span>, where <span class="math notranslate nohighlight">\(X_{i\cdot}=\bm\phi(D_{i\cdot}^\top)^\top\)</span> and a regularization weight <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span>.<br />
 <strong>Find</strong> the regression vector <span class="math notranslate nohighlight">\(\bm\beta\)</span>, solving the following objective</p>
-<div class="amsmath math notranslate nohighlight" id="equation-843ccf60-4765-4526-9ebd-d1e7c50d80d1">
-<span class="eqno">(22)<a class="headerlink" href="#equation-843ccf60-4765-4526-9ebd-d1e7c50d80d1" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-615ff8e6-d4d1-43fd-9f60-8fcc05366a27">
+<span class="eqno">(22)<a class="headerlink" href="#equation-615ff8e6-d4d1-43fd-9f60-8fcc05366a27" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_2}(\bm{\beta})&amp;= \lVert \vvec{y}-X\bm\beta\rVert^2 +\lambda \lVert\bm{\beta}\rVert^2. 
 \end{align}\]</div>
 <p><strong>Return</strong> the predictor function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec{x})^\top\bm\beta\)</span></p>
@@ -707,8 +712,8 @@ title="Print to PDF"
 </section>
 </div><div class="proof admonition" id="proof">
 <p>Proof. Let <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\)</span> be the singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span>, then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7cd86003-f5f6-40e9-9efb-c470ac66dd5e">
-<span class="eqno">(24)<a class="headerlink" href="#equation-7cd86003-f5f6-40e9-9efb-c470ac66dd5e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c6a4683f-71a5-4a59-ba9d-73d5fdb3d517">
+<span class="eqno">(24)<a class="headerlink" href="#equation-c6a4683f-71a5-4a59-ba9d-73d5fdb3d517" title="Permalink to this equation">#</a></span>\[\begin{align}
     X^\top X+\lambda I 
     &amp;= V(\Sigma^\top\Sigma +\lambda I )V^\top
 \end{align}\]</div>
@@ -795,7 +800,7 @@ title="Print to PDF"
 For <span class="math notranslate nohighlight">\(\lambda\rightarrow 0\)</span>, the diagonal matrix above converges to <span class="math notranslate nohighlight">\(\Sigma_r^{-1}\)</span>.</p>
 </div>
 </div>
-<p>Let’s look again at the plot of <a class="reference internal" href="regression_optimization.html#example_reg_p_larger_n">Example 17</a>. The regression function that we learn has four parameters, but we have only three data points. Hence, we have <span class="math notranslate nohighlight">\(p-r=1\)</span> and our regression solution vectors are computed as <span class="math notranslate nohighlight">\(\beta=V\mathbf{w}\)</span> where <span class="math notranslate nohighlight">\(\vvec{w}=\begin{pmatrix}\Sigma_r^{-1} U_r^\top \vvec{y}\\ w_4\end{pmatrix}\)</span> and <span class="math notranslate nohighlight">\(w_4\in\mathbb{R}\)</span>. If <span class="math notranslate nohighlight">\(w_4=0\)</span>, then the resulting <span class="math notranslate nohighlight">\(\beta\)</span> is the one that ridge regression converges to when <span class="math notranslate nohighlight">\(\lambda\rightarrow 0\)</span>. We plot now the resulting regression functions, depending on the value of <span class="math notranslate nohighlight">\(w_4\)</span> and get the following:</p>
+<p>Let’s look again at the plot of <a class="reference internal" href="regression_optimization.html#example_reg_p_larger_n">Example 18</a>. The regression function that we learn has four parameters, but we have only three data points. Hence, we have <span class="math notranslate nohighlight">\(p-r=1\)</span> and our regression solution vectors are computed as <span class="math notranslate nohighlight">\(\beta=V\mathbf{w}\)</span> where <span class="math notranslate nohighlight">\(\vvec{w}=\begin{pmatrix}\Sigma_r^{-1} U_r^\top \vvec{y}\\ w_4\end{pmatrix}\)</span> and <span class="math notranslate nohighlight">\(w_4\in\mathbb{R}\)</span>. If <span class="math notranslate nohighlight">\(w_4=0\)</span>, then the resulting <span class="math notranslate nohighlight">\(\beta\)</span> is the one that ridge regression converges to when <span class="math notranslate nohighlight">\(\lambda\rightarrow 0\)</span>. We plot now the resulting regression functions, depending on the value of <span class="math notranslate nohighlight">\(w_4\)</span> and get the following:</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -837,7 +842,7 @@ For <span class="math notranslate nohighlight">\(\lambda\rightarrow 0\)</span>, 
 </section>
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">#</a></h2>
-<p>Let’s use again <a class="reference internal" href="regression_optimization.html#example_reg_p_larger_n">Example 17</a>, but now we apply ridge regression with varying regularization weights. We implement a ridge regression solver, returning the regression parameter vector <span class="math notranslate nohighlight">\(\beta_{L_2}\)</span> for a given design matrix <span class="math notranslate nohighlight">\(X\)</span>, target vector <span class="math notranslate nohighlight">\(\vvec{y}\)</span> and regularization weight <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<p>Let’s use again <a class="reference internal" href="regression_optimization.html#example_reg_p_larger_n">Example 18</a>, but now we apply ridge regression with varying regularization weights. We implement a ridge regression solver, returning the regression parameter vector <span class="math notranslate nohighlight">\(\beta_{L_2}\)</span> for a given design matrix <span class="math notranslate nohighlight">\(X\)</span>, target vector <span class="math notranslate nohighlight">\(\vvec{y}\)</span> and regularization weight <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>

@@ -13,8 +13,9 @@ chapters:
 - file: optimization
   sections:
   - file: optimization_problems
-  - file: optimization_numerical
   - file: optimization_convex
+  - file: optimization_analytic
+  - file: optimization_numerical
   - file: optimization_gradients
   - file: optimization_exercises
 - file: regression
