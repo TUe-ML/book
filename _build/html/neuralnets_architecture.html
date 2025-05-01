@@ -1,0 +1,872 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Architecture &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Function approximator" href="neuralnets_func_approx.html" />
+    <link rel="prev" title="From Linear Models to Neural Networks" href="neuralnets_intro.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Mining and Machine Learning Jupyter Book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notation.html">
+   Notation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="linalg.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_spaces.html">
+     Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_normed_vs.html">
+     Normed Vector Spaces
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="linalg_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="optimization.html">
+   Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_problems.html">
+     Optimization Problems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_convex.html">
+     Convex Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_analytic.html">
+     Analytic Solutions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_numerical.html">
+     Numerical Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_gradients.html">
+     Matrix Derivatives
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="optimization_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="regression.html">
+   Regression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_objective.html">
+     Regression Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_functions.html">
+     Regression Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_optimization.html">
+     Minimizing the RSS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_bias_var.html">
+     The Bias-Variance Tradeoff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_sparse.html">
+     The Sparse Regression Task
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_ridge.html">
+     Ridge Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_lasso.html">
+     Lasso
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_L1vsL2.html">
+     L1 vs L2 Regularization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="regression_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="classification.html">
+   Classification
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_problem.html">
+     Classification Objective
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_knn.html">
+     K-Nearest Neighbor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_naive_bayes.html">
+     Naive Bayes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_decision_trees.html">
+     Decision Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_random_forests.html">
+     Random Forests
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_svms.html">
+     Support Vector Machines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_kernel_svm.html">
+     Kernel SVM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_evaluation.html">
+     Evaluation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classification_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="neuralnets.html">
+   Neural Networks
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_intro.html">
+     From Linear Models to Neural Networks
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Architecture
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_func_approx.html">
+     Function approximator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     Multi-Layer Perceptrons
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="dim_reduction.html">
+   Dimensionality Reduction Techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_mf.html">
+     Low Rank Matrix Factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_matrix_completion.html">
+     Matrix Completion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_pca.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dim_reduction_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means.html">
+     k-Means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_k_means_mf.html">
+     k-Means is MF
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kernel_kmeans.html">
+     Kernel k-means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_spectral.html">
+     Spectral Clustering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_exercises.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fneuralnets_architecture.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/20214358/dmml/edit/master/neuralnets_architecture.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/neuralnets_architecture.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Architecture
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convolutional-neural-networks-cnns">
+   Convolutional Neural Networks (CNNs)
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#skip-connections-and-deep-architectures">
+   Skip Connections and Deep Architectures
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Architecture</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Architecture
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convolutional-neural-networks-cnns">
+   Convolutional Neural Networks (CNNs)
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#skip-connections-and-deep-architectures">
+   Skip Connections and Deep Architectures
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="architecture">
+<h1>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">#</a></h1>
+<p>The artificial neuron unit is the building block of ANNs. Thus, let us precisely model its behavior. The output value <span class="math notranslate nohighlight">\( \hat{y} \)</span> of an arbitrary neuron with <span class="math notranslate nohighlight">\( D \)</span> inputs is computed as</p>
+<div class="math notranslate nohighlight" id="equation-neuron-output1">
+<span class="eqno">(59)<a class="headerlink" href="#equation-neuron-output1" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{eqnarray}
+\hat{y} &amp;=&amp; \phi(a) \nonumber \\
+&amp;=&amp; \phi \left( \sum_{i=1}^{D} w_{i} x_{i} + b \right),
+\end{eqnarray}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\( x_{i} \)</span> is the input value (or feature) from the <span class="math notranslate nohighlight">\( i \)</span>-th previous neuron, <span class="math notranslate nohighlight">\( w_{i} \)</span> is the weight associated with the <span class="math notranslate nohighlight">\( i \)</span>-th input, <span class="math notranslate nohighlight">\( b \)</span> is a bias term, <span class="math notranslate nohighlight">\( \phi(\cdot) \)</span> is a non-linear activation function and <span class="math notranslate nohighlight">\( a = \sum_{i=1}^{D} w_{i} x_{i} + b  \)</span> is the activation. Alternatively, let the vector <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{1} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> collect the input values from the <span class="math notranslate nohighlight">\( D \)</span> previous neurons and let <span class="math notranslate nohighlight">\( {\bf w} = \begin{bmatrix} w_{1} &amp; \ldots &amp; w_{D} \end{bmatrix}^{T} \)</span> collect the corresponding weights. We can write then the output value as</p>
+<div class="math notranslate nohighlight" id="equation-neuron-output2">
+<span class="eqno">(60)<a class="headerlink" href="#equation-neuron-output2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\hat{y} = \phi \left( {\bf w}^{T} {\bf x} + b \right).
+\end{equation}\]</div>
+<p>Note therefore that <span class="math notranslate nohighlight">\( {\bf w}^{T} {\bf x} + b = 0 \)</span> defines a hyperplane over the <span class="math notranslate nohighlight">\(D\)</span>-dimensional input space. For convenience, we can further rewrite <a class="reference internal" href="#equation-neuron-output1">(59)</a> by making the bias term implicit. More precisely, we absorb the bias into the weights by making <span class="math notranslate nohighlight">\( w_{0} = b \)</span> and create a new dummy input <span class="math notranslate nohighlight">\( x_{0} = 1 \)</span>. Thus, we can write</p>
+<div class="math notranslate nohighlight" id="equation-neuron-output3">
+<span class="eqno">(61)<a class="headerlink" href="#equation-neuron-output3" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\hat{y} = \phi \left( \sum_{i=0}^{D} w_{i} x_{i} \right).
+\end{equation}\]</div>
+<p>More compactly, we can rewrite <a class="reference internal" href="#equation-neuron-output3">(61)</a> in vector notation as</p>
+<div class="math notranslate nohighlight" id="equation-neuron-output4">
+<span class="eqno">(62)<a class="headerlink" href="#equation-neuron-output4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\hat{y} = \phi \left( {\bf w}^{T} {\bf x} \right),
+\end{equation}\]</div>
+<p>where the vectors were redefined such that <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{0} &amp; x_{1} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> and <span class="math notranslate nohighlight">\( {\bf w} = \begin{bmatrix} w_{0} &amp; w_{1} &amp; \ldots &amp; w_{D} \end{bmatrix}^{T} \)</span>. That is, the output value <span class="math notranslate nohighlight">\( \hat{y} \)</span> is an affine function <span class="math notranslate nohighlight">\( {\bf w}^{T} {\bf x} \)</span> of the inputs in <span class="math notranslate nohighlight">\( {\bf x} \)</span> (activation) followed by a non-linearity <span class="math notranslate nohighlight">\( \phi(\cdot) \)</span> (activation function).</p>
+<p><a class="reference internal" href="#computational-graph1a"><span class="std std-numref">Fig. 9</span></a> illustrates the neuron unit computation steps graphically.</p>
+<figure class="align-left" id="computational-graph1a">
+<a class="reference internal image-reference" href="_images/neuron_unit_computation_steps.png"><img alt="_images/neuron_unit_computation_steps.png" src="_images/neuron_unit_computation_steps.png" style="height: 480px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Computation steps of a neuron.</span><a class="headerlink" href="#computational-graph1a" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#computational-graph1b"><span class="std std-numref">Fig. 10</span></a> shows the graphical representation of a single neuron unit. Note that the computational graph of a single neuron in <a class="reference internal" href="#computational-graph1b"><span class="std std-numref">Fig. 10</span></a> omits the summation in <a class="reference internal" href="#computational-graph1a"><span class="std std-numref">Fig. 9</span></a> required to compute the activation <span class="math notranslate nohighlight">\(a\)</span>. Thus, we assume that the inward weighted input signals in <a class="reference internal" href="#computational-graph1b"><span class="std std-numref">Fig. 10</span></a> are all added up before applying the non-linearity <span class="math notranslate nohighlight">\( \phi(\cdot) \)</span>.</p>
+<figure class="align-left" id="computational-graph1b">
+<a class="reference internal image-reference" href="_images/neuron_unit_computational_graph.png"><img alt="_images/neuron_unit_computational_graph.png" src="_images/neuron_unit_computational_graph.png" style="height: 480px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Computational graph of a neuron.</span><a class="headerlink" href="#computational-graph1b" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>An ANN is simply a computational graph comprising multiple artificial neurons (see <a class="reference internal" href="#computational-graph2"><span class="std std-numref">Fig. 11</span></a>). Furthermore, the network topology is designed – one can play for example with the number hidden layers, number of units per layer and number of connections per unit – according to the specific task the network must perform e.g. indicate the class of objects on images. The task in turn is mapped into some arbitrarily complex function of the network inputs. Learning in this case consists in adjusting the network parameters (weights) such that the entire network approximates as good as possible the task function.</p>
+<figure class="align-left" id="computational-graph2">
+<a class="reference internal image-reference" href="_images/example_toy_ANN.png"><img alt="_images/example_toy_ANN.png" src="_images/example_toy_ANN.png" style="height: 320px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Computational graph representing a toy neuron network comprising four neuron units. The illustrated network computes a function <span class="math notranslate nohighlight">\( f: \mathbb{R}^{D} \rightarrow \mathbb{R} \)</span> of its inputs (features) collected by the vector <span class="math notranslate nohighlight">\( {\bf x} \)</span>. Note that <span class="math notranslate nohighlight">\( f(\cdot) \)</span> is an approximation to some task-related function that must be learned from data.</span><a class="headerlink" href="#computational-graph2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#computational-graph3"><span class="std std-numref">Fig. 12</span></a> shows the computational graph of a single hidden layer neural network with an <em>input</em> layer with <span class="math notranslate nohighlight">\(D\)</span> input units storing observed features <span class="math notranslate nohighlight">\( \lbrace x_{i} \rbrace \)</span>, a <em>hidden</em> layer with <span class="math notranslate nohighlight">\( H \)</span> non-linear units (symbol <span class="math notranslate nohighlight">\( \phi \)</span>) computing <em>unobserved</em> (or embedded) features <span class="math notranslate nohighlight">\( \lbrace h_{j} \rbrace \)</span> and an <em>output</em> layer with a single linear unit (symbol <span class="math notranslate nohighlight">\( \sum \)</span>) yielding the network output <span class="math notranslate nohighlight">\( \hat{y} = f({\bf x}) \)</span>.</p>
+<figure class="align-left" id="computational-graph3">
+<a class="reference internal image-reference" href="_images/single_layer_MLP.png"><img alt="_images/single_layer_MLP.png" src="_images/single_layer_MLP.png" style="height: 320px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Computational graph representing a single hidden layer neural network. Weights were omitted in the graph for the sake of clarity.</span><a class="headerlink" href="#computational-graph3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The <span class="math notranslate nohighlight">\(j\)</span>-th hidden unit computes the <em>unobserved</em> feature as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-dd6e8b19-df76-4368-b6f9-a45c4e61b7d7">
+<span class="eqno">(63)<a class="headerlink" href="#equation-dd6e8b19-df76-4368-b6f9-a45c4e61b7d7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+h_{j} = \phi \left( \sum_{i} w^{1}_{i,j} x_{i} \right). \nonumber
+\end{equation}\]</div>
+<p>Note that the superscript <span class="math notranslate nohighlight">\( 1 \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{1}_{i,j} \)</span> belongs to an unit at the <em>first</em> (hidden) layer. On the other hand, the subscripts <span class="math notranslate nohighlight">\( i,j \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{1}_{i,j} \)</span> corresponds to a synaptic connection between the <span class="math notranslate nohighlight">\(i\)</span>-th input unit and the <span class="math notranslate nohighlight">\(j\)</span>-th hidden unit. Lastly, the single output unit computes the network output as <div class="math notranslate nohighlight">
+\[ \hat{y} = \sum_{j} w^{2}_{j,1} h_j, \]</div>
+ where the superscript <span class="math notranslate nohighlight">\( 2 \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{2}_{j,1} \)</span> belongs to the single unit <span class="math notranslate nohighlight">\( 1 \)</span> at the <em>second</em> (output) layer.</p>
+<p>Alternatively, let the vectors <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{0} = 1 &amp; x_{1} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> and <span class="math notranslate nohighlight">\( {\bf w}_{j}^{1} = \begin{bmatrix} w^{1}_{0,j} &amp; w^{1}_{1,j} &amp; \ldots &amp; w^{1}_{D,j} \end{bmatrix}^{T} \)</span> collect respectively the observed features and the corresponding weights at the <span class="math notranslate nohighlight">\(j\)</span>-th unit of the single hidden layer <span class="math notranslate nohighlight">\( 1 \)</span>. The <span class="math notranslate nohighlight">\(j\)</span>-th <em>unobserved</em> (or embedded) feature can be rewritten then as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-45fb9657-7726-4201-874c-b849d1355f68">
+<span class="eqno">(64)<a class="headerlink" href="#equation-45fb9657-7726-4201-874c-b849d1355f68" title="Permalink to this equation">#</a></span>\[\begin{equation}
+h_{j} = \phi \left( ({\bf w}_{j}^{1})^{T} {\bf x} \right). \nonumber
+\end{equation}\]</div>
+<p>Analogously, let <span class="math notranslate nohighlight">\( {\bf h} = \begin{bmatrix} h_{1} &amp; h_{2} &amp; \ldots &amp; h_{H} \end{bmatrix}^{T} \)</span> collect the embedded features and let <span class="math notranslate nohighlight">\( {\bf w}_{1}^{2} = \begin{bmatrix} w^{2}_{1,1} &amp; w^{2}_{2,1} &amp; \ldots &amp; w^{2}_{H,1} \end{bmatrix}^{T} \)</span> collect the corresponding weights at the single unit of the output layer <span class="math notranslate nohighlight">\( 2 \)</span>, we can rewrite the network output as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f9ae4f12-3875-47e6-862f-18f6cb0f1962">
+<span class="eqno">(65)<a class="headerlink" href="#equation-f9ae4f12-3875-47e6-862f-18f6cb0f1962" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\hat{y} = ({\bf w}_{1}^{2})^{T} {\bf h}. \nonumber
+\end{equation}\]</div>
+<p>Now, let the matrices</p>
+<div class="amsmath math notranslate nohighlight" id="equation-028c2d48-8ddd-4180-971d-78b8b5935e70">
+<span class="eqno">(66)<a class="headerlink" href="#equation-028c2d48-8ddd-4180-971d-78b8b5935e70" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+{\bf W}^{1} &amp;=&amp; \begin{bmatrix} {\bf w}_{1}^{1} &amp; \ldots &amp; {\bf w}_{H}^{1} \end{bmatrix} \nonumber \\
+&amp;=&amp; \begin{bmatrix} 
+w^{1}_{0,1} &amp; \ldots &amp; w^{1}_{0,H} \\
+w^{1}_{1,1} &amp; \ldots &amp; w^{1}_{1,H} \\
+\vdots &amp;  &amp; \vdots \\
+w^{1}_{D,1} &amp; \ldots &amp; w^{1}_{D,H} \nonumber
+\end{bmatrix}
+\end{eqnarray}\]</div>
+<p>and</p>
+<div class="amsmath math notranslate nohighlight" id="equation-dc190298-04ec-4d7f-a1af-de528fa7f77a">
+<span class="eqno">(67)<a class="headerlink" href="#equation-dc190298-04ec-4d7f-a1af-de528fa7f77a" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+{\bf W}^{2} &amp;=&amp; \begin{bmatrix} {\bf w}_{1}^{2} \end{bmatrix} \nonumber \\
+&amp;=&amp; \begin{bmatrix} 
+w^{2}_{1,1} \\
+\vdots \\
+w^{2}_{H,1} \nonumber
+\end{bmatrix}
+\end{eqnarray}\]</div>
+<p>collect all weights at layers <span class="math notranslate nohighlight">\( 1 \)</span> and <span class="math notranslate nohighlight">\( 2 \)</span>, respectively, such that the <span class="math notranslate nohighlight">\(j\)</span>-th column stores the weights <span class="math notranslate nohighlight">\( \lbrace w^{\ell}_{\bullet,j} \rbrace \)</span> of the <span class="math notranslate nohighlight">\(j\)</span>-th unit at the corresponding layer <span class="math notranslate nohighlight">\( \ell \)</span>. We can further rewrite the network output in compact vector-matrix notation as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7b359a45-c491-407e-9098-0e43ca5ed803">
+<span class="eqno">(68)<a class="headerlink" href="#equation-7b359a45-c491-407e-9098-0e43ca5ed803" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+\hat{y} &amp;=&amp; ({\bf W}^{2})^{T} {\bf h} \nonumber \\
+&amp;=&amp; ({\bf W}^{2})^{T} \phi \left( {\bf a} \right) \nonumber \\
+&amp;=&amp; ({\bf W}^{2})^{T} \phi \left( ({\bf W}^{1})^{T} {\bf x} \right), \nonumber
+\end{eqnarray}\]</div>
+<p>in which the non-linearity is applied element-wise along the activation vector <span class="math notranslate nohighlight">\( {\bf a} = \begin{bmatrix} a_{1} &amp; a_{2} &amp; \ldots &amp; a_{H} \end{bmatrix}^{T} \)</span> such that <span class="math notranslate nohighlight">\( h_{j} = \phi(a_{j}) \)</span>, <span class="math notranslate nohighlight">\( \forall j \in \lbrace 1, \ldots, H \rbrace \)</span>. Therefore, the output of the single hidden layer network in <a class="reference internal" href="#computational-graph3"><span class="std std-numref">Fig. 12</span></a> is equivalent to applying an affine transformation <span class="math notranslate nohighlight">\( ({\bf W}^{1})^{T} {\bf x} \)</span> to the network inputs <span class="math notranslate nohighlight">\( {\bf x} \)</span> followed by a non-linearity <span class="math notranslate nohighlight">\( \phi \)</span> to obtain the embedded features <span class="math notranslate nohighlight">\( {\bf h} \)</span> followed by a new affine transformation <span class="math notranslate nohighlight">\( ({\bf W}^{2})^{T} {\bf h} \)</span> to obtain the final output <span class="math notranslate nohighlight">\( \hat{y} \)</span>.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The network capacity is determined by the number of network parameters (weights). As we increase the network capacity, we increase the network flexibility to fit the training examples. Going too far increasing the capacity and the network will overfit the training examples. On the other hand, the network will underfit the training examples with a too small capacity. In both cases, the network loses its ability to properly generalize, i.e. to provide a good approximation of the task-related function for unseen input patterns <span class="math notranslate nohighlight">\( {\bf x} \)</span> belonging, for instance, to a testing dataset.</p>
+</div>
+</section>
+<section id="convolutional-neural-networks-cnns">
+<h1>Convolutional Neural Networks (CNNs)<a class="headerlink" href="#convolutional-neural-networks-cnns" title="Permalink to this headline">#</a></h1>
+<p>For high-dimensional data like images, <strong>convolutional layers</strong> exploit local spatial structure:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Conv}(\mathbf{x}) = \sum_{i,j} \mathbf{K}_{i,j} \cdot \mathbf{x}_{i:i+k, j:j+k}
+\]</div>
+<p>CNNs use:</p>
+<ul class="simple">
+<li><p><strong>Local connectivity</strong> (kernels are small spatial patches)</p></li>
+<li><p><strong>Weight sharing</strong> (same kernel applied across the image)</p></li>
+<li><p><strong>Pooling</strong> to reduce dimensionality</p></li>
+</ul>
+<p>These principles allow CNNs to be efficient and translationally invariant.</p>
+</section>
+<section id="skip-connections-and-deep-architectures">
+<h1>Skip Connections and Deep Architectures<a class="headerlink" href="#skip-connections-and-deep-architectures" title="Permalink to this headline">#</a></h1>
+<p>Deeper networks can suffer from <strong>vanishing gradients</strong> or degraded performance. <strong>Skip connections</strong> (or residual connections) address this by allowing the gradient to flow more directly:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{h}_{l+1} = \phi(\mathbf{W}_l \mathbf{h}_l + \mathbf{b}_l) + \mathbf{h}_l
+\]</div>
+<p>This enables <strong>ResNets</strong> and other deep architectures to train effectively, and has become a standard design choice in modern networks.</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "None/None",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="neuralnets_intro.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">From Linear Models to Neural Networks</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="neuralnets_func_approx.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Function approximator</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sibylle Hess and Stiven Dias<br/>
+  
+      &copy; Copyright 2022. Eindhoven University of Technology.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

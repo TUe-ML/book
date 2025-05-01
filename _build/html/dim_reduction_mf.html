@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -704,7 +709,7 @@ title="Print to PDF"
 <figure class="align-center" id="netflix">
 <a class="reference internal image-reference" href="_images/Netflix_Screenshot.png"><img alt="_images/Netflix_Screenshot.png" src="_images/Netflix_Screenshot.png" style="height: 300px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 40 </span><span class="caption-text">Low rank matrix factorization can be used for recommender systems like Netflix</span><a class="headerlink" href="#netflix" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 33 </span><span class="caption-text">Low rank matrix factorization can be used for recommender systems like Netflix</span><a class="headerlink" href="#netflix" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Netflix gained its big popularity back in the days because it focused on its recommender system strength. They personalized content discovery, ensuring users stayed engaged by always having something new to watch. The task of <em>recommendation</em> is unsupervised, we don’t know the ground truth recommendations, as opposed to supervised tasks, where we have a label or target variable.  All we have are past user ratings, from which we try to derive common patterns that allow us to provide recommendations.</p>
@@ -887,7 +892,7 @@ Likewise, we identify a second pattern of movies that is popular among the group
 <p>Note that the Rank-r matrix factorization task is not directly suitable to return recommendations. It only describes the task to compress a given data matrix into a low-dimensional product. To provide recommendations, we need to fill in missing values. We will discuss later how we can do this with a low dimensional matrix factorization.<br />
 First, we analyze properties of the objective, as it turns out, the low-dimensional matrix factorization task is nonconvex.</p>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 25 </span></p>
+<p class="admonition-title"><span class="caption-number">Theorem 28 </span></p>
 <section class="theorem-content" id="proof-content">
 <p>The rank-<span class="math notranslate nohighlight">\(r\)</span> matrix factorization problem, defined for a matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\neq\mathbf{0}\)</span> and a rank <span class="math notranslate nohighlight">\(1\leq r&lt;\min\{n,d\}\)</span> as</p>
 <div class="amsmath math notranslate nohighlight">
@@ -917,7 +922,7 @@ However, for <span class="math notranslate nohighlight">\(\alpha=1/2\)</span> th
 </div>
 <p>We observe from the proof that there are infinitely many global minimizers for the low-dimensional matrix factorization task. Let’s explore this set of global minimizers by means of an example in one dimension.</p>
 <div class="proof example admonition" id="example-1">
-<p class="admonition-title"><span class="caption-number">Example 24 </span> (One-dimensional matrix factorization   )</p>
+<p class="admonition-title"><span class="caption-number">Example 23 </span> (One-dimensional matrix factorization   )</p>
 <section class="example-content" id="proof-content">
 <p>The most <em>easy</em> case of a low-dimensional matrix factorization is the factorization of a single number. Let’s take for example the factorization of the number one into a product of two factors <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span>, having the objective function  <span class="math notranslate nohighlight">\(f(x_1,x_2) = (1-x_1x_2)^2\)</span>. We plot the graph of the objective function together with three solutions: <span class="math notranslate nohighlight">\((x_1,x_2)=(2,0.5)\)</span>, <span class="math notranslate nohighlight">\((1,1)\)</span>, and <span class="math notranslate nohighlight">\((0.5,2)\)</span>.</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-8e5b26bf64acbe9c637716e4bc0ecf64fe70aafb.svg" alt="Figure made with TikZ" /></p>
@@ -928,7 +933,7 @@ However, for <span class="math notranslate nohighlight">\(\alpha=1/2\)</span> th
 <h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
 <p>In most cases, nonconvexity of an objective implies that we probably have to live with the fact that we can not determine the global minimum, and that we can only hope to get good local minima by numerical optimization methods such as gradient descent. The rank-<span class="math notranslate nohighlight">\(r\)</span> matrix factorization problem is here an exemption to the rule, since we can derive one global minimum by SVD.</p>
 <div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 26 </span> (Truncated SVD)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 29 </span> (Truncated SVD)</p>
 <section class="theorem-content" id="proof-content">
 <p>Let <span class="math notranslate nohighlight">\(D=U\Sigma V^\top\in\mathbb{R}^{n\times d}\)</span> be the singular decomposition of <span class="math notranslate nohighlight">\(D\)</span>. Then the global minimizers <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>  of the rank-<span class="math notranslate nohighlight">\(r\)</span> MF problem</p>
 <div class="amsmath math notranslate nohighlight" id="equation-244980d3-902c-4384-bda4-7a253cda7599">

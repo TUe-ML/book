@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -683,11 +688,11 @@ title="Print to PDF"
 <h1>Kernel SVM<a class="headerlink" href="#kernel-svm" title="Permalink to this headline">#</a></h1>
 <p>The classical Support Vector Machine (SVM) is a powerful linear classifier that provides a robust definition of a classigying hyperplane with the maximum margin hyperplane. However, in many real-world datasets, the classes are not linearly separable. This limits the applicability of the standard (linear) SVM.</p>
 <p>The typical machine learning way to apply linear models to nonlinear data is to define a feature transformation that makes the nonlinear data appear linear in the transformed feature space. Often, the transformed feature space is higher dimensional than the original feature space. We have seen this for example in regression: applying polynomial basis functions creates a design matrix that is higher dimensional than the data matrix. Applying the linear regression on the design matrix solves the nonlinear regression problem in the original feature space.</p>
-<p>For example, <a class="reference internal" href="#non-linear-transformation-fig"><span class="std std-numref">Fig. 10</span></a> illustrates how non-linearly separable classes can be transformed into a space where the classes are linearly separable.</p>
+<p>For example, <a class="reference internal" href="#non-linear-transformation-fig"><span class="std std-numref">Fig. 6</span></a> illustrates how non-linearly separable classes can be transformed into a space where the classes are linearly separable.</p>
 <figure class="align-left" id="non-linear-transformation-fig">
 <a class="reference internal image-reference" href="_images/degree2_monomials.png"><img alt="_images/degree2_monomials.png" src="_images/degree2_monomials.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Non-linear transformation <span class="math notranslate nohighlight">\(\phi: \mathbb{R}^2 \rightarrow \mathbb{R}^3 \)</span> mapping feature vectors <span class="math notranslate nohighlight">\( {\bf x}\in\mathbb{R}^2\)</span> to transformed feature vectors <span class="math notranslate nohighlight">\( {\bf z}\in\mathbb{R}^3\)</span> with the transformation <span class="math notranslate nohighlight">\( {\bf z} = \phi({\bf x}) = ( x_1^2 , \sqrt{2} x_1 x_2 , x_2^2 ) \)</span>.  (borrowed from <span id="id1">[<a class="reference internal" href="bibliography.html#id10">13</a>]</span>).</span><a class="headerlink" href="#non-linear-transformation-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Non-linear transformation <span class="math notranslate nohighlight">\(\phi: \mathbb{R}^2 \rightarrow \mathbb{R}^3 \)</span> mapping feature vectors <span class="math notranslate nohighlight">\( {\bf x}\in\mathbb{R}^2\)</span> to transformed feature vectors <span class="math notranslate nohighlight">\( {\bf z}\in\mathbb{R}^3\)</span> with the transformation <span class="math notranslate nohighlight">\( {\bf z} = \phi({\bf x}) = ( x_1^2 , \sqrt{2} x_1 x_2 , x_2^2 ) \)</span>.  (borrowed from <span id="id1">[<a class="reference internal" href="bibliography.html#id10">6</a>]</span>).</span><a class="headerlink" href="#non-linear-transformation-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The challenge of this approach is the high dimensionality that is often required to make classes linearly separable in the transformed feature space. The SVM dual objective enables here the application of the so-called kernel trick, that allows even for the efficient computation of infinite dimensional feature transformations.</p>
@@ -695,7 +700,7 @@ title="Print to PDF"
 <h2>Kernel trick<a class="headerlink" href="#kernel-trick" title="Permalink to this headline">#</a></h2>
 <p>The kernel trick is applicable when an objective can be formulated such that the only occurrences of data points are in inner products between data points <span class="math notranslate nohighlight">\(\vvec{x}_i^\top\vvec{x}_j\)</span>. The kernel trick is to replace the inner products with a kernel function <span class="math notranslate nohighlight">\(k(\vvec{x}_i,\vvec{x}_j)\)</span>. The kernel function represents an implicit computation of the inner product in a transformed feature space, that does not require the compuattion of the feature transformation itself: <span class="math notranslate nohighlight">\(k(\vvec{x}_i,\vvec{x}_j)=\phi(\vvec{x}_i)^\top\phi(\vvec{x}_j)\)</span>. The kernel function has an interpretation as a similarity measure between two vectors. Choosing a kernel is hence equivalent to choosing what kind of similarity measure is considered suitable for the classification task. Hnece, although we are dealing with very high-dimensional feature transformations that are not easy to understand, the inner product defined by the kernel has an interpretation as a similarity measure that still allows for understanding what the model is doing.</p>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 28 </span> (Kernel)</p>
+<p class="admonition-title"><span class="caption-number">Definition 29 </span> (Kernel)</p>
 <section class="definition-content" id="proof-content">
 <p>A <strong>kernel function</strong> <span class="math notranslate nohighlight">\(k:\mathbb{R}^d\times\mathbb{R}^d\rightarrow \mathbb{R}\)</span> maps two <span class="math notranslate nohighlight">\(d\)</span>-dimensional vectors to a nonnegative value that has an interpretation as an inner product similarity measure in a transformed feature space. That is, a feature transformation <span class="math notranslate nohighlight">\(\phi:\mathbb{R}^d\rightarrow \mathbb{R}^p\)</span> exists such that
 <div class="math notranslate nohighlight">
@@ -742,7 +747,7 @@ b^{\ast} &amp;= y_{i} - {{\bf w}^{\ast}}^\top {\bf x}_{i} \\
 \end{align*}\]</div>
 <p>Now, we can replace the linear kernel with any other kernel function and we can perform predictions for a kernel SVM without having to compute the feature transformation that defines the kernel.</p>
 <div class="proof definition admonition" id="definition-1">
-<p class="admonition-title"><span class="caption-number">Definition 29 </span> (kernel SVM)</p>
+<p class="admonition-title"><span class="caption-number">Definition 30 </span> (kernel SVM)</p>
 <section class="definition-content" id="proof-content">
 <p>An kernel SVM classifier for a binary classification problem (<span class="math notranslate nohighlight">\(y\in\{-1,1\}\)</span>) reflects the distance to the decision boundary in a transformed feature space <span class="math notranslate nohighlight">\(\vvec{w}^\top \phi(\vvec{x})+b=0\)</span>
 <div class="math notranslate nohighlight">
@@ -766,7 +771,7 @@ The class predictions are then computed as
 <h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
 <p>The quadratic program objective of the SVM (see Eq.<a class="reference internal" href="classification_svms.html#equation-svm-form10">(57)</a>) is perfect for applying a kernel. The data points occur in this objective only over the inner product in the computation of <span class="math notranslate nohighlight">\(DD^\top\)</span>, which computes the linear kernel matrix. We can replace <span class="math notranslate nohighlight">\(DD^\top\)</span> with a kernel matrix and obtain the kernel SVM objective</p>
 <div class="proof definition admonition" id="definition-2">
-<p class="admonition-title"><span class="caption-number">Definition 30 </span> (Quadratic Program Kernel Soft-Margin SVM)</p>
+<p class="admonition-title"><span class="caption-number">Definition 31 </span> (Quadratic Program Kernel Soft-Margin SVM)</p>
 <section class="definition-content" id="proof-content">
 <p>Given a kernel matrix <span class="math notranslate nohighlight">\(K\in\mathbb{R}^{n\times n}\)</span>. The optimization objective of the kernel soft-margin SVM is given by the following quadratic program</p>
 <div class="math notranslate nohighlight" id="equation-kernel-svm">

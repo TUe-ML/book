@@ -33,7 +33,7 @@
 # $$
 #   f(\vvec{x}^*)\leq f(\vvec{x}) \text{ for all } \vvec{x}\in\mathbb{R}^n
 # $$
-# A **local minimizer** is a vector $\vvec{x}_0$ satisfying
+# A **local minimizer** is a vector $\vvec{x}_0$ satisfying for an $\epsilon>0$
 # $$f(\vvec{x}_0)\leq f(\vvec{x}) \text{ for all } \vvec{x}\in\mathcal{N}_\epsilon(\vvec{x}_0),$$
 # where $\mathcal{N}_\epsilon(\vvec{x}_0) = \{\vvec{x}\in\mathbb{R}^n\vert \lVert x-x_0\rVert\leq \epsilon\}$
 # ```` 
@@ -44,7 +44,7 @@
 # ## Constrained Optimization Problems
 # ````{prf:definition} Constrained Objective
 # :label: constr_objective
-# Given an objective function $f:\mathbb{R}^d\rightarrow \mathbb{R}$ and constraint functions $c_i,g_k:\mathbb{R}^d\rightarrow \mathbb{R}$, then  the **objective** of an constrained optimization problem is
+# Given an objective function $f:\mathbb{R}^d\rightarrow \mathbb{R}$ and constraint functions $c_i,g_k:\mathbb{R}^d\rightarrow \mathbb{R}$, then  the **objective** of a constrained optimization problem is
 # \begin{align*}
 #     \min_{x\in\mathbb{R}^n}&\ f(\vvec{x}) \\
 #     \text{s.t. }& c_i(\vvec{x}) =0  &\text{ for } 1\leq i \leq m,\\
@@ -61,7 +61,7 @@
 # Boundary minimizers can be difficult to identify because traditional methods like the First-Order Necessary Condition (FONC) do not directly apply. However, by using the Lagrangian approach, we can transform a constrained objective into an (almost) unconstrained one, making it possible to find solutions at the boundary.
 # ````{prf:definition} Lagrangian
 # :label: lagrangian
-# Given a constrained optimization objective as in {prf:ref}`constr_objective`, then  the the **Lagrangian function** is defined as
+# Given a constrained optimization objective as in {prf:ref}`constr_objective`, then  the **Lagrangian function** is defined as
 # $$\mathcal{L}(\vvec{x},\bm\lambda,\bm\mu) = f(\vvec{x}) - \sum_{i=1}^m\bm\lambda_i c_i(\vvec{x}) - \sum_{k=1}^l\bm\mu_k g_k(\vvec{x}).$$
 # The parameters $\lambda_i\in\mathbb{R}$ and $\mu_k\geq 0$ are called _Lagrange multipliers_.
 # ````     

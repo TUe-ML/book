@@ -620,6 +620,11 @@ title="Print to PDF"
      Class Imbalance
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mixed-feature-types">
+     Mixed Feature Types
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -664,6 +669,11 @@ title="Print to PDF"
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#class-imbalance">
      Class Imbalance
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mixed-feature-types">
+     Mixed Feature Types
     </a>
    </li>
   </ul>
@@ -806,6 +816,17 @@ Name: target, dtype: float64
 </div>
 <p>Here, each class occurs exactly 50 times (1/3 of the data), making the Iris dataset a perfectly balanced classification dataset. Having one class dominate over others</p>
 </section>
+<section id="mixed-feature-types">
+<h3>Mixed Feature Types<a class="headerlink" href="#mixed-feature-types" title="Permalink to this headline">#</a></h3>
+<p>While the Iris dataset only contains continuous numerical features, many real-world classification problems involve discrete or categorical features, which introduce their own set of challenges.
+In many datasets, features can be discrete — meaning they take on a finite set of values, such as:</p>
+<ul class="simple">
+<li><p>Categorical/Nominal: e.g., “color” = red, green, blue”</p></li>
+<li><p>Ordinal: e.g., “education level” = high school &lt; college &lt; graduate”</p></li>
+<li><p>Binary: e.g., “has_credit_card” = yes/no”</p></li>
+</ul>
+<p>Categorical and binary data has no meaningful <span class="math notranslate nohighlight">\(\leq\)</span> operation and this requires special treatment. For example, simple statistics such as computing the mean and variance don’t have a meaning for categorical data.</p>
+</section>
 </section>
 <section id="classifier-definition">
 <h2>Classifier definition<a class="headerlink" href="#classifier-definition" title="Permalink to this headline">#</a></h2>
@@ -827,7 +848,7 @@ The goal is to find a classifier that predicts the correct labels <span class="m
 <h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">#</a></h2>
 <p>We quickly define the most straightforward classification evaluation metrics: the <span class="math notranslate nohighlight">\(L_{01}\)</span>-loss and the accuracy. Both put into relation how many errors/correct predictions a classifier makes in a dataset.</p>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 14 </span> (0-1 Loss)</p>
+<p class="admonition-title"><span class="caption-number">Definition 15 </span> (0-1 Loss)</p>
 <section class="definition-content" id="proof-content">
 <p>Given a classifier <span class="math notranslate nohighlight">\(\hat{y}(\vvec{x})\)</span> returning the predicted label. We define the <strong>0-1 loss</strong> as
 <div class="math notranslate nohighlight">
@@ -839,7 +860,7 @@ The goal is to find a classifier that predicts the correct labels <span class="m
 </section>
 </div><p>The 0-1 loss indicates whether a classifier makes an error in its prediction. In contrast, the accuracy indicates how much a classifier gets right</p>
 <div class="proof definition admonition" id="definition-1">
-<p class="admonition-title"><span class="caption-number">Definition 15 </span> (Accuracy)</p>
+<p class="admonition-title"><span class="caption-number">Definition 16 </span> (Accuracy)</p>
 <section class="definition-content" id="proof-content">
 <p>Given a classifier <span class="math notranslate nohighlight">\(\hat{y}(\vvec{x})\)</span>returning the predicted label. the accuracy of the classifier on dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> containing <span class="math notranslate nohighlight">\(n\)</span> data points is given as</p>
 <div class="amsmath math notranslate nohighlight">
@@ -860,7 +881,7 @@ The goal is to find a classifier that predicts the correct labels <span class="m
 <span class="eqno">(38)<a class="headerlink" href="#equation-iid-assumption" title="Permalink to this equation">#</a></span>\[{\bf x}_{i}, y_{i} \sim  p^{\ast}({\bf x}, y), \forall i \in \lbrace 1, \ldots, n \rbrace.\]</div>
 </section>
 </div><div class="proof definition admonition" id="true_classifier_error">
-<p class="admonition-title"><span class="caption-number">Definition 16 </span> (Classifier EPE)</p>
+<p class="admonition-title"><span class="caption-number">Definition 17 </span> (Classifier EPE)</p>
 <section class="definition-content" id="proof-content">
 <p>Given a classifier <span class="math notranslate nohighlight">\(f_\mathcal{D}:\mathbb{R}^d\rightarrow \mathbb{R}^c\)</span> that has been trained on the dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>.
 the Expected Prediction Error (EPE) of classifiers is the expected error</p>
@@ -878,7 +899,7 @@ the Expected Prediction Error (EPE) of classifiers is the expected error</p>
 <p>The probability of miss-classification <span class="math notranslate nohighlight">\( p( y \neq \argmax_k f(\vvec{x})) \)</span> is also known as the risk <span class="math notranslate nohighlight">\( R(f) \)</span> of the classifier <span class="math notranslate nohighlight">\( f \)</span>.</p>
 </div>
 <div class="proof definition admonition" id="bayes_optimal_classifier">
-<p class="admonition-title"><span class="caption-number">Definition 17 </span> (Bayes optimal classifier)</p>
+<p class="admonition-title"><span class="caption-number">Definition 18 </span> (Bayes optimal classifier)</p>
 <section class="definition-content" id="proof-content">
 <p>The <strong>Bayes classifier</strong> is the optimal classifier that minimizes the probability of misclassification</p>
 <div class="math notranslate nohighlight" id="equation-final-estimator">

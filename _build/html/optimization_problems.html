@@ -694,7 +694,7 @@ We say that:</p>
   f(\vvec{x}^*)\leq f(\vvec{x}) \text{ for all } \vvec{x}\in\mathbb{R}^n
 \]</div>
 
-A <strong>local minimizer</strong> is a vector <span class="math notranslate nohighlight">\(\vvec{x}_0\)</span> satisfying
+A <strong>local minimizer</strong> is a vector <span class="math notranslate nohighlight">\(\vvec{x}_0\)</span> satisfying for an <span class="math notranslate nohighlight">\(\epsilon&gt;0\)</span>
 <div class="math notranslate nohighlight">
 \[f(\vvec{x}_0)\leq f(\vvec{x}) \text{ for all } \vvec{x}\in\mathcal{N}_\epsilon(\vvec{x}_0),\]</div>
 
@@ -707,7 +707,7 @@ where <span class="math notranslate nohighlight">\(\mathcal{N}_\epsilon(\vvec{x}
 <div class="proof definition admonition" id="constr_objective">
 <p class="admonition-title"><span class="caption-number">Definition 7 </span> (Constrained Objective)</p>
 <section class="definition-content" id="proof-content">
-<p>Given an objective function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span> and constraint functions <span class="math notranslate nohighlight">\(c_i,g_k:\mathbb{R}^d\rightarrow \mathbb{R}\)</span>, then  the <strong>objective</strong> of an constrained optimization problem is</p>
+<p>Given an objective function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span> and constraint functions <span class="math notranslate nohighlight">\(c_i,g_k:\mathbb{R}^d\rightarrow \mathbb{R}\)</span>, then  the <strong>objective</strong> of a constrained optimization problem is</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
     \min_{x\in\mathbb{R}^n}&amp;\ f(\vvec{x}) \\
@@ -728,7 +728,7 @@ where <span class="math notranslate nohighlight">\(\mathcal{N}_\epsilon(\vvec{x}
 <div class="proof definition admonition" id="lagrangian">
 <p class="admonition-title"><span class="caption-number">Definition 8 </span> (Lagrangian)</p>
 <section class="definition-content" id="proof-content">
-<p>Given a constrained optimization objective as in <a class="reference internal" href="#constr_objective">Definition 7</a>, then  the the <strong>Lagrangian function</strong> is defined as
+<p>Given a constrained optimization objective as in <a class="reference internal" href="#constr_objective">Definition 7</a>, then  the <strong>Lagrangian function</strong> is defined as
 <div class="math notranslate nohighlight">
 \[\mathcal{L}(\vvec{x},\bm\lambda,\bm\mu) = f(\vvec{x}) - \sum_{i=1}^m\bm\lambda_i c_i(\vvec{x}) - \sum_{k=1}^l\bm\mu_k g_k(\vvec{x}).\]</div>
 

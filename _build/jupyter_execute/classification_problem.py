@@ -40,6 +40,15 @@ y.value_counts(normalize=True)
 
 
 # Here, each class occurs exactly 50 times (1/3 of the data), making the Iris dataset a perfectly balanced classification dataset. Having one class dominate over others 
+# #### Mixed Feature Types
+# While the Iris dataset only contains continuous numerical features, many real-world classification problems involve discrete or categorical features, which introduce their own set of challenges.
+# In many datasets, features can be discrete — meaning they take on a finite set of values, such as:
+# 
+# * Categorical/Nominal: e.g., "color" = red, green, blue"
+# * Ordinal: e.g., "education level" = high school < college < graduate"
+# * Binary: e.g., "has_credit_card" = yes/no"
+# 
+# Categorical and binary data has no meaningful $\leq$ operation and this requires special treatment. For example, simple statistics such as computing the mean and variance don't have a meaning for categorical data.
 
 # ### Classifier definition
 # 

@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -714,7 +719,7 @@ title="Print to PDF"
 <section id="inference">
 <h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">#</a></h2>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 24 </span> (Random Forest)</p>
+<p class="admonition-title"><span class="caption-number">Definition 25 </span> (Random Forest)</p>
 <section class="definition-content" id="proof-content">
 <p>A Random Forest classifier is an ensemble of <span class="math notranslate nohighlight">\(m\)</span> decision trees <span class="math notranslate nohighlight">\(f_{dt1},\ldots,f_{dtm}\)</span> that aggregates predictions of single trees via a mahority vote. Let <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})\in\{0,1\}^c\)</span> denote the one-hot encoded argmax function (also called hardmax), such that <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})_y=1\)</span> if and only if <span class="math notranslate nohighlight">\(y = \argmax_{1\leq l\leq c} p_l\)</span>. We define then the random forest classifier as
 <div class="math notranslate nohighlight">
@@ -729,7 +734,7 @@ As a result, the random forest predicts the class that wins the majority vote of
 </section>
 </div><p>The inference of a radom forest is a simple majority vote of the decision trees. For any ensemble of classifiers, predicting the class over a majority vote, we can derive an error bound that details which characteristics of the base classifiers make a strong ensemble. The error bound considers each tree the outcome of a random variable <span class="math notranslate nohighlight">\(\omega\)</span>, that describes the training set of the tree and other random elements that made the tree how it is.</p>
 <div class="proof theorem admonition" id="theorem-1">
-<p class="admonition-title"><span class="caption-number">Theorem 17 </span> (expected prediction error bound)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 20 </span> (expected prediction error bound)</p>
 <section class="theorem-content" id="proof-content">
 <p>Let</p>
 <div class="amsmath math notranslate nohighlight">
@@ -827,7 +832,7 @@ we can write Eq. <a class="reference internal" href="#equation-eq-var-omega">(48
 <p>This concludes our result.</p>
 </div>
 </div>
-<p>The theorem, published in <span id="id1">[<a class="reference internal" href="bibliography.html#id2" title="Leo Breiman. Random forests. Machine learning, 45:5–32, 2001.">2</a>]</span>, identifies two properties of the decision trees that bound the EPE of a random forest:</p>
+<p>The theorem, published in <span id="id1">[<a class="reference internal" href="bibliography.html#id2" title="Leo Breiman. Random forests. Machine learning, 45:5–32, 2001.">1</a>]</span>, identifies two properties of the decision trees that bound the EPE of a random forest:</p>
 <ul class="simple">
 <li><p>The strength of the random forest classifier <span class="math notranslate nohighlight">\(\mu(m)=\mathbb{E}_{\vvec{x},y}\mathbb{E}_\omega[m_\omega(\vvec{x},y)]\)</span>: the higher the expected margin of the decision trees, the better. A high margin indicates that the random forest confidently predicts the correct classes.</p></li>
 <li><p>The correlation between the trees: the lower the correlation is between trees, the better. Note that the correlation is measured in the prediction confidences of the tree for all classes.</p></li>
@@ -839,7 +844,7 @@ we can write Eq. <a class="reference internal" href="#equation-eq-var-omega">(48
 <p>The training procedure of the random forest follows the theoretical motivations for strong ensemble learners. The rough procedure is to sample training data from the given dataset, learn trees that overfit on the dataset samples, and to incorporate further measures to decrease the correlation of trees. For example, by considering for each split only on a sampled subset of the features.
 In detail, the learning algorithm for random forests look as follows.</p>
 <div class="proof algorithm admonition" id="algorithm-2">
-<p class="admonition-title"><span class="caption-number">Algorithm 9 </span> (Random Forest Training)</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 10 </span> (Random Forest Training)</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Input</strong>: training data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, number of features <span class="math notranslate nohighlight">\(\hat{d}&lt;d\)</span></p>
 <ol class="simple">
@@ -863,7 +868,7 @@ In detail, the learning algorithm for random forests look as follows.</p>
 <h3>Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">#</a></h3>
 <p>Bootstrapping is similar to the dataset division known from cross valiadation, only that in bootstrapping the generated datasets overlap, that is, various data points are present in multiple dataset samples.</p>
 <div class="proof definition admonition" id="definition-3">
-<p class="admonition-title"><span class="caption-number">Definition 25 </span> (Bootstrapping)</p>
+<p class="admonition-title"><span class="caption-number">Definition 26 </span> (Bootstrapping)</p>
 <section class="definition-content" id="proof-content">
 <p>Given a dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}\)</span> containing <span class="math notranslate nohighlight">\(n\)</span> datapoints. A bootstrap sample <span class="math notranslate nohighlight">\(\mathcal{D}_j=\{(\vvec{x}_{i_b},y_{i_b})\mid 1\leq b\leq n\}\subseteq\mathcal{D}\)</span> gathers <span class="math notranslate nohighlight">\(n\)</span> uniformly distributed samples (<span class="math notranslate nohighlight">\(i_b \sim\mathcal{U}\{1, \dots, n\}\)</span>) from <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>. Hence, <span class="math notranslate nohighlight">\(\mathcal{D}_j\)</span> may contain various duplicates of data points.</p>
 </section>

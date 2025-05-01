@@ -53,7 +53,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Neural Networks Intro" href="neuralnets_intro.html" />
+    <link rel="next" title="From Linear Models to Neural Networks" href="neuralnets_intro.html" />
     <link rel="prev" title="Exercises" href="classification_exercises.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -315,12 +315,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -336,6 +336,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -586,12 +591,56 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#simplified-units-vs-real-neurons">
+   Simplified Units vs. Real Neurons
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#learning-algorithms-are-entirely-different">
+   Learning Algorithms Are Entirely Different
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#energy-efficiency-and-architecture">
+   Energy Efficiency and Architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#generalization-and-robustness">
+   Generalization and Robustness
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#interpretability-and-transparency">
+   Interpretability and Transparency
+  </a>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
@@ -603,6 +652,39 @@ title="Print to PDF"
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#simplified-units-vs-real-neurons">
+   Simplified Units vs. Real Neurons
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#learning-algorithms-are-entirely-different">
+   Learning Algorithms Are Entirely Different
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#energy-efficiency-and-architecture">
+   Energy Efficiency and Architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#generalization-and-robustness">
+   Generalization and Robustness
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#interpretability-and-transparency">
+   Interpretability and Transparency
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -612,8 +694,51 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="neural-networks">
 <h1>Neural Networks<a class="headerlink" href="#neural-networks" title="Permalink to this headline">#</a></h1>
+<p>Neural networks are often introduced with an appealing analogy: <em>they are inspired by the brain</em>. The term “neural network” evokes images of neurons firing, synapses adjusting, and emergent intelligence arising from complex biological computation. At a glance, artificial neural networks (ANNs) seem to mimic this process. Each <strong>artificial neuron</strong> takes in signals, applies a transformation (like activation), and passes output along to the next layer. Connections have <strong>weights</strong>, analogous to synaptic strengths. Learning involves updating these weights, not unlike <strong>synaptic plasticity</strong> in biological systems.</p>
+<p>This analogy has pedagogical value. It offers a rough intuition for how ANNs work: information flows, is transformed layer by layer, and leads to a decision. But beyond this basic conceptual scaffolding, the analogy quickly breaks down. <strong>Artificial neural networks and biological brains are fundamentally different in purpose, structure, and function.</strong></p>
+<section id="simplified-units-vs-real-neurons">
+<h2>Simplified Units vs. Real Neurons<a class="headerlink" href="#simplified-units-vs-real-neurons" title="Permalink to this headline">#</a></h2>
+<p>In ANNs, a “neuron” is a simple mathematical unit: it performs a weighted sum and applies a nonlinearity. In contrast, biological neurons exhibit complex electrical and chemical dynamics, including:</p>
+<ul class="simple">
+<li><p>Spike-timing,</p></li>
+<li><p>Nonlinear integration over dendritic trees,</p></li>
+<li><p>Neurotransmitter diversity,</p></li>
+<li><p>Local plasticity rules.</p></li>
+</ul>
+<p>By comparison, an artificial neuron is a <strong>linear thresholding device</strong>—a pale abstraction of its biological counterpart.</p>
+</section>
+<section id="learning-algorithms-are-entirely-different">
+<h2>Learning Algorithms Are Entirely Different<a class="headerlink" href="#learning-algorithms-are-entirely-different" title="Permalink to this headline">#</a></h2>
+<p>The human brain does not train via <strong>backpropagation</strong>. There is no evidence that biological systems use global error signals or gradient descent over a fixed architecture. Instead, the brain likely relies on <strong>local learning rules</strong> (like Hebbian learning), reinforcement signals, and neuroplasticity shaped by development and experience.</p>
+<p>Backpropagation, by contrast, is a centralized, mathematically-driven method requiring:</p>
+<ul class="simple">
+<li><p>Global knowledge of the loss function,</p></li>
+<li><p>Differentiable operations,</p></li>
+<li><p>Repeated propagation of exact error signals.</p></li>
+</ul>
+<p>This algorithm is not biologically plausible, even though it works well in practice for training deep networks.</p>
+</section>
+<section id="energy-efficiency-and-architecture">
+<h2>Energy Efficiency and Architecture<a class="headerlink" href="#energy-efficiency-and-architecture" title="Permalink to this headline">#</a></h2>
+<p>Brains are incredibly <strong>energy-efficient</strong>, operating at about 20 watts, yet supporting massive parallel processing across ~86 billion neurons. In contrast, modern neural networks often require <strong>gigawatts</strong> of compute during training, and vast datasets—orders of magnitude larger than what humans need to learn similar concepts.</p>
+<p>Architecturally, the brain is <strong>highly recurrent and modular</strong>, with feedback loops and specialized subsystems (visual cortex, hippocampus, etc.). Most traditional neural networks are <strong>feedforward</strong>, though recent models (like transformers or recurrent neural networks) incorporate more flexibility.</p>
+</section>
+<section id="generalization-and-robustness">
+<h2>Generalization and Robustness<a class="headerlink" href="#generalization-and-robustness" title="Permalink to this headline">#</a></h2>
+<p>Despite their complexity, neural networks often generalize poorly outside their training distribution. They are sensitive to:</p>
+<ul class="simple">
+<li><p>Small perturbations (adversarial examples),</p></li>
+<li><p>Spurious correlations,</p></li>
+<li><p>Shifts in data distribution.</p></li>
+</ul>
+<p>Humans, in contrast, are remarkably good at <strong>transfer learning</strong>, abstract reasoning, and learning from <strong>very few examples</strong>. A child can learn a new concept from a single demonstration—something even state-of-the-art ANNs struggle with.</p>
+</section>
+<section id="interpretability-and-transparency">
+<h2>Interpretability and Transparency<a class="headerlink" href="#interpretability-and-transparency" title="Permalink to this headline">#</a></h2>
+<p>Brains are complex, but we can sometimes <em>explain</em> human decisions through introspection or reasoning. Neural networks, however, are often <strong>black boxes</strong>. Interpretability remains an open challenge, particularly in high-stakes applications like medicine or law.</p>
 <p>Recommended Literature:</p>
 <p><strong>Bishop. Pattern recognition and machine learning. 2006.</strong> Sections 5.1. Feed-forward Network Functions, 5.2. Network Training,  5.3. Error Propagation and 5.5. Regularization in Neural Networks</p>
+</section>
 <div class="toctree-wrapper compound">
 </div>
 </section>
@@ -655,7 +780,7 @@ title="Print to PDF"
     <a class='right-next' id="next-link" href="neuralnets_intro.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Neural Networks Intro</p>
+        <p class="prev-next-title">From Linear Models to Neural Networks</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

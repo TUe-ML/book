@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -692,7 +697,7 @@ Given a cluster indicator matrix <span class="math notranslate nohighlight">\(Y\
     = D^\top Y (Y^\top Y)^{-1}.
 \end{align*}\]</div>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 28 </span> (<span class="math notranslate nohighlight">\(k\)</span>-means MF objective)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 31 </span> (<span class="math notranslate nohighlight">\(k\)</span>-means MF objective)</p>
 <section class="theorem-content" id="proof-content">
 <p>The <span class="math notranslate nohighlight">\(k\)</span>- means objective in Eq.~\eqref{eq:k-means} is equivalent to</p>
 <div class="amsmath math notranslate nohighlight">
@@ -736,7 +741,7 @@ The matrix <span class="math notranslate nohighlight">\(X\)</span> gathers the c
 </div>
 </div>
 <div class="proof example admonition" id="example-1">
-<p class="admonition-title"><span class="caption-number">Example 25 </span> (k-means matrix factorization for recommender systems)</p>
+<p class="admonition-title"><span class="caption-number">Example 24 </span> (k-means matrix factorization for recommender systems)</p>
 <section class="example-content" id="proof-content">
 <div class="amsmath math notranslate nohighlight" id="equation-e70e62e5-9203-4789-a508-44f80e040b0f">
 <span class="eqno">(132)<a class="headerlink" href="#equation-e70e62e5-9203-4789-a508-44f80e040b0f" title="Permalink to this equation">#</a></span>\[\begin{align}
@@ -789,7 +794,7 @@ kmeans.fit(M)
 </section>
 </div><p>Ok, so <span class="math notranslate nohighlight">\(k\)</span>-means is an instance of the rank-<span class="math notranslate nohighlight">\(r\)</span> matrix factorization problem. Can we also characterize the global minimizers of <span class="math notranslate nohighlight">\(k\)</span>-means like we did it for the rank-r matrix factorization problem with truncated SVD? Unfortunately not. However, we can characterize the global minimizers of the objective when we fix one of the factor matrices.</p>
 <div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 29 </span> (Centroids as minimizers)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 32 </span> (Centroids as minimizers)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> and <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span>, the minimizer of the optimization problem</p>
 <div class="amsmath math notranslate nohighlight" id="equation-c7f6e33d-61a2-467e-ac74-507942abf02c">
@@ -809,7 +814,7 @@ kmeans.fit(M)
 </div>
 </div>
 <div class="proof theorem admonition" id="theorem-3">
-<p class="admonition-title"><span class="caption-number">Theorem 30 </span> (Nearest centroid assignments as minimizers)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 33 </span> (Nearest centroid assignments as minimizers)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> and <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{d\times r}\)</span>, the minimizer of the optimization problem</p>
 <div class="amsmath math notranslate nohighlight" id="equation-55daa69e-f00a-4779-93e7-7811dcb2c11d">
@@ -844,7 +849,7 @@ kmeans.fit(M)
 \[RSS(X_0,Y_0)&gt;RSS(X_1,Y_1)&gt;RSS(X_2,Y_2)&gt;\ldots \geq 0 .\]</div>
 </p>
 <div class="proof theorem admonition" id="theorem-4">
-<p class="admonition-title"><span class="caption-number">Theorem 31 </span> (Equivalent <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 34 </span> (Equivalent <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
 <section class="theorem-content" id="proof-content">
 <p>The following objectives are equivalent</p>
 <div class="amsmath math notranslate nohighlight" id="equation-98367704-6092-48f6-8a49-ad377624ea60">

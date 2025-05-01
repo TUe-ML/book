@@ -253,8 +253,8 @@ def pcaPlot():
 pcaPlot()
 
 plt.scatter(D[:,0],D[:,1])
-plt.xlabel("$F_1$")
-plt.ylabel("$F_2$")
+plt.xlabel("$x_1$")
+plt.ylabel("$x_2$")
 plt.show()
 
 
@@ -266,7 +266,7 @@ plt.show()
 α = np.array([1,2])
 #α=α/np.linalg.norm(α)
 print("α=",α)
-dfD_a = pd.DataFrame({"$F_a$":D@α})
+dfD_a = pd.DataFrame({"$x_a$":D@α})
 dfD_a.head()
 
 
@@ -283,12 +283,12 @@ pcaPlot()
 plt.scatter(D[:,0],D[:,1], s=2)
 plt.scatter(P[:,0],P[:,1], color = 'purple', s=2) 
 plt.quiver(0, 0, 5*α[0],5*α[1] , units='xy', width=0.5, scale=1, color='red')
-plt.xlabel("$F_1$")
-plt.ylabel("$F_2$")
+plt.xlabel("$x_1$")
+plt.ylabel("$x_2$")
 #----------------
 plt.subplot(1,2,2)
 plt.scatter(D@α/np.linalg.norm(α), np.zeros(D.shape[0]), color ="purple", s=2)
-plt.xlabel("$F_a$")
+plt.xlabel("$x_a$")
 plt.show()
 
 

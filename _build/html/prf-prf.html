@@ -319,12 +319,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -340,6 +340,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -562,6 +567,7 @@ title="Open an issue"
    <a href="#cap-algorithm-4"><strong>algorithm-4</strong></a> | 
    <a href="#cap-algorithm-5"><strong>algorithm-5</strong></a> | 
    <a href="#cap-algorithm-6"><strong>algorithm-6</strong></a> | 
+   <a href="#cap-algorithm-7"><strong>algorithm-7</strong></a> | 
    <a href="#cap-approximator"><strong>approximator</strong></a> | 
    <a href="#cap-bayes_optimal_classifier"><strong>bayes_optimal_classifier</strong></a> | 
    <a href="#cap-bayes_rule"><strong>bayes_rule</strong></a> | 
@@ -569,11 +575,11 @@ title="Open an issue"
    <a href="#cap-convex_function"><strong>convex_function</strong></a> | 
    <a href="#cap-convex_set"><strong>convex_set</strong></a> | 
    <a href="#cap-corollary-1"><strong>corollary-1</strong></a> | 
+   <a href="#cap-corollary-5"><strong>corollary-5</strong></a> | 
    <a href="#cap-corollary-8"><strong>corollary-8</strong></a> | 
    <a href="#cap-definition-0"><strong>definition-0</strong></a> | 
    <a href="#cap-definition-1"><strong>definition-1</strong></a> | 
    <a href="#cap-definition-2"><strong>definition-2</strong></a> | 
-   <a href="#cap-definition-3"><strong>definition-3</strong></a> | 
    <a href="#cap-definition-4"><strong>definition-4</strong></a> | 
    <a href="#cap-definition-5"><strong>definition-5</strong></a> | 
    <a href="#cap-definition-6"><strong>definition-6</strong></a> | 
@@ -583,7 +589,6 @@ title="Open an issue"
    <a href="#cap-ex_vector_space"><strong>ex_vector_space</strong></a> | 
    <a href="#cap-example-0"><strong>example-0</strong></a> | 
    <a href="#cap-example-1"><strong>example-1</strong></a> | 
-   <a href="#cap-example-2"><strong>example-2</strong></a> | 
    <a href="#cap-example-3"><strong>example-3</strong></a> | 
    <a href="#cap-example-4"><strong>example-4</strong></a> | 
    <a href="#cap-example-5"><strong>example-5</strong></a> | 
@@ -602,19 +607,15 @@ title="Open an issue"
    <a href="#cap-lemma-9"><strong>lemma-9</strong></a> | 
    <a href="#cap-minimizers"><strong>minimizers</strong></a> | 
    <a href="#cap-objective"><strong>objective</strong></a> | 
-   <a href="#cap-observation-0"><strong>observation-0</strong></a> | 
    <a href="#cap-observation-2"><strong>observation-2</strong></a> | 
    <a href="#cap-observation-3"><strong>observation-3</strong></a> | 
    <a href="#cap-prop:target_distr"><strong>prop:target_distr</strong></a> | 
    <a href="#cap-property-2"><strong>property-2</strong></a> | 
-   <a href="#cap-remark-1"><strong>remark-1</strong></a> | 
-   <a href="#cap-remark-2"><strong>remark-2</strong></a> | 
    <a href="#cap-theorem-0"><strong>theorem-0</strong></a> | 
    <a href="#cap-theorem-1"><strong>theorem-1</strong></a> | 
    <a href="#cap-theorem-2"><strong>theorem-2</strong></a> | 
    <a href="#cap-theorem-3"><strong>theorem-3</strong></a> | 
    <a href="#cap-theorem-4"><strong>theorem-4</strong></a> | 
-   <a href="#cap-theorem-5"><strong>theorem-5</strong></a> | 
    <a href="#cap-theorem-7"><strong>theorem-7</strong></a> | 
    <a href="#cap-thm_convex"><strong>thm_convex</strong></a> | 
    <a href="#cap-true_classifier_error"><strong>true_classifier_error</strong></a>
@@ -635,7 +636,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="regression_lasso.html#algorithm-1"><code class="xref">algorithm-1</code></a> <em>(regression_lasso)</em></td><td>
+       <a href="optimization_numerical.html#algorithm-1"><code class="xref">algorithm-1</code></a> <em>(optimization_numerical)</em></td><td>
        <em>algorithm</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-algorithm-2"><td></td><td>
@@ -675,7 +676,15 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="classification_naive_bayes.html#algorithm-6"><code class="xref">algorithm-6</code></a> <em>(classification_naive_bayes)</em></td><td>
+       <a href="optimization_numerical.html#algorithm-6"><code class="xref">algorithm-6</code></a> <em>(optimization_numerical)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-algorithm-7"><td></td><td>
+       <strong>algorithm-7</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_numerical.html#algorithm-7"><code class="xref">algorithm-7</code></a> <em>(optimization_numerical)</em></td><td>
        <em>algorithm</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-approximator"><td></td><td>
@@ -734,6 +743,14 @@ title="Open an issue"
        <a href="regression_ridge.html#corollary-1"><code class="xref">corollary-1</code></a> <em>(regression_ridge)</em></td><td>
        <em>corollary</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-corollary-5"><td></td><td>
+       <strong>corollary-5</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_numerical.html#corollary-5"><code class="xref">corollary-5</code></a> <em>(optimization_numerical)</em></td><td>
+       <em>corollary</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-corollary-8"><td></td><td>
        <strong>corollary-8</strong></td><td></td></tr>
      <tr>
@@ -747,7 +764,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="regression_bias_var.html#definition-0"><code class="xref">definition-0</code></a> <em>(regression_bias_var)</em></td><td>
+       <a href="classification_problem.html#definition-0"><code class="xref">definition-0</code></a> <em>(classification_problem)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-definition-1"><td></td><td>
@@ -755,7 +772,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="classification_svms.html#definition-1"><code class="xref">definition-1</code></a> <em>(classification_svms)</em></td><td>
+       <a href="classification_problem.html#definition-1"><code class="xref">definition-1</code></a> <em>(classification_problem)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-definition-2"><td></td><td>
@@ -763,15 +780,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="optimization_convex.html#definition-2"><code class="xref">definition-2</code></a> <em>(optimization_convex)</em></td><td>
-       <em>definition</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-definition-3"><td></td><td>
-       <strong>definition-3</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="neuralnets_backprop.html#definition-3"><code class="xref">definition-3</code></a> <em>(neuralnets_backprop)</em></td><td>
+       <a href="optimization_numerical.html#definition-2"><code class="xref">definition-2</code></a> <em>(optimization_numerical)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-definition-4"><td></td><td>
@@ -846,20 +855,12 @@ title="Open an issue"
        <a href="neuralnets_func_approx.html#example-1"><code class="xref">example-1</code></a> <em>(neuralnets_func_approx)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-example-2"><td></td><td>
-       <strong>example-2</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="regression_functions.html#example-2"><code class="xref">example-2</code></a> <em>(regression_functions)</em></td><td>
-       <em>example</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-example-3"><td></td><td>
        <strong>example-3</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="optimization_convex.html#example-3"><code class="xref">example-3</code></a> <em>(optimization_convex)</em></td><td>
+       <a href="optimization_gradients.html#example-3"><code class="xref">example-3</code></a> <em>(optimization_gradients)</em></td><td>
        <em>example</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-example-4"><td></td><td>
@@ -998,14 +999,6 @@ title="Open an issue"
        <a href="optimization_problems.html#objective"><code class="xref">objective</code></a> <em>(optimization_problems)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-observation-0"><td></td><td>
-       <strong>observation-0</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="neuralnets_intro.html#observation-0"><code class="xref">observation-0</code></a> <em>(neuralnets_intro)</em></td><td>
-       <em>observation</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-observation-2"><td></td><td>
        <strong>observation-2</strong></td><td></td></tr>
      <tr>
@@ -1038,28 +1031,12 @@ title="Open an issue"
        <a href="classification_problem.html#property-2"><code class="xref">property-2</code></a> <em>(classification_problem)</em></td><td>
        <em>property</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-remark-1"><td></td><td>
-       <strong>remark-1</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="neuralnets_intro.html#remark-1"><code class="xref">remark-1</code></a> <em>(neuralnets_intro)</em></td><td>
-       <em>remark</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-remark-2"><td></td><td>
-       <strong>remark-2</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="neuralnets_intro.html#remark-2"><code class="xref">remark-2</code></a> <em>(neuralnets_intro)</em></td><td>
-       <em>remark</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-theorem-0"><td></td><td>
        <strong>theorem-0</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="regression_optimization.html#theorem-0"><code class="xref">theorem-0</code></a> <em>(regression_optimization)</em></td><td>
+       <a href="optimization_gradients.html#theorem-0"><code class="xref">theorem-0</code></a> <em>(optimization_gradients)</em></td><td>
        <em>theorem</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-theorem-1"><td></td><td>
@@ -1067,7 +1044,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="optimization_analytic.html#theorem-1"><code class="xref">theorem-1</code></a> <em>(optimization_analytic)</em></td><td>
+       <a href="optimization_gradients.html#theorem-1"><code class="xref">theorem-1</code></a> <em>(optimization_gradients)</em></td><td>
        <em>theorem</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-theorem-2"><td></td><td>
@@ -1075,7 +1052,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="optimization_analytic.html#theorem-2"><code class="xref">theorem-2</code></a> <em>(optimization_analytic)</em></td><td>
+       <a href="optimization_gradients.html#theorem-2"><code class="xref">theorem-2</code></a> <em>(optimization_gradients)</em></td><td>
        <em>theorem</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-theorem-3"><td></td><td>
@@ -1083,7 +1060,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="clustering_kernel_kmeans.html#theorem-3"><code class="xref">theorem-3</code></a> <em>(clustering_kernel_kmeans)</em></td><td>
+       <a href="optimization_numerical.html#theorem-3"><code class="xref">theorem-3</code></a> <em>(optimization_numerical)</em></td><td>
        <em>theorem</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-theorem-4"><td></td><td>
@@ -1091,15 +1068,7 @@ title="Open an issue"
      <tr>
        <td></td>
        <td>
-       <a href="regression_optimization.html#theorem-4"><code class="xref">theorem-4</code></a> <em>(regression_optimization)</em></td><td>
-       <em>theorem</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-theorem-5"><td></td><td>
-       <strong>theorem-5</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="optimization_convex.html#theorem-5"><code class="xref">theorem-5</code></a> <em>(optimization_convex)</em></td><td>
+       <a href="optimization_numerical.html#theorem-4"><code class="xref">theorem-4</code></a> <em>(optimization_numerical)</em></td><td>
        <em>theorem</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-theorem-7"><td></td><td>

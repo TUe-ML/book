@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -699,7 +704,7 @@ title="Print to PDF"
 \[dist(x,x_{i_j})\leq dist(x,x_i) \text{ for all } 1\leq i\leq n.\]</div>
 </p>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 18 </span> (kNN classifier)</p>
+<p class="admonition-title"><span class="caption-number">Definition 19 </span> (kNN classifier)</p>
 <section class="definition-content" id="proof-content">
 <p>The kNN classifier returns the class probabilities estimated from the <span class="math notranslate nohighlight">\(\kappa\)</span> neighbors:</p>
 <div class="amsmath math notranslate nohighlight">
@@ -787,7 +792,7 @@ but we can also integrate distance functions for discrete features, such as the 
 <h2>Bayes consistency<a class="headerlink" href="#bayes-consistency" title="Permalink to this headline">#</a></h2>
 <p>Although the <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier is very simple, it is theoretically sound in the sense that we can show that it converges to the Bayes-optimal classifier in theory.</p>
 <div class="proof theorem admonition" id="theorem-1">
-<p class="admonition-title"><span class="caption-number">Theorem 15 </span></p>
+<p class="admonition-title"><span class="caption-number">Theorem 18 </span></p>
 <section class="theorem-content" id="proof-content">
 <p>The kNN classifier converges to the Bayes classifier for <span class="math notranslate nohighlight">\(n\rightarrow \infty\)</span> when choosing <span class="math notranslate nohighlight">\(\kappa\)</span> such that</p>
 <ul class="simple">

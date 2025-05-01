@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -714,7 +719,7 @@ the kernel matrix is given by
 <h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
 <p>If we want to apply the kernel trick, then we need to state the kernel <span class="math notranslate nohighlight">\(k\)</span>-means objective with respect to the inner product of data points.</p>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 32 </span> (<span class="math notranslate nohighlight">\(k\)</span>-means trace objective)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 35 </span> (<span class="math notranslate nohighlight">\(k\)</span>-means trace objective)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>,
 the following objectives are equivalent <span class="math notranslate nohighlight">\(k\)</span>-means objectives:</p>
@@ -769,7 +774,7 @@ Points within one cluster need to be similar:
 </div>
 </div>
 <div class="proof theorem admonition" id="theorem-1">
-<p class="admonition-title"><span class="caption-number">Theorem 33 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 36 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given the kernel matrix <span class="math notranslate nohighlight">\(K={\bm\phi}(D){\bm\phi}(D)^\top\)</span>,
 the following objectives are equivalent:</p>
@@ -782,7 +787,7 @@ the following objectives are equivalent:</p>
 </div><p>Problem: We do not know how to optimize Eq. \eqref{eq:kernelKMtr}, we only know how to optimize Eq. \eqref{eq:kernelKMPhi1}, but we do not want to compute <span class="math notranslate nohighlight">\(\phi\)</span>!</p>
 <p>Idea: We go the other way round: from the kernel matrix to the inner product.</p>
 <div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 34 </span> (Eigendecomposition of symmetric matrices)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 37 </span> (Eigendecomposition of symmetric matrices)</p>
 <section class="theorem-content" id="proof-content">
 <p>For every symmetric matrix <span class="math notranslate nohighlight">\(K=K^\top\in\mathbb{R}^{n\times n}\)</span> there exists an orthogonal matrix <span class="math notranslate nohighlight">\(V\in\mathbb{R}^{n\times n}\)</span> and a diagonal matrix <span class="math notranslate nohighlight">\(\Lambda=\diag(\lambda_1,\ldots,\lambda_n)\)</span> where <span class="math notranslate nohighlight">\(\lvert \lambda_1\rvert\geq \ldots \geq \lvert \lambda_n\rvert\)</span> such that
 <div class="math notranslate nohighlight">
@@ -793,7 +798,7 @@ the following objectives are equivalent:</p>
 <p>This is equivalent to <span class="math notranslate nohighlight">\(K\)</span> being positive semi-definite.
 Kernel matrices are positive semi-definite!</p>
 <div class="proof theorem admonition" id="theorem-3">
-<p class="admonition-title"><span class="caption-number">Theorem 35 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 38 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a kernel matrix and its symmetric decomposition <span class="math notranslate nohighlight">\(K=AA^\top\)</span>,
 the following objectives are equivalent:</p>
@@ -805,7 +810,7 @@ the following objectives are equivalent:</p>
 </section>
 </div><p>Algorithm Idea: Use the objective in Eq.~\eqref{eq:kmeansA}: compute a symmetric decomposition <span class="math notranslate nohighlight">\(AA^\top=K\)</span> by means of the eigendecomposition <span class="math notranslate nohighlight">\(A=V\Lambda^{1/2}\)</span> and run <span class="math notranslate nohighlight">\(k\)</span>-means on <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <div class="proof algorithm admonition" id="algorithm-4">
-<p class="admonition-title"><span class="caption-number">Algorithm 14 </span> (kernel k-means)</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 15 </span> (kernel k-means)</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Input</strong>: kernel matrix <span class="math notranslate nohighlight">\(K\)</span>, number of clusters <span class="math notranslate nohighlight">\(r\)</span></p>
 <ol class="simple">

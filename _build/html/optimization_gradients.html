@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -681,7 +686,7 @@ Be aware that the notation above is not used by all authors. Some authors define
 <p>Of course we could now consider more cases, like a function mapping a matrix to a matrix. Unfortunately, from this point on, it gets really complicated. There are multiple ways to define such derivatives - as tensors or as specifically structured matrices. We’re going to keep it comparatively simple and circumvent these cases in this course.<br />
 We can now concatenate these derivatives according to linearity and the chain rule for matrix derivatives.</p>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 8 </span> (The Jacobian is linear)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 10 </span> (The Jacobian is linear)</p>
 <section class="theorem-content" id="proof-content">
 <p>For any function whose Jacobian is defined as a matrix of partial derivatives <span class="math notranslate nohighlight">\(\frac{\partial \vvec{f}(\vvec{x})}{\partial \vvec{x}} = \begin{pmatrix}\frac{\partial f_j(\vvec{x})}{\partial x_i}\end{pmatrix}_{i,j}\)</span> for some indexes <span class="math notranslate nohighlight">\(i,j\)</span>, the Jacobian is linear:
 <div class="math notranslate nohighlight">
@@ -700,14 +705,38 @@ We can now concatenate these derivatives according to linearity and the chain ru
 \end{align*}\]</div>
 </div>
 <div class="proof theorem admonition" id="theorem-1">
-<p class="admonition-title"><span class="caption-number">Theorem 9 </span> (Chain Rule for the Jacobian)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 11 </span> (Chain Rule for the Jacobian)</p>
 <section class="theorem-content" id="proof-content">
 <p>For any continuously differentiable functions <span class="math notranslate nohighlight">\(\vvec{f}:\mathbb{R}^c\rightarrow \mathbb{R}^p\)</span> and <span class="math notranslate nohighlight">\(\vvec{g}:\mathbb{R}^d\rightarrow \mathbb{R}^c\)</span>, the Jacobian of the composition <span class="math notranslate nohighlight">\(\vvec{f}\circ\vvec{g}\)</span> is given by the chain rule:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
         \frac{\partial \vvec{f}(\vvec{g}(\vvec{x}))}{\partial\vvec{x}}
-        &amp;= \frac{\partial \vvec{f}(\vvec{g}(\vvec{x}))}{\partial \vvec{g}(\vvec{x})} \frac{\partial \vvec{g}(\vvec{x})}{\partial \vvec{x}} 
+        &amp;= \underbrace{\frac{\partial \vvec{f}(\vvec{g}(\vvec{x}))}{\partial \vvec{g}(\vvec{x})}}_{p\times c}\underbrace{\frac{\partial \vvec{g}(\vvec{x})}{\partial \vvec{x}}}_{c\times d} 
     \end{align*}\]</div>
+</section>
+</div><div class="proof theorem admonition" id="theorem-2">
+<p class="admonition-title"><span class="caption-number">Theorem 12 </span> (Jacobian of Element-wise Functions)</p>
+<section class="theorem-content" id="proof-content">
+<p>The gradient and the Jacobian of any element-wise defined function
+<div class="math notranslate nohighlight">
+\[f(\vvec{x}) = (f(x_1),f(x_2),\ldots,f(x_d))\]</div>
+
+is the diagonal matrix
+<div class="math notranslate nohighlight">
+\[\nabla f(\vvec{x}) = \frac{\partial f(\vvec{x})}{\partial \vvec{x}}=\diag(f'(x_1),\ldots, f'(x_d)).\]</div>
+</p>
+</section>
+</div><div class="proof example admonition" id="example-3">
+<p class="admonition-title"><span class="caption-number">Example 10 </span></p>
+<section class="example-content" id="proof-content">
+<p>Consider the exponential function applied element-wise to a vector
+<div class="math notranslate nohighlight">
+\[\exp(\vvec{x}) = (\exp(x_1),\ldots,\exp(x_d)).\]</div>
+
+The gradient of this function is the diagonal matrix
+<div class="math notranslate nohighlight">
+\[\nabla \exp(\vvec{x}) = \diag(\exp(\vvec{x})).\]</div>
+</p>
 </section>
 </div></section>
 

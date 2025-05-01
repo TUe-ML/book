@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -699,7 +704,7 @@ title="Print to PDF"
 <span id="class-evaluation"></span><h2>Bias Variance Tradeoff<a class="headerlink" href="#bias-variance-tradeoff" title="Permalink to this headline">#</a></h2>
 <p>Similar to the Bias-Variance Tradeoff in Regression, we can formulate the bias-variance tradeoff for classification.</p>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 23 </span> (bias-variance tradeoff for classification)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 26 </span> (bias-variance tradeoff for classification)</p>
 <section class="theorem-content" id="proof-content">
 <p>The EPE for any observation <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>, having the label <span class="math notranslate nohighlight">\(y\)</span> and prediction <span class="math notranslate nohighlight">\(\hat{y}_\mathcal{D}\)</span> (depending on the training data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>) and most frequent prediction <span class="math notranslate nohighlight">\(\mathrm{mode}(\hat{y}_\mathcal{D})\)</span> can be deconstructed into three parts:</p>
 <div class="amsmath math notranslate nohighlight">
@@ -719,7 +724,7 @@ c_2&amp;= \begin{cases}
 </section>
 </div><p>Just like in regression, we decompose the EPE into three parts: a noise, a bias and a variance term. The noise part is again inherent to the data and not dependent on the model. In classification, the noise describes how many labels are wrong in the dataset.</p>
 <div class="proof corollary admonition" id="corollary-1">
-<p class="admonition-title"><span class="caption-number">Corollary 3 </span></p>
+<p class="admonition-title"><span class="caption-number">Corollary 4 </span></p>
 <section class="corollary-content" id="proof-content">
 <p>The classification noise random variable is equal to the probability that the label is not equal to the <em>true</em> label
 <div class="math notranslate nohighlight">
@@ -740,11 +745,11 @@ we have</p>
 \end{align*}\]</div>
 </div>
 <p>The bias describes how far the predictions are from the true label when we aggregate the results over various classifiers. In regression, the aggregated regression model computed the mean over all regression models, in classification, the aggregated classifier predicts the majority vote of all classifiers. Lastly, the variance term describes the variance among the classifiers. Here, this is measured by the expected disagreement of the majority vote classifier and the indivdual classifiers.</p>
-<p><a class="reference internal" href="#bias-variance-tradeoff1b-fig"><span class="std std-numref">Fig. 11</span></a> plots the result of a simulation of the bias-variance computation. Given a set of training data sets <span class="math notranslate nohighlight">\(\mathcal{D}_1,\ldots \mathcal{D}_m\)</span>, we train one model on each training data set for varying levels of complexity. Each thin blue curve tracks how the prediction error changes when we vary the complexity of the model, while training on the same dataset. That is, we have as many blue curves as there are training data sets. The thick blue line represents the mean of the thin blue lines. The red curves track the prediction error on the test set and the thick red line averages the thin red lines. We can see how the models tend to overfit with increasing complexity, because they have a low training error but an increasing test error. The increase in the variance of the models increases the test error. For a low model complexity, the test error is largely increased by the training error, which indicates a high bias.</p>
+<p><a class="reference internal" href="#bias-variance-tradeoff1b-fig"><span class="std std-numref">Fig. 7</span></a> plots the result of a simulation of the bias-variance computation. Given a set of training data sets <span class="math notranslate nohighlight">\(\mathcal{D}_1,\ldots \mathcal{D}_m\)</span>, we train one model on each training data set for varying levels of complexity. Each thin blue curve tracks how the prediction error changes when we vary the complexity of the model, while training on the same dataset. That is, we have as many blue curves as there are training data sets. The thick blue line represents the mean of the thin blue lines. The red curves track the prediction error on the test set and the thick red line averages the thin red lines. We can see how the models tend to overfit with increasing complexity, because they have a low training error but an increasing test error. The increase in the variance of the models increases the test error. For a low model complexity, the test error is largely increased by the training error, which indicates a high bias.</p>
 <figure class="align-center" id="bias-variance-tradeoff1b-fig">
 <a class="reference internal image-reference" href="_images/e2.png"><img alt="_images/e2.png" src="_images/e2.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 11 </span><span class="caption-text">The prediction error as a function of model complexity (borrowed from <span id="id1">[<a class="reference internal" href="bibliography.html#id9" title="Trevor Hastie, Robert Tibshirani, and Jerome Friedman. The elements of statistical learning. Cited on, pages 33, 2009.">6</a>]</span>).</span><a class="headerlink" href="#bias-variance-tradeoff1b-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">The prediction error as a function of model complexity (borrowed from <span id="id1">[<a class="reference internal" href="bibliography.html#id9" title="Trevor Hastie, Robert Tibshirani, and Jerome Friedman. The elements of statistical learning. Cited on, pages 33, 2009.">3</a>]</span>).</span><a class="headerlink" href="#bias-variance-tradeoff1b-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Whether a classifier overfits or underfits depends on the model choice and their hyperparameters. For example, a linear classifier is not a good model choice for a nonlinear classification problem, or naive Bayes is not a good model choice if the features correlate. The table below lists the key parameters of our considered classifiers and how they influence over- and underfitting.</p>
@@ -808,11 +813,11 @@ we have</p>
 <section id="typical-classification-workflow">
 <h2>Typical Classification workflow<a class="headerlink" href="#typical-classification-workflow" title="Permalink to this headline">#</a></h2>
 <p>The evaluation in classification has two purposes: finding the best hyperparameters for a model (tuning) and to assess the fit of the model (assessing overfitting and underfitting). Doing both, requires a nested evaluation and training technique, which is detailed in
-<a class="reference internal" href="#train-validate-test-02"><span class="std std-numref">Fig. 12</span></a>. The training procedure in the <em>Repeat</em> rectangle is used to tune the hyperparameters. The test error is computed for the model with the best validation error.</p>
+<a class="reference internal" href="#train-validate-test-02"><span class="std std-numref">Fig. 8</span></a>. The training procedure in the <em>Repeat</em> rectangle is used to tune the hyperparameters. The test error is computed for the model with the best validation error.</p>
 <figure class="align-center" id="train-validate-test-02">
 <a class="reference internal image-reference" href="_images/train_validate_test_02.png"><img alt="_images/train_validate_test_02.png" src="_images/train_validate_test_02.png" style="height: 300px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 12 </span><span class="caption-text">A block diagram representing a typical ML workflow.</span><a class="headerlink" href="#train-validate-test-02" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">A block diagram representing a typical ML workflow.</span><a class="headerlink" href="#train-validate-test-02" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>In the graphic, a train/validation/test split is used:</p>

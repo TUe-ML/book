@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -748,7 +753,7 @@ title="Print to PDF"
 <h2>Approximating the Bayes Classifier<a class="headerlink" href="#approximating-the-bayes-classifier" title="Permalink to this headline">#</a></h2>
 <p>Naïve Bayes is a probabilistic classifier, and before we delve into its mechanics, we establish first some terminology to describe the probabilties that we are dealing with.</p>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 19 </span> (Probabilistic Machine Learning Speak)</p>
+<p class="admonition-title"><span class="caption-number">Definition 20 </span> (Probabilistic Machine Learning Speak)</p>
 <section class="definition-content" id="proof-content">
 <p>Given two random variables <span class="math notranslate nohighlight">\(\vvec{x}\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, where <span class="math notranslate nohighlight">\(\vvec{x}\)</span> is the random variable of the observations of a dataset and <span class="math notranslate nohighlight">\(y\)</span> is the random variable of the class label. We define then the following probabilities:</p>
 <ul class="simple">
@@ -760,7 +765,7 @@ title="Print to PDF"
 </section>
 </div><p>The motivation for the Naive Bayes classifier is to approximate the Bayes optimal classifier <span class="math notranslate nohighlight">\(y^*=\argmax_y p^*(y\mid\vvec{x})\)</span> under simplifying assumptions. To estimate <span class="math notranslate nohighlight">\(p*(y\mid\vvec{x})\)</span>, Naive Bayes uses the Bayes rule.</p>
 <div class="proof theorem admonition" id="bayes_rule">
-<p class="admonition-title"><span class="caption-number">Theorem 16 </span> (Bayes rule)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 19 </span> (Bayes rule)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given two random variables <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, then te Bayes rule is given as
 <div class="math notranslate nohighlight">
@@ -787,7 +792,7 @@ title="Print to PDF"
 <h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">#</a></h2>
 <p>Using Bayes’ Theorem and the Naïve assumption, the prediction is made by choosing the class  that maximizes the posterior probability <span class="math notranslate nohighlight">\(p(y\mid x)\)</span>.</p>
 <div class="proof definition admonition" id="definition-3">
-<p class="admonition-title"><span class="caption-number">Definition 20 </span> (NB classifier)</p>
+<p class="admonition-title"><span class="caption-number">Definition 21 </span> (NB classifier)</p>
 <section class="definition-content" id="proof-content">
 <p>The naive Bayes classifier computes the probabilities that observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span> orrcurs together with label <span class="math notranslate nohighlight">\(y\)</span> under the naive Bayes assumption:</p>
 <div class="math notranslate nohighlight" id="equation-f-nb">
@@ -856,7 +861,7 @@ p(x_k = a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l
 <h3>Implementation Practice: Laplace Smoothing<a class="headerlink" href="#implementation-practice-laplace-smoothing" title="Permalink to this headline">#</a></h3>
 <p>Using the standard estimation of multinomial probabilities has the undesirable effect that some probabilities <span class="math notranslate nohighlight">\(p(x_k = a\mid y=l)\)</span> are equal to zero if the feature <span class="math notranslate nohighlight">\(x_k\)</span> is never equal to value <span class="math notranslate nohighlight">\(a\)</span> in class <span class="math notranslate nohighlight">\(y\)</span>. In this case, the classifier probabilities <span class="math notranslate nohighlight">\(f_{nb}(\vvec{x})_y\)</span> is equal to zero for all observations <span class="math notranslate nohighlight">\(\vvec{x}\)</span> where <span class="math notranslate nohighlight">\(x_k=a\)</span>. In particular if we have many classes, a high-dimensional feature space or features with a large domain (if <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span> is large), this effect might happen quite often. Laplace smoothing mitigates this effect by adding <span class="math notranslate nohighlight">\(\alpha\)</span> imaginary observations for each value of <span class="math notranslate nohighlight">\(x_k\)</span> and class <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <div class="proof definition admonition" id="definition-4">
-<p class="admonition-title"><span class="caption-number">Definition 21 </span> (Laplace smoothing)</p>
+<p class="admonition-title"><span class="caption-number">Definition 22 </span> (Laplace smoothing)</p>
 <section class="definition-content" id="proof-content">
 <p>Given a dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}\)</span> and feature <span class="math notranslate nohighlight">\(x_k\)</span> attaining values in the finite set <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span>. The class-conditioned multinomial probability estimations with Laplace smoothing with variable <span class="math notranslate nohighlight">\(\alpha&gt; 0\)</span> are then given as</p>
 <div class="math notranslate nohighlight" id="equation-freq-approx3">
@@ -874,7 +879,7 @@ p(x_k = a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l
 <section id="training">
 <h3>Training<a class="headerlink" href="#training" title="Permalink to this headline">#</a></h3>
 <div class="proof example admonition" id="example-5">
-<p class="admonition-title"><span class="caption-number">Example 19 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 18 </span></p>
 <section class="example-content" id="proof-content">
 <p>We consider the following toy dataset, where the task is to predict whether the email is spam, based on the words “free”, “win”, “offer” and “meeting”.</p>
 <table class="colwidths-auto table">
@@ -1061,7 +1066,7 @@ p(x_k = a\mid y=l) = \frac{1}{\sqrt{2\pi \sigma_{kl}^2}}\exp\left(-\frac{(a-\mu_
 <h2>Training<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
 <p>Naive Bayes doesn’t need training in the classical sense, but to enable a quick inference of a naive Bayes classifier, the required probabilities, respectively their parameters are stored in advance. That is, for discrete features we compute all log probabilities, and for continuous features we compute the estimation parameters <span class="math notranslate nohighlight">\(\mu_{kl}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{kl}\)</span>.</p>
 <div class="proof algorithm admonition" id="algorithm-6">
-<p class="admonition-title"><span class="caption-number">Algorithm 6 </span> (Naive Bayes (Gaussian and Multinomial))</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 7 </span> (Naive Bayes (Gaussian and Multinomial))</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Input</strong>: training data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, <span class="math notranslate nohighlight">\(\alpha\)</span></p>
 <ol class="simple">

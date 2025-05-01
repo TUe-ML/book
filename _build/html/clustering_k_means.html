@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -676,7 +681,7 @@ title="Print to PDF"
 <figure class="align-center" id="deck-of-cards">
 <a class="reference internal image-reference" href="_images/deckOfCards.jpg"><img alt="_images/deckOfCards.jpg" src="_images/deckOfCards.jpg" style="height: 300px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 42 </span><span class="caption-text">A deck of cards can be clustered into various forms of valid clusterings.</span><a class="headerlink" href="#deck-of-cards" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 35 </span><span class="caption-text">A deck of cards can be clustered into various forms of valid clusterings.</span><a class="headerlink" href="#deck-of-cards" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="cell tag_remove-input docutils container">
@@ -725,7 +730,7 @@ The standard optimization methods relying on gradients do not apply, this is a d
 Transform the objective to get a better idea.</p>
 <p>Minimizing the Within Cluster Distance Means Minimizing the Distance of Points to their Centroid</p>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 27 </span></p>
+<p class="admonition-title"><span class="caption-number">Theorem 30 </span></p>
 <section class="theorem-content" id="proof-content">
 <p>The <span class="math notranslate nohighlight">\(k\)</span>- means objective in Eq.~\eqref{eq:k-means} is equivalent to</p>
 <div class="amsmath math notranslate nohighlight">
@@ -4929,7 +4934,7 @@ IkkAE0IIEZH+H0r0K76ieYXyAAAAAElFTkSuQmCC\
 </div></div>
 </div>
 <div class="proof algorithm admonition" id="algorithm-1">
-<p class="admonition-title"><span class="caption-number">Algorithm 13 </span> (k-means (a.k.a. Lloyds algorithm))</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 14 </span> (k-means (a.k.a. Lloyds algorithm))</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Input</strong>: <span class="math notranslate nohighlight">\(D, r\)</span></p>
 <ol class="simple">

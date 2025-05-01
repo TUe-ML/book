@@ -80,7 +80,18 @@
 # For any continuously differentiable functions $\vvec{f}:\mathbb{R}^c\rightarrow \mathbb{R}^p$ and $\vvec{g}:\mathbb{R}^d\rightarrow \mathbb{R}^c$, the Jacobian of the composition $\vvec{f}\circ\vvec{g}$ is given by the chain rule:
 # \begin{align*}
 #         \frac{\partial \vvec{f}(\vvec{g}(\vvec{x}))}{\partial\vvec{x}}
-#         &= \frac{\partial \vvec{f}(\vvec{g}(\vvec{x}))}{\partial \vvec{g}(\vvec{x})} \frac{\partial \vvec{g}(\vvec{x})}{\partial \vvec{x}} 
+#         &= \underbrace{\frac{\partial \vvec{f}(\vvec{g}(\vvec{x}))}{\partial \vvec{g}(\vvec{x})}}_{p\times c}\underbrace{\frac{\partial \vvec{g}(\vvec{x})}{\partial \vvec{x}}}_{c\times d} 
 #     \end{align*}
 # ```
-# 
+# ```{prf:theorem} Jacobian of Element-wise Functions
+# The gradient and the Jacobian of any element-wise defined function
+# $$f(\vvec{x}) = (f(x_1),f(x_2),\ldots,f(x_d))$$
+# is the diagonal matrix
+# $$\nabla f(\vvec{x}) = \frac{\partial f(\vvec{x})}{\partial \vvec{x}}=\diag(f'(x_1),\ldots, f'(x_d)).$$
+# ```
+# ```{prf:example}
+# Consider the exponential function applied element-wise to a vector
+# $$\exp(\vvec{x}) = (\exp(x_1),\ldots,\exp(x_d)).$$
+# The gradient of this function is the diagonal matrix
+# $$\nabla \exp(\vvec{x}) = \diag(\exp(\vvec{x})).$$
+# ```

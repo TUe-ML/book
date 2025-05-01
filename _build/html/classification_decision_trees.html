@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -708,7 +713,7 @@ title="Print to PDF"
 <figure class="align-center" id="got-decision-tree">
 <a class="reference internal image-reference" href="_images/GOT_DT.png"><img alt="_images/GOT_DT.png" src="_images/GOT_DT.png" style="height: 500px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 7 </span><span class="caption-text">A decision tree Game of Thrones personality test.</span><a class="headerlink" href="#got-decision-tree" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">A decision tree Game of Thrones personality test.</span><a class="headerlink" href="#got-decision-tree" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Decision trees are a fundamental method in machine learning due to their inherently interpretable structure. They model decisions in a tree-like structure, where each internal node splits the outcomes based on a feature value, until we arrive at a leaf node that assigns a class prediction. This structure is so intuitive, that no further information is needed to perform the inference step. As an example, have a look at the Game of Thrones personality test decision tree above. You probably already got your character prediction without having to know what a decision tree is. This is particularly useful when you work in application domains where your project partners have no deepened mathematical training, for example in the medical domain. You can show a decision tree to experts of their field and they will be able to assess whether the predictions are sensible. Of course, this advantage gets lost if the decision tree is very big.</p>
@@ -716,7 +721,7 @@ title="Print to PDF"
 <section id="inference">
 <h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">#</a></h2>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 22 </span> (Decision Tree)</p>
+<p class="admonition-title"><span class="caption-number">Definition 23 </span> (Decision Tree)</p>
 <section class="definition-content" id="proof-content">
 <p>A Decision Tree is a directed binary tree that represents a classifying function <span class="math notranslate nohighlight">\(f_{dt}:\mathbb{R}^d\rightarrow [0,1]^c\)</span>. The classifying function is defined recursively:
 <div class="math notranslate nohighlight">
@@ -738,7 +743,7 @@ where</p>
 </section>
 </div><p>Although decision trees are often represented as if they only store the predicted label at a leaf, in practice, the class probabilities are stored. Class probabilities are useful as a confidence measure of the prediction <span class="math notranslate nohighlight">\( \hat{y} = \argmax_y\ f_{dt}(\vvec{x}) \)</span>.</p>
 <div class="proof example admonition" id="example-1">
-<p class="admonition-title"><span class="caption-number">Example 20 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 19 </span></p>
 <section class="example-content" id="proof-content">
 <p>The data underlying the GOT personality test dataset could for example have the features <span class="math notranslate nohighlight">\(\mathtt{x}_1,\ldots,\mathtt{x}_4\)</span>, where</p>
 <ul class="simple">
@@ -785,14 +790,14 @@ and <span class="math notranslate nohighlight">\({{f_0}_1}_0(\vvec{x})\)</span> 
 </div></section>
 <section id="training">
 <h2>Training<a class="headerlink" href="#training" title="Permalink to this headline">#</a></h2>
-<p>We provide the pseudocode for the recursive creation of the Classification and Regression Tree (CART) algorithm <span id="id1">[<a class="reference internal" href="bibliography.html#id8" title="Leo Breiman, Jerome H Friedman, Richard A Olshen, and Charles J Stone. Classification and regression trees. Wadsworth Inc, 1984.">3</a>]</span> in <a class="reference internal" href="#dt_training">Algorithm 7</a>. The input of CART is a dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, but in principle CART has also various hyperparameters that are here summarized by the stopping criterion, that is here assumed to be hard-coded in the algorithm. We discuss possible stopping criteria in a subsection below. If the stopping criterium is satisfied, then the CART algorithm returns a probability vector that reflects the empirical class-distribution in the dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span></p>
+<p>We provide the pseudocode for the recursive creation of the Classification and Regression Tree (CART) algorithm <span id="id1">[<a class="reference internal" href="bibliography.html#id8" title="Leo Breiman, Jerome H Friedman, Richard A Olshen, and Charles J Stone. Classification and regression trees. Wadsworth Inc, 1984.">2</a>]</span> in <a class="reference internal" href="#dt_training">Algorithm 8</a>. The input of CART is a dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, but in principle CART has also various hyperparameters that are here summarized by the stopping criterion, that is here assumed to be hard-coded in the algorithm. We discuss possible stopping criteria in a subsection below. If the stopping criterium is satisfied, then the CART algorithm returns a probability vector that reflects the empirical class-distribution in the dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span></p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 p_{\cal D} (y) = \frac{\lvert\{({\bf x}, l) \in {\cal D}\mid  l = y \}\rvert}{\lvert{\cal D}\rvert}. 
 \end{align*}\]</div>
 <p>Otherwise, a split is found (to be discussed below), returning the decision function <span class="math notranslate nohighlight">\(q\)</span> and the split datasets <span class="math notranslate nohighlight">\(\mathcal{L}_0\cup \mathcal{L}_1 = \mathcal{D}\)</span>. CART proceeds then with the recursion.</p>
 <div class="proof algorithm admonition" id="dt_training">
-<p class="admonition-title"><span class="caption-number">Algorithm 7 </span> (Classification and Regression Tree (CART))</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 8 </span> (Classification and Regression Tree (CART))</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Input</strong> The dataset <span class="math notranslate nohighlight">\({\cal D} \)</span><br />
 <strong>Function</strong> <span class="math notranslate nohighlight">\(\mathtt{CART}({\cal D})\)</span></p>
@@ -814,7 +819,7 @@ p_{\cal D} (y) = \frac{\lvert\{({\bf x}, l) \in {\cal D}\mid  l = y \}\rvert}{\l
 <h3>Finding Splits<a class="headerlink" href="#finding-splits" title="Permalink to this headline">#</a></h3>
 <p>Decision tree splits are determined using a greedy approach, meaning each split is chosen based on the immediate best improvement for the classification task. Greedy methods are usually easy to implement and to understand and provide good enough solutions, but the model decisions are often short sighted, such that the resulting tree might be bigger than it would be needed. The improvement is measured by the information gain (<span class="math notranslate nohighlight">\(IG\)</span>), which is high when the resulting child nodes have a purer class distribution than the parent node. A more detailed discussion of this concept follows below.</p>
 <div class="proof algorithm admonition" id="dt_split">
-<p class="admonition-title"><span class="caption-number">Algorithm 8 </span> (Split)</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 9 </span> (Split)</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Input</strong> A dataset <span class="math notranslate nohighlight">\({\cal D}\)</span><br />
 <strong>Function</strong> <span class="math notranslate nohighlight">\(\mathtt{split}({\cal D})\)</span></p>
@@ -857,7 +862,7 @@ If the feature is continuous, then we can try as thresholds the midpoints betwee
 <span class="eqno">(45)<a class="headerlink" href="#equation-information-gain" title="Permalink to this equation">#</a></span>\[IG(\mathcal{L},{\cal L}_0, {\cal L}_1) = \mathrm{Impurity}({\cal L}) - \left\{ \frac{\lvert {\cal L}_0\rvert}{\lvert{\cal L}\rvert} \mathrm{Impurity}({\cal L}_0) + \frac{\lvert{\cal L}_1\rvert}{\lvert{\cal L}\rvert} \mathrm{Impurity}({\cal L}_{1}) \right\} \]</div>
 <p>The function <span class="math notranslate nohighlight">\(\mathrm{Impurity}\)</span> measures the uncertainty of the prediction of the class with the highest empirical disctribution <span class="math notranslate nohighlight">\(p_{\cal L}(y)\)</span>. If the empirical distribution is very high for one class and very low for the remaining classes, then the impurity is low. We consider the following definitions of impurity:</p>
 <div class="proof definition admonition" id="definition-4">
-<p class="admonition-title"><span class="caption-number">Definition 23 </span> (Impurity measures)</p>
+<p class="admonition-title"><span class="caption-number">Definition 24 </span> (Impurity measures)</p>
 <section class="definition-content" id="proof-content">
 <p>We define the following three impurity measures that can be used to compute the information gain:</p>
 <div class="amsmath math notranslate nohighlight">

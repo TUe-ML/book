@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -4003,7 +4008,7 @@ UkoFkiYwpZRSgaQJTCmlVCD9f8UHeF2Odf+ZAAAAAElFTkSuQmCC\
 <p>A hyperplane is a generalization of a line (in 2D) or a plane (in 3D) to any number of dimensions.
 In <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>, a hyperplane is a flat, <span class="math notranslate nohighlight">\((d−1)\)</span>-dimensional subspace that divides the space into two halves.</p>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 26 </span></p>
+<p class="admonition-title"><span class="caption-number">Definition 27 </span></p>
 <section class="definition-content" id="proof-content">
 <p>Given a vector <span class="math notranslate nohighlight">\(\vvec{w}\in\mathbb{R}^d\)</span> and value <span class="math notranslate nohighlight">\(b\in\mathbb{R}\)</span>, then
 a hyperplane is defined as the set of all points satisfying the equation
@@ -4042,7 +4047,7 @@ As a result, geometrically we can say that <span class="math notranslate nohighl
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-b7674db6f749dd49cedc4a5b782fee44c85b3ecb.svg" alt="Figure made with TikZ" /></p>
 </div><p>This way, we can define the inference of the SVM for the binary classification problem</p>
 <div class="proof definition admonition" id="definition-1">
-<p class="admonition-title"><span class="caption-number">Definition 27 </span> (SVM for binary Classification)</p>
+<p class="admonition-title"><span class="caption-number">Definition 28 </span> (SVM for binary Classification)</p>
 <section class="definition-content" id="proof-content">
 <p>An SVM classifier for a binary classification problem (<span class="math notranslate nohighlight">\(y\in\{-1,1\}\)</span>) reflects the distance to the decision boundary <span class="math notranslate nohighlight">\(\vvec{w}^\top \vvec{x}+b=0\)</span>
 <div class="math notranslate nohighlight">
@@ -4112,7 +4117,7 @@ For any given <span class="math notranslate nohighlight">\(\delta\)</span> we ca
 \end{align*}\]</div>
 <p>This objective is already pretty good but the maximum of <span class="math notranslate nohighlight">\(\frac{1}{\lVert\vvec{w}\rVert}\)</span> is reached when <span class="math notranslate nohighlight">\(\lVert\vvec{w}\rVert\rightarrow 0\)</span>. This can result in numerical instabilities, since we don’t want to divide by zero. This issue is easily solved by minimizing <span class="math notranslate nohighlight">\(\lVert\vvec{w}\rVert^2\)</span> instead. We use the squared norm because this is easier to optimize than applying the square root from the Euclidean norm. As a result, we can conclude the following theorem, specifying the hard margin SVM objective.</p>
 <div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 18 </span> (Hard Margin SVM objective)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 21 </span> (Hard Margin SVM objective)</p>
 <section class="theorem-content" id="proof-content">
 <p>The following objective solves the <a class="reference internal" href="#hard-margin-svm-task"><span class="std std-ref">Hard Margin SVM</span></a> task
 <div class="math notranslate nohighlight">
@@ -4148,7 +4153,7 @@ Hence, we write</p>
 \end{align*}\]</div>
 <p>As a result, our dual objective looks now as follows:</p>
 <div class="proof theorem admonition" id="theorem-3">
-<p class="admonition-title"><span class="caption-number">Theorem 19 </span> (Hard Margin Dual)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 22 </span> (Hard Margin Dual)</p>
 <section class="theorem-content" id="proof-content">
 <p>The dual optimization objective to the <a class="reference internal" href="#hard-margin-svm-task"><span class="std std-ref">Hard Margin SVM</span></a> task is given as</p>
 <div class="math notranslate nohighlight" id="equation-svm-dual-hardmarg">
@@ -4160,7 +4165,7 @@ Hence, we write</p>
 </section>
 </div><p>The dual objective is a convex optimization problem. In particular, it is a so-called quadratic program for which many solvers exist.</p>
 <div class="proof theorem admonition" id="theorem-4">
-<p class="admonition-title"><span class="caption-number">Theorem 20 </span> (Quadratic Program Hard Margin)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 23 </span> (Quadratic Program Hard Margin)</p>
 <section class="theorem-content" id="proof-content">
 <p>The dual optimization objective to the <a class="reference internal" href="#hard-margin-svm-task"><span class="std std-ref">Hard Margin SVM</span></a> task is equivalent to the following convex quadratic program</p>
 <div class="math notranslate nohighlight" id="equation-svm-dual-quadr">
@@ -4180,7 +4185,7 @@ Hence, we write</p>
 </div>
 <p>Once we have solved the convex program, we can obtain the optimal hyperplane from the Lagrange multipliers. This is necessary to perform the inference step, the classification for unseen data points.</p>
 <div class="proof theorem admonition" id="theorem-5">
-<p class="admonition-title"><span class="caption-number">Theorem 21 </span> (Optimal hyperplane)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 24 </span> (Optimal hyperplane)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given the minimizer <span class="math notranslate nohighlight">\( \boldsymbol{\lambda}^{\ast} \)</span> of <a class="reference internal" href="#equation-svm-dual-quadr">(54)</a>, the solution to the <a class="reference internal" href="#hard-margin-svm-task"><span class="std std-ref">Hard Margin SVM</span></a> task is given by</p>
 <div class="math notranslate nohighlight" id="equation-primal-optimal">
@@ -4219,19 +4224,19 @@ We can indentify the support vectors as those vectors <span class="math notransl
 <strong>Return</strong> the hyperplane defining parameters <span class="math notranslate nohighlight">\(\vvec{w},b\)</span></p>
 </div>
 <div class="proof example admonition" id="example-6">
-<p class="admonition-title"><span class="caption-number">Example 21 </span></p>
+<p class="admonition-title"><span class="caption-number">Example 20 </span></p>
 <section class="example-content" id="proof-content">
 <p>The plot below shows the effect of the regularization weight <span class="math notranslate nohighlight">\(C\)</span> on the decision boundary. We state the decision boundaries for <span class="math notranslate nohighlight">\(C\in\{0.1,1,100\}\)</span>. Using large weights such as <span class="math notranslate nohighlight">\(C=100\)</span> is common for the SVM. The larger <span class="math notranslate nohighlight">\(C\)</span> is, the more does the decision boundary adapt to the points that are closest to it, which are the first to introduce a penalty on margin or decision boundary violations.</p>
 <figure class="align-left" id="effect-softmargin-sep-fig">
 <a class="reference internal image-reference" href="_images/effect_softmargin_sep.png"><img alt="_images/effect_softmargin_sep.png" src="_images/effect_softmargin_sep.png" style="height: 200px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Linearly separable dataset.</span><a class="headerlink" href="#effect-softmargin-sep-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Linearly separable dataset.</span><a class="headerlink" href="#effect-softmargin-sep-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-left" id="effect-softmargin-nonsep-fig">
 <a class="reference internal image-reference" href="_images/effect_softmargin_nonsep.png"><img alt="_images/effect_softmargin_nonsep.png" src="_images/effect_softmargin_nonsep.png" style="height: 200px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Linearly non-separable dataset.</span><a class="headerlink" href="#effect-softmargin-nonsep-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Linearly non-separable dataset.</span><a class="headerlink" href="#effect-softmargin-nonsep-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -4239,7 +4244,7 @@ We can indentify the support vectors as those vectors <span class="math notransl
 <h3>Optimization<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
 <p>The optimization of the soft-margin SVM is similar to the hard-margin SVM. We define the dual objective and apply a quadratic solver.</p>
 <div class="proof theorem admonition" id="theorem-7">
-<p class="admonition-title"><span class="caption-number">Theorem 22 </span></p>
+<p class="admonition-title"><span class="caption-number">Theorem 25 </span></p>
 <section class="theorem-content" id="proof-content">
 <p>The dual optimization objective to the <span class="xref std std-ref">Soft-Margin SVM</span> task is given as</p>
 <div class="math notranslate nohighlight" id="equation-svm-form9">
@@ -4268,7 +4273,7 @@ We can indentify the support vectors as those vectors <span class="math notransl
 </div>
 <p>Likewise, we formulate the quadratic program of the soft-margin SVM.</p>
 <div class="proof corollary admonition" id="corollary-8">
-<p class="admonition-title"><span class="caption-number">Corollary 2 </span> (Quadratic Program Soft-Margin)</p>
+<p class="admonition-title"><span class="caption-number">Corollary 3 </span> (Quadratic Program Soft-Margin)</p>
 <section class="corollary-content" id="proof-content">
 <p>The dual optimization objective of the <span class="xref std std-ref">Soft-Margin SVM</span> task is equivalent to the following convex quadratic program</p>
 <div class="math notranslate nohighlight" id="equation-svm-form10">

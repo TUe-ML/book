@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -688,7 +693,7 @@ Minimizers of objective functions which have a subgradient satisfy <span class="
 <h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
 <p>The FONC for subgradients would allow us in principle to find again the stationary points, that are also the minimizers of the Lasso task, because the Lasso objective is convex. Unfortunately, solving for the stationary points of the subgradient <span class="math notranslate nohighlight">\(\nabla RSS_{L_1}(\bm\beta)=0\)</span> is too complicated (feel free to try it yourself). Yet, the function is simple enough to do the next best thing, which is coordinate descent. We derive the minimizers subject to one coordinate as stated in the following theorem.</p>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 14 </span> (Coordinate-wise Lasso Minimizers)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 17 </span> (Coordinate-wise Lasso Minimizers)</p>
 <section class="theorem-content" id="proof-content">
 <p>The minimizer of Lasso subject to the coordinate <span class="math notranslate nohighlight">\(\beta_k\)</span>
 <div class="math notranslate nohighlight">
@@ -742,7 +747,7 @@ If <span class="math notranslate nohighlight">\(\beta_k&gt;0\)</span>, then the 
 </div>
 <p>Given these coordinate-wise minimizers for the Lasso objective, we can formulate the Lasso algorithm as follows.</p>
 <div class="proof algorithm admonition" id="algorithm-1">
-<p class="admonition-title"><span class="caption-number">Algorithm 5 </span> (Lasso)</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 6 </span> (Lasso)</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Input</strong>: <span class="math notranslate nohighlight">\(X,y,\lambda\)</span></p>
 <ol class="simple">
