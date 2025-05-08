@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -489,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -506,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Flinalg_spaces.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Flinalg_spaces.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -523,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/linalg_spaces.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/linalg_spaces.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -1091,8 +1096,8 @@ Yah, it gets interesting with the matrix product.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.2, 0.3, 0.2, 0.3, 0.3],
-       [0.8, 1.1, 0.8, 1. , 0.7]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.4, 0.2, 0.2, 0.2, 0.4],
+       [1. , 0.4, 0.6, 0.5, 0.9]])
 </pre></div>
 </div>
 </div>
@@ -1148,8 +1153,8 @@ The matrix product is the sum of outer products of corresponding column- and row
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.2, 0.1, 0.2],
-       [0.2, 0.6, 0.8]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0. , 0.3, 0.2],
+       [0.3, 0.7, 0.3]])
 </pre></div>
 </div>
 </div>
@@ -1161,8 +1166,8 @@ The matrix product is the sum of outer products of corresponding column- and row
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.2, 0.1, 0.2],
-       [0.2, 0.6, 0.8]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0. , 0.3, 0.2],
+       [0.3, 0.7, 0.3]])
 </pre></div>
 </div>
 </div>
@@ -1241,8 +1246,8 @@ Diagonal matrices with nonzero elements on the diagonal have an inverse:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution time of our naive implementation in seconds: 1.6507070064544678
-Execution time of the numpy implementation in seconds: 0.0006649494171142578
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution time of our naive implementation in seconds: 1.6566731929779053
+Execution time of the numpy implementation in seconds: 0.0007297992706298828
 </pre></div>
 </div>
 </div>
@@ -1298,7 +1303,7 @@ Execution time of the numpy implementation in seconds: 0.0006649494171142578
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>

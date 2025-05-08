@@ -494,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -511,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fneuralnets_mlps.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Fneuralnets_mlps.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -528,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/neuralnets_mlps.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/neuralnets_mlps.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -640,8 +640,8 @@ title="Print to PDF"
 </figcaption>
 </figure>
 <p>Let <span class="math notranslate nohighlight">\( w^{\ell}_{i,j} \)</span> denote the artificial synaptic weight from the <span class="math notranslate nohighlight">\(i\)</span>-th unit in previous layer <span class="math notranslate nohighlight">\( \ell-1 \)</span> to the <span class="math notranslate nohighlight">\(j\)</span>-th unit in the current layer <span class="math notranslate nohighlight">\( \ell\)</span> and let vector <span class="math notranslate nohighlight">\( {\bf w}^{\ell}_{j} = \begin{bmatrix} w^{\ell}_{0,j} &amp; w^{\ell}_{1,j} &amp; \ldots &amp; w^{\ell}_{H_{\ell-1},j} \end{bmatrix}^{T}\)</span> collect all weights of the <span class="math notranslate nohighlight">\(j\)</span>-th unit at layer <span class="math notranslate nohighlight">\(\ell\)</span>. Additionally, for convenience, let <span class="math notranslate nohighlight">\( {\bf h}^{0} = \begin{bmatrix} 1 &amp; x_{1} &amp; x_{2} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> with <span class="math notranslate nohighlight">\( H_{0} = D \)</span> collect the observed features and let <span class="math notranslate nohighlight">\( {\bf h}^{\ell} = \begin{bmatrix} 1 &amp; h^{\ell}_{1} &amp; h^{\ell}_{2} &amp; \ldots &amp; h^{\ell}_{H_{\ell}} \end{bmatrix}^{T} \)</span> collect the embedded features for all <span class="math notranslate nohighlight">\( \ell \in \lbrace 1, \ldots, L \rbrace \)</span>. Thus, we can write the activation value of the <span class="math notranslate nohighlight">\(j\)</span>-th unit of the current layer <span class="math notranslate nohighlight">\( \ell \)</span> using vector notation as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b74f1438-1634-4ad9-a322-05d5471b9740">
-<span class="eqno">(77)<a class="headerlink" href="#equation-b74f1438-1634-4ad9-a322-05d5471b9740" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-fbc441b6-f6c2-457f-9496-e8c57fa75bbd">
+<span class="eqno">(77)<a class="headerlink" href="#equation-fbc441b6-f6c2-457f-9496-e8c57fa75bbd" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i} \nonumber \\
 &amp;=&amp; ({\bf w}_{j}^{\ell})^{T} {\bf h}^{\ell-1}. \nonumber
 \end{eqnarray}\]</div>
@@ -649,8 +649,8 @@ a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i
 \[ h^{\ell}_{j} = \phi_{\ell}\left( a^{\ell}_{j} \right). \]</div>
 </p>
 <p>Now, let the matrix <span class="math notranslate nohighlight">\( {\bf W}^{\ell} = \left[  w^{\ell}_{i,j} \right] \)</span> collect the weights of all units at the <span class="math notranslate nohighlight">\(\ell\)</span>-th layer such that its <span class="math notranslate nohighlight">\(j\)</span>-th column stores the weights associated with the <span class="math notranslate nohighlight">\(j\)</span>-th unit at layer <span class="math notranslate nohighlight">\(\ell\)</span>. Equivalently, we can write <span class="math notranslate nohighlight">\( {\bf W}^{\ell} = \begin{bmatrix} {\bf w}^{\ell}_{1} &amp; {\bf w}^{\ell}_{2} &amp; \ldots &amp; {\bf w}^{\ell}_{H_{\ell}} \end{bmatrix} \)</span>. Furthermore, let the vector <span class="math notranslate nohighlight">\( {\bf a}^{\ell} = \begin{bmatrix} a^{\ell}_{1} &amp; a^{\ell}_{2} &amp; \ldots &amp; a^{\ell}_{H_{\ell}} \end{bmatrix}^{T} \)</span> collect all activations <span class="math notranslate nohighlight">\(a^{\ell}_{j}\)</span> of layer <span class="math notranslate nohighlight">\(\ell\)</span>. Then, we can conveniently write <span class="math notranslate nohighlight">\({\bf a}^{\ell}\)</span> and <span class="math notranslate nohighlight">\( {\bf h}^{\ell} \)</span> as matrix-vector products</p>
-<div class="amsmath math notranslate nohighlight" id="equation-22491dbb-ef41-4fff-96ce-9ccea677d58f">
-<span class="eqno">(78)<a class="headerlink" href="#equation-22491dbb-ef41-4fff-96ce-9ccea677d58f" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-b4b68936-e375-4998-8831-a08a08618816">
+<span class="eqno">(78)<a class="headerlink" href="#equation-b4b68936-e375-4998-8831-a08a08618816" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf a}^{\ell} &amp;=&amp; ({\bf W}^{\ell})^{T} \, {\bf h}^{\ell-1} \nonumber \\
 {\bf h}^{\ell} &amp;=&amp; \phi_{\ell}({\bf a}^{\ell}), \nonumber
 \end{eqnarray}\]</div>
@@ -671,7 +671,7 @@ a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i
 \Big)}_{\mathbf{a}^{2}} \Big)}_{\mathbf{a}^{3}} \Big)}_{\hat{y}} \]</div>
  in which <span class="math notranslate nohighlight">\( \mathbf{W}^{4} \)</span> is <span class="math notranslate nohighlight">\(H_L \times O\)</span> matrix and <span class="math notranslate nohighlight">\( {\bf h}^{0} \triangleq \begin{bmatrix} 1 &amp; {\bf x}^{T} \end{bmatrix}^{T} \)</span> with <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_1 &amp; x_2 &amp; \ldots &amp; x_D \end{bmatrix}^{T} \)</span>. In this example, the single linear output unit – node with symbol <span class="math notranslate nohighlight">\( \sum \)</span> in <a class="reference internal" href="#mlp1-fig3"><span class="std std-numref">Fig. 20</span></a> – uses an affine transform (<span class="math notranslate nohighlight">\( \mathbf{W}^{4} \)</span>) to combine the <span class="math notranslate nohighlight">\(H_L\)</span> values at last hidden layer into a single output <span class="math notranslate nohighlight">\( \hat{y} \)</span>, i.e. <span class="math notranslate nohighlight">\(O=1\)</span>. For multiple outputs, we can design <span class="math notranslate nohighlight">\( \mathbf{W}^{4} \)</span> such that <span class="math notranslate nohighlight">\(O &gt; 1\)</span>. The MLP is thus a nested sequence of matrix-vector multiplications each of them followed by an element-wise non-linearity.</p>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 32 </span> (Expressive Efficiency phenomenon)</p>
+<p class="admonition-title"><span class="caption-number">Definition 33 </span> (Expressive Efficiency phenomenon)</p>
 <section class="definition-content" id="proof-content">
 <p>As stated by Pinkus <span id="id1">[<a class="reference internal" href="bibliography.html#id17" title="Allan Pinkus. Approximation theory of the mlp model in neural networks. Acta numerica, 8:143–195, 1999.">5</a>]</span> (see <a class="reference internal" href="neuralnets_func_approx.html"><span class="doc">Function approximator</span></a> page), single layer neural networks can approximate arbitrarily well any continuous function <span class="math notranslate nohighlight">\(f^{\ast} \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O}\)</span> for a wide range of non-linearities <span class="math notranslate nohighlight">\(\phi\)</span>. Thus, why do we need multiple layers?</p>
 <p>The motivation to use multiple layers is related to a phenomenon called <em>Expressive Efficiency</em>:</p>
@@ -732,7 +732,7 @@ a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>

@@ -13,7 +13,7 @@ np.set_printoptions(precision=2,suppress=True)
 
 
 # # Minimizing the RSS
-# Assuming that we have now selected a function class, and that it can be modelled as a linear function $f(\vvec{x})=\bm\phi(\vvec(x))^\top\bm\beta$, we need to train the parameter vector $\bm\beta$ to fit the dataset. For that reason, we need to define an objective function that is small if the model $f(\vvec{x})$ is suitable. Since our goal is to approximate the target values, we can simly measure the distance of our prediction $f(\vvec{x})$ and the target value $y$.   
+# Assuming that we have now selected a function class, and that it can be modelled as a linear function $f(\vvec{x})=\bm\phi(\vvec{x})^\top\bm\beta$, we need to train the parameter vector $\bm\beta$ to fit the dataset. For that reason, we need to define an objective function that is small if the model $f(\vvec{x})$ is suitable. Since our goal is to approximate the target values, we can simly measure the distance of our prediction $f(\vvec{x})$ and the target value $y$.   
 # ````{tikz}
 # %\pgfplotsset{
 # %	colormap={test}{[2pt]
@@ -78,21 +78,21 @@ np.set_printoptions(precision=2,suppress=True)
 # ````
 # The plot above shows a set of datapoints that are approximated by an affine model (blue). The distance to the target $y$, plotted on the vertical axis, is indicated by the red bars. The distance indicated by the red bars reflect the absolute values $\lvert y_i - f(\vvec{x}_i)\rvert$. However, the absolute value is not so easy to optimize, since it is non-differentiable at value zero. Instead, we can minimize the squared distances, which gives us a smooth objective function. 
 # 
-# The squared approximation error of a function $f$ to the target values $y$ can be compactly written as follows for a linear model $f(\vvec{x})=\bm\phi(\vvec(x))^\top\bm\beta$
+# The squared approximation error of a function $f$ to the target values $y$ can be compactly written as follows for a linear model $f(\vvec{x})=\bm\phi(\vvec{x})^\top\bm\beta$
 # \begin{align*}
-#     RSS(\bm{\beta}) &= \sum_{i=1}^n(y_i-f(D_{i\cdot}))^2\\
-#     &= \sum_{i=1}^n(y_i-\bm{\phi}(D_{i\cdot}^\top)^\top\bm{\beta})^2\\
+#     RSS(\bm{\beta}) &= \sum_{i=1}^n(y_i-f(\vvec{x}_i))^2\\
+#     &= \sum_{i=1}^n(y_i-\bm{\phi}(\vvec{x}_i)^\top\bm{\beta})^2\\
 #     &= \sum_{i=1}^n(y_i-X_{i\cdot}\bm{\beta})^2\\
 #     &=\lVert \vvec{y}-X\bm{\beta}\rVert^2.
 # \end{align*}
-# The function $RSS(\bm{\beta})$ is called the **Residual Sum of Squares**. We have defined above the matrix $X$, that gathers the transformed feature vectors $\bm{\phi}(D_{i\cdot}^\top)^\top = X_{i\cdot}$ over its rows. 
+# The function $RSS(\bm{\beta})$ is called the **Residual Sum of Squares**. We have defined above the matrix $X$, that gathers the transformed feature vectors $\bm{\phi}(\vvec{x}_i)^\top = X_{i\cdot}$ over its rows. 
 # The matrix $X$ is called the **design matrix**. Likewise, we can gather the target values in the vector $\vvec{y}$.
 # \begin{align*}
 #     X&= 
 #     \begin{pmatrix}
-#     -- & \bm{\phi}(D_{1\cdot}^\top)^\top &--\\
+#     -- & \bm{\phi}(\vvec{x}_1)^\top &--\\
 #     &\vdots&\\
-#     --& \bm{\phi}(D_{n\cdot}^\top)^\top &--
+#     --& \bm{\phi}(\vvec{x}_n)^\top &--
 #     \end{pmatrix}
 #     \in\mathbb{R}^{n\times p},&
 #     \vvec{y}&=
@@ -107,8 +107,8 @@ np.set_printoptions(precision=2,suppress=True)
 # :class: tip
 # :name: regr_task
 # **Given** a dataset of $n$ observations
-# \begin{equation*}\mathcal{D}=\left\{(D_{i\cdot},y_i)\vert D_{i\cdot}\in\mathbb{R}^{1\times d}, y_i\in\mathbb{R}, 1\leq i \leq n\right\}\end{equation*}   
-# **Choose** a basis function $\bm\phi:\mathbb{R}^d\rightarrow \mathbb{R}^p$, and create the design matrix $X\in\mathbb{R}^{n\times p}$, where $X_{i\cdot}=\bm\phi(D_{i\cdot}^\top)^\top$     
+# \begin{equation*}\mathcal{D}=\left\{(\vvec{x}_i,y_i)\vert \vvec{x}_i\in\mathbb{R}^{d}, y_i\in\mathbb{R}, 1\leq i \leq n\right\}\end{equation*}   
+# **Choose** a basis function $\bm\phi:\mathbb{R}^d\rightarrow \mathbb{R}^p$, and create the design matrix $X\in\mathbb{R}^{n\times p}$, where $X_{i\cdot}=\bm\phi(\vvec{x}_i)^\top$     
 # **Find** the regression vector $\bm\beta$, solving the following objective
 # \begin{align*}
 #     \min_{\bm\beta} \ RSS(\bm\beta) = \lVert \vvec{y}-X\bm\beta\rVert^2 &\ 
@@ -210,7 +210,7 @@ A3,b3
 # 
 #     D = np.array([5,3,1])
 #     y = np.array([2,5,3])
-#     pandas.DataFrame({"F1":D,"y":y})
+#     pandas.DataFrame({"x1":D,"y":y})
 # 
 # That is, our given data looks as follows:
 #  

@@ -494,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -511,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fregression_functions.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Fregression_functions.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -528,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/regression_functions.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/regression_functions.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -690,10 +690,10 @@ title="Print to PDF"
 <p>The trick which is used in regression is to learn a linear combiation of predefined functions. For example, if we are unsure if the feature-target relation is exponential or logarithmic, then we can define our regression function as a weighted sum of exponential and logarithmic functions:</p>
 <div class="math notranslate nohighlight" id="equation-eq-regression-f">
 <span class="eqno">(8)<a class="headerlink" href="#equation-eq-regression-f" title="Permalink to this equation">#</a></span>\[f(x) = \beta_1 \log(x) + \beta_2 \exp(x) \]</div>
-<p>This formalization allows us to learn a function <span class="math notranslate nohighlight">\(f\)</span> by means of the parameters <span class="math notranslate nohighlight">\(\beta_1\)</span> and <span class="math notranslate nohighlight">\(\beta_2\)</span>. Those parameters can then be optimized after we define a loss function for the regression task <span class="math notranslate nohighlight">\(\ell(f(x),y)\)</span>. The functions which we use to compose our function <span class="math notranslate nohighlight">\(f\)</span> (here <span class="math notranslate nohighlight">\(\log(x)\)</span> and <span class="math notranslate nohighlight">\(\exp(x)\)</span>) are called <strong>basis functions</strong>.</p>
+<p>This formalization allows us to learn a function <span class="math notranslate nohighlight">\(f\)</span> by means of the parameters <span class="math notranslate nohighlight">\(\beta_1\)</span> and <span class="math notranslate nohighlight">\(\beta_2\)</span>. Those parameters can then be optimized after we define a loss function for the regression task. The functions which we use to compose our function <span class="math notranslate nohighlight">\(f\)</span> (here <span class="math notranslate nohighlight">\(\log(x)\)</span> and <span class="math notranslate nohighlight">\(\exp(x)\)</span>) are called <strong>basis functions</strong>.</p>
 <p>The  main insight (which we will discuss in the following for various basis functions) is that nonlinear functions such as <span class="math notranslate nohighlight">\(f(x)\)</span> in Eq. <a class="reference internal" href="#equation-eq-regression-f">(8)</a> can be represented as linear functions in a <em>transformed feature space</em>. Linear functions <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span> have the form
 <div class="math notranslate nohighlight">
-\[f(\vvec{x}) = \beta_d x_d + \ldots + \beta_1x = \bm\beta^\top \vvec{x},\]</div>
+\[f(\vvec{x}) = \beta_1x_1 + \ldots + \beta_d x_d = \bm\beta^\top \vvec{x},\]</div>
 
 that is, they are defined by an inner product of the weights <span class="math notranslate nohighlight">\(\bm\beta\)</span> and the feature vector <span class="math notranslate nohighlight">\(\vvec{x}\)</span>.</p>
 <section id="affine-functions">
@@ -785,7 +785,7 @@ that is, they are defined by an inner product of the weights <span class="math n
 </div><div class="proof example admonition" id="example-4">
 <p class="admonition-title"><span class="caption-number">Example 15 </span> (Multivariate Polynomials of Degree k (d=2))</p>
 <section class="example-content" id="proof-content">
-<div class="figure" style="text-align: center"><p><img  src="_images/tikz-04bbde9d4f437f91c7870b7d84c028161ff07990.svg" alt="Figure made with TikZ" /></p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-9518efff4ac1cb2535b6fb4e874ae84be0233524.svg" alt="Figure made with TikZ" /></p>
 </div><p>We discuss now a degree <span class="math notranslate nohighlight">\(k\)</span> polynomial <span class="math notranslate nohighlight">\(f:\mathbb{R}^2\rightarrow \mathbb{R}\)</span> mapping from the two-dimensional space <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span>. There are actually various ways to define the polynomial in a vector space. A popular way to define a polynomial in more than two variables is over a weighted sum of all combinations of the one-dimensional basis functions. Using now a multi index, a polynomial in two variables is defined as</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -796,7 +796,7 @@ that is, they are defined by an inner product of the weights <span class="math n
     \beta_{kk}
     \end{pmatrix}= \bm{\phi}(\vvec{x})^\top\bm{\beta},
 \end{align*}\]</div>
-<p>where the feature transformation maps now to a <span class="math notranslate nohighlight">\((k+1)^2\)</span>-dimensional vector space, <span class="math notranslate nohighlight">\(\bm\phi(\vvec{x}),\bm\beta\in\mathbb{R}^{(k+1)^2}\)</span>. The basis functions are here the set of <span class="math notranslate nohighlight">\(\{x_{i_1}x_{i_2}\mid 1\leq i_1,i_2\leq k\}\)</span>.</p>
+<p>where the feature transformation maps now to a <span class="math notranslate nohighlight">\((k+1)^2\)</span>-dimensional vector space, <span class="math notranslate nohighlight">\(\bm\phi(\vvec{x}),\bm\beta\in\mathbb{R}^{(k+1)^2}\)</span>. The basis functions are here the set of <span class="math notranslate nohighlight">\(\{x_1^{i_1}x_2^{i_2}\mid 1\leq i_1,i_2\leq k\}\)</span>.</p>
 </section>
 </div><p>We generalize now the defintion of polynomials of degree <span class="math notranslate nohighlight">\(k\)</span> as a linear function by the multiplication of all possible one-dimensional basis functions:
 <div class="math notranslate nohighlight">
@@ -813,7 +813,7 @@ Another definition of polynomials multiplies only basis functions such that the 
 <div class="math notranslate nohighlight">
 \[\bm{\phi}_{pka}(\vvec{x}) = (x_1^{i_1}\cdot \ldots \cdot x_d^{i_d})_{i_1+\ldots +i_d\leq k}.\]</div>
 
-The sklearn function to obtain polynomial features uses this definition. This feature transformation maps to a lower-dimensional transformed feature space than <span class="math notranslate nohighlight">\(\bm{\phi}_pk\)</span>, but a general issue is that the dimensionality of the transformed feature space increases vastly in the degree or the amount of features.</p>
+The sklearn function to obtain polynomial features uses this definition. This feature transformation maps to a lower-dimensional transformed feature space than <span class="math notranslate nohighlight">\(\bm{\phi}_{pk}\)</span>, but a general issue is that the dimensionality of the transformed feature space increases vastly in the degree or the amount of features.</p>
 </section>
 <section id="gaussian-functions">
 <h2>Gaussian Functions<a class="headerlink" href="#gaussian-functions" title="Permalink to this headline">#</a></h2>
@@ -835,7 +835,7 @@ Those parameters (<span class="math notranslate nohighlight">\(\gamma\)</span> a
 </div><p>The sum of weighted Gaussian basis functions is modelled by a linear function as follows:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-    f(x)&amp;=\sum_{i=1}^k\beta_i\exp\left(-\frac{\lVert x-\mu_i\rVert^2}{2\sigma^2}\right)\\
+    f(x)&amp;=\sum_{i=1}^k\beta_i\exp\left(-\gamma\lVert x-\mu_i\rVert^2\right)\\
     &amp;= \begin{pmatrix}\kappa_1(x)&amp;\ldots &amp; \kappa_k(x)\end{pmatrix}
     \begin{pmatrix}\beta_1 \\ \vdots \\ \beta_k
     \end{pmatrix}\\
@@ -923,7 +923,7 @@ We define the function class of a sum of <span class="math notranslate nohighlig
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>

@@ -7,7 +7,9 @@
 # 
 # `````{admonition} Task (Lasso Regression)
 # :class: tip
-# **Given** a data matrix $D\in\mathbb{R}^{n\times d}$, a target vector $\vvec{y}\in\mathbb{R}^n$, the design matrix $X\in\mathbb{R}^{n\times p}$, where $X_{i\cdot}=\bm\phi(D_{i\cdot}^\top)^\top$ and a regularization weight $\lambda>0$.      
+# **Given** a dataset of $n$ observations
+# \begin{equation*}\mathcal{D}=\left\{(\vvec{x}_i,y_i)\vert \vvec{x}_i\in\mathbb{R}^{d}, y_i\in\mathbb{R}, 1\leq i \leq n\right\},\end{equation*}  
+# the design matrix $X\in\mathbb{R}^{n\times p}$, where $X_{i\cdot}=\bm\phi(\vvec{x}_i)^\top$ and a regularization weight $\lambda>0$.      
 # 
 # **Find** the regression vector $\bm\beta$, solving the following objective
 # :::{math}

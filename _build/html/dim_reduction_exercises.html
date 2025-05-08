@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -489,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -506,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fdim_reduction_exercises.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Fdim_reduction_exercises.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -523,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/dim_reduction_exercises.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/dim_reduction_exercises.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -683,8 +688,8 @@ title="Print to PDF"
 </ol>
 <div class="toggle docutils container">
 <p>The matrix has two obvious movie patterns. The first pattern is <span class="math notranslate nohighlight">\((5,5,1,1)\)</span>, indicating that movie 1 and 2 is liked (rated with 5/5 stars) and the last two movies are not liked (rated with 1 of 5 stars). The second pattern is <span class="math notranslate nohighlight">\((1,1,5,5)\)</span>,  indicating that the first two movies are not liked  and the last two are liked. The last user likes all movies, which could be understood like he belongs to  both patterns. In fact, we can write the matrix <span class="math notranslate nohighlight">\(D\)</span> as the following rank-2 MF:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9c40ffee-bee4-4bf4-bd2c-133498fd448e">
-<span class="eqno">(123)<a class="headerlink" href="#equation-9c40ffee-bee4-4bf4-bd2c-133498fd448e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-0180036f-c608-4052-943e-162cc3dd7538">
+<span class="eqno">(123)<a class="headerlink" href="#equation-0180036f-c608-4052-943e-162cc3dd7538" title="Permalink to this equation">#</a></span>\[\begin{align}
 D\approx\begin{pmatrix}
     5 &amp; 5 &amp; 1 &amp; 1\\
 5 &amp; 5 &amp; 1 &amp; 1\\
@@ -833,8 +838,8 @@ Due to the orthogonal invariance of the Frobenius norm, we have</p>
 <li><p>Show that the constraint <span class="math notranslate nohighlight">\(Z^\top Z=I\)</span> for <span class="math notranslate nohighlight">\(Z\in\mathbb{R}^{n\times r}\)</span>, <span class="math notranslate nohighlight">\(r&lt;n\)</span> which is imposed for the objective of PCA implies that <span class="math notranslate nohighlight">\(Z\)</span> has orthogonal columns which all have a Euclidean norm of one.</p>
 <div class="toggle docutils container">
 <p>The constraint <span class="math notranslate nohighlight">\(Z^\top Z=I\)</span> implies that the entry <span class="math notranslate nohighlight">\(s,t\)</span> for <span class="math notranslate nohighlight">\(1\leq s,t\leq r\)</span> of <span class="math notranslate nohighlight">\(Z^\top Z\)</span> is equal to zero if <span class="math notranslate nohighlight">\(s\neq t\)</span> and equal to one otherwise. We have</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ee39f839-0db8-4d5e-82b0-f019dc7dd855">
-<span class="eqno">(124)<a class="headerlink" href="#equation-ee39f839-0db8-4d5e-82b0-f019dc7dd855" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-977fccf8-c122-43cf-be0e-3a5dbcf885f4">
+<span class="eqno">(124)<a class="headerlink" href="#equation-977fccf8-c122-43cf-be0e-3a5dbcf885f4" title="Permalink to this equation">#</a></span>\[\begin{align}
     Z^\top Z &amp;=I\nonumber\\
     \Leftrightarrow (Z^\top Z)_{s,t}=Z_{\cdot s}^\top Z_{\cdot t}&amp;=\begin{cases}
 0&amp; \text{if } s\neq t\\
@@ -1005,13 +1010,13 @@ Z_{\cdot s}^\top Z_{\cdot s} = \lVert Z_{\cdot s}\rVert^2 &amp;=1 &amp;\text{for
 <div class="toggle docutils container">
 <ol>
 <li><p>Given the <span class="math notranslate nohighlight">\(n\)</span> observations of the new feature</p>
-<div class="amsmath math notranslate nohighlight" id="equation-39d80888-cea0-4686-9642-184ffc57d095">
-<span class="eqno">(125)<a class="headerlink" href="#equation-39d80888-cea0-4686-9642-184ffc57d095" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f4e9c6ca-dabb-4b95-b65f-18e86f230a46">
+<span class="eqno">(125)<a class="headerlink" href="#equation-f4e9c6ca-dabb-4b95-b65f-18e86f230a46" title="Permalink to this equation">#</a></span>\[\begin{align}
     D_{\cdot d+1} =\sum_{k=1}^d \alpha_kD_{\cdot k}=D\bm\alpha\in\mathbb{R}^n, \label{eq:DnewF}
     \end{align}\]</div>
 <p>the sample mean can be computed by:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e904e465-5bc5-40fa-b10b-536b12457859">
-<span class="eqno">(126)<a class="headerlink" href="#equation-e904e465-5bc5-40fa-b10b-536b12457859" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-4b63aedf-b18b-4450-a1e9-4e8788667c5f">
+<span class="eqno">(126)<a class="headerlink" href="#equation-4b63aedf-b18b-4450-a1e9-4e8788667c5f" title="Permalink to this equation">#</a></span>\[\begin{align}
     \mu_{\mathtt{F}_{d+1}} &amp;= \frac1n \sum_{i=1}^n D_{i d+1} &amp;\text{(Definition sample mean)}\nonumber\\
     &amp;= \frac1n\vvec{1}^\top D_{\cdot d+1} &amp; (\mathbf{1}\in\{1\}^n \text{ is constant one vector})\nonumber\\
     &amp;= \frac1n\vvec{1}^\top D{\bm\alpha} &amp; \text{(Eq.~\eqref{eq:DnewF})}\nonumber\\
@@ -1084,7 +1089,7 @@ Z_{\cdot s}^\top Z_{\cdot s} = \lVert Z_{\cdot s}\rVert^2 &amp;=1 &amp;\text{for
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>

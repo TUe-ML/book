@@ -124,6 +124,35 @@
 # :::{attention}
 # The network capacity is determined by the number of network parameters (weights). As we increase the network capacity, we increase the network flexibility to fit the training examples. Going too far increasing the capacity and the network will overfit the training examples. On the other hand, the network will underfit the training examples with a too small capacity. In both cases, the network loses its ability to properly generalize, i.e. to provide a good approximation of the task-related function for unseen input patterns $ {\bf x} $ belonging, for instance, to a testing dataset.
 # :::
+# ## Neural Networks: Architecture and Building Blocks
+# 
+# Neural networks stack multiple linear models interleaved with **nonlinear activation functions** to create deep, hierarchical representations.
+# 
+# ### 4.1 Linear Layers and Activations
+# 
+# The most basic neural network layer performs a linear transformation:
+# 
+# $$
+# \mathbf{z} = \mathbf{W}\mathbf{x} + \mathbf{b}
+# $$
+# 
+# This is followed by a **nonlinear activation function** $ \phi $, such as:
+# 
+# - ReLU: $ \phi(z) = \max(0, z) $
+# - Sigmoid: $ \phi(z) = \frac{1}{1 + e^{-z}} $
+# - Tanh: $ \phi(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}} $
+# 
+# A simple feedforward neural network (MLP) with one hidden layer:
+# 
+# $$
+# \begin{align*}
+# \mathbf{h} &= \phi(\mathbf{W}_1 \mathbf{x} + \mathbf{b}_1) \\
+# \hat{\mathbf{y}} &= \text{softmax}(\mathbf{W}_2 \mathbf{h} + \mathbf{b}_2)
+# \end{align*}
+# $$
+# 
+# Each layer composes the previous one, enabling complex function approximation.
+# 
 # ## Convolutional Neural Networks (CNNs)
 # 
 # For high-dimensional data like images, **convolutional layers** exploit local spatial structure:

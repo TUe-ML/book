@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -489,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -506,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Flinalg_exercises.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Flinalg_exercises.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -523,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/linalg_exercises.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/linalg_exercises.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -942,8 +947,8 @@ Compute the matrix <span class="math notranslate nohighlight">\(AA^\top\)</span>
 </div>
 </li>
 <li><p>Every system of linear equations can be written as a matrix equation <span class="math notranslate nohighlight">\(A\vvec{x}=\vvec{y}\)</span>. Given the following system of linear equations, what would be the matrix <span class="math notranslate nohighlight">\(A\)</span> and vector <span class="math notranslate nohighlight">\(\vvec{y}\)</span> such that the system of linear equations is equivalent to solving <span class="math notranslate nohighlight">\(A\vvec{x}=\vvec{y}\)</span>?</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d12361c7-7d1f-4f84-89a0-3355350e1c5c">
-<span class="eqno">(1)<a class="headerlink" href="#equation-d12361c7-7d1f-4f84-89a0-3355350e1c5c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-dd7c14ac-aff7-47dd-86d8-9cca28ef734a">
+<span class="eqno">(1)<a class="headerlink" href="#equation-dd7c14ac-aff7-47dd-86d8-9cca28ef734a" title="Permalink to this equation">#</a></span>\[\begin{align}
         2x_1 &amp;+&amp; 3x_2 &amp;&amp; &amp;=&amp;4\\
         x_1  &amp;-&amp; 2x_2 &amp;+&amp; x_3 &amp;=&amp; 3\\
         -x_1 &amp;+&amp; 2x_2 &amp;+&amp; 3x_3 &amp;=&amp; 1
@@ -1081,7 +1086,7 @@ print(&quot;x=&quot;,np.linalg.inv(A)@y)
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>

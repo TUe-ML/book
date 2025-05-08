@@ -494,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -511,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fneuralnets_backprop.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Fneuralnets_backprop.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -528,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/neuralnets_backprop.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/neuralnets_backprop.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -735,13 +735,13 @@ L_{train} &amp;=&amp; \frac{1}{N} \sum_{i=1}^{N} L \left( y_{i}, \hat{y}_{i} \ri
 L(y, \hat{y}) = (\hat{y} - y)^2
 \end{equation}\]</div>
 <p>and its partial derivative w.r.t. estimate <span class="math notranslate nohighlight">\( \hat{y} \)</span> is given simple by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ec7c3c4c-dbbc-4dcd-9e21-8327e673f5cc">
-<span class="eqno">(82)<a class="headerlink" href="#equation-ec7c3c4c-dbbc-4dcd-9e21-8327e673f5cc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-602ef6f8-c794-4b2d-ac70-ee164e9463af">
+<span class="eqno">(82)<a class="headerlink" href="#equation-602ef6f8-c794-4b2d-ac70-ee164e9463af" title="Permalink to this equation">#</a></span>\[\begin{equation}
 {\partial L(y, \hat{y}) \over \partial \hat{y}} = 2 (\hat{y} - y).
 \end{equation}\]</div>
 <p>The Mean Squared Error (MSE) in turn is obtained by plugging <a class="reference internal" href="#equation-squared-error">(81)</a> into the empirical risk <a class="reference internal" href="#equation-empirical-risk">(80)</a></p>
-<div class="amsmath math notranslate nohighlight" id="equation-e778dfca-47c1-490e-8cd0-627dfa62b95a">
-<span class="eqno">(83)<a class="headerlink" href="#equation-e778dfca-47c1-490e-8cd0-627dfa62b95a" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-922c25d0-574b-4b32-9dc4-79a1affc5e85">
+<span class="eqno">(83)<a class="headerlink" href="#equation-922c25d0-574b-4b32-9dc4-79a1affc5e85" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 L_{train} &amp;=&amp; MSE(y, \hat{y}; {\bf w}) \\
 &amp;=&amp; \frac{1}{N} \sum_{i=1}^{N} (\hat{y}_{i} - y_{i})^2  \\
  &amp;=&amp; \frac{1}{N} \sum_{i=1}^{N} (f({\bf x}_{i}; {\bf w}) - y_{i})^2.
@@ -762,8 +762,8 @@ L_{train} &amp;=&amp; MSE(y, \hat{y}; {\bf w}) \\
 \softmax({\bf h}) = \begin{bmatrix} \hat{y}_1 &amp; \hat{y}_2 &amp; \ldots &amp; \hat{y}_C \end{bmatrix}^{T},
 \end{equation}\]</div>
 <p>in which</p>
-<div class="amsmath math notranslate nohighlight" id="equation-be2ff5c2-1ec7-44d1-acf3-0c9ad14d81de">
-<span class="eqno">(85)<a class="headerlink" href="#equation-be2ff5c2-1ec7-44d1-acf3-0c9ad14d81de" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8f5d3b71-2ca0-402f-ac04-3e45c1fc872a">
+<span class="eqno">(85)<a class="headerlink" href="#equation-8f5d3b71-2ca0-402f-ac04-3e45c1fc872a" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \hat{y}_{i} = {e^{h_{i}} \over \sum_{c=1}^{C} e^{h_{c}}}. 
 \end{equation}\]</div>
 <p>Note that the softmax <a class="reference internal" href="#equation-softmax">(84)</a> is defined such that it returns a valid categorical distribution, i.e. <div class="math notranslate nohighlight">
@@ -789,8 +789,8 @@ L(y, \hat{\bf y}) &amp;=&amp; CE(y, \hat{\bf y}; {\bf w}) \\
 \end{eqnarray}\end{split}\]</div>
 <p>in which <span class="math notranslate nohighlight">\( y \)</span> corresponds to the index of the true class. In this case, the CE <a class="reference internal" href="#equation-ce">(86)</a> is the negative log-probability of the true class. For a perfect prediction (<span class="math notranslate nohighlight">\( \hat{y}_{y} = 1 \)</span> and <span class="math notranslate nohighlight">\( \hat{y}_{c} = 0 \)</span> for <span class="math notranslate nohighlight">\( c \neq y \)</span>), the CE loss is zero (minimum). On the other hand, for an uncertain prediction (<span class="math notranslate nohighlight">\( 0 &lt; \hat{y}_{y} &lt; 1 \)</span>), CE will quickly approach <span class="math notranslate nohighlight">\( \infty \)</span> as <span class="math notranslate nohighlight">\( \hat{y}_{y} \rightarrow 0^{+} \)</span>, i.e. the CE loss strongly penalizes the predicted distribution if the predicted probability of the true-class <span class="math notranslate nohighlight">\( \hat{y}_{y} \)</span> is close to zero.</p>
 <p>Therefore, the mean cross entropy, i.e the training loss, is obtained as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9305918d-5456-4423-bcfd-5a12debfc06e">
-<span class="eqno">(87)<a class="headerlink" href="#equation-9305918d-5456-4423-bcfd-5a12debfc06e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f9c3d105-1835-41fe-a79d-b19b5cce6dec">
+<span class="eqno">(87)<a class="headerlink" href="#equation-f9c3d105-1835-41fe-a79d-b19b5cce6dec" title="Permalink to this equation">#</a></span>\[\begin{equation}
 L_{train} =  {1 \over N} \sum_{i=1}^{N} CE(y_{i}, \hat{\bf y}_{i}; {\bf w}),
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\( y_{i} \)</span> and <span class="math notranslate nohighlight">\( \hat{\bf y}_{i} = f({\bf x}_{i}; {\bf w})\)</span> are respectively the true class and the network output (probability) associated with the <span class="math notranslate nohighlight">\(i\)</span>-th training example <span class="math notranslate nohighlight">\( \left({\bf x}_{i}, y_{i} \right) \in {\cal D}_{train} \)</span>.</p>
@@ -861,13 +861,13 @@ L_{train} =  {1 \over N} \sum_{i=1}^{N} CE(y_{i}, \hat{\bf y}_{i}; {\bf w}),
 </figcaption>
 </figure>
 <p>Note that computing the gradient <span class="math notranslate nohighlight">\( \nabla_{\bf w} L_{train} \)</span> is key for <a class="reference internal" href="#gradient_descent_alg">Algorithm 12</a>. But how do we compute this gradient? First, let us defined it precisely. The gradient of the training loss <span class="math notranslate nohighlight">\(L_{train}\)</span> w.r.t. to the parameter vector <span class="math notranslate nohighlight">\( {\bf w} \)</span> is defined as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e7d26445-7df6-4168-a89a-9e0acc11a457">
-<span class="eqno">(88)<a class="headerlink" href="#equation-e7d26445-7df6-4168-a89a-9e0acc11a457" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-84180f49-63dc-4469-91ad-680ef3585aa1">
+<span class="eqno">(88)<a class="headerlink" href="#equation-84180f49-63dc-4469-91ad-680ef3585aa1" title="Permalink to this equation">#</a></span>\[\begin{equation}
  \nabla_{\bf w} L_{train} = \begin{bmatrix} \frac{\partial L_{train}}{\partial w_1} &amp; \frac{\partial L_{train}}{\partial w_2} &amp; \cdots \end{bmatrix}^{T}. 
 \end{equation}\]</div>
 <p>Note though that we can rewrite the overall gradient as a sum of sample-wise gradients</p>
-<div class="amsmath math notranslate nohighlight" id="equation-85d74021-a8bc-4579-8793-0ed4921a81e4">
-<span class="eqno">(89)<a class="headerlink" href="#equation-85d74021-a8bc-4579-8793-0ed4921a81e4" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-f09739c9-13e7-4d78-a78c-fa3980e9a156">
+<span class="eqno">(89)<a class="headerlink" href="#equation-f09739c9-13e7-4d78-a78c-fa3980e9a156" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 \nabla_{\bf w} L_{train} &amp;=&amp; \nabla_{\bf w}  \left( {1 \over N}  \sum_{i=1}^N L(y_{i}, \hat{\bf y}_{i}) \right)  \\
 &amp;=&amp; {1 \over N}  \sum_{i=1}^N \nabla_{\bf w} L(y_{i}, \hat{\bf y}_{i}),
 \end{eqnarray}\]</div>
@@ -883,7 +883,7 @@ L_{train} =  {1 \over N} \sum_{i=1}^{N} CE(y_{i}, \hat{\bf y}_{i}; {\bf w}),
 </figure>
 <p>But how do we compute the derivatives <span class="math notranslate nohighlight">\( \frac{\partial L_{train}}{\partial w_j} \)</span> of the loss function w.r.t. to each network parameters <span class="math notranslate nohighlight">\( w_j \)</span>? We employ the chain rule of calculus plus some <em>bookkeeping</em> to store partial derivatives along the paths linking this parameter to the network outputs.</p>
 <div class="proof definition admonition" id="definition-2">
-<p class="admonition-title"><span class="caption-number">Definition 33 </span> (Chain rule of calculus)</p>
+<p class="admonition-title"><span class="caption-number">Definition 34 </span> (Chain rule of calculus)</p>
 <section class="definition-content" id="proof-content">
 <p>Let the function <span class="math notranslate nohighlight">\( f(x) = f(g(x), h(x)) \)</span> be the composition of two functions <span class="math notranslate nohighlight">\( g(x) \)</span> and <span class="math notranslate nohighlight">\( h(x) \)</span>. Thus, the derivative of <span class="math notranslate nohighlight">\( f(\cdot) \)</span> w.r.t. the argument <span class="math notranslate nohighlight">\( x \)</span> can be computed as <div class="math notranslate nohighlight">
 \[ {\partial f \over \partial x } = {\partial f \over \partial g } {\partial g \over \partial x } + {\partial f \over \partial h } {\partial h \over \partial x }. \]</div>
@@ -923,50 +923,50 @@ L_{train} =  {1 \over N} \sum_{i=1}^{N} CE(y_{i}, \hat{\bf y}_{i}; {\bf w}),
 </figure>
 <p>We detail the bookkeeping of backpropagated messages below.</p>
 <p>I. Compute the message <span class="math notranslate nohighlight">\( {\color{blue} {B_1} } \)</span> as the derivative of the loss function (MSE or CE):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-539ac6cb-b0e4-4896-81d4-80975bee4b0f">
-<span class="eqno">(90)<a class="headerlink" href="#equation-539ac6cb-b0e4-4896-81d4-80975bee4b0f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3c403a5d-8d43-4fad-b53c-48331879b874">
+<span class="eqno">(90)<a class="headerlink" href="#equation-3c403a5d-8d43-4fad-b53c-48331879b874" title="Permalink to this equation">#</a></span>\[\begin{equation}
  {\color{blue} \partial L \over \partial \hat{y}} \triangleq {\color{blue} {B_1} }.
 \end{equation}\]</div>
 <p>II. Compute the messages <span class="math notranslate nohighlight">\( {\color{green} B_{2,1} } \)</span> and <span class="math notranslate nohighlight">\( {\color{green} B_{2,2} } \)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ac001a3e-7b52-424a-8058-561adfd25351">
-<span class="eqno">(91)<a class="headerlink" href="#equation-ac001a3e-7b52-424a-8058-561adfd25351" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-f2de1f62-7fa7-4901-a9cc-952ec67f8a7c">
+<span class="eqno">(91)<a class="headerlink" href="#equation-f2de1f62-7fa7-4901-a9cc-952ec67f8a7c" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
  {\color{green} \partial L \over \partial h_i} &amp;=&amp; {\color{blue} \partial L \over \partial \hat{y}}{\partial \hat{y} \over \partial h_i}  \\
  &amp;=&amp; {\color{blue} B_1 } w^{2}_{i,1}  \\
  &amp;\triangleq&amp; {\color{green} B_{2,i}}.
 \end{eqnarray}\]</div>
 <p>III. Compute the messages <span class="math notranslate nohighlight">\({\color{darkred} B_{3,1} } \)</span> and <span class="math notranslate nohighlight">\({\color{darkred} B_{3,2} }\)</span> using the activation function derivative:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b7f10211-ba08-46fe-b5b5-c4f6a30c4acf">
-<span class="eqno">(92)<a class="headerlink" href="#equation-b7f10211-ba08-46fe-b5b5-c4f6a30c4acf" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-3043f239-086b-4100-9897-8a9d9f0aa11d">
+<span class="eqno">(92)<a class="headerlink" href="#equation-3043f239-086b-4100-9897-8a9d9f0aa11d" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
  {\color{darkred} \partial L \over \partial a_i} &amp;=&amp; {\color{green} \partial L \over \partial h_i}{\partial h_i \over \partial a_i}  \\
  &amp;=&amp; {\color{green} B_{2,i} } \, \phi_1'(a_i)  \\
  &amp;\triangleq&amp; {\color{darkred} B_{3,i} }.
 \end{eqnarray}\]</div>
 <p>IV. Then, compute the partial derivatives of the loss w.r.t. the network parameters at the output layer:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3c4905ee-035f-4219-82ea-31808061b828">
-<span class="eqno">(93)<a class="headerlink" href="#equation-3c4905ee-035f-4219-82ea-31808061b828" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-b9e5852b-afc6-4f99-af6c-d91f2ad1179c">
+<span class="eqno">(93)<a class="headerlink" href="#equation-b9e5852b-afc6-4f99-af6c-d91f2ad1179c" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
  {\partial L \over \partial w^2_{i,1}} &amp;=&amp; {\color{blue} \partial L \over \partial \hat{y}}{\partial \hat{y} \over \partial w^2_{i,1}}   \\
 &amp;\equiv&amp; {\color{blue} {B_1} } {h_i}.
 \end{eqnarray}\]</div>
 <p>VI. Finally, compute the partial derivatives of the loss w.r.t. the network parameters at the hidden layer:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6a10c288-4cb2-4cc2-9eaf-25b5cc6de78d">
-<span class="eqno">(94)<a class="headerlink" href="#equation-6a10c288-4cb2-4cc2-9eaf-25b5cc6de78d" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-43d70bf3-6872-4beb-8197-79935911802d">
+<span class="eqno">(94)<a class="headerlink" href="#equation-43d70bf3-6872-4beb-8197-79935911802d" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\partial L \over \partial w^1_{i,j}} &amp;=&amp; {\color{darkred} \partial L \over \partial a_j}{\partial a_j \over \partial w^1_{i,j}}  \\
 &amp;\equiv&amp; {\color{darkred} {B_{3,j}} } {x_i}.
 \end{eqnarray}\]</div>
 <div class="proof definition admonition" id="definition-3">
-<p class="admonition-title"><span class="caption-number">Definition 34 </span> (Jacobian matrix)</p>
+<p class="admonition-title"><span class="caption-number">Definition 35 </span> (Jacobian matrix)</p>
 <section class="definition-content" id="proof-content">
 <p>Let <span class="math notranslate nohighlight">\(y = f(x)\)</span> be a single input, single output (SISO) function <span class="math notranslate nohighlight">\(f \colon \mathbb{R} \rightarrow \mathbb{R}\)</span>. The derivative of <span class="math notranslate nohighlight">\(f\)</span> is written as <div class="math notranslate nohighlight">
 \[ f' \triangleq {\partial f \over \partial x}. \]</div>
  Now, let <span class="math notranslate nohighlight">\(f \colon \mathbb{R}^n \rightarrow \mathbb{R}^m\)</span> denote a multiple input, multiple output (MIMO) function, i.e.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c62502ff-7ffc-4b20-b73c-7ea0745a2843">
-<span class="eqno">(95)<a class="headerlink" href="#equation-c62502ff-7ffc-4b20-b73c-7ea0745a2843" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-51e6af15-31a6-416f-82be-1617abb2c694">
+<span class="eqno">(95)<a class="headerlink" href="#equation-51e6af15-31a6-416f-82be-1617abb2c694" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf y} &amp;=&amp; f({\bf x})  \\
 &amp;=&amp; \begin{bmatrix} f_1({\bf x}) &amp; \ldots &amp; f_m({\bf x})\end{bmatrix}^{T}.  
 \end{eqnarray}\]</div>
 <p>The <em>derivative</em> of <span class="math notranslate nohighlight">\(f\)</span> w.r.t. to its argument <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{1} &amp; \ldots &amp; x_{n} \end{bmatrix}^{T} \)</span> is defined by the <strong>Jacobian matrix</strong>. More precisely, the Jacobian matrix <span class="math notranslate nohighlight">\({\bf J}\)</span> is a <span class="math notranslate nohighlight">\(m \times n\)</span> matrix containing all <em>partial</em> derivatives</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e2e730f6-8f3b-4f37-a5bf-e5f972396151">
-<span class="eqno">(96)<a class="headerlink" href="#equation-e2e730f6-8f3b-4f37-a5bf-e5f972396151" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-757ce433-b4bd-4ab7-bab6-8b101bd94de5">
+<span class="eqno">(96)<a class="headerlink" href="#equation-757ce433-b4bd-4ab7-bab6-8b101bd94de5" title="Permalink to this equation">#</a></span>\[\begin{equation}
 {\bf J} = 
 \begin{bmatrix}
 {\partial f_1 \over \partial x_1} &amp; \ldots &amp; {\partial f_1 \over \partial x_n} \\
@@ -984,8 +984,8 @@ L_{train} =  {1 \over N} \sum_{i=1}^{N} CE(y_{i}, \hat{\bf y}_{i}; {\bf w}),
 {\color{green} \nabla_{\mathbf{v}} L} =  {\color{blue} \mathbf{J}^{T}} {\color{darkred}\nabla_{\mathbf{v}'} L}.
 \end{equation}\]</div>
 <p>That is, the Gradient of the loss <span class="math notranslate nohighlight">\(L\)</span> w.r.t. <span class="math notranslate nohighlight">\({\color{green}\mathbf{v}}\)</span> is the Gradient of the loss <span class="math notranslate nohighlight">\(L\)</span> w.r.t. <span class="math notranslate nohighlight">\({\color{darkred}\mathbf{v}'}\)</span> pre-multiplied by the Jacobian of <span class="math notranslate nohighlight">\(f\)</span> transposed. Thus, it suffices to know the Jacobian of <span class="math notranslate nohighlight">\(f\)</span> to backpropagate the Gradients from units ahead (<span class="math notranslate nohighlight">\({\color{darkred} \mathbf{v}'}\)</span>) to units backwards (<span class="math notranslate nohighlight">\({\color{green}\mathbf{v}}\)</span>) in the network. Note that this is similar to the <span class="math notranslate nohighlight">\(1D\)</span> case in which <span class="math notranslate nohighlight">\(L = L(f({\color{green}v})) = L({\color{darkred}v'})\)</span> and</p>
-<div class="amsmath math notranslate nohighlight" id="equation-509f6dcb-6f41-42a4-a9c0-d6c8cc49876f">
-<span class="eqno">(98)<a class="headerlink" href="#equation-509f6dcb-6f41-42a4-a9c0-d6c8cc49876f" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-bbbba020-2171-4b25-a6c8-5bfecc89b051">
+<span class="eqno">(98)<a class="headerlink" href="#equation-bbbba020-2171-4b25-a6c8-5bfecc89b051" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
  {\color{green} \partial L \over \partial v} &amp;=&amp; {\color{darkred} \partial L \over \partial v'}{\color{blue} \partial v' \over \partial v}  \\
  &amp;=&amp; {\color{blue} f'} {\color{darkred} \partial L \over \partial v'}.
 \end{eqnarray}\]</div>
@@ -1006,8 +1006,8 @@ L_{train} =  {1 \over N} \sum_{i=1}^{N} CE(y_{i}, \hat{\bf y}_{i}; {\bf w}),
 </ul>
 <p>Note though that the Jacobian of a <strong>matrix multiplication</strong> of the type <span class="math notranslate nohighlight">\( {\bf y} = f({\bf x}) = {\bf W} {\bf x}\)</span> is just the matrix <span class="math notranslate nohighlight">\( {\bf W} \)</span> defining the affine transform, whereas the Jacobian of an <strong>element-wise nonlinearity</strong> of the type <span class="math notranslate nohighlight">\({\bf y} = f({\bf x})\)</span> is a diagonal matrix <span class="math notranslate nohighlight">\( {\bf J} = \mathrm{diag}(f'({\bf x})) \)</span>.</p>
 <p>More explicitly, let the matrix multiplication</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1ce198a6-abde-40e5-bcc3-26fa14eff8d8">
-<span class="eqno">(99)<a class="headerlink" href="#equation-1ce198a6-abde-40e5-bcc3-26fa14eff8d8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3f39f711-b9f9-4fae-83ea-0a43470273f5">
+<span class="eqno">(99)<a class="headerlink" href="#equation-3f39f711-b9f9-4fae-83ea-0a43470273f5" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \underbrace{\begin{bmatrix}
 y_1 \\
 y_2 \\
@@ -1029,8 +1029,8 @@ x_m
 \end{bmatrix}}_{\bf x}
 \end{equation}\]</div>
 <p>define a linear function of the type <span class="math notranslate nohighlight">\({\bf y} = f({\bf x}) = \mathbf{W} {\bf x}\)</span>. The Jacobian of this matrix multiplication operation is given by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-11d9cfc1-6e40-4909-b90a-981664020b8a">
-<span class="eqno">(100)<a class="headerlink" href="#equation-11d9cfc1-6e40-4909-b90a-981664020b8a" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-65370e05-0512-4563-9550-86f54df05843">
+<span class="eqno">(100)<a class="headerlink" href="#equation-65370e05-0512-4563-9550-86f54df05843" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf J}
 &amp;=&amp;
 \begin{bmatrix}
@@ -1151,13 +1151,13 @@ to stress how gradients of the loss function <span class="math notranslate nohig
 Note therefore that we also need to bookkeep the hidden layers’ outputs <span class="math notranslate nohighlight">\( {\bf h}^{1} \)</span>, <span class="math notranslate nohighlight">\( {\bf h}^{2} \)</span> and <span class="math notranslate nohighlight">\( {\bf h}^{3} \)</span> from the feedforward evaluation procedure as weel as the gradients <span class="math notranslate nohighlight">\( \nabla_{\mathbf{a}^{1}} L \)</span>, <span class="math notranslate nohighlight">\( \nabla_{\mathbf{a}^{2}} L \)</span>, <span class="math notranslate nohighlight">\( \nabla_{\mathbf{a}^{3}} L\)</span> and <span class="math notranslate nohighlight">\(\nabla_{\hat{y}} L\)</span> from the backpropagation procedure.</p></li>
 </ul>
 <p>The feedforward evaluation and backpropagation procedures are performed for each training example <span class="math notranslate nohighlight">\( \left( {\bf x}_{i}, y_{i} \right) \in {\cal D}_{train} \)</span>. Finally, we compute the gradient of the empirical training loss <span class="math notranslate nohighlight">\( L_{train} \)</span> w.r.t. parameters <span class="math notranslate nohighlight">\( {\bf W}^{\ell} \)</span> as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-70ad2c14-3faa-48ca-b37e-c844c3b591aa">
-<span class="eqno">(103)<a class="headerlink" href="#equation-70ad2c14-3faa-48ca-b37e-c844c3b591aa" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ba23d0d8-bd0e-4617-b73c-0d18f939f889">
+<span class="eqno">(103)<a class="headerlink" href="#equation-ba23d0d8-bd0e-4617-b73c-0d18f939f889" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \nabla_{{\bf W}^{\ell}} L_{train} = \frac{1}{N} \sum_{i=1}^{N} \nabla_{{\bf W}^{\ell}} L (y_{i}, \hat{y}_{i})
 \end{equation}\]</div>
 <p>and update the parameters at the <span class="math notranslate nohighlight">\(\ell\)</span>-th layer as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-720bc8cf-b0eb-465d-92e0-5824709cd7f8">
-<span class="eqno">(104)<a class="headerlink" href="#equation-720bc8cf-b0eb-465d-92e0-5824709cd7f8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1e54d421-53b6-46aa-911a-278fb2053e9a">
+<span class="eqno">(104)<a class="headerlink" href="#equation-1e54d421-53b6-46aa-911a-278fb2053e9a" title="Permalink to this equation">#</a></span>\[\begin{equation}
 {\bf W}^{\ell} \gets {\bf W}^{\ell} - \eta_{k} \nabla_{{\bf W}^{\ell}} L_{train},
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\( \eta_{k} \)</span> is the learning rate used in the <span class="math notranslate nohighlight">\( k \)</span>-th step of the standard gradient descent method, a.k.a. batch gradient descent as it employs the whole training dataset <span class="math notranslate nohighlight">\( {\cal D}_{train} \)</span> at each step <span class="math notranslate nohighlight">\( k \)</span> to update the network parameters.</p>
@@ -1165,13 +1165,13 @@ Note therefore that we also need to bookkeep the hidden layers’ outputs <span 
 </div><div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>We can empirically check the correctness of our analytical derivations of the derivatives employed by the backprop procedure. More precisely, let <span class="math notranslate nohighlight">\(f({\bf x}) = f(x_1, x_2, \dots, x_D)\)</span> be a <span class="math notranslate nohighlight">\(D\)</span>-dimensional function. Its gradient</p>
-<div class="amsmath math notranslate nohighlight" id="equation-96173ce7-8334-479e-8854-b1382c0605e9">
-<span class="eqno">(105)<a class="headerlink" href="#equation-96173ce7-8334-479e-8854-b1382c0605e9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-58b539e1-f268-4301-b131-f3312576f7b1">
+<span class="eqno">(105)<a class="headerlink" href="#equation-58b539e1-f268-4301-b131-f3312576f7b1" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \nabla_{{\bf x}} f = \begin{bmatrix} {\partial f \over \partial x_1} &amp; {\partial f \over \partial x_2} &amp; \ldots &amp; {\partial f \over \partial x_D} \end{bmatrix}^{T}
 \end{equation}\]</div>
 <p>w.r.t. <span class="math notranslate nohighlight">\( {\bf x} \)</span> can be approximated – at each dimension <span class="math notranslate nohighlight">\( i \)</span> – using finite differences as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f90b4b64-3a6d-44a7-b76d-e59e9a6e0f9b">
-<span class="eqno">(106)<a class="headerlink" href="#equation-f90b4b64-3a6d-44a7-b76d-e59e9a6e0f9b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-fe8d7505-0ecf-4c49-beb4-a58b6e53277e">
+<span class="eqno">(106)<a class="headerlink" href="#equation-fe8d7505-0ecf-4c49-beb4-a58b6e53277e" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \left. {\partial f \over \partial x_i} \right|_{{\bf x}} \approx  {f(x_1, \dots, x_i + \delta, \dots, x_D) - f(x_1, \dots, x_i, \dots, x_D) \over \delta}
 \end{equation}\]</div>
 <p>and then compare this approximation with results obtained by the closed form expression for the partial derivatives <span class="math notranslate nohighlight">\( \lbrace  {\partial f \over \partial x_i} \rbrace \)</span>. Note though that the approximations are computed around a given <span class="math notranslate nohighlight">\( {\bf x} \)</span>, i.e. the aproximation to <span class="math notranslate nohighlight">\( \nabla_{{\bf x}} f \)</span> is valid for a particular input vector <span class="math notranslate nohighlight">\( {\bf x} \)</span>. For <span class="math notranslate nohighlight">\(\delta \rightarrow 0\)</span>, the approximation becomes (by definition) the partial derivative. Besides being usefull for double checking analytical derivations using some data samples, this approximation is too expensive to use it in the backprop procedure itself. Thus, activation functions with closed form expressions for their derivatives are still required by the network to efficiently learn.</p>
@@ -1227,7 +1227,7 @@ Note therefore that we also need to bookkeep the hidden layers’ outputs <span 
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>

@@ -494,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -511,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fneuralnets_intro.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Fneuralnets_intro.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -528,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/neuralnets_intro.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/neuralnets_intro.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -633,18 +633,6 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#neural-networks-architecture-and-building-blocks">
-   Neural Networks: Architecture and Building Blocks
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#linear-layers-and-activations">
-     4.1 Linear Layers and Activations
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#universal-approximation-and-the-representer-theorem">
    Universal Approximation and the Representer Theorem
   </a>
@@ -686,18 +674,6 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#neural-networks-architecture-and-building-blocks">
-   Neural Networks: Architecture and Building Blocks
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#linear-layers-and-activations">
-     4.1 Linear Layers and Activations
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#universal-approximation-and-the-representer-theorem">
    Universal Approximation and the Representer Theorem
   </a>
@@ -720,52 +696,85 @@ title="Print to PDF"
 <p>We start now with introducing another linear classifier, that is extended to a deep neural network classifier by a preceeding feature transformation.</p>
 <section id="logistic-and-softmax-regression">
 <h2>Logistic and Softmax Regression<a class="headerlink" href="#logistic-and-softmax-regression" title="Permalink to this headline">#</a></h2>
-<p>Logistic regression is a binary classification model where the probability of a sample belonging to the positive class is modeled as:</p>
+<p>Logistic regression is a binary classification model, that finds a hyperplane separating the classes (like the SVM). In contrast to the SVM, logistic regression uses the distance of a point to the separating hperplane as a confidence measure: the further a point is away from the separating hyperplane,the more confidently it is assigned to the corresponding class. The plot below indicates a separating hyperplane and the confidence assigned by logistic regression. We see that the confidence is low at the decision boundary and getting pretty high quickly when moving away from the decision boundary.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/neuralnets_intro_1_0.png" src="_images/neuralnets_intro_1_0.png" />
+</div>
+</div>
+<p>The confidence in logistic regression is modeled by a probability measuring how likely a sample belongs to the positive class.</p>
 <div class="math notranslate nohighlight">
 \[
-P(y=1 \mid \mathbf{x}) = \sigma(\mathbf{w}^\top \mathbf{x} + b)
+P(y=1 \mid \mathbf{x}) = \sigma(\mathbf{w}^\top \mathbf{x} + b).
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\sigma(z) = \frac{1}{1 + e^{-z}}\)</span> is the sigmoid function. This maps the linear output into a probability between 0 and 1.</p>
-<p>For multiclass classification, the <strong>softmax regression</strong> generalizes logistic regression. For <span class="math notranslate nohighlight">\(K\)</span> classes:</p>
+<p>This probability is computed over the sigmoid function
+<div class="math notranslate nohighlight">
+\[\sigma(x) = \frac{1}{1 + \exp^{-x}}.\]</div>
+
+Recall from what we discussed regarding the SVM that <span class="math notranslate nohighlight">\(\mathbf{w}^\top \mathbf{x} + b = dist(\mathbf{x},\mathcal{H}_{\vvec{w},b})\lVert\vvec{w}\rVert\)</span> is the scaled distance of point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> to the hyperplane defined by <span class="math notranslate nohighlight">\(\vvec{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span>. The sigmoid function maps this scaled distance onto a probability between 0 and 1.
+The plot below shows the sigmoid function.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/neuralnets_intro_3_0.png" src="_images/neuralnets_intro_3_0.png" />
+</div>
+</div>
+<p>For multiclass classification, the softmax regression generalizes logistic regression to <span class="math notranslate nohighlight">\(c\)</span> classes by learning one hyperplane per class. The more a point lies on the positive side of a hyperplane, the more confidently it is assigned to that class. The confidence is again interpreted as a probability that a sample belongs to a class, which is now computed over the softmax function.</p>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 32 </span> (Softmax Regression)</p>
+<section class="definition-content" id="proof-content">
+<p>The <strong>softmax regression</strong> classifier computes the probability that point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> belongs to class <span class="math notranslate nohighlight">\(y\)</span> by means of <span class="math notranslate nohighlight">\(c\)</span> hyperplanes, defined by parameters <span class="math notranslate nohighlight">\(\vvec{w}_k\)</span> and <span class="math notranslate nohighlight">\(b_k\)</span>. Gathering the <span class="math notranslate nohighlight">\(c\)</span> hyperplane defining parameters in a matrix <span class="math notranslate nohighlight">\(W\)</span>, such that <span class="math notranslate nohighlight">\(W_{k\cdot} = \vvec{w}_k^\top\)</span>, and <span class="math notranslate nohighlight">\(vvec{b}\)</span>, then the probability that point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> belongs to class <span class="math notranslate nohighlight">\(k\)</span> is
 <div class="math notranslate nohighlight">
 \[
-P(y = k \mid \mathbf{x}) = \frac{\exp(\mathbf{w}_k^\top \mathbf{x} + b_k)}{\sum_{j=1}^{K} \exp(\mathbf{w}_j^\top \mathbf{x} + b_j)}
+p(y = l \mid \mathbf{x}) =\mathrm{softmax}(W\vvec{x}+\vvec{b})_l= \frac{\exp(\vvec{w}_k^\top \mathbf{x} + b_k)}{\sum_{j=1}^{c} \exp(\mathbf{w}_j^\top \mathbf{x} + b_j)}
 \]</div>
-<p>This models class probabilities that sum to 1 and is typically trained using cross-entropy loss.</p>
+</p>
+</section>
+</div><p>The softmax function <span class="math notranslate nohighlight">\(\mathrm{softmax}:\mathbb{R}^d\rightarrow [0,1]^c\)</span>, <span class="math notranslate nohighlight">\(\mathrm{softmax}(\vvec{x})_y=\frac{\exp(x_y)}{\sum_{j=1}^c\exp{x_j}}\)</span> returns a vector reflecting the confidences for each class. We can easily show the confidences sum up tp one. The plot below show the confidences and the hyperplanes learned for a 3-class classification problem.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make 3-class dataset for classification</span>
+<span class="n">centers</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="n">centers</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">transformation</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">]]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">transformation</span><span class="p">)</span>
+
+<span class="n">multi_class</span>  <span class="o">=</span> <span class="s2">&quot;multinomial&quot;</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span>
+    <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;sag&quot;</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">multi_class</span><span class="o">=</span><span class="n">multi_class</span>
+<span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+
+<span class="n">coef</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">coef_</span>
+<span class="n">intercept</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">intercept_</span>
+<span class="n">plot_conf</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">,</span><span class="n">show_class_assignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">x_min</span> <span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_min</span> <span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;spring&quot;</span><span class="p">)</span>
+<span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">()</span>
+<span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">plot_hyperplane</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">line</span><span class="p">(</span><span class="n">x0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x0</span> <span class="o">*</span> <span class="n">coef</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">intercept</span><span class="p">[</span><span class="n">c</span><span class="p">])</span> <span class="o">/</span> <span class="n">coef</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">],</span> <span class="p">[</span><span class="n">line</span><span class="p">(</span><span class="n">xmin</span><span class="p">),</span> <span class="n">line</span><span class="p">(</span><span class="n">xmax</span><span class="p">)],</span>  <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+<span class="c1">#cmap = plt.cm.get_cmap(&quot;gist_rainbow&quot;)</span>
+
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">clf</span><span class="o">.</span><span class="n">classes_</span><span class="p">:</span>
+    <span class="n">plot_hyperplane</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/neuralnets_intro_5_0.png" src="_images/neuralnets_intro_5_0.png" />
+</div>
+</div>
 </section>
 </section>
 <section id="representation-learning">
 <h1>Representation Learning<a class="headerlink" href="#representation-learning" title="Permalink to this headline">#</a></h1>
-<p>Logistic or Softmax regression rely on linear decision boundaries. In practice, data often lies on complex, nonlinear manifolds. This motivates the need for <strong>representation learning</strong>, where the model learns intermediate, useful transformations of the input data before making predictions.</p>
-<p>Representation learning is central to neural networks. Instead of manually crafting features, networks <strong>learn features jointly</strong> with the classification task.</p>
-</section>
-<section id="neural-networks-architecture-and-building-blocks">
-<h1>Neural Networks: Architecture and Building Blocks<a class="headerlink" href="#neural-networks-architecture-and-building-blocks" title="Permalink to this headline">#</a></h1>
-<p>Neural networks stack multiple linear models interleaved with <strong>nonlinear activation functions</strong> to create deep, hierarchical representations.</p>
-<section id="linear-layers-and-activations">
-<h2>4.1 Linear Layers and Activations<a class="headerlink" href="#linear-layers-and-activations" title="Permalink to this headline">#</a></h2>
-<p>The most basic neural network layer performs a linear transformation:</p>
-<div class="math notranslate nohighlight">
-\[
-\mathbf{z} = \mathbf{W}\mathbf{x} + \mathbf{b}
-\]</div>
-<p>This is followed by a <strong>nonlinear activation function</strong> <span class="math notranslate nohighlight">\( \phi \)</span>, such as:</p>
-<ul class="simple">
-<li><p>ReLU: <span class="math notranslate nohighlight">\( \phi(z) = \max(0, z) \)</span></p></li>
-<li><p>Sigmoid: <span class="math notranslate nohighlight">\( \phi(z) = \frac{1}{1 + e^{-z}} \)</span></p></li>
-<li><p>Tanh: <span class="math notranslate nohighlight">\( \phi(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}} \)</span></p></li>
-</ul>
-<p>A simple feedforward neural network (MLP) with one hidden layer:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align*}
-\mathbf{h} &amp;= \phi(\mathbf{W}_1 \mathbf{x} + \mathbf{b}_1) \\
-\hat{\mathbf{y}} &amp;= \text{softmax}(\mathbf{W}_2 \mathbf{h} + \mathbf{b}_2)
-\end{align*}
-\end{split}\]</div>
-<p>Each layer composes the previous one, enabling complex function approximation.</p>
-</section>
-</section>
+<p>Logistic or Softmax regression rely on linear decision boundaries. In practice, data often lies on complex, nonlinear manifolds. Hence, we apply a similar trick as we have seen in linear regression and the SVM to use a linear model for nonlinear problems by appling a feature transformation first. In regression, the feature transformation is given by the basis functions and in the SVM it is implicitly defined over the kernel. Neural networks <strong>learn the feature transformation</strong> by stacking various simple functions after one another, whose parameters are optimized jointly with the classifier’s parameters. That is we get something that looks like that:</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-0a890f8a888d7ca8549f3881e8842fb4fe2faf1b.svg" alt="Figure made with TikZ" /></p>
+</div></section>
 <section id="universal-approximation-and-the-representer-theorem">
 <h1>Universal Approximation and the Representer Theorem<a class="headerlink" href="#universal-approximation-and-the-representer-theorem" title="Permalink to this headline">#</a></h1>
 <p>The <strong>Universal Approximation Theorem</strong> states that a neural network with one hidden layer and enough hidden units can approximate any continuous function on a compact domain to arbitrary accuracy.</p>
@@ -821,7 +830,7 @@ P(y = k \mid \mathbf{x}) = \frac{\exp(\mathbf{w}_k^\top \mathbf{x} + b_k)}{\sum_
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>

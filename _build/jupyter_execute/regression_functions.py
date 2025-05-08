@@ -10,10 +10,10 @@
 # :label: eq_regression_f
 # f(x) = \beta_1 \log(x) + \beta_2 \exp(x) 
 # ```
-# This formalization allows us to learn a function $f$ by means of the parameters $\beta_1$ and $\beta_2$. Those parameters can then be optimized after we define a loss function for the regression task $\ell(f(x),y)$. The functions which we use to compose our function $f$ (here $\log(x)$ and $\exp(x)$) are called **basis functions**.
+# This formalization allows us to learn a function $f$ by means of the parameters $\beta_1$ and $\beta_2$. Those parameters can then be optimized after we define a loss function for the regression task. The functions which we use to compose our function $f$ (here $\log(x)$ and $\exp(x)$) are called **basis functions**.
 # 
 # The  main insight (which we will discuss in the following for various basis functions) is that nonlinear functions such as $f(x)$ in Eq. {eq}`eq_regression_f` can be represented as linear functions in a _transformed feature space_. Linear functions $f:\mathbb{R}^d\rightarrow \mathbb{R}$ have the form
-# $$f(\vvec{x}) = \beta_d x_d + \ldots + \beta_1x = \bm\beta^\top \vvec{x},$$
+# $$f(\vvec{x}) = \beta_1x_1 + \ldots + \beta_d x_d = \bm\beta^\top \vvec{x},$$
 # that is, they are defined by an inner product of the weights $\bm\beta$ and the feature vector $\vvec{x}$.
 
 # ## Affine Functions 
@@ -139,6 +139,9 @@
 # ```{tikz}
 # \begin{tikzpicture}
 # \begin{axis}[width=.6\textwidth,xlabel=$x_1$,ylabel=$x_2$,zlabel=$y$,zmin=0,axis lines = center,zmax=4.1,xmin=0,xmax=2.5,ymin=0,ymax=5,view={45}{45},
+# x label style={at={(xticklabel* cs:1,-0.1)},anchor=north},
+# y label style={at={(yticklabel* cs:1.2,0.2)},anchor=north},
+# z label style={at={(zticklabel* cs:1.2,0.1)},anchor=north},
 # yticklabels={,,},xticklabels={,,},zticklabels={,,}]
 # \addplot3[
 #     mesh, samples=10, domain=0:2.5,blue
@@ -156,7 +159,7 @@
 #     \beta_{kk}
 #     \end{pmatrix}= \bm{\phi}(\vvec{x})^\top\bm{\beta},
 # \end{align*}
-# where the feature transformation maps now to a $(k+1)^2$-dimensional vector space, $\bm\phi(\vvec{x}),\bm\beta\in\mathbb{R}^{(k+1)^2}$. The basis functions are here the set of $\{x_{i_1}x_{i_2}\mid 1\leq i_1,i_2\leq k\}$. 
+# where the feature transformation maps now to a $(k+1)^2$-dimensional vector space, $\bm\phi(\vvec{x}),\bm\beta\in\mathbb{R}^{(k+1)^2}$. The basis functions are here the set of $\{x_1^{i_1}x_2^{i_2}\mid 1\leq i_1,i_2\leq k\}$. 
 # ````
 # We generalize now the defintion of polynomials of degree $k$ as a linear function by the multiplication of all possible one-dimensional basis functions:
 # $$\bm{\phi}_{pk}(\vvec{x}) = (x_1^{i_1}\cdot \ldots \cdot x_d^{i_d})_{1\leq i_1\ldots i_d\leq k} \in\mathbb{R}^{(k+1)^d}, \text{ for }\vvec{x}\in\mathbb{R}^d$$
@@ -167,7 +170,7 @@
 # $$
 # Another definition of polynomials multiplies only basis functions such that the sum of all exponents is at most $k$. In this case we get the following feature transformation, called $\bm{\phi}_{pka}$, where the *a* stands for alternative:
 # $$\bm{\phi}_{pka}(\vvec{x}) = (x_1^{i_1}\cdot \ldots \cdot x_d^{i_d})_{i_1+\ldots +i_d\leq k}.$$
-# The sklearn function to obtain polynomial features uses this definition. This feature transformation maps to a lower-dimensional transformed feature space than $\bm{\phi}_pk$, but a general issue is that the dimensionality of the transformed feature space increases vastly in the degree or the amount of features. 
+# The sklearn function to obtain polynomial features uses this definition. This feature transformation maps to a lower-dimensional transformed feature space than $\bm{\phi}_{pk}$, but a general issue is that the dimensionality of the transformed feature space increases vastly in the degree or the amount of features. 
 # 
 # 
 # ##  Gaussian Functions
@@ -209,7 +212,7 @@
 # The sum of weighted Gaussian basis functions is modelled by a linear function as follows:
 # 
 # \begin{align*}
-#     f(x)&=\sum_{i=1}^k\beta_i\exp\left(-\frac{\lVert x-\mu_i\rVert^2}{2\sigma^2}\right)\\
+#     f(x)&=\sum_{i=1}^k\beta_i\exp\left(-\gamma\lVert x-\mu_i\rVert^2\right)\\
 #     &= \begin{pmatrix}\kappa_1(x)&\ldots & \kappa_k(x)\end{pmatrix}
 #     \begin{pmatrix}\beta_1 \\ \vdots \\ \beta_k
 #     \end{pmatrix}\\

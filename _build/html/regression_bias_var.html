@@ -494,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -511,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fregression_bias_var.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Fregression_bias_var.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -528,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/regression_bias_var.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/regression_bias_var.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -766,10 +766,10 @@ title="Print to PDF"
 <h2>Evaluation with a Test Set: the Practice<a class="headerlink" href="#evaluation-with-a-test-set-the-practice" title="Permalink to this headline">#</a></h2>
 <p>Since we don’t know the true regression function in practical applications, we resort to test the models ability to generalize.
 The idea is that a model which is close to the true regression function, should be able to predict <span class="math notranslate nohighlight">\(y\)</span> for <em>unobserved</em> <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
-<p><strong>Idea</strong>: Hold out a test set, indicated by <span class="math notranslate nohighlight">\(\mathcal{I}\subseteq\{1,\ldots n\}\)</span> from the <span class="math notranslate nohighlight">\(n\)</span> training data points and compute the error on the test data.</p>
+<p><strong>Idea</strong>: Hold out a test set, indicated by <span class="math notranslate nohighlight">\(\mathcal{T}\subseteq\mathcal{D}\)</span> from the <span class="math notranslate nohighlight">\(n\)</span> training data points and compute the error on the test data.</p>
 <p>The <strong>Mean Squared Error (MSE)</strong> returns the average squared prediction error:
 <div class="math notranslate nohighlight">
-\[ MSE(\bm{\beta}, \mathcal{I})= \frac{1}{\lvert \mathcal{I}\rvert}\sum_{i\in\mathcal{I}}(y_i-\bm{\phi}(D_{i\cdot}^\top)^\top \bm{\beta})^2\]</div>
+\[ MSE(\bm{\beta}, \mathcal{T})= \frac{1}{\lvert \mathcal{T}\rvert}\sum_{(\vvec{x},y)\in\mathcal{T}}(y-\bm{\phi}(\vvec{x})^\top \bm{\beta})^2\]</div>
 </p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1016,15 +1016,15 @@ The second term is equal to zero, since the random variable <span class="math no
 <li><p><strong>For</strong> <span class="math notranslate nohighlight">\(j\in\{1,\ldots,k\}\)</span></p>
 <ol class="simple">
 <li><p>Obtain model <span class="math notranslate nohighlight">\(f_{j}(\mathbf{x})=\bm{\phi}(\mathbf{x})^\top \bm{\beta}_j\)</span> on the training data <span class="math notranslate nohighlight">\(\mathcal{I}\setminus\mathcal{I}_j\)</span></p></li>
-<li><p>Obtain the test-MSE <span class="math notranslate nohighlight">\(MSE_j\)</span> on test set <span class="math notranslate nohighlight">\(\mathcal{I}_j\)</span>
-<strong>Return</strong> <span class="math notranslate nohighlight">\(\frac{1}{k}\sum_{j=1}^k MSE_j\)</span></p></li>
+<li><p>Obtain the test-MSE <span class="math notranslate nohighlight">\(MSE_j\)</span> on test set <span class="math notranslate nohighlight">\(\mathcal{I}_j\)</span></p></li>
 </ol>
 </li>
+<li><p><strong>Return</strong> <span class="math notranslate nohighlight">\(\frac{1}{k}\sum_{j=1}^k MSE_j\)</span></p></li>
 </ol>
 </section>
 </div><p>The k-fold cross validation computes the <strong>cross-validation MSE</strong>, given as
 <div class="math notranslate nohighlight">
-\[\frac1k\sum_{j=1}^k MSE(\bm{\beta}_j,\mathcal{I}_j)= \frac1k\sum_{j=1}^k\frac{1}{\lvert\mathcal{I}_j\rvert}\sum_{i\in\mathcal{I}_j}(y_i-f_j(D_{i\cdot }))^2\]</div>
+\[\frac1k\sum_{j=1}^k MSE(\bm{\beta}_j,\mathcal{I}_j)= \frac1k\sum_{j=1}^k\frac{1}{\lvert\mathcal{I}_j\rvert}\sum_{i\in\mathcal{I}_j}(y_i-f_j(\vvec{x}_i))^2\]</div>
 </p>
 <p>The cross-validation MSE seems to look like the average MSE from Equation <a class="reference internal" href="#equation-eq-mse-approx">(14)</a> approximating the EPE. However, the training data of the cross-validation MSE is not sampled independently, because each of the folds depends on the others. In fact, the cross-validated MSE is a biased estimator of the EPE (any statistical estimator like the regression models follow the bias-variance tradeoff).</p>
 <p>We’ll have a look now at a 3-fold cross validation for a Polynomial regression model with degree <span class="math notranslate nohighlight">\(k=16\)</span>. We’ll use the sklearn <span class="math notranslate nohighlight">\(k\)</span>-fold split and print the indices of the train and test set.</p>
@@ -1141,7 +1141,7 @@ train:[ 0  2  3  6  8  9 10 11 12 14 16 17 18 19]  	test:[ 1  4  5  7 13 15]
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>

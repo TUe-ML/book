@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -489,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -506,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Flinalg_normed_vs.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Flinalg_normed_vs.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -523,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/linalg_normed_vs.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/linalg_normed_vs.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -835,10 +840,10 @@ A matrix norm <span class="math notranslate nohighlight">\(\lVert\cdot \rVert\)<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-0.4,  0.5, -0.7,  0.4],
-       [-0.6, -0.3, -0.2, -0.7],
-       [-0.7,  0.3,  0.7,  0.2],
-       [-0.3, -0.8, -0.1,  0.5]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-0.7, -0.1, -0.2, -0.7],
+       [-0.6, -0.3,  0.2,  0.7],
+       [-0.1,  0.2,  0.9, -0.2],
+       [-0.3,  0.9, -0.2,  0.2]])
 </pre></div>
 </div>
 </div>
@@ -850,10 +855,10 @@ A matrix norm <span class="math notranslate nohighlight">\(\lVert\cdot \rVert\)<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.0e+00, -2.5e-16,  4.8e-18, -2.6e-17],
-       [-2.5e-16,  1.0e+00, -1.3e-16,  6.4e-17],
-       [ 4.8e-18, -1.3e-16,  1.0e+00, -2.1e-18],
-       [-2.6e-17,  6.4e-17, -2.1e-18,  1.0e+00]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.0e+00, -1.0e-16,  4.4e-17,  1.7e-16],
+       [-1.0e-16,  1.0e+00,  1.9e-17,  1.8e-16],
+       [ 4.4e-17,  1.9e-17,  1.0e+00,  2.9e-17],
+       [ 1.7e-16,  1.8e-16,  2.9e-17,  1.0e+00]])
 </pre></div>
 </div>
 </div>
@@ -865,8 +870,8 @@ A matrix norm <span class="math notranslate nohighlight">\(\lVert\cdot \rVert\)<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.6, 0. ],
-       [0. , 0.5]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.4, 0. ],
+       [0. , 0.8]])
 </pre></div>
 </div>
 </div>
@@ -879,8 +884,8 @@ A matrix norm <span class="math notranslate nohighlight">\(\lVert\cdot \rVert\)<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.6, 0. ],
-       [0. , 0.5],
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.4, 0. ],
+       [0. , 0.8],
        [0. , 0. ],
        [0. , 0. ]])
 </pre></div>
@@ -1018,7 +1023,7 @@ A^{-1}A &amp;= V \Sigma^{-1} U^\top U\Sigma V^\top = V \Sigma^{-1} \Sigma V^\top
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>

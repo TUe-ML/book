@@ -62,11 +62,11 @@ for k in [1,4,16]:
 # Since we don't know the true regression function in practical applications, we resort to test the models ability to generalize.
 # The idea is that a model which is close to the true regression function, should be able to predict $y$ for _unobserved_ $\mathbf{x}$.
 # 
-# **Idea**: Hold out a test set, indicated by $\mathcal{I}\subseteq\{1,\ldots n\}$ from the $n$ training data points and compute the error on the test data.
+# **Idea**: Hold out a test set, indicated by $\mathcal{T}\subseteq\mathcal{D}$ from the $n$ training data points and compute the error on the test data.
 # 
 # 
 # The **Mean Squared Error (MSE)** returns the average squared prediction error:
-# $$ MSE(\bm{\beta}, \mathcal{I})= \frac{1}{\lvert \mathcal{I}\rvert}\sum_{i\in\mathcal{I}}(y_i-\bm{\phi}(D_{i\cdot}^\top)^\top \bm{\beta})^2$$
+# $$ MSE(\bm{\beta}, \mathcal{T})= \frac{1}{\lvert \mathcal{T}\rvert}\sum_{(\vvec{x},y)\in\mathcal{T}}(y-\bm{\phi}(\vvec{x})^\top \bm{\beta})^2$$
 
 # In[4]:
 
@@ -273,12 +273,12 @@ for k in [1,4,16]:
 # 1. Divide the data set into $k$ disjunctive chunks, containing the data point indices $$\{1,\ldots,n\}=\mathcal{I}=\mathcal{I}_1\cup\ldots \cup\mathcal{I}_k,\  \mathcal{I}_j\cap\mathcal{I}_l=\emptyset \text{ for } j\neq l$$
 # 2. **For** $j\in\{1,\ldots,k\}$
 #     1. Obtain model $f_{j}(\mathbf{x})=\bm{\phi}(\mathbf{x})^\top \bm{\beta}_j$ on the training data $\mathcal{I}\setminus\mathcal{I}_j$
-#     2. Obtain the test-MSE $MSE_j$ on test set $\mathcal{I}_j$
-# **Return** $\frac{1}{k}\sum_{j=1}^k MSE_j$
+#     2. Obtain the test-MSE $MSE_j$ on test set $\mathcal{I}_j$     
+# 3. **Return** $\frac{1}{k}\sum_{j=1}^k MSE_j$
 # ```
 # 
 # The k-fold cross validation computes the **cross-validation MSE**, given as
-# $$\frac1k\sum_{j=1}^k MSE(\bm{\beta}_j,\mathcal{I}_j)= \frac1k\sum_{j=1}^k\frac{1}{\lvert\mathcal{I}_j\rvert}\sum_{i\in\mathcal{I}_j}(y_i-f_j(D_{i\cdot }))^2$$
+# $$\frac1k\sum_{j=1}^k MSE(\bm{\beta}_j,\mathcal{I}_j)= \frac1k\sum_{j=1}^k\frac{1}{\lvert\mathcal{I}_j\rvert}\sum_{i\in\mathcal{I}_j}(y_i-f_j(\vvec{x}_i))^2$$
 # 
 # The cross-validation MSE seems to look like the average MSE from Equation {eq}`eq:mse_approx` approximating the EPE. However, the training data of the cross-validation MSE is not sampled independently, because each of the folds depends on the others. In fact, the cross-validated MSE is a biased estimator of the EPE (any statistical estimator like the regression models follow the bias-variance tradeoff).      
 # 

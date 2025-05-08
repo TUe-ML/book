@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -489,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -506,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fregression_L1vsL2.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Fregression_L1vsL2.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -523,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/regression_L1vsL2.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/regression_L1vsL2.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -616,14 +621,14 @@ title="Print to PDF"
 <h1>L1 vs L2 Regularization<a class="headerlink" href="#l1-vs-l2-regularization" title="Permalink to this headline">#</a></h1>
 <p>Ok, but what is now better, <span class="math notranslate nohighlight">\(L_1\)</span>- or <span class="math notranslate nohighlight">\(L_2\)</span>-norm regularization? We will make an illustration of the regression solutions when we penalize with <span class="math notranslate nohighlight">\(L_1\)</span>- and <span class="math notranslate nohighlight">\(L_2\)</span>-norm. To make that illustration, using the constrained objective formulation is more suitable than the penalized one. As discussed in the <strong>Sparse Regression</strong> section, we can transform the penalized objective into a constrained one and vice versa.</p>
 <p>That is, for every <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span> there exists a radius <span class="math notranslate nohighlight">\(s&gt;0\)</span> and vice versa, such that the following optimization problems are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c0a29c1e-54e3-4c6b-818e-e41ddc17562e">
-<span class="eqno">(32)<a class="headerlink" href="#equation-c0a29c1e-54e3-4c6b-818e-e41ddc17562e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-bc564e3e-b3dc-4661-a69e-ddc1cf693756">
+<span class="eqno">(32)<a class="headerlink" href="#equation-bc564e3e-b3dc-4661-a69e-ddc1cf693756" title="Permalink to this equation">#</a></span>\[\begin{align}
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda \lVert\bm{\beta}\rVert^2 &amp; \text{s.t. }\bm{\beta}\in\mathbb{R}^p  \\
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 &amp; \text{s.t. } \lVert\bm{\beta}\rVert^2\leq s^2,\bm{\beta}\in\mathbb{R}^p  \\
 \end{align}\]</div>
 <p>Similarly, for every <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span> there exists a radius <span class="math notranslate nohighlight">\(s&gt;0\)</span> and vice versa, such that the following optimization problems are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1ee325b4-e9dd-4caf-8d2a-1d6e437c7fbf">
-<span class="eqno">(33)<a class="headerlink" href="#equation-1ee325b4-e9dd-4caf-8d2a-1d6e437c7fbf" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c9372914-d1bc-4d57-ab71-cd46a170ee0e">
+<span class="eqno">(33)<a class="headerlink" href="#equation-c9372914-d1bc-4d57-ab71-cd46a170ee0e" title="Permalink to this equation">#</a></span>\[\begin{align}
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda \lvert\bm{\beta}\rvert &amp; \text{s.t. }\bm{\beta}\in\mathbb{R}^p  \\
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 &amp; \text{s.t. } \lvert\bm{\beta}\rvert\leq s,\bm{\beta}\in\mathbb{R}^p  \\
 \end{align}\]</div>
@@ -694,13 +699,13 @@ title="Print to PDF"
 </div>
 </div>
 <p>In summary, we considered the ridge regression objective</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c52348b4-3303-4ce9-afaf-3b9c9d6d4d30">
-<span class="eqno">(34)<a class="headerlink" href="#equation-c52348b4-3303-4ce9-afaf-3b9c9d6d4d30" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c65869e8-f22d-4aba-89dd-34f001758739">
+<span class="eqno">(34)<a class="headerlink" href="#equation-c65869e8-f22d-4aba-89dd-34f001758739" title="Permalink to this equation">#</a></span>\[\begin{align}
         \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_2}(\bm{\beta}) = \lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda\lVert\bm{\beta}\rVert^2
 \end{align}\]</div>
 <p>and the Lasso</p>
-<div class="amsmath math notranslate nohighlight" id="equation-be0db8ec-3bdd-4f38-8f04-25e29eb0308e">
-<span class="eqno">(35)<a class="headerlink" href="#equation-be0db8ec-3bdd-4f38-8f04-25e29eb0308e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-9f0617b5-7bc3-4876-844f-930d151e9a40">
+<span class="eqno">(35)<a class="headerlink" href="#equation-9f0617b5-7bc3-4876-844f-930d151e9a40" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_1}(\bm{\beta}) = \lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda\lvert\bm{\beta}\rvert
 \end{align}\]</div>
 <p>The solution of Ridge Regression is computable very fast, analyically. The Ridge Regression minimizer is uniquely defined, but usually not sparse.
@@ -755,7 +760,7 @@ Lasso is optimized with coordinate descent, which is a theoretically well-founde
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>

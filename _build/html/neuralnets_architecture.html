@@ -494,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -511,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fneuralnets_architecture.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Fneuralnets_architecture.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -528,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/neuralnets_architecture.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/neuralnets_architecture.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -621,6 +621,18 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#neural-networks-architecture-and-building-blocks">
+   Neural Networks: Architecture and Building Blocks
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-layers-and-activations">
+     4.1 Linear Layers and Activations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#convolutional-neural-networks-cnns">
    Convolutional Neural Networks (CNNs)
   </a>
@@ -653,6 +665,18 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#">
    Architecture
   </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#neural-networks-architecture-and-building-blocks">
+   Neural Networks: Architecture and Building Blocks
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-layers-and-activations">
+     4.1 Linear Layers and Activations
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#convolutional-neural-networks-cnns">
@@ -727,26 +751,26 @@ title="Print to PDF"
 </figcaption>
 </figure>
 <p>The <span class="math notranslate nohighlight">\(j\)</span>-th hidden unit computes the <em>unobserved</em> feature as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dd6e8b19-df76-4368-b6f9-a45c4e61b7d7">
-<span class="eqno">(63)<a class="headerlink" href="#equation-dd6e8b19-df76-4368-b6f9-a45c4e61b7d7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-051681b2-63b7-4e3d-b02f-827da827fe07">
+<span class="eqno">(63)<a class="headerlink" href="#equation-051681b2-63b7-4e3d-b02f-827da827fe07" title="Permalink to this equation">#</a></span>\[\begin{equation}
 h_{j} = \phi \left( \sum_{i} w^{1}_{i,j} x_{i} \right). \nonumber
 \end{equation}\]</div>
 <p>Note that the superscript <span class="math notranslate nohighlight">\( 1 \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{1}_{i,j} \)</span> belongs to an unit at the <em>first</em> (hidden) layer. On the other hand, the subscripts <span class="math notranslate nohighlight">\( i,j \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{1}_{i,j} \)</span> corresponds to a synaptic connection between the <span class="math notranslate nohighlight">\(i\)</span>-th input unit and the <span class="math notranslate nohighlight">\(j\)</span>-th hidden unit. Lastly, the single output unit computes the network output as <div class="math notranslate nohighlight">
 \[ \hat{y} = \sum_{j} w^{2}_{j,1} h_j, \]</div>
  where the superscript <span class="math notranslate nohighlight">\( 2 \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{2}_{j,1} \)</span> belongs to the single unit <span class="math notranslate nohighlight">\( 1 \)</span> at the <em>second</em> (output) layer.</p>
 <p>Alternatively, let the vectors <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{0} = 1 &amp; x_{1} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> and <span class="math notranslate nohighlight">\( {\bf w}_{j}^{1} = \begin{bmatrix} w^{1}_{0,j} &amp; w^{1}_{1,j} &amp; \ldots &amp; w^{1}_{D,j} \end{bmatrix}^{T} \)</span> collect respectively the observed features and the corresponding weights at the <span class="math notranslate nohighlight">\(j\)</span>-th unit of the single hidden layer <span class="math notranslate nohighlight">\( 1 \)</span>. The <span class="math notranslate nohighlight">\(j\)</span>-th <em>unobserved</em> (or embedded) feature can be rewritten then as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-45fb9657-7726-4201-874c-b849d1355f68">
-<span class="eqno">(64)<a class="headerlink" href="#equation-45fb9657-7726-4201-874c-b849d1355f68" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-aca5a70e-6109-46fb-a61e-0fea5e7accee">
+<span class="eqno">(64)<a class="headerlink" href="#equation-aca5a70e-6109-46fb-a61e-0fea5e7accee" title="Permalink to this equation">#</a></span>\[\begin{equation}
 h_{j} = \phi \left( ({\bf w}_{j}^{1})^{T} {\bf x} \right). \nonumber
 \end{equation}\]</div>
 <p>Analogously, let <span class="math notranslate nohighlight">\( {\bf h} = \begin{bmatrix} h_{1} &amp; h_{2} &amp; \ldots &amp; h_{H} \end{bmatrix}^{T} \)</span> collect the embedded features and let <span class="math notranslate nohighlight">\( {\bf w}_{1}^{2} = \begin{bmatrix} w^{2}_{1,1} &amp; w^{2}_{2,1} &amp; \ldots &amp; w^{2}_{H,1} \end{bmatrix}^{T} \)</span> collect the corresponding weights at the single unit of the output layer <span class="math notranslate nohighlight">\( 2 \)</span>, we can rewrite the network output as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f9ae4f12-3875-47e6-862f-18f6cb0f1962">
-<span class="eqno">(65)<a class="headerlink" href="#equation-f9ae4f12-3875-47e6-862f-18f6cb0f1962" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-7e1db079-9ee9-4dd6-9cea-4cf5f91d4073">
+<span class="eqno">(65)<a class="headerlink" href="#equation-7e1db079-9ee9-4dd6-9cea-4cf5f91d4073" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \hat{y} = ({\bf w}_{1}^{2})^{T} {\bf h}. \nonumber
 \end{equation}\]</div>
 <p>Now, let the matrices</p>
-<div class="amsmath math notranslate nohighlight" id="equation-028c2d48-8ddd-4180-971d-78b8b5935e70">
-<span class="eqno">(66)<a class="headerlink" href="#equation-028c2d48-8ddd-4180-971d-78b8b5935e70" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-2f691b1e-8d10-463b-a946-44db32aef9c2">
+<span class="eqno">(66)<a class="headerlink" href="#equation-2f691b1e-8d10-463b-a946-44db32aef9c2" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf W}^{1} &amp;=&amp; \begin{bmatrix} {\bf w}_{1}^{1} &amp; \ldots &amp; {\bf w}_{H}^{1} \end{bmatrix} \nonumber \\
 &amp;=&amp; \begin{bmatrix} 
 w^{1}_{0,1} &amp; \ldots &amp; w^{1}_{0,H} \\
@@ -756,8 +780,8 @@ w^{1}_{D,1} &amp; \ldots &amp; w^{1}_{D,H} \nonumber
 \end{bmatrix}
 \end{eqnarray}\]</div>
 <p>and</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dc190298-04ec-4d7f-a1af-de528fa7f77a">
-<span class="eqno">(67)<a class="headerlink" href="#equation-dc190298-04ec-4d7f-a1af-de528fa7f77a" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-b00061ea-5bb3-484b-90b8-82c85c2f5ebe">
+<span class="eqno">(67)<a class="headerlink" href="#equation-b00061ea-5bb3-484b-90b8-82c85c2f5ebe" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf W}^{2} &amp;=&amp; \begin{bmatrix} {\bf w}_{1}^{2} \end{bmatrix} \nonumber \\
 &amp;=&amp; \begin{bmatrix} 
 w^{2}_{1,1} \\
@@ -766,8 +790,8 @@ w^{2}_{H,1} \nonumber
 \end{bmatrix}
 \end{eqnarray}\]</div>
 <p>collect all weights at layers <span class="math notranslate nohighlight">\( 1 \)</span> and <span class="math notranslate nohighlight">\( 2 \)</span>, respectively, such that the <span class="math notranslate nohighlight">\(j\)</span>-th column stores the weights <span class="math notranslate nohighlight">\( \lbrace w^{\ell}_{\bullet,j} \rbrace \)</span> of the <span class="math notranslate nohighlight">\(j\)</span>-th unit at the corresponding layer <span class="math notranslate nohighlight">\( \ell \)</span>. We can further rewrite the network output in compact vector-matrix notation as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7b359a45-c491-407e-9098-0e43ca5ed803">
-<span class="eqno">(68)<a class="headerlink" href="#equation-7b359a45-c491-407e-9098-0e43ca5ed803" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-df2d2e0d-cbad-4ac3-a58b-f4545eeb20fe">
+<span class="eqno">(68)<a class="headerlink" href="#equation-df2d2e0d-cbad-4ac3-a58b-f4545eeb20fe" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 \hat{y} &amp;=&amp; ({\bf W}^{2})^{T} {\bf h} \nonumber \\
 &amp;=&amp; ({\bf W}^{2})^{T} \phi \left( {\bf a} \right) \nonumber \\
 &amp;=&amp; ({\bf W}^{2})^{T} \phi \left( ({\bf W}^{1})^{T} {\bf x} \right), \nonumber
@@ -777,6 +801,33 @@ w^{2}_{H,1} \nonumber
 <p class="admonition-title">Attention</p>
 <p>The network capacity is determined by the number of network parameters (weights). As we increase the network capacity, we increase the network flexibility to fit the training examples. Going too far increasing the capacity and the network will overfit the training examples. On the other hand, the network will underfit the training examples with a too small capacity. In both cases, the network loses its ability to properly generalize, i.e. to provide a good approximation of the task-related function for unseen input patterns <span class="math notranslate nohighlight">\( {\bf x} \)</span> belonging, for instance, to a testing dataset.</p>
 </div>
+</section>
+<section id="neural-networks-architecture-and-building-blocks">
+<h1>Neural Networks: Architecture and Building Blocks<a class="headerlink" href="#neural-networks-architecture-and-building-blocks" title="Permalink to this headline">#</a></h1>
+<p>Neural networks stack multiple linear models interleaved with <strong>nonlinear activation functions</strong> to create deep, hierarchical representations.</p>
+<section id="linear-layers-and-activations">
+<h2>4.1 Linear Layers and Activations<a class="headerlink" href="#linear-layers-and-activations" title="Permalink to this headline">#</a></h2>
+<p>The most basic neural network layer performs a linear transformation:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z} = \mathbf{W}\mathbf{x} + \mathbf{b}
+\]</div>
+<p>This is followed by a <strong>nonlinear activation function</strong> <span class="math notranslate nohighlight">\( \phi \)</span>, such as:</p>
+<ul class="simple">
+<li><p>ReLU: <span class="math notranslate nohighlight">\( \phi(z) = \max(0, z) \)</span></p></li>
+<li><p>Sigmoid: <span class="math notranslate nohighlight">\( \phi(z) = \frac{1}{1 + e^{-z}} \)</span></p></li>
+<li><p>Tanh: <span class="math notranslate nohighlight">\( \phi(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}} \)</span></p></li>
+</ul>
+<p>A simple feedforward neural network (MLP) with one hidden layer:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\mathbf{h} &amp;= \phi(\mathbf{W}_1 \mathbf{x} + \mathbf{b}_1) \\
+\hat{\mathbf{y}} &amp;= \text{softmax}(\mathbf{W}_2 \mathbf{h} + \mathbf{b}_2)
+\end{align*}
+\end{split}\]</div>
+<p>Each layer composes the previous one, enabling complex function approximation.</p>
+</section>
 </section>
 <section id="convolutional-neural-networks-cnns">
 <h1>Convolutional Neural Networks (CNNs)<a class="headerlink" href="#convolutional-neural-networks-cnns" title="Permalink to this headline">#</a></h1>
@@ -851,7 +902,7 @@ w^{2}_{H,1} \nonumber
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>

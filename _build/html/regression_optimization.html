@@ -494,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -511,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Fregression_optimization.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Fregression_optimization.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -528,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/regression_optimization.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/regression_optimization.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -700,26 +700,26 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="minimizing-the-rss">
 <h1>Minimizing the RSS<a class="headerlink" href="#minimizing-the-rss" title="Permalink to this headline">#</a></h1>
-<p>Assuming that we have now selected a function class, and that it can be modelled as a linear function <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec(x))^\top\bm\beta\)</span>, we need to train the parameter vector <span class="math notranslate nohighlight">\(\bm\beta\)</span> to fit the dataset. For that reason, we need to define an objective function that is small if the model <span class="math notranslate nohighlight">\(f(\vvec{x})\)</span> is suitable. Since our goal is to approximate the target values, we can simly measure the distance of our prediction <span class="math notranslate nohighlight">\(f(\vvec{x})\)</span> and the target value <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>Assuming that we have now selected a function class, and that it can be modelled as a linear function <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec{x})^\top\bm\beta\)</span>, we need to train the parameter vector <span class="math notranslate nohighlight">\(\bm\beta\)</span> to fit the dataset. For that reason, we need to define an objective function that is small if the model <span class="math notranslate nohighlight">\(f(\vvec{x})\)</span> is suitable. Since our goal is to approximate the target values, we can simly measure the distance of our prediction <span class="math notranslate nohighlight">\(f(\vvec{x})\)</span> and the target value <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-f8e2dfeda1c9373040248c745503458ec4568ad0.svg" alt="Figure made with TikZ" /></p>
 </div><p>The plot above shows a set of datapoints that are approximated by an affine model (blue). The distance to the target <span class="math notranslate nohighlight">\(y\)</span>, plotted on the vertical axis, is indicated by the red bars. The distance indicated by the red bars reflect the absolute values <span class="math notranslate nohighlight">\(\lvert y_i - f(\vvec{x}_i)\rvert\)</span>. However, the absolute value is not so easy to optimize, since it is non-differentiable at value zero. Instead, we can minimize the squared distances, which gives us a smooth objective function.</p>
-<p>The squared approximation error of a function <span class="math notranslate nohighlight">\(f\)</span> to the target values <span class="math notranslate nohighlight">\(y\)</span> can be compactly written as follows for a linear model <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec(x))^\top\bm\beta\)</span></p>
+<p>The squared approximation error of a function <span class="math notranslate nohighlight">\(f\)</span> to the target values <span class="math notranslate nohighlight">\(y\)</span> can be compactly written as follows for a linear model <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec{x})^\top\bm\beta\)</span></p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-    RSS(\bm{\beta}) &amp;= \sum_{i=1}^n(y_i-f(D_{i\cdot}))^2\\
-    &amp;= \sum_{i=1}^n(y_i-\bm{\phi}(D_{i\cdot}^\top)^\top\bm{\beta})^2\\
+    RSS(\bm{\beta}) &amp;= \sum_{i=1}^n(y_i-f(\vvec{x}_i))^2\\
+    &amp;= \sum_{i=1}^n(y_i-\bm{\phi}(\vvec{x}_i)^\top\bm{\beta})^2\\
     &amp;= \sum_{i=1}^n(y_i-X_{i\cdot}\bm{\beta})^2\\
     &amp;=\lVert \vvec{y}-X\bm{\beta}\rVert^2.
 \end{align*}\]</div>
-<p>The function <span class="math notranslate nohighlight">\(RSS(\bm{\beta})\)</span> is called the <strong>Residual Sum of Squares</strong>. We have defined above the matrix <span class="math notranslate nohighlight">\(X\)</span>, that gathers the transformed feature vectors <span class="math notranslate nohighlight">\(\bm{\phi}(D_{i\cdot}^\top)^\top = X_{i\cdot}\)</span> over its rows.
+<p>The function <span class="math notranslate nohighlight">\(RSS(\bm{\beta})\)</span> is called the <strong>Residual Sum of Squares</strong>. We have defined above the matrix <span class="math notranslate nohighlight">\(X\)</span>, that gathers the transformed feature vectors <span class="math notranslate nohighlight">\(\bm{\phi}(\vvec{x}_i)^\top = X_{i\cdot}\)</span> over its rows.
 The matrix <span class="math notranslate nohighlight">\(X\)</span> is called the <strong>design matrix</strong>. Likewise, we can gather the target values in the vector <span class="math notranslate nohighlight">\(\vvec{y}\)</span>.</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
     X&amp;= 
     \begin{pmatrix}
-    -- &amp; \bm{\phi}(D_{1\cdot}^\top)^\top &amp;--\\
+    -- &amp; \bm{\phi}(\vvec{x}_1)^\top &amp;--\\
     &amp;\vdots&amp;\\
-    --&amp; \bm{\phi}(D_{n\cdot}^\top)^\top &amp;--
+    --&amp; \bm{\phi}(\vvec{x}_n)^\top &amp;--
     \end{pmatrix}
     \in\mathbb{R}^{n\times p},&amp;
     \vvec{y}&amp;=
@@ -733,8 +733,8 @@ The matrix <span class="math notranslate nohighlight">\(X\)</span> is called the
 <p class="admonition-title">Task (Linear Regression with Basis Functions)</p>
 <p><strong>Given</strong> a dataset of <span class="math notranslate nohighlight">\(n\)</span> observations</p>
 <div class="amsmath math notranslate nohighlight">
-\[\begin{equation*}\mathcal{D}=\left\{(D_{i\cdot},y_i)\vert D_{i\cdot}\in\mathbb{R}^{1\times d}, y_i\in\mathbb{R}, 1\leq i \leq n\right\}\end{equation*}\]</div>
-<p><strong>Choose</strong> a basis function <span class="math notranslate nohighlight">\(\bm\phi:\mathbb{R}^d\rightarrow \mathbb{R}^p\)</span>, and create the design matrix <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{n\times p}\)</span>, where <span class="math notranslate nohighlight">\(X_{i\cdot}=\bm\phi(D_{i\cdot}^\top)^\top\)</span><br />
+\[\begin{equation*}\mathcal{D}=\left\{(\vvec{x}_i,y_i)\vert \vvec{x}_i\in\mathbb{R}^{d}, y_i\in\mathbb{R}, 1\leq i \leq n\right\}\end{equation*}\]</div>
+<p><strong>Choose</strong> a basis function <span class="math notranslate nohighlight">\(\bm\phi:\mathbb{R}^d\rightarrow \mathbb{R}^p\)</span>, and create the design matrix <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{n\times p}\)</span>, where <span class="math notranslate nohighlight">\(X_{i\cdot}=\bm\phi(\vvec{x}_i)^\top\)</span><br />
 <strong>Find</strong> the regression vector <span class="math notranslate nohighlight">\(\bm\beta\)</span>, solving the following objective</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -791,7 +791,7 @@ So, we have an unconstrained convex optimization problem with a smooth objective
 <p>We consider a toy regression task, where the data is given by following three data points (observations) of one feature.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>D = np.array([5,3,1])
 y = np.array([2,5,3])
-pandas.DataFrame({&quot;F1&quot;:D,&quot;y&quot;:y})
+pandas.DataFrame({&quot;x1&quot;:D,&quot;y&quot;:y})
 </pre></div>
 </div>
 <p>That is, our given data looks as follows:</p>
@@ -855,8 +855,8 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
     X^\top X = V\Sigma^\top \underbrace{U^\top U}_{=I} \Sigma V^\top = V\Sigma^\top \Sigma V^\top.
 \end{align*}\]</div>
 <p>Given the singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span>, we can try to solve Eq. <a class="reference internal" href="#equation-eq-minimizers">(9)</a> for <span class="math notranslate nohighlight">\(\bm\beta\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e0dc2e7e-7819-45c2-8224-60e0ee7ed96e">
-<span class="eqno">(10)<a class="headerlink" href="#equation-e0dc2e7e-7819-45c2-8224-60e0ee7ed96e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-6590330c-26a4-4fba-9fd6-b9f24cf85b06">
+<span class="eqno">(10)<a class="headerlink" href="#equation-6590330c-26a4-4fba-9fd6-b9f24cf85b06" title="Permalink to this equation">#</a></span>\[\begin{align}
    X^\top X\bm{\beta} &amp;= X^\top \vvec{y} \quad 
    \Leftrightarrow \quad V\Sigma^\top\Sigma V^\top \bm{\beta}= V\Sigma^\top U^\top\vvec{y}
    \quad 
@@ -910,8 +910,8 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
 </div><div class="toggle docutils container">
 <div class="proof admonition" id="proof">
 <p>Proof. We start at the characterization of regression solvers by SVD (Observation):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-652f3a03-0cc3-4f86-8445-05140be50394">
-<span class="eqno">(11)<a class="headerlink" href="#equation-652f3a03-0cc3-4f86-8445-05140be50394" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f7aa1496-71ed-44f7-a68a-a1303dc52367">
+<span class="eqno">(11)<a class="headerlink" href="#equation-f7aa1496-71ed-44f7-a68a-a1303dc52367" title="Permalink to this equation">#</a></span>\[\begin{align}
 \Sigma^\top\Sigma V^\top\bm\beta &amp;= \Sigma^\top U_r^\top y\\
 \Leftrightarrow
 \left(\begin{array}{cc}
@@ -929,8 +929,8 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
 \end{array}\right) U_r^\top y
 \end{align}\]</div>
 <p>We see here that only the first <span class="math notranslate nohighlight">\(r\)</span> equations are relevant, the remaining equations <span class="math notranslate nohighlight">\(0=0\)</span> are evidently true. We further shorten the notation by setting <span class="math notranslate nohighlight">\(\hat{\bm\beta}=V^\top\bm\beta\)</span>. We have then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-06c7710c-669a-4940-8def-1f455ba42eb9">
-<span class="eqno">(12)<a class="headerlink" href="#equation-06c7710c-669a-4940-8def-1f455ba42eb9" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d9bc7f9b-0a88-4bf1-860b-e5368bf4b47b">
+<span class="eqno">(12)<a class="headerlink" href="#equation-d9bc7f9b-0a88-4bf1-860b-e5368bf4b47b" title="Permalink to this equation">#</a></span>\[\begin{align}
 \Sigma_r\begin{pmatrix} \Sigma_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= \Sigma_r U_r^\top y\\ 
 \Leftrightarrow
 \begin{pmatrix} \Sigma_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= U_r^\top y\\ 
@@ -940,8 +940,8 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
 \hat{\bm\beta}_{0:r} &amp;= \Sigma_r^{-1} U_r^\top y
 \end{align}\]</div>
 <p>We see that only the first <span class="math notranslate nohighlight">\(r\)</span> coordinates of <span class="math notranslate nohighlight">\(\hat{\bm\beta}\)</span> are determined by the given equation. What we have in the rest of the coordinates is free to choose and the equation will still hold. We model the coordinates that are free to choose with the vector <span class="math notranslate nohighlight">\(z\)</span>. Then we have</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e036f2be-1f74-4bb2-b7b0-95393e2b6c75">
-<span class="eqno">(13)<a class="headerlink" href="#equation-e036f2be-1f74-4bb2-b7b0-95393e2b6c75" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-9d51d893-ae5b-4092-bd1d-69c7dfc03c9c">
+<span class="eqno">(13)<a class="headerlink" href="#equation-9d51d893-ae5b-4092-bd1d-69c7dfc03c9c" title="Permalink to this equation">#</a></span>\[\begin{align}
 \hat{\bm\beta} &amp;= \begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}\\
 \Leftrightarrow V^\top\bm\beta &amp;= \begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}\\
 \Leftrightarrow \bm\beta &amp;= V\begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}
@@ -1103,7 +1103,7 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>

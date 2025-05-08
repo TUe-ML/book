@@ -317,12 +317,12 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_intro.html">
-     Neural Networks Intro
+     From Linear Models to Neural Networks
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_comp_graphs.html">
-     Computational graphs
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
    <li class="toctree-l2">
@@ -338,6 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -489,7 +494,7 @@ title="Fullscreen mode"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml"
+        <a href="https://sibylse.github.io/TUEML/intro.html"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -506,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://gitlab.tue.nl/20214358/dmml/issues/new?title=Issue%20on%20page%20%2Foptimization_convex.html&body=Your%20issue%20content%20here."
+        <a href="https://sibylse.github.io/TUEML/intro.html/issues/new?title=Issue%20on%20page%20%2Foptimization_convex.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -523,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/20214358/dmml/edit/master/optimization_convex.ipynb"
+        <a href="https://github.com/TUEML/intro.html/edit/master/optimization_convex.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -667,8 +672,8 @@ That is, if for all <span class="math notranslate nohighlight">\(x,y\in \mathcal
 <p class="admonition-title"><span class="caption-number">Definition 11 </span> (Convex function)</p>
 <section class="definition-content" id="proof-content">
 <p>A function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span> is <strong>convex</strong> if and only if for every <span class="math notranslate nohighlight">\(\alpha \in[0,1]\)</span>, and <span class="math notranslate nohighlight">\(\vvec{x},\vvec{y}\in\mathbb{R}^d\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c259b614-12b7-4862-8812-f9d2e7a632cf">
-<span class="eqno">(2)<a class="headerlink" href="#equation-c259b614-12b7-4862-8812-f9d2e7a632cf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a6307ca5-92a8-4fe6-8fdf-68150e40227a">
+<span class="eqno">(2)<a class="headerlink" href="#equation-a6307ca5-92a8-4fe6-8fdf-68150e40227a" title="Permalink to this equation">#</a></span>\[\begin{equation}
  f(\alpha \vvec{x}+ (1-\alpha)\vvec{y})\leq\alpha f(\vvec{x})+(1-\alpha)f(\vvec{y})\nonumber
 \end{equation}\]</div>
 </section>
@@ -892,7 +897,7 @@ is a convex function.</p>
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Sibylle Hess and Stiven Dias<br/>
+    By Sibylle Hess<br/>
   
       &copy; Copyright 2022. Eindhoven University of Technology.<br/>
 </p>
