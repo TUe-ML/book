@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -784,7 +779,7 @@ title="Print to PDF"
 <section class="property-content" id="proof-content">
 <p>We assume that all features are conditionally independent given the class <span class="math notranslate nohighlight">\(y\)</span>. In this case, we can write</p>
 <div class="math notranslate nohighlight" id="equation-naive-assumption">
-<span class="eqno">(41)<a class="headerlink" href="#equation-naive-assumption" title="Permalink to this equation">#</a></span>\[p({\bf x} \mid y) = p(x_1 \mid y)\cdot p(x_2\mid y) \ldots \cdot p(x_d\mid y) .\]</div>
+<span class="eqno">(33)<a class="headerlink" href="#equation-naive-assumption" title="Permalink to this equation">#</a></span>\[p({\bf x} \mid y) = p(x_1 \mid y)\cdot p(x_2\mid y) \ldots \cdot p(x_d\mid y) .\]</div>
 </section>
 </div><p>Under this assumption, we can now define the inference (prediction step) of the Naive Bayes classifier.</p>
 </section>
@@ -796,10 +791,10 @@ title="Print to PDF"
 <section class="definition-content" id="proof-content">
 <p>The naive Bayes classifier computes the probabilities that observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span> orrcurs together with label <span class="math notranslate nohighlight">\(y\)</span> under the naive Bayes assumption:</p>
 <div class="math notranslate nohighlight" id="equation-f-nb">
-<span class="eqno">(42)<a class="headerlink" href="#equation-f-nb" title="Permalink to this equation">#</a></span>\[f_{nb}(\vvec{x})_y = p(y)\prod_{k=1}^d p(x_k\mid y)\]</div>
+<span class="eqno">(34)<a class="headerlink" href="#equation-f-nb" title="Permalink to this equation">#</a></span>\[f_{nb}(\vvec{x})_y = p(y)\prod_{k=1}^d p(x_k\mid y)\]</div>
 <p>As a result, the naive Bayes classifier predicts the most likely label, given observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-yhat-nb">
-<span class="eqno">(43)<a class="headerlink" href="#equation-yhat-nb" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(35)<a class="headerlink" href="#equation-yhat-nb" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 \hat{y} &amp; = \argmax_y\ f_{nb}(\vvec{x})_y\\
 &amp;= \argmax_y\ p(y\mid \vvec{x})
 \end{align*}\end{split}\]</div>
@@ -865,7 +860,7 @@ p(x_k = a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l
 <section class="definition-content" id="proof-content">
 <p>Given a dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}\)</span> and feature <span class="math notranslate nohighlight">\(x_k\)</span> attaining values in the finite set <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span>. The class-conditioned multinomial probability estimations with Laplace smoothing with variable <span class="math notranslate nohighlight">\(\alpha&gt; 0\)</span> are then given as</p>
 <div class="math notranslate nohighlight" id="equation-freq-approx3">
-<span class="eqno">(44)<a class="headerlink" href="#equation-freq-approx3" title="Permalink to this equation">#</a></span>\[p_\alpha(x_{k} =a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\]</div>
+<span class="eqno">(36)<a class="headerlink" href="#equation-freq-approx3" title="Permalink to this equation">#</a></span>\[p_\alpha(x_{k} =a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\]</div>
 </section>
 </div><p>Note that adding <span class="math notranslate nohighlight">\(\alpha \lvert\mathcal{X}_k\rvert\)</span> to the denominator makes the conditioned probability estimations with Laplace smoothing sum up to one:</p>
 <div class="amsmath math notranslate nohighlight">

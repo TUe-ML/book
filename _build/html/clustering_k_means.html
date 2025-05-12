@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -717,7 +712,7 @@ We denote the set of all partitions from <span class="math notranslate nohighlig
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> and the number of clusters <span class="math notranslate nohighlight">\(r\)</span>.<br />
 <strong>Find</strong> clusters <span class="math notranslate nohighlight">\(\{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\in\mathcal{P}_n\)</span> which create a partition of <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span>, minimizing the distance between points within clusters (<strong>within cluster scatter</strong>):</p>
 <div class="amsmath math notranslate nohighlight" id="equation-4ee136e2-057f-44e3-8d83-535cd19da9d8">
-<span class="eqno">(127)<a class="headerlink" href="#equation-4ee136e2-057f-44e3-8d83-535cd19da9d8" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(119)<a class="headerlink" href="#equation-4ee136e2-057f-44e3-8d83-535cd19da9d8" title="Permalink to this equation">#</a></span>\[\begin{align}
 \min_{\{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\in\mathcal{P}_n} &amp;\ Dist(\mathcal{C}_1,\ldots,\mathcal{C}_r) = \sum_{s=1}^r\frac{1}{|\mathcal{C}_s|}\sum_{j,i\in\mathcal{C}_s}\|D_{j\cdot}-D_{i\cdot}\|^2 \label{eq:k-means}
 \end{align}\]</div>
 <p><strong>Return</strong> the clustering <span class="math notranslate nohighlight">\(\{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\in\mathcal{P}_n\)</span></p>
@@ -744,7 +739,7 @@ Transform the objective to get a better idea.</p>
 <div class="proof admonition" id="proof">
 <p>Proof. The objective function in Eq.~\eqref{eq:k-means} returning the average distance of points within one cluster can be transformed as follows:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-b1617904-3c4c-4b54-bd2f-5c28d6591413">
-<span class="eqno">(128)<a class="headerlink" href="#equation-b1617904-3c4c-4b54-bd2f-5c28d6591413" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(120)<a class="headerlink" href="#equation-b1617904-3c4c-4b54-bd2f-5c28d6591413" title="Permalink to this equation">#</a></span>\[\begin{align}
     Dist(\mathcal{C}_1,\ldots,\mathcal{C}_r)
 &amp;=\sum_{s=1}^r\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}{\color{magenta}\sum_{i\in\mathcal{C}_s}}\lVert {\color{magenta}D_{i\cdot}}-D_{j\cdot}\rVert^2\\ 
     &amp;= \sum_{s=1}^r\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}{\color{magenta}\sum_{i\in\mathcal{C}_s}}\left(
@@ -762,14 +757,14 @@ Transform the objective to get a better idea.</p>
 \end{align}\]</div>
 <p>This transformation introduces the centroid to the objective, it is given by the term on the right:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-a665aa0f-c159-4769-98cf-0bfa979804b7">
-<span class="eqno">(129)<a class="headerlink" href="#equation-a665aa0f-c159-4769-98cf-0bfa979804b7" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(121)<a class="headerlink" href="#equation-a665aa0f-c159-4769-98cf-0bfa979804b7" title="Permalink to this equation">#</a></span>\[\begin{align}
     Dist(\mathcal{C}_1,\ldots,\mathcal{C}_r)
     &amp;=2\sum_{s=1}^r\Biggl(\sum_{i\in\mathcal{C}_s}\lVert D_{i\cdot}\rVert^2-\sum_{i\in\mathcal{C}_s} D_{i\cdot} \underbrace{\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}D_{j\cdot}^\top}_{X_{\cdot s}}\Biggr)
 \end{align}\]</div>
 <p><span class="math notranslate nohighlight">\(X_{\cdot s}\)</span> is the centroid (the arithmetic mean position) of all points assigned to cluster <span class="math notranslate nohighlight">\(\mathcal{C}_s\)</span>.
 We rearrange the terms now, such that we can again apply the binomial formula for norms, where the norm is used to measure  the distance of a point in a cluster to the corresponding centroid:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-c4eff407-1462-46b1-9987-484fc064f8d1">
-<span class="eqno">(130)<a class="headerlink" href="#equation-c4eff407-1462-46b1-9987-484fc064f8d1" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(122)<a class="headerlink" href="#equation-c4eff407-1462-46b1-9987-484fc064f8d1" title="Permalink to this equation">#</a></span>\[\begin{align}
         Dist(\mathcal{C}_1,\ldots,\mathcal{C}_r)
     &amp;=2\sum_{s=1}^r\Biggl({\color{magenta}\sum_{i\in\mathcal{C}_s}\lVert D_{i\cdot}\rVert^2}-\underbrace{\underbrace{{\color{magenta}\sum_{i\in\mathcal{C}_s} D_{i\cdot}}}_{\lvert\mathcal{C}_s\rvert X_{\cdot s}^\top} \underbrace{\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}D_{j\cdot}^\top}_{X_{\cdot s}}}_{{\color{magenta}\sum_{i\in\mathcal{C}_s}}\lVert X_{\cdot s}\rVert^2}\Biggr)\\
     &amp;=2\sum_{s=1}^r{\color{magenta}\sum_{i\in\mathcal{C}_s}} \left({\color{magenta}\lVert D_{i\cdot}\rVert^2}- 2{\color{magenta}D_{i\cdot}}X_{\cdot s} +\lVert X_{\cdot s}\rVert^2\right)\\

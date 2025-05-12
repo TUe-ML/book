@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -4040,7 +4035,7 @@ As a result, geometrically we can say that <span class="math notranslate nohighl
 <h2>Inference of a Linear SVM for Binary Classification<a class="headerlink" href="#inference-of-a-linear-svm-for-binary-classification" title="Permalink to this headline">#</a></h2>
 <p>A hyperplane divides a space into two halves. Assuming now that we have only two classes (a binary classification problem). The hyperplane should be positioned such that one class is on one side and the other class is on the other. We can call the sides <em>positive</em> and <em>negative</em>, the positive side is the one the normal vector points to and the negative is the other side.</p>
 <div class="amsmath math notranslate nohighlight" id="equation-c4ee98ba-7f7f-40ef-a5a3-f2db6405ec65">
-<span class="eqno">(51)<a class="headerlink" href="#equation-c4ee98ba-7f7f-40ef-a5a3-f2db6405ec65" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<span class="eqno">(43)<a class="headerlink" href="#equation-c4ee98ba-7f7f-40ef-a5a3-f2db6405ec65" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf w}^{T} {\bf x} + b &amp;&lt;&amp; 0\,\, \mbox{(negative side)} \nonumber \\
 {\bf w}^{T} {\bf x} + b &amp;\geq&amp; 0\,\, \mbox{(positive side)}. \nonumber
 \end{eqnarray}\]</div>
@@ -4141,7 +4136,7 @@ For any given <span class="math notranslate nohighlight">\(\delta\)</span> we ca
 
 We can now specify the Lagrangian:</p>
 <div class="math notranslate nohighlight" id="equation-svm-lagrangian">
-<span class="eqno">(52)<a class="headerlink" href="#equation-svm-lagrangian" title="Permalink to this equation">#</a></span>\[\mathcal{L}((\vvec{w},b),\bm\lambda) = \lVert \vvec{w}\rVert^2 - \sum_{i=1}^n \lambda_i(y_i(\vvec{w}^\top\vvec{x}_i+b)-1)\]</div>
+<span class="eqno">(44)<a class="headerlink" href="#equation-svm-lagrangian" title="Permalink to this equation">#</a></span>\[\mathcal{L}((\vvec{w},b),\bm\lambda) = \lVert \vvec{w}\rVert^2 - \sum_{i=1}^n \lambda_i(y_i(\vvec{w}^\top\vvec{x}_i+b)-1)\]</div>
 <p>The objective function and the constraints are continuously differentiable, hence we can apply the KKT conditions. The first condition of the KKT conditions is that the gradient of the Lagrangian subject to the parameters <span class="math notranslate nohighlight">\(\vvec{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span> is equal to zero.
 Hence, we write</p>
 <p>Now, we plug in the results from above to obtain the dual objective function:</p>
@@ -4157,7 +4152,7 @@ Hence, we write</p>
 <section class="theorem-content" id="proof-content">
 <p>The dual optimization objective to the <a class="reference internal" href="#hard-margin-svm-task"><span class="std std-ref">Hard Margin SVM</span></a> task is given as</p>
 <div class="math notranslate nohighlight" id="equation-svm-dual-hardmarg">
-<span class="eqno">(53)<a class="headerlink" href="#equation-svm-dual-hardmarg" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(45)<a class="headerlink" href="#equation-svm-dual-hardmarg" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 \min_{\boldsymbol{\lambda}} &amp;  \frac{1}{4} \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda_{i} \lambda_{j} y_{i} y_{j} {\bf x}_{i}^\top {\bf x}_{j} - \sum_{i=1}^{n} \lambda_{i} \\
 \text{s.t. } &amp;  \sum_{i=1}^{n} \lambda_{i} y_{i} = 0,\ 
 \lambda_{i}\geq 0, \text{ for all } 1\leq i\leq n.
@@ -4169,7 +4164,7 @@ Hence, we write</p>
 <section class="theorem-content" id="proof-content">
 <p>The dual optimization objective to the <a class="reference internal" href="#hard-margin-svm-task"><span class="std std-ref">Hard Margin SVM</span></a> task is equivalent to the following convex quadratic program</p>
 <div class="math notranslate nohighlight" id="equation-svm-dual-quadr">
-<span class="eqno">(54)<a class="headerlink" href="#equation-svm-dual-quadr" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(46)<a class="headerlink" href="#equation-svm-dual-quadr" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 \min_{\boldsymbol{\lambda}}\ &amp;  \bm{\lambda}^\top Q\bm{\lambda} - \bm{\lambda}^\top\mathbf{1} \\
 \text{s.t. } &amp;  \bm{\lambda}^\top \vvec{y} = 0,\ 
 \lambda_{i}\geq 0, \text{ for all } 1\leq i\leq n,
@@ -4187,9 +4182,9 @@ Hence, we write</p>
 <div class="proof theorem admonition" id="theorem-5">
 <p class="admonition-title"><span class="caption-number">Theorem 24 </span> (Optimal hyperplane)</p>
 <section class="theorem-content" id="proof-content">
-<p>Given the minimizer <span class="math notranslate nohighlight">\( \boldsymbol{\lambda}^{\ast} \)</span> of <a class="reference internal" href="#equation-svm-dual-quadr">(54)</a>, the solution to the <a class="reference internal" href="#hard-margin-svm-task"><span class="std std-ref">Hard Margin SVM</span></a> task is given by</p>
+<p>Given the minimizer <span class="math notranslate nohighlight">\( \boldsymbol{\lambda}^{\ast} \)</span> of <a class="reference internal" href="#equation-svm-dual-quadr">(46)</a>, the solution to the <a class="reference internal" href="#hard-margin-svm-task"><span class="std std-ref">Hard Margin SVM</span></a> task is given by</p>
 <div class="math notranslate nohighlight" id="equation-primal-optimal">
-<span class="eqno">(55)<a class="headerlink" href="#equation-primal-optimal" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(47)<a class="headerlink" href="#equation-primal-optimal" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 {\bf w}^{\ast} &amp;= \sum_{i=1}^{n} \lambda_{i}^{\ast} y_{i} {\bf x}_{i}\\
 b^{\ast} &amp;= y_{i} - {{\bf w}^{\ast}}^\top {\bf x}_{i}  \quad\text{ for any }i\text{ such that } \lambda_{i} &gt; 0 ,
 \end{align*}\end{split}\]</div>
@@ -4203,7 +4198,7 @@ y_i(\vvec{w}^\top\vvec{x}_i+b)=1\ &amp; \Leftrightarrow b=\frac{1}{y_i}-\vvec{w}
 &amp;\Leftrightarrow b=y_i-\vvec{w}^\top\vvec{x}_i.
 \end{align*}\]</div>
 <p>The last equality follows from the fact that <span class="math notranslate nohighlight">\(y_i\in\{-1,+1\}\)</span>.<br />
-We can indentify the support vectors as those vectors <span class="math notranslate nohighlight">\(\vvec{x}_i\)</span> for which <span class="math notranslate nohighlight">\(\lambda_i&gt;0\)</span>. There needs to be at least one <span class="math notranslate nohighlight">\(\lambda_i&gt;0\)</span>, because otherwise the Lagrangian in Eq.<a class="reference internal" href="#equation-svm-lagrangian">(52)</a> would be equal to <span class="math notranslate nohighlight">\(\lVert\vvec{w}\rVert^2\)</span> and the margin could be maximized until it violates a constraint. However, if we have a violated constraint, then the optimal Lagrangian multiplier <span class="math notranslate nohighlight">\(\lambda_i&gt;0\)</span> would be as big as possible to maximize the dual objective, hence we have a contradiction. Further, we can’t have <span class="math notranslate nohighlight">\(\lambda_i&gt;0\)</span> if <span class="math notranslate nohighlight">\(y_i(\vvec{w}^\top\vvec{x}_i+b)&gt;1\)</span>, because in that case, <span class="math notranslate nohighlight">\(\lambda_i=0\)</span> maximizes the Lagrangian.</p>
+We can indentify the support vectors as those vectors <span class="math notranslate nohighlight">\(\vvec{x}_i\)</span> for which <span class="math notranslate nohighlight">\(\lambda_i&gt;0\)</span>. There needs to be at least one <span class="math notranslate nohighlight">\(\lambda_i&gt;0\)</span>, because otherwise the Lagrangian in Eq.<a class="reference internal" href="#equation-svm-lagrangian">(44)</a> would be equal to <span class="math notranslate nohighlight">\(\lVert\vvec{w}\rVert^2\)</span> and the margin could be maximized until it violates a constraint. However, if we have a violated constraint, then the optimal Lagrangian multiplier <span class="math notranslate nohighlight">\(\lambda_i&gt;0\)</span> would be as big as possible to maximize the dual objective, hence we have a contradiction. Further, we can’t have <span class="math notranslate nohighlight">\(\lambda_i&gt;0\)</span> if <span class="math notranslate nohighlight">\(y_i(\vvec{w}^\top\vvec{x}_i+b)&gt;1\)</span>, because in that case, <span class="math notranslate nohighlight">\(\lambda_i=0\)</span> maximizes the Lagrangian.</p>
 </div>
 </div>
 </section>
@@ -4248,7 +4243,7 @@ We can indentify the support vectors as those vectors <span class="math notransl
 <section class="theorem-content" id="proof-content">
 <p>The dual optimization objective to the <span class="xref std std-ref">Soft-Margin SVM</span> task is given as</p>
 <div class="math notranslate nohighlight" id="equation-svm-form9">
-<span class="eqno">(56)<a class="headerlink" href="#equation-svm-form9" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(48)<a class="headerlink" href="#equation-svm-form9" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 \max_{\boldsymbol{\lambda}}  &amp;  - \frac{1}{4} \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda_{i} \lambda_{j} y_{i} y_{j} {\bf x}_{i}^\top {\bf x}_{j} + \sum_{i=1}^{n} \lambda_{i} \\
 \text{s.t. }  &amp;  \sum_{i=1}^{n} \lambda_{i} y_{i} = 0 \\
 &amp;  0 \leq \lambda_{i} \leq C, \quad \text{ for }1\leq i\leq n.
@@ -4277,7 +4272,7 @@ We can indentify the support vectors as those vectors <span class="math notransl
 <section class="corollary-content" id="proof-content">
 <p>The dual optimization objective of the <span class="xref std std-ref">Soft-Margin SVM</span> task is equivalent to the following convex quadratic program</p>
 <div class="math notranslate nohighlight" id="equation-svm-form10">
-<span class="eqno">(57)<a class="headerlink" href="#equation-svm-form10" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(49)<a class="headerlink" href="#equation-svm-form10" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 \min_{\boldsymbol{\lambda}}  \ &amp; \bm{\lambda}^\top Q \boldsymbol{\lambda} + {\bf 1}^\top \boldsymbol{\lambda} \\
 \text{s.t. } &amp;   \boldsymbol{\lambda}^\top{\bf y}  = 0 \\
 &amp;  0 \leq \lambda_{i} \leq C, \text{ for }1\leq i\leq n,

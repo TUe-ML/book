@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -766,7 +761,7 @@ is the mean Pearson correlation coefficient of two i.i.d. sampled trees specifie
 <div class="proof admonition" id="proof">
 <p>Proof. If the margin is negative, then the prediction of the random forest is not correct. Hence, we can write that the expected prediction error is the probability that the margin is negative</p>
 <div class="math notranslate nohighlight" id="equation-eq-epe-margin">
-<span class="eqno">(46)<a class="headerlink" href="#equation-eq-epe-margin" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(38)<a class="headerlink" href="#equation-eq-epe-margin" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 EPE &amp;= p_{\vvec{x},y}(m(\vvec{x},y)&lt;0)\\
 &amp;= p_{\vvec{x},y}(m(\vvec{x},y)-\mu(m) &lt; -\mu(m))\\
 &amp;= p_{\vvec{x},y}(\mu(m) - m(\vvec{x},y) &gt; \mu(m))
@@ -776,7 +771,7 @@ EPE &amp;= p_{\vvec{x},y}(m(\vvec{x},y)&lt;0)\\
 \[p(\lvert x-\mu\rvert\geq w)\leq \frac{\sigma^2}{w^2},\]</div>
 
 where <span class="math notranslate nohighlight">\(\mu\)</span> is the expected value and <span class="math notranslate nohighlight">\(\sigma^2\)</span> is the variance of random variable <span class="math notranslate nohighlight">\(x\)</span>.
-We apply this to  Eq. <a class="reference internal" href="#equation-eq-epe-margin">(46)</a></p>
+We apply this to  Eq. <a class="reference internal" href="#equation-eq-epe-margin">(38)</a></p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 EPE&amp;\leq  p_{\vvec{x},y}(\lvert\mu(m) - m(\vvec{x},y)\rvert &gt; \mu(m))
@@ -785,15 +780,15 @@ EPE&amp;\leq  p_{\vvec{x},y}(\lvert\mu(m) - m(\vvec{x},y)\rvert &gt; \mu(m))
 <p>Hence, the EPE is bounded above by the variance of the margin divided my the strength of the classifier. Since the variance of the margin does not have a good interpretation with regard to a random forest, we derive now a bound for the variance.</p>
 <p>We rewrite the margin of the random forest in dependence of the margin of the trees as</p>
 <div class="math notranslate nohighlight" id="equation-eq-margin-raw">
-<span class="eqno">(47)<a class="headerlink" href="#equation-eq-margin-raw" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(39)<a class="headerlink" href="#equation-eq-margin-raw" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 m(\vvec{x},y)&amp;= p_\omega(L_{01}(\hat{y}_\omega(\vvec{x}),y)=0) - p_\omega(L_{01}(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y))=0)\\
 &amp;=\mathbb{E}_\omega[L_{01}(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y)) - L_{01}(\hat{y}_\omega(\vvec{x}),y)],
 \end{align*}\end{split}\]</div>
 <p>where the last equation derives from the linearity of the expected value and the fact that the expected value of binary random variable is equal to the probability that the binary random variable is equal to one.
-From Eq. <a class="reference internal" href="#equation-eq-margin-raw">(47)</a> follows that the expected value of the tree margin function over <span class="math notranslate nohighlight">\(\omega\)</span> is the margin function <span class="math notranslate nohighlight">\(\mathbb{E}_\omega[m_\omega(\vvec{x},y)]=m(\vvec{x},y)\)</span>.
+From Eq. <a class="reference internal" href="#equation-eq-margin-raw">(39)</a> follows that the expected value of the tree margin function over <span class="math notranslate nohighlight">\(\omega\)</span> is the margin function <span class="math notranslate nohighlight">\(\mathbb{E}_\omega[m_\omega(\vvec{x},y)]=m(\vvec{x},y)\)</span>.
 We can now write the variance of the margin with respect to single trees as</p>
 <div class="math notranslate nohighlight" id="equation-eq-var-omega">
-<span class="eqno">(48)<a class="headerlink" href="#equation-eq-var-omega" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(40)<a class="headerlink" href="#equation-eq-var-omega" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 \sigma^2(m) &amp;= \mathbb{E}_{\vvec{x},y}[(m(\vvec{x},y)-\mu(m))^2]\\
 &amp;= \mathbb{E}_{\vvec{x},y}[(\mathbb{E}_\omega[m_\omega(\vvec{x},y)-\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)])^2].
 \end{align*}\end{split}\]</div>
@@ -801,13 +796,13 @@ We can now write the variance of the margin with respect to single trees as</p>
 <div class="math notranslate nohighlight">
 \[(\mathbb{E}_\omega[h_\omega])^2 =\mathbb{E}_\omega[h_\omega]\mathbb{E}_\hat{\omega}[h_\hat{\omega}] = \mathbb{E}_{\omega,\hat{\omega}}[h_\omega h_\hat{\omega}], \]</div>
 
-we can write Eq. <a class="reference internal" href="#equation-eq-var-omega">(48)</a> as</p>
+we can write Eq. <a class="reference internal" href="#equation-eq-var-omega">(40)</a> as</p>
 <div class="math notranslate nohighlight" id="equation-eq-var2">
-<span class="eqno">(49)<a class="headerlink" href="#equation-eq-var2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(41)<a class="headerlink" href="#equation-eq-var2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 \sigma^2(m) &amp;= \mathbb{E}_{\vvec{x},y} \mathbb{E}_{\omega,\hat{\omega}}\left[(m_\omega(\vvec{x},y)-\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)])(m_\hat{\omega}(\vvec{x},y)-\mathbb{E}_{\vvec{x},y}[m_\hat{\omega}(\vvec{x},y)])\right] \\
 &amp;= \mathbb{E}_{\omega,\hat{\omega}}[\rho(m_\omega,m_\hat{\omega})\sigma(m_\omega)\sigma(m_\hat{\omega})]
 \end{align*}\end{split}\]</div>
-<p>The last equation derives from the fact that the inner expected value subject to <span class="math notranslate nohighlight">\(\omega,\hat{\omega}\)</span> is the covariance of <span class="math notranslate nohighlight">\(m_\omega\)</span> and <span class="math notranslate nohighlight">\(m_{\hat{\omega}}\)</span>. The covariance can be expressed as the Pearson correlation coefficient multiplied with the corresponding standard deviations. Dividing and multiplying Eq. <a class="reference internal" href="#equation-eq-var2">(49)</a> with <span class="math notranslate nohighlight">\(\mathbb{E}_\omega[\sigma_\omega]^2 = \mathbb{E}_{\omega,\hat{\omega}}[\sigma(m_\omega) \sigma(m_\hat{\omega})]\)</span> yields</p>
+<p>The last equation derives from the fact that the inner expected value subject to <span class="math notranslate nohighlight">\(\omega,\hat{\omega}\)</span> is the covariance of <span class="math notranslate nohighlight">\(m_\omega\)</span> and <span class="math notranslate nohighlight">\(m_{\hat{\omega}}\)</span>. The covariance can be expressed as the Pearson correlation coefficient multiplied with the corresponding standard deviations. Dividing and multiplying Eq. <a class="reference internal" href="#equation-eq-var2">(41)</a> with <span class="math notranslate nohighlight">\(\mathbb{E}_\omega[\sigma_\omega]^2 = \mathbb{E}_{\omega,\hat{\omega}}[\sigma(m_\omega) \sigma(m_\hat{\omega})]\)</span> yields</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \sigma^2(m) 
@@ -815,7 +810,7 @@ we can write Eq. <a class="reference internal" href="#equation-eq-var-omega">(48
 \end{align*}\]</div>
 <p>where the last inequality stems from Jenssens inequality applied to the convex function <span class="math notranslate nohighlight">\(x^2\)</span>.</p>
 <div class="math notranslate nohighlight" id="equation-eq-var3">
-<span class="eqno">(50)<a class="headerlink" href="#equation-eq-var3" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(42)<a class="headerlink" href="#equation-eq-var3" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 \mathbb{E}_\omega[\sigma^2(m_\omega)] &amp;= \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2] - \mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]^2\right]\\
 &amp;= \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2]\right] - \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]^2\right]
 \end{align*}\end{split}\]</div>
@@ -824,7 +819,7 @@ we can write Eq. <a class="reference internal" href="#equation-eq-var-omega">(48
 \[\begin{align*}
 \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]^2\right]\geq \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]\right]^2 = \mu(m)^2
 \end{align*}\]</div>
-<p>Further, we have <span class="math notranslate nohighlight">\(\mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2]\right]\leq 1\)</span> because <span class="math notranslate nohighlight">\(m_\omega(\vvec{x},y)\in\{-1,0,1\}\)</span>. As a result, we can bound Eq. <a class="reference internal" href="#equation-eq-var3">(50)</a> as</p>
+<p>Further, we have <span class="math notranslate nohighlight">\(\mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2]\right]\leq 1\)</span> because <span class="math notranslate nohighlight">\(m_\omega(\vvec{x},y)\in\{-1,0,1\}\)</span>. As a result, we can bound Eq. <a class="reference internal" href="#equation-eq-var3">(42)</a> as</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \mathbb{E}_\omega[\sigma^2(m_\omega)] &amp;\leq 1-\mu(m)^2.

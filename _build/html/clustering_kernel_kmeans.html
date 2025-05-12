@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -709,7 +704,7 @@ the kernel matrix is given by
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>, a feature transformation <span class="math notranslate nohighlight">\(\phi:\mathbb{R}^{d}\rightarrow \mathbb{R}^p\)</span> mapping into a <span class="math notranslate nohighlight">\(p\)</span>-dimensional feature space, where <span class="math notranslate nohighlight">\(p\in\mathbb{N}\cup\{\infty\}\)</span>, and the number of clusters <span class="math notranslate nohighlight">\(r\)</span>.<br />
 <strong>Find</strong> clusters indicated by the matrix <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span> which minimize the within cluster scatter in the transformed feature space</p>
 <div class="amsmath math notranslate nohighlight" id="equation-31ac369c-e78a-462f-aacf-4e058b8cc717">
-<span class="eqno">(139)<a class="headerlink" href="#equation-31ac369c-e78a-462f-aacf-4e058b8cc717" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(131)<a class="headerlink" href="#equation-31ac369c-e78a-462f-aacf-4e058b8cc717" title="Permalink to this equation">#</a></span>\[\begin{align}
 \min_{Y} \|{\bm\phi}(D)-YX^\top\|^2 \text{  s.t. } X= {\bm\phi}(D^\top) Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMPhi}
 \end{align}\]</div>
 <p><strong>Return</strong> the clustering <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span></p>
@@ -724,7 +719,7 @@ the kernel matrix is given by
 <p>Given a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>,
 the following objectives are equivalent <span class="math notranslate nohighlight">\(k\)</span>-means objectives:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-b4bbda42-1b37-4252-89fe-0d60d679de45">
-<span class="eqno">(140)<a class="headerlink" href="#equation-b4bbda42-1b37-4252-89fe-0d60d679de45" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(132)<a class="headerlink" href="#equation-b4bbda42-1b37-4252-89fe-0d60d679de45" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y} \lVert D-YX^\top\rVert^2 \text{  s.t. } X= D^\top Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:km}\\
 &amp;\max_{Y} \tr(Z^\top DD^\top Z)\qquad\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} \label{eq:kmeansTr}
 \end{align}\]</div>
@@ -779,7 +774,7 @@ Points within one cluster need to be similar:
 <p>Given the kernel matrix <span class="math notranslate nohighlight">\(K={\bm\phi}(D){\bm\phi}(D)^\top\)</span>,
 the following objectives are equivalent:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-faea7abc-1a01-466c-93f9-b0869a5d4ada">
-<span class="eqno">(141)<a class="headerlink" href="#equation-faea7abc-1a01-466c-93f9-b0869a5d4ada" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(133)<a class="headerlink" href="#equation-faea7abc-1a01-466c-93f9-b0869a5d4ada" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y} \|{\bm\phi}(D)-YX^\top\|^2 \text{  s.t. } X= {\bm\phi}(D^\top) Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMPhi1}\\
 &amp;\max_{Y} \tr(Z^\top K Z)\qquad\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMtr}
 \end{align}\]</div>
@@ -803,7 +798,7 @@ Kernel matrices are positive semi-definite!</p>
 <p>Given a kernel matrix and its symmetric decomposition <span class="math notranslate nohighlight">\(K=AA^\top\)</span>,
 the following objectives are equivalent:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-d3052fd0-e539-43a6-928d-826d0baa3b13">
-<span class="eqno">(142)<a class="headerlink" href="#equation-d3052fd0-e539-43a6-928d-826d0baa3b13" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(134)<a class="headerlink" href="#equation-d3052fd0-e539-43a6-928d-826d0baa3b13" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y}\ \|A-YX^\top\|^2 &amp;\text{ s.t. } X= A^\top Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r}\label{eq:kmeansA} \\
 &amp;\max_{Y}\ \tr(Z^\top K Z)&amp;\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} 
 \end{align}\]</div>

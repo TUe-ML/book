@@ -41,25 +41,25 @@
 # is given for $c_k =  X_{\cdot k}^\top \vvec{y}- \sum_{i\neq k}X_{\cdot k}^\top X_{\cdot i}\beta_i$ by
 # \begin{align}
 # \beta_k^*&= \begin{cases}
-# \frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k -\lambda) & \text{if } c_k>\lambda\\
-# \frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k +\lambda) & \text{if } c_k<-\lambda\\
-# 0 & \text{if } -\lambda\leq c_k\leq \lambda.
+# \frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k -\frac \lambda 2) & \text{if } c_k>\frac \lambda 2\\
+# \frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k +\frac \lambda 2) & \text{if } c_k<-\frac \lambda 2\\
+# 0 & \text{if } -\frac \lambda 2\leq c_k\leq \frac \lambda 2.
 # \end{cases}
 # \end{align}
 # `````
 # ````{toggle}
 # ```{prf:proof}   
 # FONC for subgradients $\vvec{0}\in \frac{\partial }{\partial \beta_k}RSS_{L_1}$ yields the solutions to the coordinate-wise minimization problems.    
-# \begin{align}
+# \begin{align*}
 # \nabla RSS(\beta) &= 2X^\top(X\beta-\vvec{y})\\
 # \frac{\partial}{\partial \beta_k} RSS(\beta) &= 2X_{\cdot k}^\top(X\beta-\vvec{y})
-# \end{align}
+# \end{align*}
 # 
-# \begin{align}
+# \begin{align*}
 # \frac{\partial}{\partial \beta_k} RSS_{L1}(\beta) = 2X_{\cdot k}^\top(X\beta-\vvec{y}) + \lambda\frac{\partial\lvert\beta\rvert}{\partial \beta_k}
-# \end{align}
+# \end{align*}
 # We compute the stationary points and set $\frac{\partial}{\partial \beta_k} RSS_{L1}(\beta)=0$:
-# \begin{align}
+# \begin{align*}
 # && 2X_{\cdot k}^\top(X\beta-\vvec{y}) + \lambda\frac{\partial\lvert\beta\rvert}{\partial \beta_k} = 0\\
 # &\Leftrightarrow\quad & 2X_{\cdot k}^\top X\beta - 2X_{\cdot k}^\top\vvec{y} + \lambda\frac{\partial\lvert\beta\rvert}{\partial \beta_k} = 0\\
 # &\Leftrightarrow & 2X_{\cdot k}^\top X\beta = 2X_{\cdot k}^\top\vvec{y} - \lambda\frac{\partial\lvert\beta\rvert}{\partial \beta_k}\\
@@ -68,17 +68,33 @@
 # &\Leftrightarrow & X_{\cdot k}^\top X_{\cdot k}\beta_k = - X_{\cdot k}^\top \sum_{l\neq k} X_{\cdot l}\beta_l + X_{\cdot k}^\top\vvec{y} - \frac \lambda 2\frac{\partial\lvert\beta\rvert}{\partial \beta_k}\\
 # &\Leftrightarrow & \beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(X_{\cdot k}^\top\left(\vvec{y} -  \sum_{l\neq k} X_{\cdot l}\beta_l \right) - \frac \lambda 2\frac{\partial\lvert\beta\rvert}{\partial \beta_k}\right)\\
 # &\Leftrightarrow & \beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\frac{\partial\lvert\beta\rvert}{\partial \beta_k}\right)\\
-# \end{align}
+# \end{align*}
 # We have now a characterization of the minimizers of $\beta_k$ in dependence of the partial derivative of the $L_1$ norm. The term $c_k$ does not depend on the coordinate that we want to optimize, hence we can consider this term as a constant. The partial derivative depends on three cases: $\beta_k>0, \beta_k<0$ and $\beta_k=0$. We have a look at these cases now.
 # 
 # _case 1: $\beta_k>0$_    
 # If $\beta_k>0$, then the partial derivative is equal to $\frac{\partial\lvert\beta\rvert}{\partial \beta_k}=1$. That is, we have:
-# \begin{align}
-# &\Leftrightarrow& 0<\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\cdot 1\right)\\
-# &\Leftrightarrow& 0<c_k - \frac \lambda 2\\
-# &\Leftrightarrow& \frac \lambda 2 < c_k 
-# \end{align}
-# Therewith we obtain the result that $\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\right)$ if $c_k>\frac \lambda 2$.
+# \begin{align*}
+#  0&<\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\cdot 1\right)\\
+# \Leftrightarrow\ 0&<c_k - \frac \lambda 2\\
+# \Leftrightarrow\ \frac \lambda 2 &< c_k 
+# \end{align*}
+# Therewith we obtain the result that $\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\right)$ if $c_k>\frac \lambda 2$.       
+# _case 2: $\beta_k<0$_        
+# We follow the same steps as above. If $\beta_k<0$, then the partial derivative is equal to $\frac{\partial\lvert\beta\rvert}{\partial \beta_k}=-1$, yielding:
+# \begin{align*}
+# 0&>\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\cdot -1\right)\\
+# \Leftrightarrow\ 0&>c_k + \frac \lambda 2\\
+# \Leftrightarrow -\frac \lambda 2 &> c_k 
+# \end{align*}
+# As a result, $\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k + \frac \lambda 2\right)$ if $c_k<-\frac \lambda 2$.     
+# _case 3: $\beta_k=0$_      
+# If $\beta_k<0$, then the partial derivative is in the interval $\frac{\partial\lvert\beta\rvert}{\partial \beta_k}\in [-1,1]$. Let's say we have a parameter $\alpha\in[-1,1]$, then
+# \begin{align*}
+# 0&=\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\cdot \alpha\right)\\
+# \Leftrightarrow\ 0&=c_k -\alpha \frac \lambda 2\\
+# \Leftrightarrow\ \alpha\frac \lambda 2 &= c_k 
+# \end{align*}
+# As a result, we have $\beta_k=0$ and $c_k\in[-\frac \lambda 2,\frac \lambda 2]$.
 # ```
 # ````
 # Given these coordinate-wise minimizers for the Lasso objective, we can formulate the Lasso algorithm as follows.
@@ -90,14 +106,14 @@
 # 1. $\bm\beta\gets$ `Initialize`($p$)  
 # 2. **while** not converged
 #     1. **for** $k\in\{1,\ldots, p\}$
-#     2. $c_k\gets X_{\cdot k}^\top (\vvec{y}- \sum_{i\neq k} X_{\cdot i}\beta_i)$
-#     3. $\beta_k\gets \begin{cases}
+#         1. $c_k\gets X_{\cdot k}^\top (\vvec{y}- \sum_{i\neq k} X_{\cdot i}\beta_i)$
+#         2. $\beta_k\gets \begin{cases}
 #         \frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k -\frac\lambda 2) & \text{if } c_k>\frac \lambda 2\\
 #         \frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k +\frac\lambda 2) & \text{if } c_k<-\frac \lambda 2\\
 #         0 & \text{if } -\frac\lambda 2\leq c_k\leq \frac\lambda 2\end{cases}$
 # 3. **return** $\bm\beta$ 
 # ```
-# We can already see from the update rules that Lasso is more likely than Ridge Regression to perform feature selection, and to set some of the coordinates of $\bm\beta$ to zero. If a coordinate $\beta_k$ is in absolute values no larger than the regularization weight $\lambda$, then the coordinate is set to zero. Hence, the very small values (in absolute terms) observed from Ridge Regression can't happen for Lasso. The values of the Lasso regression vector $\bm\beta$ are either zero or at least as large as $\lamba$.
+# We can already see from the update rules that Lasso is more likely than Ridge Regression to perform feature selection, and to set some of the coordinates of $\bm\beta$ to zero. If a coordinate $\beta_k$ is in absolute values no larger than the regularization weight $\lambda$, then the coordinate is set to zero. Hence, the very small values (in absolute terms) observed from Ridge Regression can't happen for Lasso. The values of the Lasso regression vector $\bm\beta$ are either zero or at least as large as $\lambda$.
 
 # ## Example
 # We use again the data from {prf:ref}`example_reg_p_larger_n`, but now we apply Lasso with varying regularization weights.

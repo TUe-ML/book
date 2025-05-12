@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -702,23 +697,23 @@ title="Print to PDF"
 <h1>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">#</a></h1>
 <p>The artificial neuron unit is the building block of ANNs. Thus, let us precisely model its behavior. The output value <span class="math notranslate nohighlight">\( \hat{y} \)</span> of an arbitrary neuron with <span class="math notranslate nohighlight">\( D \)</span> inputs is computed as</p>
 <div class="math notranslate nohighlight" id="equation-neuron-output1">
-<span class="eqno">(59)<a class="headerlink" href="#equation-neuron-output1" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{eqnarray}
+<span class="eqno">(51)<a class="headerlink" href="#equation-neuron-output1" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{eqnarray}
 \hat{y} &amp;=&amp; \phi(a) \nonumber \\
 &amp;=&amp; \phi \left( \sum_{i=1}^{D} w_{i} x_{i} + b \right),
 \end{eqnarray}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\( x_{i} \)</span> is the input value (or feature) from the <span class="math notranslate nohighlight">\( i \)</span>-th previous neuron, <span class="math notranslate nohighlight">\( w_{i} \)</span> is the weight associated with the <span class="math notranslate nohighlight">\( i \)</span>-th input, <span class="math notranslate nohighlight">\( b \)</span> is a bias term, <span class="math notranslate nohighlight">\( \phi(\cdot) \)</span> is a non-linear activation function and <span class="math notranslate nohighlight">\( a = \sum_{i=1}^{D} w_{i} x_{i} + b  \)</span> is the activation. Alternatively, let the vector <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{1} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> collect the input values from the <span class="math notranslate nohighlight">\( D \)</span> previous neurons and let <span class="math notranslate nohighlight">\( {\bf w} = \begin{bmatrix} w_{1} &amp; \ldots &amp; w_{D} \end{bmatrix}^{T} \)</span> collect the corresponding weights. We can write then the output value as</p>
 <div class="math notranslate nohighlight" id="equation-neuron-output2">
-<span class="eqno">(60)<a class="headerlink" href="#equation-neuron-output2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<span class="eqno">(52)<a class="headerlink" href="#equation-neuron-output2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \hat{y} = \phi \left( {\bf w}^{T} {\bf x} + b \right).
 \end{equation}\]</div>
-<p>Note therefore that <span class="math notranslate nohighlight">\( {\bf w}^{T} {\bf x} + b = 0 \)</span> defines a hyperplane over the <span class="math notranslate nohighlight">\(D\)</span>-dimensional input space. For convenience, we can further rewrite <a class="reference internal" href="#equation-neuron-output1">(59)</a> by making the bias term implicit. More precisely, we absorb the bias into the weights by making <span class="math notranslate nohighlight">\( w_{0} = b \)</span> and create a new dummy input <span class="math notranslate nohighlight">\( x_{0} = 1 \)</span>. Thus, we can write</p>
+<p>Note therefore that <span class="math notranslate nohighlight">\( {\bf w}^{T} {\bf x} + b = 0 \)</span> defines a hyperplane over the <span class="math notranslate nohighlight">\(D\)</span>-dimensional input space. For convenience, we can further rewrite <a class="reference internal" href="#equation-neuron-output1">(51)</a> by making the bias term implicit. More precisely, we absorb the bias into the weights by making <span class="math notranslate nohighlight">\( w_{0} = b \)</span> and create a new dummy input <span class="math notranslate nohighlight">\( x_{0} = 1 \)</span>. Thus, we can write</p>
 <div class="math notranslate nohighlight" id="equation-neuron-output3">
-<span class="eqno">(61)<a class="headerlink" href="#equation-neuron-output3" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<span class="eqno">(53)<a class="headerlink" href="#equation-neuron-output3" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \hat{y} = \phi \left( \sum_{i=0}^{D} w_{i} x_{i} \right).
 \end{equation}\]</div>
-<p>More compactly, we can rewrite <a class="reference internal" href="#equation-neuron-output3">(61)</a> in vector notation as</p>
+<p>More compactly, we can rewrite <a class="reference internal" href="#equation-neuron-output3">(53)</a> in vector notation as</p>
 <div class="math notranslate nohighlight" id="equation-neuron-output4">
-<span class="eqno">(62)<a class="headerlink" href="#equation-neuron-output4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<span class="eqno">(54)<a class="headerlink" href="#equation-neuron-output4" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \hat{y} = \phi \left( {\bf w}^{T} {\bf x} \right),
 \end{equation}\]</div>
 <p>where the vectors were redefined such that <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{0} &amp; x_{1} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> and <span class="math notranslate nohighlight">\( {\bf w} = \begin{bmatrix} w_{0} &amp; w_{1} &amp; \ldots &amp; w_{D} \end{bmatrix}^{T} \)</span>. That is, the output value <span class="math notranslate nohighlight">\( \hat{y} \)</span> is an affine function <span class="math notranslate nohighlight">\( {\bf w}^{T} {\bf x} \)</span> of the inputs in <span class="math notranslate nohighlight">\( {\bf x} \)</span> (activation) followed by a non-linearity <span class="math notranslate nohighlight">\( \phi(\cdot) \)</span> (activation function).</p>
@@ -752,7 +747,7 @@ title="Print to PDF"
 </figure>
 <p>The <span class="math notranslate nohighlight">\(j\)</span>-th hidden unit computes the <em>unobserved</em> feature as</p>
 <div class="amsmath math notranslate nohighlight" id="equation-051681b2-63b7-4e3d-b02f-827da827fe07">
-<span class="eqno">(63)<a class="headerlink" href="#equation-051681b2-63b7-4e3d-b02f-827da827fe07" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<span class="eqno">(55)<a class="headerlink" href="#equation-051681b2-63b7-4e3d-b02f-827da827fe07" title="Permalink to this equation">#</a></span>\[\begin{equation}
 h_{j} = \phi \left( \sum_{i} w^{1}_{i,j} x_{i} \right). \nonumber
 \end{equation}\]</div>
 <p>Note that the superscript <span class="math notranslate nohighlight">\( 1 \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{1}_{i,j} \)</span> belongs to an unit at the <em>first</em> (hidden) layer. On the other hand, the subscripts <span class="math notranslate nohighlight">\( i,j \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{1}_{i,j} \)</span> corresponds to a synaptic connection between the <span class="math notranslate nohighlight">\(i\)</span>-th input unit and the <span class="math notranslate nohighlight">\(j\)</span>-th hidden unit. Lastly, the single output unit computes the network output as <div class="math notranslate nohighlight">
@@ -760,17 +755,17 @@ h_{j} = \phi \left( \sum_{i} w^{1}_{i,j} x_{i} \right). \nonumber
  where the superscript <span class="math notranslate nohighlight">\( 2 \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{2}_{j,1} \)</span> belongs to the single unit <span class="math notranslate nohighlight">\( 1 \)</span> at the <em>second</em> (output) layer.</p>
 <p>Alternatively, let the vectors <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{0} = 1 &amp; x_{1} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> and <span class="math notranslate nohighlight">\( {\bf w}_{j}^{1} = \begin{bmatrix} w^{1}_{0,j} &amp; w^{1}_{1,j} &amp; \ldots &amp; w^{1}_{D,j} \end{bmatrix}^{T} \)</span> collect respectively the observed features and the corresponding weights at the <span class="math notranslate nohighlight">\(j\)</span>-th unit of the single hidden layer <span class="math notranslate nohighlight">\( 1 \)</span>. The <span class="math notranslate nohighlight">\(j\)</span>-th <em>unobserved</em> (or embedded) feature can be rewritten then as</p>
 <div class="amsmath math notranslate nohighlight" id="equation-aca5a70e-6109-46fb-a61e-0fea5e7accee">
-<span class="eqno">(64)<a class="headerlink" href="#equation-aca5a70e-6109-46fb-a61e-0fea5e7accee" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<span class="eqno">(56)<a class="headerlink" href="#equation-aca5a70e-6109-46fb-a61e-0fea5e7accee" title="Permalink to this equation">#</a></span>\[\begin{equation}
 h_{j} = \phi \left( ({\bf w}_{j}^{1})^{T} {\bf x} \right). \nonumber
 \end{equation}\]</div>
 <p>Analogously, let <span class="math notranslate nohighlight">\( {\bf h} = \begin{bmatrix} h_{1} &amp; h_{2} &amp; \ldots &amp; h_{H} \end{bmatrix}^{T} \)</span> collect the embedded features and let <span class="math notranslate nohighlight">\( {\bf w}_{1}^{2} = \begin{bmatrix} w^{2}_{1,1} &amp; w^{2}_{2,1} &amp; \ldots &amp; w^{2}_{H,1} \end{bmatrix}^{T} \)</span> collect the corresponding weights at the single unit of the output layer <span class="math notranslate nohighlight">\( 2 \)</span>, we can rewrite the network output as</p>
 <div class="amsmath math notranslate nohighlight" id="equation-7e1db079-9ee9-4dd6-9cea-4cf5f91d4073">
-<span class="eqno">(65)<a class="headerlink" href="#equation-7e1db079-9ee9-4dd6-9cea-4cf5f91d4073" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<span class="eqno">(57)<a class="headerlink" href="#equation-7e1db079-9ee9-4dd6-9cea-4cf5f91d4073" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \hat{y} = ({\bf w}_{1}^{2})^{T} {\bf h}. \nonumber
 \end{equation}\]</div>
 <p>Now, let the matrices</p>
 <div class="amsmath math notranslate nohighlight" id="equation-2f691b1e-8d10-463b-a946-44db32aef9c2">
-<span class="eqno">(66)<a class="headerlink" href="#equation-2f691b1e-8d10-463b-a946-44db32aef9c2" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<span class="eqno">(58)<a class="headerlink" href="#equation-2f691b1e-8d10-463b-a946-44db32aef9c2" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf W}^{1} &amp;=&amp; \begin{bmatrix} {\bf w}_{1}^{1} &amp; \ldots &amp; {\bf w}_{H}^{1} \end{bmatrix} \nonumber \\
 &amp;=&amp; \begin{bmatrix} 
 w^{1}_{0,1} &amp; \ldots &amp; w^{1}_{0,H} \\
@@ -781,7 +776,7 @@ w^{1}_{D,1} &amp; \ldots &amp; w^{1}_{D,H} \nonumber
 \end{eqnarray}\]</div>
 <p>and</p>
 <div class="amsmath math notranslate nohighlight" id="equation-b00061ea-5bb3-484b-90b8-82c85c2f5ebe">
-<span class="eqno">(67)<a class="headerlink" href="#equation-b00061ea-5bb3-484b-90b8-82c85c2f5ebe" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<span class="eqno">(59)<a class="headerlink" href="#equation-b00061ea-5bb3-484b-90b8-82c85c2f5ebe" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf W}^{2} &amp;=&amp; \begin{bmatrix} {\bf w}_{1}^{2} \end{bmatrix} \nonumber \\
 &amp;=&amp; \begin{bmatrix} 
 w^{2}_{1,1} \\
@@ -791,7 +786,7 @@ w^{2}_{H,1} \nonumber
 \end{eqnarray}\]</div>
 <p>collect all weights at layers <span class="math notranslate nohighlight">\( 1 \)</span> and <span class="math notranslate nohighlight">\( 2 \)</span>, respectively, such that the <span class="math notranslate nohighlight">\(j\)</span>-th column stores the weights <span class="math notranslate nohighlight">\( \lbrace w^{\ell}_{\bullet,j} \rbrace \)</span> of the <span class="math notranslate nohighlight">\(j\)</span>-th unit at the corresponding layer <span class="math notranslate nohighlight">\( \ell \)</span>. We can further rewrite the network output in compact vector-matrix notation as</p>
 <div class="amsmath math notranslate nohighlight" id="equation-df2d2e0d-cbad-4ac3-a58b-f4545eeb20fe">
-<span class="eqno">(68)<a class="headerlink" href="#equation-df2d2e0d-cbad-4ac3-a58b-f4545eeb20fe" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<span class="eqno">(60)<a class="headerlink" href="#equation-df2d2e0d-cbad-4ac3-a58b-f4545eeb20fe" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 \hat{y} &amp;=&amp; ({\bf W}^{2})^{T} {\bf h} \nonumber \\
 &amp;=&amp; ({\bf W}^{2})^{T} \phi \left( {\bf a} \right) \nonumber \\
 &amp;=&amp; ({\bf W}^{2})^{T} \phi \left( ({\bf W}^{1})^{T} {\bf x} \right), \nonumber

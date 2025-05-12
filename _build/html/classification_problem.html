@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -883,7 +878,7 @@ The goal is to find a classifier that predicts the correct labels <span class="m
 <section class="property-content" id="proof-content">
 <p>Under the i.i.d. class distribution assumption, we assume that the dataset samples are <em>identically</em> distributed and <em>independently</em> drawn from an <em>unknown</em> probability distribution <span class="math notranslate nohighlight">\( p^{\ast}({\bf x}, y) \)</span>, i.e.</p>
 <div class="math notranslate nohighlight" id="equation-iid-assumption">
-<span class="eqno">(38)<a class="headerlink" href="#equation-iid-assumption" title="Permalink to this equation">#</a></span>\[{\bf x}_{i}, y_{i} \sim  p^{\ast}({\bf x}, y), \forall i \in \lbrace 1, \ldots, n \rbrace.\]</div>
+<span class="eqno">(30)<a class="headerlink" href="#equation-iid-assumption" title="Permalink to this equation">#</a></span>\[{\bf x}_{i}, y_{i} \sim  p^{\ast}({\bf x}, y), \forall i \in \lbrace 1, \ldots, n \rbrace.\]</div>
 </section>
 </div><div class="proof definition admonition" id="true_classifier_error">
 <p class="admonition-title"><span class="caption-number">Definition 17 </span> (Classifier EPE)</p>
@@ -891,7 +886,7 @@ The goal is to find a classifier that predicts the correct labels <span class="m
 <p>Given a classifier <span class="math notranslate nohighlight">\(f_\mathcal{D}:\mathbb{R}^d\rightarrow \mathbb{R}^c\)</span> that has been trained on the dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>.
 the Expected Prediction Error (EPE) of classifiers is the expected error</p>
 <div class="math notranslate nohighlight" id="equation-true-classification-error">
-<span class="eqno">(39)<a class="headerlink" href="#equation-true-classification-error" title="Permalink to this equation">#</a></span>\[p( y \neq \argmax_{k} f(\vvec{x})_k ) = \mathbb{E}_{\vvec{x},y,\mathcal{D}} [L (y, \argmax_k f_\mathcal{D}(\vvec{x}) )] ,\]</div>
+<span class="eqno">(31)<a class="headerlink" href="#equation-true-classification-error" title="Permalink to this equation">#</a></span>\[p( y \neq \argmax_{k} f(\vvec{x})_k ) = \mathbb{E}_{\vvec{x},y,\mathcal{D}} [L (y, \argmax_k f_\mathcal{D}(\vvec{x}) )] ,\]</div>
 <p>over three random variables:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\vvec{x}\)</span> is the random variable of a feature vector in the test set.</p></li>
@@ -908,7 +903,7 @@ the Expected Prediction Error (EPE) of classifiers is the expected error</p>
 <section class="definition-content" id="proof-content">
 <p>The <strong>Bayes classifier</strong> is the optimal classifier that minimizes the probability of misclassification</p>
 <div class="math notranslate nohighlight" id="equation-final-estimator">
-<span class="eqno">(40)<a class="headerlink" href="#equation-final-estimator" title="Permalink to this equation">#</a></span>\[y^\ast(\vvec{x}) = \argmax_{1\leq y\leq c} p^\ast (y\mid \vvec{x})\]</div>
+<span class="eqno">(32)<a class="headerlink" href="#equation-final-estimator" title="Permalink to this equation">#</a></span>\[y^\ast(\vvec{x}) = \argmax_{1\leq y\leq c} p^\ast (y\mid \vvec{x})\]</div>
 </section>
 </div><p>The Bayes classifier has the lowest EPE possible.</p>
 </section>

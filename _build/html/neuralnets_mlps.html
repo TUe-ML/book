@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -641,7 +636,7 @@ title="Print to PDF"
 </figure>
 <p>Let <span class="math notranslate nohighlight">\( w^{\ell}_{i,j} \)</span> denote the artificial synaptic weight from the <span class="math notranslate nohighlight">\(i\)</span>-th unit in previous layer <span class="math notranslate nohighlight">\( \ell-1 \)</span> to the <span class="math notranslate nohighlight">\(j\)</span>-th unit in the current layer <span class="math notranslate nohighlight">\( \ell\)</span> and let vector <span class="math notranslate nohighlight">\( {\bf w}^{\ell}_{j} = \begin{bmatrix} w^{\ell}_{0,j} &amp; w^{\ell}_{1,j} &amp; \ldots &amp; w^{\ell}_{H_{\ell-1},j} \end{bmatrix}^{T}\)</span> collect all weights of the <span class="math notranslate nohighlight">\(j\)</span>-th unit at layer <span class="math notranslate nohighlight">\(\ell\)</span>. Additionally, for convenience, let <span class="math notranslate nohighlight">\( {\bf h}^{0} = \begin{bmatrix} 1 &amp; x_{1} &amp; x_{2} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> with <span class="math notranslate nohighlight">\( H_{0} = D \)</span> collect the observed features and let <span class="math notranslate nohighlight">\( {\bf h}^{\ell} = \begin{bmatrix} 1 &amp; h^{\ell}_{1} &amp; h^{\ell}_{2} &amp; \ldots &amp; h^{\ell}_{H_{\ell}} \end{bmatrix}^{T} \)</span> collect the embedded features for all <span class="math notranslate nohighlight">\( \ell \in \lbrace 1, \ldots, L \rbrace \)</span>. Thus, we can write the activation value of the <span class="math notranslate nohighlight">\(j\)</span>-th unit of the current layer <span class="math notranslate nohighlight">\( \ell \)</span> using vector notation as</p>
 <div class="amsmath math notranslate nohighlight" id="equation-fbc441b6-f6c2-457f-9496-e8c57fa75bbd">
-<span class="eqno">(77)<a class="headerlink" href="#equation-fbc441b6-f6c2-457f-9496-e8c57fa75bbd" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<span class="eqno">(69)<a class="headerlink" href="#equation-fbc441b6-f6c2-457f-9496-e8c57fa75bbd" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i} \nonumber \\
 &amp;=&amp; ({\bf w}_{j}^{\ell})^{T} {\bf h}^{\ell-1}. \nonumber
 \end{eqnarray}\]</div>
@@ -650,17 +645,17 @@ a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i
 </p>
 <p>Now, let the matrix <span class="math notranslate nohighlight">\( {\bf W}^{\ell} = \left[  w^{\ell}_{i,j} \right] \)</span> collect the weights of all units at the <span class="math notranslate nohighlight">\(\ell\)</span>-th layer such that its <span class="math notranslate nohighlight">\(j\)</span>-th column stores the weights associated with the <span class="math notranslate nohighlight">\(j\)</span>-th unit at layer <span class="math notranslate nohighlight">\(\ell\)</span>. Equivalently, we can write <span class="math notranslate nohighlight">\( {\bf W}^{\ell} = \begin{bmatrix} {\bf w}^{\ell}_{1} &amp; {\bf w}^{\ell}_{2} &amp; \ldots &amp; {\bf w}^{\ell}_{H_{\ell}} \end{bmatrix} \)</span>. Furthermore, let the vector <span class="math notranslate nohighlight">\( {\bf a}^{\ell} = \begin{bmatrix} a^{\ell}_{1} &amp; a^{\ell}_{2} &amp; \ldots &amp; a^{\ell}_{H_{\ell}} \end{bmatrix}^{T} \)</span> collect all activations <span class="math notranslate nohighlight">\(a^{\ell}_{j}\)</span> of layer <span class="math notranslate nohighlight">\(\ell\)</span>. Then, we can conveniently write <span class="math notranslate nohighlight">\({\bf a}^{\ell}\)</span> and <span class="math notranslate nohighlight">\( {\bf h}^{\ell} \)</span> as matrix-vector products</p>
 <div class="amsmath math notranslate nohighlight" id="equation-b4b68936-e375-4998-8831-a08a08618816">
-<span class="eqno">(78)<a class="headerlink" href="#equation-b4b68936-e375-4998-8831-a08a08618816" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<span class="eqno">(70)<a class="headerlink" href="#equation-b4b68936-e375-4998-8831-a08a08618816" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf a}^{\ell} &amp;=&amp; ({\bf W}^{\ell})^{T} \, {\bf h}^{\ell-1} \nonumber \\
 {\bf h}^{\ell} &amp;=&amp; \phi_{\ell}({\bf a}^{\ell}), \nonumber
 \end{eqnarray}\]</div>
 <p>in which the non-linearity <span class="math notranslate nohighlight">\( \phi_{\ell} \)</span> is applied element-wise on the vector <span class="math notranslate nohighlight">\( {\bf a}^{\ell} \)</span>.</p>
 <p>Therefore, the <span class="math notranslate nohighlight">\(\ell\)</span>-th layer output can be computed from the output of the previous layer <span class="math notranslate nohighlight">\( \ell -1 \)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-mlp-recursion">
-<span class="eqno">(79)<a class="headerlink" href="#equation-mlp-recursion" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<span class="eqno">(71)<a class="headerlink" href="#equation-mlp-recursion" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 {\bf h}^{\ell} &amp;=&amp; \phi_{\ell} \left( ({\bf W}^{\ell})^{T} \, {\bf h}^{\ell-1} \right)
 \end{eqnarray}\]</div>
-<p>and the last layer output can be computed by recursively applying <a class="reference internal" href="#equation-mlp-recursion">(79)</a> starting with <span class="math notranslate nohighlight">\( {\bf h}^{0} \)</span> – vector storing the network inputs in <span class="math notranslate nohighlight">\( {\bf x} \)</span> – until obtain <span class="math notranslate nohighlight">\( {\bf h}^{L} \)</span> – vector collecting the values produced by the units at the last layer. Finally, the last layer output can be further <em>combined</em> to produce the network output <span class="math notranslate nohighlight">\( \hat{\bf y} = f({\bf x}) \)</span>.</p>
+<p>and the last layer output can be computed by recursively applying <a class="reference internal" href="#equation-mlp-recursion">(71)</a> starting with <span class="math notranslate nohighlight">\( {\bf h}^{0} \)</span> – vector storing the network inputs in <span class="math notranslate nohighlight">\( {\bf x} \)</span> – until obtain <span class="math notranslate nohighlight">\( {\bf h}^{L} \)</span> – vector collecting the values produced by the units at the last layer. Finally, the last layer output can be further <em>combined</em> to produce the network output <span class="math notranslate nohighlight">\( \hat{\bf y} = f({\bf x}) \)</span>.</p>
 <p>The computation performed by the 3-layer network illustrated in <a class="reference internal" href="#mlp1-fig3"><span class="std std-numref">Fig. 20</span></a> can be written using a single line as <div class="math notranslate nohighlight">
 \[ f({\bf x}) = \underbrace{({\bf W}^{4})^{T}
 \phi_3 \Big(

@@ -27,7 +27,6 @@ chapters:
   - file: regression_sparse
   - file: regression_ridge
   - file: regression_lasso
-  - file: regression_L1vsL2
   - file: regression_exercises
 - file: classification
   sections :

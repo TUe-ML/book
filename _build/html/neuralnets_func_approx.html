@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -632,28 +627,28 @@ title="Print to PDF"
 </figcaption>
 </figure>
 <p>Note that we need to employ a non-linear activation function <span class="math notranslate nohighlight">\(\phi \colon \mathbb{R} \rightarrow \mathbb{R} \)</span>. <a class="reference internal" href="#activation-functions"><span class="std std-numref">Fig. 14</span></a> illustrates some widespread activation functions in machine learning literature. Common activation functions in traditional machine learning are the sigmoid</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f0de9955-45b5-412c-89b8-34f9caea9ffd">
-<span class="eqno">(69)<a class="headerlink" href="#equation-f0de9955-45b5-412c-89b8-34f9caea9ffd" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-93fe99f1-89ad-4dce-be85-378ba37cad34">
+<span class="eqno">(61)<a class="headerlink" href="#equation-93fe99f1-89ad-4dce-be85-378ba37cad34" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi(x) = \frac{1}{1+e^{-x}}
 \end{equation}\]</div>
 <p>and hyperbolic tangent</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7c15a836-b67d-49ed-a2d7-50d824ad058b">
-<span class="eqno">(70)<a class="headerlink" href="#equation-7c15a836-b67d-49ed-a2d7-50d824ad058b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3de0552c-e8b5-44da-b07b-91ea50b267f7">
+<span class="eqno">(62)<a class="headerlink" href="#equation-3de0552c-e8b5-44da-b07b-91ea50b267f7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi(x) = \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}.
 \end{equation}\]</div>
 <p>However, modern deep learning methods typically use unbounded, non-linear activation functions such as the rectified linear unit (ReLU)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-976e4ffe-cad3-4eca-96d7-74e6a239747c">
-<span class="eqno">(71)<a class="headerlink" href="#equation-976e4ffe-cad3-4eca-96d7-74e6a239747c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a5fdafc9-f0a6-47cb-bac8-a775155dbf31">
+<span class="eqno">(63)<a class="headerlink" href="#equation-a5fdafc9-f0a6-47cb-bac8-a775155dbf31" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi(x) = \max(0, x),
 \end{equation}\]</div>
 <p>the leaky ReLU</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8f503bdd-ce88-4f19-8b93-dda308b4c32c">
-<span class="eqno">(72)<a class="headerlink" href="#equation-8f503bdd-ce88-4f19-8b93-dda308b4c32c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8a717361-c991-4f5e-b13a-eb5d6db22e71">
+<span class="eqno">(64)<a class="headerlink" href="#equation-8a717361-c991-4f5e-b13a-eb5d6db22e71" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi(x) = \max(\alpha x, x)
 \end{equation}\]</div>
 <p>or the exponential linear unit (LU)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c8b049ab-ab43-4881-bbff-48814d840226">
-<span class="eqno">(73)<a class="headerlink" href="#equation-c8b049ab-ab43-4881-bbff-48814d840226" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-454d2f49-dcdc-4aa6-ae95-f200afaab29e">
+<span class="eqno">(65)<a class="headerlink" href="#equation-454d2f49-dcdc-4aa6-ae95-f200afaab29e" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi(x) = \left\lbrace 
 \begin{matrix}
 x, &amp; x \geq 0 \\
@@ -663,13 +658,13 @@ x, &amp; x \geq 0 \\
 \end{equation}\]</div>
 <p>in which <span class="math notranslate nohighlight">\( \alpha \geq 0 \)</span> is a small constant e.g. <span class="math notranslate nohighlight">\( \alpha = 0.1 \)</span>.</p>
 <p>Activation functions are carefully designed such that their derivatives are available in closed form and can be computed very efficiently. For example, for the sigmoid and ReLU activation functions, the derivatives are straightforwardly computed respectively as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e4e2db87-c0dd-414e-8d6b-9f87c180ad57">
-<span class="eqno">(74)<a class="headerlink" href="#equation-e4e2db87-c0dd-414e-8d6b-9f87c180ad57" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-9074936e-0530-49fd-a5a5-06ff7b858ad0">
+<span class="eqno">(66)<a class="headerlink" href="#equation-9074936e-0530-49fd-a5a5-06ff7b858ad0" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi'(x) =  \frac{\partial \phi(x)}{\partial x} =  \phi(x) \, \phi(-x)
 \end{equation}\]</div>
 <p>and</p>
-<div class="amsmath math notranslate nohighlight" id="equation-34b881e1-d24a-4b52-9e9c-ff3b23161aa0">
-<span class="eqno">(75)<a class="headerlink" href="#equation-34b881e1-d24a-4b52-9e9c-ff3b23161aa0" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-38eb9e0d-705d-417f-8be1-fa4599db066f">
+<span class="eqno">(67)<a class="headerlink" href="#equation-38eb9e0d-705d-417f-8be1-fa4599db066f" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \phi'(x) =  \frac{\partial \phi(x)}{\partial x} =  \left[ x \geq 0 \right],
 \end{equation}\]</div>
 <p>where the Iverson bracket <span class="math notranslate nohighlight">\( \left[ \Psi \right] \)</span> yields <span class="math notranslate nohighlight">\( 1 \)</span> if the logical proposition <span class="math notranslate nohighlight">\( \Psi \)</span> is true or <span class="math notranslate nohighlight">\( 0 \)</span>, otherwise.</p>
@@ -708,8 +703,8 @@ x, &amp; x \geq 0 \\
 </figcaption>
 </figure>
 <p>Note that in this case we have</p>
-<div class="amsmath math notranslate nohighlight" id="equation-84c55756-1317-47b6-b445-db6698a94346">
-<span class="eqno">(76)<a class="headerlink" href="#equation-84c55756-1317-47b6-b445-db6698a94346" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
+<div class="amsmath math notranslate nohighlight" id="equation-c344cc74-934b-46f8-b681-e31d1ea97b50">
+<span class="eqno">(68)<a class="headerlink" href="#equation-c344cc74-934b-46f8-b681-e31d1ea97b50" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
 \hat{y} &amp;=&amp; w_{0,1}^{2} + \sum_{j=1}^2 w^{2}_{j,1} \left( \sum_{i=0}^D w^{1}_{i,j} x_{i} \right) \nonumber \\
 &amp;=&amp; \sum_{i=0}^D \tilde{w}_{i} x_{i}. \nonumber
 \end{eqnarray}\]</div>

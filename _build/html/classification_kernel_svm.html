@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -726,7 +721,7 @@ Given a set of vectors <span class="math notranslate nohighlight">\(\vvec{x}_i\)
 </section>
 <section id="inference">
 <h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">#</a></h2>
-<p>We recall from Eq.<a class="reference internal" href="classification_svms.html#equation-primal-optimal">(55)</a> that the optimal parameters of a soft- and hard-margin SVM model <span class="math notranslate nohighlight">\(f_{svm}(\vvec{x})=\vvec{w}^\top\vvec{x} +b\)</span> are given as</p>
+<p>We recall from Eq.<a class="reference internal" href="classification_svms.html#equation-primal-optimal">(47)</a> that the optimal parameters of a soft- and hard-margin SVM model <span class="math notranslate nohighlight">\(f_{svm}(\vvec{x})=\vvec{w}^\top\vvec{x} +b\)</span> are given as</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 {\bf w}^{\ast} &amp;= \sum_{i=1}^{n} \lambda_{i}^{\ast} y_{i} {\bf x}_{i}\\
@@ -769,13 +764,13 @@ The class predictions are then computed as
 </div></section>
 <section id="optimization">
 <h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
-<p>The quadratic program objective of the SVM (see Eq.<a class="reference internal" href="classification_svms.html#equation-svm-form10">(57)</a>) is perfect for applying a kernel. The data points occur in this objective only over the inner product in the computation of <span class="math notranslate nohighlight">\(DD^\top\)</span>, which computes the linear kernel matrix. We can replace <span class="math notranslate nohighlight">\(DD^\top\)</span> with a kernel matrix and obtain the kernel SVM objective</p>
+<p>The quadratic program objective of the SVM (see Eq.<a class="reference internal" href="classification_svms.html#equation-svm-form10">(49)</a>) is perfect for applying a kernel. The data points occur in this objective only over the inner product in the computation of <span class="math notranslate nohighlight">\(DD^\top\)</span>, which computes the linear kernel matrix. We can replace <span class="math notranslate nohighlight">\(DD^\top\)</span> with a kernel matrix and obtain the kernel SVM objective</p>
 <div class="proof definition admonition" id="definition-2">
 <p class="admonition-title"><span class="caption-number">Definition 31 </span> (Quadratic Program Kernel Soft-Margin SVM)</p>
 <section class="definition-content" id="proof-content">
 <p>Given a kernel matrix <span class="math notranslate nohighlight">\(K\in\mathbb{R}^{n\times n}\)</span>. The optimization objective of the kernel soft-margin SVM is given by the following quadratic program</p>
 <div class="math notranslate nohighlight" id="equation-kernel-svm">
-<span class="eqno">(58)<a class="headerlink" href="#equation-kernel-svm" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
+<span class="eqno">(50)<a class="headerlink" href="#equation-kernel-svm" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
 \min_{\boldsymbol{\lambda}}  \ &amp; \frac14\bm{\lambda}^\top  \diag(\vvec{y})K\diag(\vvec{y}) \boldsymbol{\lambda} + {\bf 1}^\top \boldsymbol{\lambda} \\
 \text{s.t. } &amp;   \boldsymbol{\lambda}^\top{\bf y}  = 0 \\
 &amp;  0 \leq \lambda_{i} \leq C, \text{ for }1\leq i\leq n,

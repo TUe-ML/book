@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -859,7 +854,7 @@ If the feature is continuous, then we can try as thresholds the midpoints betwee
 <h3>Information Gain<a class="headerlink" href="#information-gain" title="Permalink to this headline">#</a></h3>
 <p>The information gain measures how beneficial a split is to the classification task. A split is defined over a data sub-set <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> that is split into disjoint data sub-sets <span class="math notranslate nohighlight">\(\mathcal{L}=\mathcal{L}_0\cup\mathcal{L}_1\)</span>.  The more <em>pure</em> the split datasets <span class="math notranslate nohighlight">\(\mathcal{L}_0\)</span> and <span class="math notranslate nohighlight">\(\mathcal{L}_1\)</span> are in comparison to their parent dataset <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>, the higher the information gain.</p>
 <div class="math notranslate nohighlight" id="equation-information-gain">
-<span class="eqno">(45)<a class="headerlink" href="#equation-information-gain" title="Permalink to this equation">#</a></span>\[IG(\mathcal{L},{\cal L}_0, {\cal L}_1) = \mathrm{Impurity}({\cal L}) - \left\{ \frac{\lvert {\cal L}_0\rvert}{\lvert{\cal L}\rvert} \mathrm{Impurity}({\cal L}_0) + \frac{\lvert{\cal L}_1\rvert}{\lvert{\cal L}\rvert} \mathrm{Impurity}({\cal L}_{1}) \right\} \]</div>
+<span class="eqno">(37)<a class="headerlink" href="#equation-information-gain" title="Permalink to this equation">#</a></span>\[IG(\mathcal{L},{\cal L}_0, {\cal L}_1) = \mathrm{Impurity}({\cal L}) - \left\{ \frac{\lvert {\cal L}_0\rvert}{\lvert{\cal L}\rvert} \mathrm{Impurity}({\cal L}_0) + \frac{\lvert{\cal L}_1\rvert}{\lvert{\cal L}\rvert} \mathrm{Impurity}({\cal L}_{1}) \right\} \]</div>
 <p>The function <span class="math notranslate nohighlight">\(\mathrm{Impurity}\)</span> measures the uncertainty of the prediction of the class with the highest empirical disctribution <span class="math notranslate nohighlight">\(p_{\cal L}(y)\)</span>. If the empirical distribution is very high for one class and very low for the remaining classes, then the impurity is low. We consider the following definitions of impurity:</p>
 <div class="proof definition admonition" id="definition-4">
 <p class="admonition-title"><span class="caption-number">Definition 24 </span> (Impurity measures)</p>

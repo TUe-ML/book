@@ -55,7 +55,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="L1 vs L2 Regularization" href="regression_L1vsL2.html" />
+    <link rel="next" title="Exercises" href="regression_exercises.html" />
     <link rel="prev" title="Ridge Regression" href="regression_ridge.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -234,11 +234,6 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Lasso
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
     </a>
    </li>
    <li class="toctree-l2">
@@ -681,8 +676,8 @@ title="Print to PDF"
 <p><strong>Return</strong> the predictor function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec{x})^\top\bm\beta\)</span>.</p>
 </div>
 <p>The drawback of using a <span class="math notranslate nohighlight">\(L_1\)</span>-regularization term is that the resulting objective function in Eq. <a class="reference internal" href="#equation-eq-lasso-obj">(25)</a> is not differentiable if any value of <span class="math notranslate nohighlight">\(\beta\)</span> is zero. However, we can generalize from the concept of a gradient to a subgradient, and the subgradient of the <span class="math notranslate nohighlight">\(L_1\)</span>-norm is given as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7104b979-1ec0-40c0-87e3-c1c23b30ed0c">
-<span class="eqno">(26)<a class="headerlink" href="#equation-7104b979-1ec0-40c0-87e3-c1c23b30ed0c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c7ce6813-0776-4f5d-a99a-09627d4e2d06">
+<span class="eqno">(26)<a class="headerlink" href="#equation-c7ce6813-0776-4f5d-a99a-09627d4e2d06" title="Permalink to this equation">#</a></span>\[\begin{align}
     \frac{\partial\lvert\bm\beta\rvert}{\partial \beta_k} \in 
     \begin{cases}
         \{1\},&amp; \text{if } \beta_k&gt;0\\
@@ -703,30 +698,30 @@ Minimizers of objective functions which have a subgradient satisfy <span class="
 \[\beta_k^* = \argmin_{\beta_k\in\mathbb{R}} \lVert\vvec{y}-X\bm\beta\rVert^2+\lambda\lvert\bm\beta\rvert\]</div>
 
 is given for <span class="math notranslate nohighlight">\(c_k =  X_{\cdot k}^\top \vvec{y}- \sum_{i\neq k}X_{\cdot k}^\top X_{\cdot i}\beta_i\)</span> by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ecefab9e-b419-4896-acf2-fd8dfef45290">
-<span class="eqno">(27)<a class="headerlink" href="#equation-ecefab9e-b419-4896-acf2-fd8dfef45290" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-0b65f1c3-38fd-4710-b2f4-ac12faef3ad8">
+<span class="eqno">(27)<a class="headerlink" href="#equation-0b65f1c3-38fd-4710-b2f4-ac12faef3ad8" title="Permalink to this equation">#</a></span>\[\begin{align}
 \beta_k^*&amp;= \begin{cases}
-\frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k -\lambda) &amp; \text{if } c_k&gt;\lambda\\
-\frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k +\lambda) &amp; \text{if } c_k&lt;-\lambda\\
-0 &amp; \text{if } -\lambda\leq c_k\leq \lambda.
+\frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k -\frac \lambda 2) &amp; \text{if } c_k&gt;\frac \lambda 2\\
+\frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k +\frac \lambda 2) &amp; \text{if } c_k&lt;-\frac \lambda 2\\
+0 &amp; \text{if } -\frac \lambda 2\leq c_k\leq \frac \lambda 2.
 \end{cases}
 \end{align}\]</div>
 </section>
 </div><div class="toggle docutils container">
 <div class="proof admonition" id="proof">
 <p>Proof. FONC for subgradients <span class="math notranslate nohighlight">\(\vvec{0}\in \frac{\partial }{\partial \beta_k}RSS_{L_1}\)</span> yields the solutions to the coordinate-wise minimization problems.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-10208526-fb91-4385-be47-20f4fdee18b2">
-<span class="eqno">(28)<a class="headerlink" href="#equation-10208526-fb91-4385-be47-20f4fdee18b2" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 \nabla RSS(\beta) &amp;= 2X^\top(X\beta-\vvec{y})\\
 \frac{\partial}{\partial \beta_k} RSS(\beta) &amp;= 2X_{\cdot k}^\top(X\beta-\vvec{y})
-\end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-b71c6511-9b68-4cb1-a53e-9c222a0fac92">
-<span class="eqno">(29)<a class="headerlink" href="#equation-b71c6511-9b68-4cb1-a53e-9c222a0fac92" title="Permalink to this equation">#</a></span>\[\begin{align}
+\end{align*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 \frac{\partial}{\partial \beta_k} RSS_{L1}(\beta) = 2X_{\cdot k}^\top(X\beta-\vvec{y}) + \lambda\frac{\partial\lvert\beta\rvert}{\partial \beta_k}
-\end{align}\]</div>
+\end{align*}\]</div>
 <p>We compute the stationary points and set <span class="math notranslate nohighlight">\(\frac{\partial}{\partial \beta_k} RSS_{L1}(\beta)=0\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-87c21137-d7de-4855-870b-a56764415a6c">
-<span class="eqno">(30)<a class="headerlink" href="#equation-87c21137-d7de-4855-870b-a56764415a6c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 &amp;&amp; 2X_{\cdot k}^\top(X\beta-\vvec{y}) + \lambda\frac{\partial\lvert\beta\rvert}{\partial \beta_k} = 0\\
 &amp;\Leftrightarrow\quad &amp; 2X_{\cdot k}^\top X\beta - 2X_{\cdot k}^\top\vvec{y} + \lambda\frac{\partial\lvert\beta\rvert}{\partial \beta_k} = 0\\
 &amp;\Leftrightarrow &amp; 2X_{\cdot k}^\top X\beta = 2X_{\cdot k}^\top\vvec{y} - \lambda\frac{\partial\lvert\beta\rvert}{\partial \beta_k}\\
@@ -735,17 +730,35 @@ is given for <span class="math notranslate nohighlight">\(c_k =  X_{\cdot k}^\to
 &amp;\Leftrightarrow &amp; X_{\cdot k}^\top X_{\cdot k}\beta_k = - X_{\cdot k}^\top \sum_{l\neq k} X_{\cdot l}\beta_l + X_{\cdot k}^\top\vvec{y} - \frac \lambda 2\frac{\partial\lvert\beta\rvert}{\partial \beta_k}\\
 &amp;\Leftrightarrow &amp; \beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(X_{\cdot k}^\top\left(\vvec{y} -  \sum_{l\neq k} X_{\cdot l}\beta_l \right) - \frac \lambda 2\frac{\partial\lvert\beta\rvert}{\partial \beta_k}\right)\\
 &amp;\Leftrightarrow &amp; \beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\frac{\partial\lvert\beta\rvert}{\partial \beta_k}\right)\\
-\end{align}\]</div>
+\end{align*}\]</div>
 <p>We have now a characterization of the minimizers of <span class="math notranslate nohighlight">\(\beta_k\)</span> in dependence of the partial derivative of the <span class="math notranslate nohighlight">\(L_1\)</span> norm. The term <span class="math notranslate nohighlight">\(c_k\)</span> does not depend on the coordinate that we want to optimize, hence we can consider this term as a constant. The partial derivative depends on three cases: <span class="math notranslate nohighlight">\(\beta_k&gt;0, \beta_k&lt;0\)</span> and <span class="math notranslate nohighlight">\(\beta_k=0\)</span>. We have a look at these cases now.</p>
 <p><em>case 1: <span class="math notranslate nohighlight">\(\beta_k&gt;0\)</span></em><br />
 If <span class="math notranslate nohighlight">\(\beta_k&gt;0\)</span>, then the partial derivative is equal to <span class="math notranslate nohighlight">\(\frac{\partial\lvert\beta\rvert}{\partial \beta_k}=1\)</span>. That is, we have:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4d6b488c-1289-49b3-b5d7-0c41b088078c">
-<span class="eqno">(31)<a class="headerlink" href="#equation-4d6b488c-1289-49b3-b5d7-0c41b088078c" title="Permalink to this equation">#</a></span>\[\begin{align}
-&amp;\Leftrightarrow&amp; 0&lt;\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\cdot 1\right)\\
-&amp;\Leftrightarrow&amp; 0&lt;c_k - \frac \lambda 2\\
-&amp;\Leftrightarrow&amp; \frac \lambda 2 &lt; c_k 
-\end{align}\]</div>
-<p>Therewith we obtain the result that <span class="math notranslate nohighlight">\(\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\right)\)</span> if <span class="math notranslate nohighlight">\(c_k&gt;\frac \lambda 2\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+ 0&amp;&lt;\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\cdot 1\right)\\
+\Leftrightarrow\ 0&amp;&lt;c_k - \frac \lambda 2\\
+\Leftrightarrow\ \frac \lambda 2 &amp;&lt; c_k 
+\end{align*}\]</div>
+<p>Therewith we obtain the result that <span class="math notranslate nohighlight">\(\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\right)\)</span> if <span class="math notranslate nohighlight">\(c_k&gt;\frac \lambda 2\)</span>.<br />
+<em>case 2: <span class="math notranslate nohighlight">\(\beta_k&lt;0\)</span></em><br />
+We follow the same steps as above. If <span class="math notranslate nohighlight">\(\beta_k&lt;0\)</span>, then the partial derivative is equal to <span class="math notranslate nohighlight">\(\frac{\partial\lvert\beta\rvert}{\partial \beta_k}=-1\)</span>, yielding:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+0&amp;&gt;\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\cdot -1\right)\\
+\Leftrightarrow\ 0&amp;&gt;c_k + \frac \lambda 2\\
+\Leftrightarrow -\frac \lambda 2 &amp;&gt; c_k 
+\end{align*}\]</div>
+<p>As a result, <span class="math notranslate nohighlight">\(\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k + \frac \lambda 2\right)\)</span> if <span class="math notranslate nohighlight">\(c_k&lt;-\frac \lambda 2\)</span>.<br />
+<em>case 3: <span class="math notranslate nohighlight">\(\beta_k=0\)</span></em><br />
+If <span class="math notranslate nohighlight">\(\beta_k&lt;0\)</span>, then the partial derivative is in the interval <span class="math notranslate nohighlight">\(\frac{\partial\lvert\beta\rvert}{\partial \beta_k}\in [-1,1]\)</span>. Let’s say we have a parameter <span class="math notranslate nohighlight">\(\alpha\in[-1,1]\)</span>, then</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+0&amp;=\beta_k = \frac{1}{\lVert X_{\cdot k}\rVert^2}\left(c_k - \frac \lambda 2\cdot \alpha\right)\\
+\Leftrightarrow\ 0&amp;=c_k -\alpha \frac \lambda 2\\
+\Leftrightarrow\ \alpha\frac \lambda 2 &amp;= c_k 
+\end{align*}\]</div>
+<p>As a result, we have <span class="math notranslate nohighlight">\(\beta_k=0\)</span> and <span class="math notranslate nohighlight">\(c_k\in[-\frac \lambda 2,\frac \lambda 2]\)</span>.</p>
 </div>
 </div>
 <p>Given these coordinate-wise minimizers for the Lasso objective, we can formulate the Lasso algorithm as follows.</p>
@@ -757,18 +770,21 @@ If <span class="math notranslate nohighlight">\(\beta_k&gt;0\)</span>, then the 
 <li><p><span class="math notranslate nohighlight">\(\bm\beta\gets\)</span> <code class="docutils literal notranslate"><span class="pre">Initialize</span></code>(<span class="math notranslate nohighlight">\(p\)</span>)</p></li>
 <li><p><strong>while</strong> not converged</p>
 <ol class="simple">
-<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(k\in\{1,\ldots, p\}\)</span></p></li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(k\in\{1,\ldots, p\}\)</span></p>
+<ol class="simple">
 <li><p><span class="math notranslate nohighlight">\(c_k\gets X_{\cdot k}^\top (\vvec{y}- \sum_{i\neq k} X_{\cdot i}\beta_i)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\beta_k\gets \begin{cases}
- \frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k -\frac\lambda 2) &amp; \text{if } c_k&gt;\frac \lambda 2\\
- \frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k +\frac\lambda 2) &amp; \text{if } c_k&lt;-\frac \lambda 2\\
- 0 &amp; \text{if } -\frac\lambda 2\leq c_k\leq \frac\lambda 2\end{cases}\)</span></p></li>
+\frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k -\frac\lambda 2) &amp; \text{if } c_k&gt;\frac \lambda 2\\
+\frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k +\frac\lambda 2) &amp; \text{if } c_k&lt;-\frac \lambda 2\\
+0 &amp; \text{if } -\frac\lambda 2\leq c_k\leq \frac\lambda 2\end{cases}\)</span></p></li>
+</ol>
+</li>
 </ol>
 </li>
 <li><p><strong>return</strong> <span class="math notranslate nohighlight">\(\bm\beta\)</span></p></li>
 </ol>
 </section>
-</div><p>We can already see from the update rules that Lasso is more likely than Ridge Regression to perform feature selection, and to set some of the coordinates of <span class="math notranslate nohighlight">\(\bm\beta\)</span> to zero. If a coordinate <span class="math notranslate nohighlight">\(\beta_k\)</span> is in absolute values no larger than the regularization weight <span class="math notranslate nohighlight">\(\lambda\)</span>, then the coordinate is set to zero. Hence, the very small values (in absolute terms) observed from Ridge Regression can’t happen for Lasso. The values of the Lasso regression vector <span class="math notranslate nohighlight">\(\bm\beta\)</span> are either zero or at least as large as <span class="math notranslate nohighlight">\(\lamba\)</span>.</p>
+</div><p>We can already see from the update rules that Lasso is more likely than Ridge Regression to perform feature selection, and to set some of the coordinates of <span class="math notranslate nohighlight">\(\bm\beta\)</span> to zero. If a coordinate <span class="math notranslate nohighlight">\(\beta_k\)</span> is in absolute values no larger than the regularization weight <span class="math notranslate nohighlight">\(\lambda\)</span>, then the coordinate is set to zero. Hence, the very small values (in absolute terms) observed from Ridge Regression can’t happen for Lasso. The values of the Lasso regression vector <span class="math notranslate nohighlight">\(\bm\beta\)</span> are either zero or at least as large as <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
 </section>
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">#</a></h2>
@@ -841,8 +857,8 @@ If <span class="math notranslate nohighlight">\(\beta_k&gt;0\)</span>, then the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.001 	 [-0.3284  0.65   -0.1272]
-1 	 [-0.      0.4504 -0.1002]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.001 	 [-0.3957  0.6901 -0.1325]
+1 	 [-0.      0.4503 -0.1002]
 10 	 [ 0.      0.0334 -0.014 ]
 100 	 [ 0.     -0.     -0.0044]
 1000 	 [-0. -0. -0.]
@@ -888,10 +904,10 @@ If <span class="math notranslate nohighlight">\(\beta_k&gt;0\)</span>, then the 
             <p class="prev-next-title">Ridge Regression</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="regression_L1vsL2.html" title="next page">
+    <a class='right-next' id="next-link" href="regression_exercises.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">L1 vs L2 Regularization</p>
+        <p class="prev-next-title">Exercises</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
