@@ -13,16 +13,16 @@
 # * $p(y)$ is the **prior probability** (how often do I expect class $y$ to occur in my dataset?)
 # * $p(\vvec{x})$ is the **evidence** (how probable is observation $\vvec{x}$?)
 # ```
-# The motivation for the Naive Bayes classifier is to approximate the Bayes optimal classifier $y^*=\argmax_y p^*(y\mid\vvec{x})$ under simplifying assumptions. To estimate $p*(y\mid\vvec{x})$, Naive Bayes uses the Bayes rule. 
+# The motivation for the Naive Bayes classifier is to approximate the Bayes optimal classifier $y^*=\argmax_y p^*(y\mid\vvec{x})$ under simplifying assumptions. To estimate $p^*(y\mid\vvec{x})$, Naive Bayes uses the Bayes rule. 
 # ````{prf:theorem} Bayes rule
 # :label: bayes_rule
-# Given two random variables $x$ and $y$, then te Bayes rule is given as
+# Given two random variables $x$ and $y$, then the Bayes rule is given as
 # $$ p(y \mid x) = \frac{p(x \mid y) \, p(y)}{p(x)}$$ 
 # ````
 # The Bayes rule indicates that we can compute the unkown prediction probability $p^*(y\mid \vvec{x})$ by means of three probabilities: the likelihood, the prior probability and the evidence. The prior probabilities $p(y)$ we can simply estimate as the fraction of observations with label $y$ in the dataset. Further, we can neglect the evidence when we want to predict the posterior probability, since
 # \begin{align*}
 # \argmax_y p(y\mid \vvec{x}) &= \argmax_y p(y\mid \vvec{x})p(\vvec{x})\\
-# &= p(\vvec{x}\mid y)p(y).
+# &= \argmax_y p(\vvec{x}\mid y)p(y).
 # \end{align*}
 # Hence, the only thing that is left to estimate is $p(\vvec{x}\mid y)$. To do so, Naive Bayes makes a simplifying assumption.
 # 
@@ -30,17 +30,17 @@
 # We assume that all features are conditionally independent given the class $y$. In this case, we can write
 # ```{math}
 # :label: naive_assumption
-# p({\bf x} \mid y) = p(x_1 \mid y)\cdot p(x_2\mid y) \ldots \cdot p(x_d\mid y) .
+# p({\bf x} \mid y) = p(\mathtt{x}_1 \mid y)\cdot p(\mathtt{x}_2\mid y) \ldots \cdot p(\mathtt{x}_d\mid y) .
 # ```
 # ````
 # Under this assumption, we can now define the inference (prediction step) of the Naive Bayes classifier. 
 # ### Inference
-# Using Bayes’ Theorem and the Naïve assumption, the prediction is made by choosing the class  that maximizes the posterior probability $p(y\mid x)$.
+# Using Bayes’ Theorem and the naive assumption, the prediction is made by choosing the class  that maximizes the posterior probability $p(y\mid x)$.
 # ````{prf:definition} NB classifier
-# The naive Bayes classifier computes the probabilities that observation $\vvec{x}$ orrcurs together with label $y$ under the naive Bayes assumption: 
+# The naive Bayes classifier computes the probabilities that observation $\vvec{x}$ occurs together with label $y$ under the naive Bayes assumption: 
 # ```{math}
 # :label: f_nb
-# f_{nb}(\vvec{x})_y = p(y)\prod_{k=1}^d p(x_k\mid y)
+# f_{nb}(\vvec{x})_y = p(y)\prod_{k=1}^d p(\mathtt{x}_k\mid y)
 # ```
 # As a result, the naive Bayes classifier predicts the most likely label, given observation $\vvec{x}$:
 # ```{math}
@@ -51,9 +51,9 @@
 # \end{align*}
 # ```
 # ````
-# The inference of Naive Bayes is quick if we have already stored all the probabilities $p(x_k \mid y)$. 
+# The inference of Naive Bayes is quick if we have already stored all the probabilities $p(\mathtt{x}_k \mid y)$. 
 # 
-# Good applications of Naive Bayes justify the assumption of conditional assumption of features, given the class. This assumption is for example given in text classification. The features are here usually the word frequencies in a text document or the binary presence of words. Although word occurrences are generally not independent from each other, individual word occurrences can give strong independent signals to the classifier. Think of the word "viagra" when training a spam-detector. Also in medical diagnosis, Naive Bayes can be useful if the features are not strongly correlated. That is, a prediction of a patient condition based on a set of features like "Blood pressure", "heart rate", and "cholesterol levels" is not a suitable application of Naive Bayes, since these features are strongly correlated.     
+# Good applications of Naive Bayes justify the assumption of conditional independence of features, given the class. This assumption is for example given in text classification. The features are here usually the word frequencies in a text document or the binary presence of words. Although word occurrences are generally not independent from each other, individual word occurrences can give strong independent signals to the classifier. Think of the word "viagra" when training a spam-detector. Also in medical diagnosis, Naive Bayes can be useful if the features are not strongly correlated. That is, a prediction of a patient condition based on a set of features like "Blood pressure", "heart rate", and "cholesterol levels" is not a suitable application of Naive Bayes, since these features are strongly correlated.     
 # #### Implementation Practice: log probabilities
 # The classifier $f_{nb}$ multiplies $d+1$ probabilities that have values in $[0,1]$. Especially for a high dimensional feature space (when $d$ is large), the probabilities of $f_{np}$ will be so close to zero that we run into numerical computation problems, such that nonzero probabilities are rounded to zero in floating-point precision. This effect is called _numerical underflow_. We can observe this effect in a minimal running example. 
 
@@ -62,8 +62,8 @@
 
 import numpy as np
 
-# Generate 1000 random numbers in [0,1]
-numbers = np.random.uniform(0, 1, 1000)
+# Generate 1000 random numbers in [10^{-20},1]
+numbers = np.random.uniform(1e-20, 1, 1000)
 product = np.prod(numbers)
 
 print(f"Product of 1000 numbers: {product:.6e}, is the product equal to zero? {product ==0}")  # Exponential notation for clarity
@@ -84,24 +84,24 @@ np.sum(np.log(numbers))
 
 
 # ### Multinomial Naive Bayes
-# If we have discrete features $x_k\in\mathcal{X}_k$, where $\mathcal{X}_k$ is a finite set, then we can assume multinomial probabilities $p(x_k\mid y)$ that are approximated over the counts: 
+# If we have discrete features $\mathtt{x}_k\in\mathcal{X}_k$, where $\mathcal{X}_k$ is a finite set, then we can assume multinomial probabilities $p(\mathtt{x}_k\mid y)$ that are approximated over the counts: 
 # \begin{align*}
-# p(x_k = a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert}.
+# p(\mathtt{x}_k = a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {x_i}_k = a, y_i=l \}\rvert}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert}.
 # \end{align*}
-# Every probability $p(x_k = a\mid y=l)$ is approximated as the number of observations where feature $x_k$ is equal to value $a$ and the label is $y_i=l$ over the number of observations where the label is $l$. 
+# Every probability $p(\mathtt{x}_k = a\mid y=l)$ is approximated as the number of observations where feature $\mathtt{x}_k$ is equal to value $a$ and the label is $y_i=l$ over the number of observations where the label is $l$. 
 # #### Implementation Practice: Laplace Smoothing
-# Using the standard estimation of multinomial probabilities has the undesirable effect that some probabilities $p(x_k = a\mid y=l)$ are equal to zero if the feature $x_k$ is never equal to value $a$ in class $y$. In this case, the classifier probabilities $f_{nb}(\vvec{x})_y$ is equal to zero for all observations $\vvec{x}$ where $x_k=a$. In particular if we have many classes, a high-dimensional feature space or features with a large domain (if $\mathcal{X}_k$ is large), this effect might happen quite often. Laplace smoothing mitigates this effect by adding $\alpha$ imaginary observations for each value of $x_k$ and class $y$.
+# Using the standard estimation of multinomial probabilities has the undesirable effect that some probabilities $p(\mathtt{x}_k = a\mid y=l)$ are equal to zero if the feature $\mathtt{x}_k$ is never equal to value $a$ in class $y$. In this case, the classifier probability $f_{nb}(\vvec{x})_y$ is equal to zero for all observations $\vvec{x}$ where $\mathtt{x}_k=a$. In particular if we have many classes, a high-dimensional feature space or features with a large domain (if $\mathcal{X}_k$ is large), this effect might happen quite often. Laplace smoothing mitigates this effect by adding $\alpha$ imaginary observations for each value of $\mathtt{x}_k$ and class $y$.
 # ````{prf:definition} Laplace smoothing
-# Given a dataset $\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}$ and feature $x_k$ attaining values in the finite set $\mathcal{X}_k$. The class-conditioned multinomial probability estimations with Laplace smoothing with variable $\alpha> 0$ are then given as 
+# Given a dataset $\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}$ and feature $\mathtt{x}_k$ attaining values in the finite set $\mathcal{X}_k$. The class-conditioned multinomial probability estimations with Laplace smoothing with variable $\alpha> 0$ are then given as 
 # ```{math}
 # :label: freq_approx3
-# p_\alpha(x_{k} =a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}
+# p_\alpha(\mathtt{x}_k =a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {x_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}
 # ```
 # ````
 # Note that adding $\alpha \lvert\mathcal{X}_k\rvert$ to the denominator makes the conditioned probability estimations with Laplace smoothing sum up to one:
 # \begin{align*}
-# \sum_{a\in \mathcal{X}_k} p_\alpha(x_{k} =a\mid y=l) 
-# & = \sum_{a\in \mathcal{X}_k} \frac{\lvert\{ i\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{i\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\\
+# \sum_{a\in \mathcal{X}_k} p_\alpha(\mathtt{x}_k =a\mid y=l) 
+# & = \sum_{a\in \mathcal{X}_k} \frac{\lvert\{ i\mid {x_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{i\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\\
 # & =  \frac{\sum_{a\in \mathcal{X}_k}( \lvert\{ i\mid {x_i}_k = a, y_i=l \}\rvert+\alpha)}{\lvert\{i\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\\
 # &= 1.
 # \end{align*}
@@ -131,9 +131,9 @@ np.sum(np.log(numbers))
 # ### Gaussian Naive Bayes
 # If feature $x_k$ attains continuous values, then a popular choice is to assume a Gaussian distribution for the class-conditioned probabilities:
 # \begin{align*}
-# p(x_k = a\mid y=l) = \frac{1}{\sqrt{2\pi \sigma_{kl}^2}}\exp\left(-\frac{(a-\mu_{kl})^2}{2\sigma_{kl}^2}\right).
+# p(\mathtt{x}_k = a\mid y=l) = \frac{1}{\sqrt{2\pi \sigma_{kl}^2}}\exp\left(-\frac{(a-\mu_{kl})^2}{2\sigma_{kl}^2}\right).
 # \end{align*}
-# The parameter $\mu_{kl}$ is the estimated mean value $\sigma_{kl}$ is the estimated variance of feature $x_k$ in class $y$.
+# The parameter $\mu_{kl}$ is the estimated mean value $\sigma_{kl}$ is the estimated variance of feature $\mathtt{x}_k$ in class $l$.
 # * $\mu_{kl} = \frac{1}{\lvert\{i\mid y_i=l\}\rvert}\sum_{i:y_i=l} {x_i}_k $
 # * $\sigma_{kl}^2 = \frac{1}{\lvert\{i\mid y_i=l\}\rvert} \sum_{i:y_i=l} ({x_i}_k-\mu_{kl})^2$
 # 
@@ -153,7 +153,7 @@ from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 from sklearn.datasets import make_moons
 
 
-X,y = make_moons(noise=0.3, random_state=0, n_samples=200)
+X,y = make_moons(noise=0.3, random_state=0, n_samples=300)
 X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.4, random_state=42
     )
@@ -193,10 +193,10 @@ import matplotlib.pyplot as plt
 from sklearn.inspection import DecisionBoundaryDisplay
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 from sklearn.datasets import make_moons
-mpl.rcParams['figure.dpi'] = 200
 
 
-X,y = make_moons(noise=0.3, random_state=0, n_samples=200)
+
+X,y = make_moons(noise=0.3, random_state=0, n_samples=300)
 X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.4, random_state=42
     )
@@ -231,7 +231,7 @@ plt.show()
 # 
 # **Input**: training data $\mathcal{D}$, $\alpha$
 # 1. **for** $k\in\{1,\ldots,d\}$
-#     1. **if** $x_k$ is a discrete feature
+#     1. **if** $\mathtt{x}_k$ is a discrete feature
 #         1. **for** $a\in\mathcal{X}_k$
 #             1. **for** $l\in\{1,\ldots, c\}$
 #                 1. Store $\log p_\alpha(x_k=a\mid y=l)$

@@ -1,83 +1,354 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# ## Multi-Layer Perceptrons
+# ## MLPs
 # 
-# Multi-Layer Perceptrons (MLPs) a.k.a. Multi-Layer Feed-Forward Neural Networks are obtained by stacking multiple hidden layers. Each hidden layer can contain different number of hidden units. In general, a MLP has $L$ hidden layers with $H_{1}, H_{2}, \ldots, H_{L} $ hidden units, i.e. the $\ell$-th hidden layer contains $H_{\ell}$ hidden units. For convenience, we also assume that the network inputs correspond to a layer $ 0 $ with $ H_{0} = D $ units. Lastly, the $ L$-th layer can directly produce the network outputs. In this case, $ H_{L} = O $. Alternatively, the $ H_{L} $ values at the last layer can be combined _somehow_ to produce the final network estimate $ \hat{\bf y} = f({\bf x}) $. In this case, $ H_{L} $ is not necessarily equal to $ O $.
+# Neural networks get their name from their loose inspriration of connections between neurons in the brain and how the brain learns by strengthening these connections. While the mechanisms that enable a human brain to capture complex patterns are vastly different to how neural networks are designed, neural networks still borrow loads of their terminology from the description of the brain. One such example is the neuron that is in the name of neural networks.
 # 
-# The figures below illustrate MLPs with different number of hidden layers. {numref}`mlp1_fig1` shows a MLP network with a single hidden layer, {numref}`mlp1_fig2` a MLP with two hidden layers and {numref}`mlp1_fig3` a MLP with tree hidden layers. Note that each layer $\ell$ can use a distinct activation function $\phi_{\ell}$. Note that the values from the last hidden layer units are being combined by means of a single linear unit -- affine transform represented by the symbol $ \sum $ -- to produce the final network estimate $ \hat{y} = f({\bf x}) $ ($ O = 1 $). However, as we will see later, other ways to combine are also possible.
+# ### An Artificial Neuron
+# The artificial neuron is supposed to simulate the firing process of an actual nueron. Getting an input vector $\vvec{x}$, the artificial neuron computes a (typically nonnegative) output based on an affine function and a nonlinear activation function $\phi$. Graphically, this is typically presented like this:
+# ```{tikz}
+# \tikzset{%
+#   every neuron/.style={
+#     circle,
+#     draw,
+#     minimum size=0.5cm
+#   },
+#   neuron missing/.style={
+#     draw=none, 
+#     scale=2,
+#     text height=0.25cm,
+#     execute at begin node=$\vdots$
+#   },
+# }
 # 
-# :::{figure} /images/neuralnets/multi_layer_MLP_01.png
-# ---
-# height: 320px
-# name: mlp1_fig1
-# align: left
-# ---
-# 1-layer MLP ($L=1$).
-# :::
+# \begin{tikzpicture}[x=1.5cm, y=1cm, >=stealth]
 # 
-# :::{figure} /images/neuralnets/multi_layer_MLP_05.png
-# ---
-# height: 320px
-# name: mlp1_fig2
-# align: left
-# ---
-# 2-layer MLP ($L=2$)
-# :::
+# % Create input nodes
+# \foreach \m [count=\y] in {1,2,3,missing,4}
+#   \node [every neuron/.try, neuron \m/.try] (input-\m) at (0,2.5-\y) {};
 # 
-# :::{figure} /images/neuralnets/multi_layer_MLP_07.png
-# ---
-# height: 320px
-# name: mlp1_fig3
-# align: left
-# ---
-# 3-layer MLP ($L=3$).
-# :::
+# % Create output node
+# \node [every neuron/.try] (output) at (1.3,-0.2) {};
 # 
-# Let $ w^{\ell}_{i,j} $ denote the artificial synaptic weight from the $i$-th unit in previous layer $ \ell-1 $ to the $j$-th unit in the current layer $ \ell$ and let vector $ {\bf w}^{\ell}_{j} = \begin{bmatrix} w^{\ell}_{0,j} & w^{\ell}_{1,j} & \ldots & w^{\ell}_{H_{\ell-1},j} \end{bmatrix}^{T}$ collect all weights of the $j$-th unit at layer $\ell$. Additionally, for convenience, let $ {\bf h}^{0} = \begin{bmatrix} 1 & x_{1} & x_{2} & \ldots & x_{D} \end{bmatrix}^{T} $ with $ H_{0} = D $ collect the observed features and let $ {\bf h}^{\ell} = \begin{bmatrix} 1 & h^{\ell}_{1} & h^{\ell}_{2} & \ldots & h^{\ell}_{H_{\ell}} \end{bmatrix}^{T} $ collect the embedded features for all $ \ell \in \lbrace 1, \ldots, L \rbrace $. Thus, we can write the activation value of the $j$-th unit of the current layer $ \ell $ using vector notation as
-# \begin{eqnarray}
-# a^{\ell}_{j} &=& \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i} \nonumber \\
-# &=& ({\bf w}_{j}^{\ell})^{T} {\bf h}^{\ell-1}. \nonumber
-# \end{eqnarray}
-# Finally, the output value of this neuron is computed as $$ h^{\ell}_{j} = \phi_{\ell}\left( a^{\ell}_{j} \right). $$
+# \foreach \l [count=\i] in {1,2,3,d}
+#   \draw [<-] (input-\i) -- ++(-0.7,0)
+#     node [above, midway] {$x_\l$};
 # 
-# Now, let the matrix $ {\bf W}^{\ell} = \left[  w^{\ell}_{i,j} \right] $ collect the weights of all units at the $\ell$-th layer such that its $j$-th column stores the weights associated with the $j$-th unit at layer $\ell$. Equivalently, we can write $ {\bf W}^{\ell} = \begin{bmatrix} {\bf w}^{\ell}_{1} & {\bf w}^{\ell}_{2} & \ldots & {\bf w}^{\ell}_{H_{\ell}} \end{bmatrix} $. Furthermore, let the vector $ {\bf a}^{\ell} = \begin{bmatrix} a^{\ell}_{1} & a^{\ell}_{2} & \ldots & a^{\ell}_{H_{\ell}} \end{bmatrix}^{T} $ collect all activations $a^{\ell}_{j}$ of layer $\ell$. Then, we can conveniently write ${\bf a}^{\ell}$ and $ {\bf h}^{\ell} $ as matrix-vector products
-# \begin{eqnarray}
-# {\bf a}^{\ell} &=& ({\bf W}^{\ell})^{T} \, {\bf h}^{\ell-1} \nonumber \\
-# {\bf h}^{\ell} &=& \phi_{\ell}({\bf a}^{\ell}), \nonumber
-# \end{eqnarray}
-# in which the non-linearity $ \phi_{\ell} $ is applied element-wise on the vector $ {\bf a}^{\ell} $.
+# \draw [->] (output) -- ++(2,0)
+#     node [above, midway] {$\phi_a(\mathbf{w}^\top\mathbf{x}+b)$};
 # 
-# Therefore, the $\ell$-th layer output can be computed from the output of the previous layer $ \ell -1 $ as
+# \foreach \i in {1,...,4}
+#     \draw [->] (input-\i) -- (output);
+#     
+# 
+# \end{tikzpicture}
+# ```
+# The input is inserted into the neuron and a weighted sum of the input with the coefficients of the vector $\vvec{w}$ is symbolized by the directed edges from the input nodes to the output node. We can imagine that every edge from node $k$ has edge weight $w_k$, which is multiplied with the input $x_k$, returning $w_kx_k$ at the end of each single edge. All the edges are summed up, yielding $\sum_k w_kx_k$. Within the output node, we add a bias term and apply the **activation function** $\phi_a$. In summary, a neuron computes the following function: 
+# 
 # :::{math}
-# :label: mlp_recursion
-# \begin{eqnarray}
-# {\bf h}^{\ell} &=& \phi_{\ell} \left( ({\bf W}^{\ell})^{T} \, {\bf h}^{\ell-1} \right)
-# \end{eqnarray}
-# :::
-# and the last layer output can be computed by recursively applying {eq}`mlp_recursion` starting with $ {\bf h}^{0} $ -- vector storing the network inputs in $ {\bf x} $ -- until obtain $ {\bf h}^{L} $ -- vector collecting the values produced by the units at the last layer. Finally, the last layer output can be further _combined_ to produce the network output $ \hat{\bf y} = f({\bf x}) $.
-# 
-# The computation performed by the 3-layer network illustrated in {numref}`mlp1_fig3` can be written using a single line as $$ f({\bf x}) = \underbrace{({\bf W}^{4})^{T}
-# \phi_3 \Big(
-# \underbrace{({\bf W}^{3})^{T} \phi_2 \Big(
-# \underbrace{({\bf W}^{2})^{T} 
-# \phi_1 \Big(
-# \underbrace{({\bf W}^{1})^{T} {\bf h}^{0}}_{\mathbf{a}^{1}} 
-# \Big)}_{\mathbf{a}^{2}} \Big)}_{\mathbf{a}^{3}} \Big)}_{\hat{y}} $$ in which $ \mathbf{W}^{4} $ is $H_L \times O$ matrix and $ {\bf h}^{0} \triangleq \begin{bmatrix} 1 & {\bf x}^{T} \end{bmatrix}^{T} $ with $ {\bf x} = \begin{bmatrix} x_1 & x_2 & \ldots & x_D \end{bmatrix}^{T} $. In this example, the single linear output unit -- node with symbol $ \sum $ in {numref}`mlp1_fig3` -- uses an affine transform ($ \mathbf{W}^{4} $) to combine the $H_L$ values at last hidden layer into a single output $ \hat{y} $, i.e. $O=1$. For multiple outputs, we can design $ \mathbf{W}^{4} $ such that $O > 1$. The MLP is thus a nested sequence of matrix-vector multiplications each of them followed by an element-wise non-linearity.
-# 
-# :::{prf:definition} Expressive Efficiency phenomenon
-# As stated by Pinkus {cite}`pinkus1999approximation` (see {doc}`Function approximator  <./neuralnets_func_approx>` page), single layer neural networks can approximate arbitrarily well any continuous function $f^{\ast} \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O}$ for a wide range of non-linearities $\phi$. Thus, why do we need multiple layers? 
-# 
-# The motivation to use multiple layers is related to a phenomenon called _Expressive Efficiency_:
-# * Despite being universal approximators, shallow networks with a single hidden layer might require an exponential size -- number of hidden layer units -- on the number of inputs to approximate some function classes.
-# * On the other hand, the number of neurons required by a deep network with several hidden layers to represent the same functions has polynomial growth on the number of network inputs.
-# 
-# Thus, deep networks can represent non-linear functions more efficiently than shallow ones. A classical example is the _parity function_, which requires exponential size in shallow networks, but polynomial size in deep networks.
-# 
-# The intuition behind the _Expressive Efficiency_ phenomenon is as follows. Typical real-world tasks e.g. _predict apple/pear from an image_ are associated with highly non-linear functions of the type $f^{\ast} \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O} $. However, common activation functions $\phi \colon \mathbb{R} \rightarrow \mathbb{R} $ e.g. sigmoid and ReLU employed by the network units show simple non-linearities. A single layer (shallow) network therefore would required a prohibitive number of units to express these real-world non-linearities, i.e. to approximate $f^{\ast} $. On the other hand, by cascading multiple non-linear layers, a deep network improves its ability / flexibility to express non-linearities and, therefore, is able to provide a reasonable approximation to $f^{\ast} $ using fewer neurons.
+# :label: neuron_output1
+# \begin{align*}
+# \phi_a \left( \sum_{k=1}^{d} w_{k} x_{k} + b \right) = \phi(\vvec{w}^\top \vvec{x}+b)
+# \end{align*}
 # :::
 # 
-# :::{observation}
-# The limitations on the expressive power of shallow networks with polynomial size have been known for a long time. However, deep networks have a traditional downside: they are much harder to train than shallow ones. The 90's and early 2000's are known as the _neural networks winter_ due to the lack of progress training neural networks with more than few layers. Some researchers even claimed at that time that neural networks with more than two layers could not be trained at all. Fortunately, deep learning has gained huge attention since 2006 as some _tricks of the trade_ allowed researches to train networks with several hidden layers. Nowadays, neural networks can be scaled to hundreds or even thousands of layers. Moreover, modern deep networks can express highly non-linear functions and perform complex real-world tasks e.g. classify objects on images showing super-human performance, i.e. achieving better results than a trained human performing the same task.
+# For convenience, we can further rewrite {eq}`neuron_output1` by making the bias term implicit. More precisely, we absorb the bias into the weights by making $ w_{0} = b $ and create a new dummy input $ x_{0} = 1 $. Thus, we can write
+# :::{math}
+# :label: neuron_output3
+# \begin{align*}
+# \phi_a \left( \sum_{k=0}^{d} w_{k} x_{k} \right) = \phi(\vvec{w}^\top \vvec{x}).
+# \end{align*}
 # :::
+# ### From Neuron to Layer
+# We can stack now  multiple neurons into a **layer**. The plot below shows the input being transformed into a $d_1$-dimensional space by $d_1$ neurons. Each neuron computes an affine function $\vvec{w}_j^\top\vvec{x}+b_j$ followed by an activation function $\phi_a$.
+# ```{tikz}
+# \tikzset{%
+#   every neuron/.style={
+#     circle,
+#     draw,
+#     minimum size=0.5cm
+#   },
+#   neuron missing/.style={
+#     draw=none, 
+#     scale=2,
+#     text height=0.25cm,
+#     execute at begin node=$\vdots$
+#   },
+# }
 # 
+# \begin{tikzpicture}[x=1.5cm, y=1cm, >=stealth]
+# 
+# % Create input nodes
+# \foreach \m/\l [count=\y] in {1,2,3,missing,4}
+#   \node [every neuron/.try, neuron \m/.try] (input-\m) at (0,2.5-\y) {};
+# 
+# % Create output layer nodes
+# \foreach \m [count=\y] in {1,missing,2}
+#   \node [every neuron/.try, neuron \m/.try ] (output-\m) at (1.3,2.4-\y*1.5) {};
+# 
+# \foreach \l [count=\i] in {1,2,3,d}
+#   \draw [<-] (input-\i) -- ++(-0.7,0)
+#     node [above, midway] {$x_\l$};
+# 
+# \foreach \j [count=\i] in {1,d_1}
+#     \draw [->] (output-\i) -- ++(2,0)
+#         node [above, midway] {$\phi_a(\mathbf{w}_{\j}^\top\mathbf{x}+b_{\j})$};
+# 
+# %Connect input to output layer
+# \foreach \i in {1,...,4}
+#   \foreach \j in {1,...,2}
+#     \draw [->] (input-\i) -- (output-\j);
+#     
+# 
+# \end{tikzpicture}
+# ```
+# Gathering all the weight vectors $\vvec{w}_j$ in a matrix $W\in\mathbb{R}^{d_1\times d}$, such that $W_{j\cdot} = \vvec{w}_j^\top$ and the bias terms in vector $\vvec{b}\in\mathbb{R}^{d_1}$, we can write the output vector generated by one layer as
+# $$\phi_a(W\vvec{x}+\vvec{b}).$$
+# The activation function is here applied element-wise, such that for vector $\vvec{z}\in\mathbb{R}^{d_1}$
+# $$\phi_a(\vvec{z}) = \begin{pmatrix}\phi_a(z_1)\\\vdots\\ \phi_a(z_{d_1})\end{pmatrix}.$$
+# ### From one Layer to the Multi-Layer Perceptron
+# A Multi-Layer Perceptron (MLP), a.k.a. a feed forward neural network stacks multiple layers after each other, where each layer is an affine function followed by an activation function. The plot below shows an MLP with one input layer (left), a hidden layer (middle) and an output layer (right).
+# ```{tikz}
+# \tikzset{%
+#   every neuron/.style={
+#     circle,
+#     draw,
+#     minimum size=0.5cm
+#   },
+#   neuron missing/.style={
+#     draw=none, 
+#     scale=2,
+#     text height=0.25cm,
+#     execute at begin node=$\vdots$
+#   },
+# }
+# 
+# \begin{tikzpicture}[x=1.5cm, y=1cm, >=stealth]
+# 
+# % Create input nodes
+# \foreach \m/\l [count=\y] in {1,2,3,missing,4}
+#   \node [every neuron/.try, neuron \m/.try] (input-\m) at (0,2.5-\y) {};
+# 
+# % Create hidden layer nodes
+# \foreach \m [count=\y] in {1,2,missing,3}
+#   \node [every neuron/.try, neuron \m/.try ] (hidden-\m) at (1.3,2-\y) {};
+#   
+# % Create output layer nodes
+# \foreach \m [count=\y] in {1,2,missing,3}
+#   \node [every neuron/.try, neuron \m/.try ] (output-\m) at (2.6,2-\y) {};
+# 
+# \foreach \l [count=\i] in {1,2,3,d}
+#   \draw [<-] (input-\i) -- ++(-0.7,0)
+#     node [above, midway] {$x_\l$};
+# 
+# \foreach \j [count=\i] in {1,2,d_2}
+#     \draw [->] (output-\i) -- ++(2.5,0)
+#         node [above, midway] {$\phi_2({\mathbf{w}^{(2)}_{\j}}^\top\mathbf{h}^{(1)}+b^{(2)}_{\j})$};
+# 
+# %Connect input to hidden layer
+# \foreach \i in {1,...,4}
+#   \foreach \j in {1,...,3}
+#     \draw [->] (input-\i) -- (hidden-\j);
+# 
+# %Connect hidden to output layer
+# \foreach \i in {1,...,3}
+#   \foreach \j in {1,...,3}
+#     \draw [->] (hidden-\i) -- (output-\j);
+#     
+# 
+# \end{tikzpicture}
+# ```
+# The output function is computed layer by layer, that is the output vector $\vvec{z}$ is computes as
+# \begin{align*}
+# \vvec{h}^{(1)} &= \phi_1(W^{(1)}\vvec{x}+\vvec{b}_1)\\
+# \vvec{z} & = \phi_2(W^{(2)}\vvec{h}^{(1)}+\vvec{b}_2).
+# \end{align*}
+# Likewise, we can add another layer and get a MLP with four layers:
+# ```{tikz}
+# \tikzset{%
+#   every neuron/.style={
+#     circle,
+#     draw,
+#     minimum size=0.5cm
+#   },
+#   neuron missing/.style={
+#     draw=none, 
+#     scale=2,
+#     text height=0.25cm,
+#     execute at begin node=$\vdots$
+#   },
+# }
+# 
+# \begin{tikzpicture}[x=1.5cm, y=1cm, >=stealth]
+# 
+# % Create input nodes
+# \foreach \m/\l [count=\y] in {1,2,3,missing,4}
+#   \node [every neuron/.try, neuron \m/.try] (input-\m) at (0,2.5-\y) {};
+# 
+# % Create hidden1 layer nodes
+# \foreach \m [count=\y] in {1,2,missing,3}
+#   \node [every neuron/.try, neuron \m/.try ] (hidden1-\m) at (1.3,2-\y) {};
+# 
+# % Create hidden2 layer nodes
+# \foreach \m [count=\y] in {1,2,missing,3}
+#   \node [every neuron/.try, neuron \m/.try ] (hidden2-\m) at (2.6,2-\y) {};
+# % Create output layer nodes
+# \foreach \m [count=\y] in {1,2,missing,3}
+#   \node [every neuron/.try, neuron \m/.try ] (output-\m) at (3.9,2-\y) {};
+# 
+# \foreach \l [count=\i] in {1,2,3,d}
+#   \draw [<-] (input-\i) -- ++(-0.7,0)
+#     node [above, midway] {$x_\l$};
+# 
+# \foreach \j [count=\i] in {1,2,d_2}
+#     \draw [->] (output-\i) -- ++(2.5,0)
+#         node [above, midway] {$\phi_3({\mathbf{w}^{(3)}_{\j}}^\top\mathbf{h}^{(2)}+b^{(3)}_{\j})$};
+# 
+# %Connect input to hidden layer
+# \foreach \i in {1,...,4}
+#   \foreach \j in {1,...,3}
+#     \draw [->] (input-\i) -- (hidden1-\j);
+# %Connect hidden1 to hidden2 layer
+# \foreach \i in {1,...,3}
+#   \foreach \j in {1,...,3}
+#     \draw [->] (hidden1-\i) -- (hidden2-\j);
+# 
+# %Connect hidden2 to output layer
+# \foreach \i in {1,...,3}
+#   \foreach \j in {1,...,3}
+#     \draw [->] (hidden2-\i) -- (output-\j);
+#     
+# 
+# \end{tikzpicture}
+# ```
+# Now, the output is the composition of three functions that are computed by each layer:
+# \begin{align*}
+# \vvec{h}^{(1)} &= \phi_1(W^{(1)}\vvec{x}+\vvec{b}_1)\\
+# \vvec{h}^{(2)}  & = \phi_2(W^{(2)}\vvec{h}^{(1)}+\vvec{b}_2)\\
+# \vvec{z} &= \phi_3(W^{(3)}\vvec{h}^{(2)}+\vvec{b}_3)
+# \end{align*}
+# Note that each layer can have its own dimensionality. This is often difficult to depict visually, but we can either expand or decrease the dimensionality in each layer. 
+# ### Activation Functions
+# 
+# Each layer stacks an affine function with a **nonlinear activation function**. The nonlinearlity of the activation functions prevent that the stacked layers collapse to a single affine function. That is because the composition of affine functions is an affine function itself:
+# \begin{align*}
+# W^{(2)}(W^{(1)}\vvec{x} + \vvec{b}^{(1)}) + \vvec{b}^{(2)} &=
+# W^{(2)}W^{(1)}\vvec{x} + W^{(2)}\vvec{b}^{(1)} + \vvec{b}^{(2)}\\
+# & = \tilde{W}\vvec{x} +\tilde{\vvec{b}},
+# \end{align*}
+# where $\tilde{W} = W^{(2)}W^{(1)}$ and $\tilde{\vvec{b}} = W^{(2)}\vvec{b}^{(1)} + \vvec{b}^{(2)}$. Applying a nonlinear function after each affine function prevents that the layers collapse to a simple affine function and allows the network to learn complex functions by stacking simple layers after each other.
+# 
+# #### Sigmoid 
+# The sigmoid function has been used as an activation function back in the days, since it gives a nice interpretation of a neuron firing (sigmoid being close to one) or not (sigmoid being close to zero). The sigmoid function is defined as 
+# 
+# $$ \phi(x) = \frac{1}{1 + \exp^{-x}} $$
+# 
+# Similar to the sigmoid function is the $\tanh$ function, mapping real values to the rage of $[-1,1]$ in contrast to sigmoid having as range $[0,1]$.
+# 
+# However, the sigmoid  and tanh functions are not easy to optimize in a hidden layer, since they suffer from the vanishing gradient problem. If you look at the plot below, then you see that the derivative at points on the left and the right is close to zero. As a result, sigmoid and tanh are used only on the last layer, where a logarithmic loss function usually counteracts the vanishing gradient problem.
+# 
+
+# In[1]:
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define activation functions
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+def tanh(x):
+    return np.tanh(x)
+
+# Create input range
+x = np.linspace(-10, 10, 500)
+y_sigmoid = sigmoid(x)
+y_tanh = tanh(x)
+
+# Create side-by-side plots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+
+# Plot sigmoid
+ax1.plot(x, y_sigmoid, color="blue")
+ax1.set_title("Sigmoid Function")
+ax1.axhline(0, color='gray', linestyle='--', linewidth=0.5)
+ax1.axhline(1, color='gray', linestyle='--', linewidth=0.5)
+ax1.axvline(0, color='gray', linestyle='--', linewidth=0.5)
+ax1.grid(True)
+ax1.set_xlabel("x")
+ax1.set_ylabel("y")
+
+# Plot tanh
+ax2.plot(x, y_tanh, color="magenta")
+ax2.set_title("Tanh Function")
+ax2.axhline(0, color='gray', linestyle='--', linewidth=0.5)
+ax2.axhline(1, color='gray', linestyle='--', linewidth=0.5)
+ax2.axhline(-1, color='gray', linestyle='--', linewidth=0.5)
+ax2.axvline(0, color='gray', linestyle='--', linewidth=0.5)
+ax2.grid(True)
+ax2.set_xlabel("x")
+ax2.set_ylabel("y")
+
+plt.tight_layout()
+plt.show()
+
+
+# #### ReLU and Leaky ReLU
+# The Rectified Linear Unit (ReLU) is a currently very popular activation function. It is defined as
+# $$ ReLU(x) = \max(0, x). $$
+# ReLU is simple, and it also has a clear definition of a neuron being activated or firing if it returns a nonzero value. A potential drawback of ReLU is neurons whose affine function returns always a negative value become zero after ReLU, and those neurons are often not easily recovered during optimization (dead neuron effect). Depending on the application, this effect is not desired. In those cases, you can apply the Leaky ReLU that maps negative values to negative values close to zero:
+# $$LeakyReLU(x) = \begin{cases}x & \text{ if } x\geq0\\
+# \alpha x & \text{ otherwise }\end{cases}$$
+# The plots of both activation functions is below: 
+
+# In[2]:
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define activation functions
+def relu(x):
+    return np.maximum(0, x)
+
+def leaky_relu(x, alpha=0.05):
+    return np.where(x > 0, x, alpha * x)
+
+# Create input range
+x = np.linspace(-10, 10, 500)
+y_relu = relu(x)
+y_leaky_relu = leaky_relu(x)
+
+# Create side-by-side plots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+
+# Plot ReLU
+ax1.plot(x, y_relu,  color="blue")
+ax1.set_title("ReLU")
+ax1.axhline(0, color='gray', linewidth=0.5, linestyle='--')
+ax1.axvline(0, color='gray', linewidth=0.5, linestyle='--')
+ax1.grid(True)
+
+# Plot Leaky ReLU
+ax2.plot(x, y_leaky_relu, color="magenta")
+ax2.set_title("Leaky ReLU (α=0.05)")
+ax2.axhline(0, color='gray', linewidth=0.5, linestyle='--')
+ax2.axvline(0, color='gray', linewidth=0.5, linestyle='--')
+ax2.grid(True)
+
+# Common settings
+for ax in (ax1, ax2):
+    ax.set_xlabel("x")
+    ax.set_ylabel("Activation")
+
+plt.tight_layout()
+plt.show()
+
+
+# In[ ]:
+
+
+
+

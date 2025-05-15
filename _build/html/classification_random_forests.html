@@ -316,6 +316,16 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     MLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
     </a>
@@ -326,18 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -729,7 +729,7 @@ As a result, the random forest predicts the class that wins the majority vote of
 </section>
 </div><p>The inference of a radom forest is a simple majority vote of the decision trees. For any ensemble of classifiers, predicting the class over a majority vote, we can derive an error bound that details which characteristics of the base classifiers make a strong ensemble. The error bound considers each tree the outcome of a random variable <span class="math notranslate nohighlight">\(\omega\)</span>, that describes the training set of the tree and other random elements that made the tree how it is.</p>
 <div class="proof theorem admonition" id="theorem-1">
-<p class="admonition-title"><span class="caption-number">Theorem 20 </span> (expected prediction error bound)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 19 </span> (expected prediction error bound)</p>
 <section class="theorem-content" id="proof-content">
 <p>Let</p>
 <div class="amsmath math notranslate nohighlight">

@@ -316,6 +316,16 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     MLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
     </a>
@@ -326,18 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -664,7 +664,7 @@ title="Print to PDF"
 <figure class="align-center" id="social-graph">
 <a class="reference internal image-reference" href="_images/facebook.jpg"><img alt="_images/facebook.jpg" src="_images/facebook.jpg" style="height: 300px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 36 </span><span class="caption-text">Graph clustering is relevant for example in social relation analysis</span><a class="headerlink" href="#social-graph" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 30 </span><span class="caption-text">Graph clustering is relevant for example in social relation analysis</span><a class="headerlink" href="#social-graph" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Interpretation of data as a graph. Every data point is a node. The weight of an edge reflects the similarity between connected nodes.<br />
@@ -764,7 +764,7 @@ Cut(Y;W)&amp;=\tr((\vvec{1}-Y)^\top W Y(Y^\top Y)^{-1}) \\
 <section id="optimization">
 <h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
 <div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 36 </span> (Degree Matrix and Graph Laplacian)</p>
+<p class="admonition-title"><span class="caption-number">Definition 35 </span> (Degree Matrix and Graph Laplacian)</p>
 <section class="definition-content" id="proof-content">
 <p>Given a graph indicated by a weighted adjacency matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}_+^{n\times n}\)</span>.<br />
 The <strong>degree matrix</strong> is the diagonal matrix having the sum of all connecting edges for each node on the diagonal: <div class="math notranslate nohighlight">
@@ -795,7 +795,7 @@ The <strong>graph Laplacian</strong> is the matrix <div class="math notranslate 
 \[Y_{\cdot s}^\top \underbrace{(I_W - W)}_{=L}Y_{\cdot s }=0\]</div>
 </p>
 <div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 39 </span> (Minimum Cut and Maximum Similarity Equivalences )</p>
+<p class="admonition-title"><span class="caption-number">Theorem 38 </span> (Minimum Cut and Maximum Similarity Equivalences )</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a symmetric similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, the degree matrix <span class="math notranslate nohighlight">\(I_W\)</span> and the Graph Laplacian <span class="math notranslate nohighlight">\(L=I_W-W\)</span>, then the following objectives are equivalent:</p>
 <div class="amsmath math notranslate nohighlight">
@@ -806,7 +806,7 @@ The <strong>graph Laplacian</strong> is the matrix <div class="math notranslate 
 </section>
 </div><p>The maximum similarity objective is equal to the kernel <span class="math notranslate nohighlight">\(k\)</span>-means objective. However, note that <span class="math notranslate nohighlight">\(-L\)</span> is not a kernel matrix (it’s negative semi-definite).</p>
 <div class="proof lemma admonition" id="lemma-3">
-<p class="admonition-title"><span class="caption-number">Lemma 7 </span> (Positive Definiteness of Laplacians)</p>
+<p class="admonition-title"><span class="caption-number">Lemma 9 </span> (Positive Definiteness of Laplacians)</p>
 <section class="lemma-content" id="proof-content">
 <p>Given a symmetric similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, the Laplacian <span class="math notranslate nohighlight">\(L=I_W -W\)</span> is positive semi-definite.</p>
 </section>
@@ -823,7 +823,7 @@ v^\top Lv &amp;= v^\top I_W v - v^\top W v
 </div>
 </div>
 <div class="proof theorem admonition" id="theorem-4">
-<p class="admonition-title"><span class="caption-number">Theorem 40 </span> (Connected Components and Eigenvectors)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 39 </span> (Connected Components and Eigenvectors)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a graph indicated by the symmetric matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, then the indicator vectors of the connected components are eigenvectors of the Laplacian <span class="math notranslate nohighlight">\(L=I_W-W\)</span> to the smallest eigenvalue <span class="math notranslate nohighlight">\(0\)</span>.</p>
 </section>
@@ -831,7 +831,7 @@ v^\top Lv &amp;= v^\top I_W v - v^\top W v
 <div class="proof admonition" id="proof">
 <p>Proof. For every connected component there exists an order of columns and rows such that <span class="math notranslate nohighlight">\(W\)</span> has a block-diagonal form:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-38828375-4d10-4316-9922-cbce4ffba45f">
-<span class="eqno">(135)<a class="headerlink" href="#equation-38828375-4d10-4316-9922-cbce4ffba45f" title="Permalink to this equation">#</a></span>\[\begin{align} 
+<span class="eqno">(124)<a class="headerlink" href="#equation-38828375-4d10-4316-9922-cbce4ffba45f" title="Permalink to this equation">#</a></span>\[\begin{align} 
 Wv = 
 \left(
 \begin{array}{c:r}
@@ -863,7 +863,7 @@ Wv =
 </div>
 <p>The standard method to solve the minimum cut objective is called Spectral Clustering. The idea of Spectral Clustering is the same as of kernel <span class="math notranslate nohighlight">\(k\)</span>-means with few alterations. Instead of using the full eigendecomposition, Spectral Clustering uses only the first <span class="math notranslate nohighlight">\(r\)</span> meaningful eigenvectors which are not indicating the connected component.</p>
 <div class="proof algorithm admonition" id="algorithm-5">
-<p class="admonition-title"><span class="caption-number">Algorithm 16 </span> (spectral clustering)</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 17 </span> (spectral clustering)</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Input</strong>: data matrix <span class="math notranslate nohighlight">\(D\)</span>, number of clusters <span class="math notranslate nohighlight">\(r\)</span>, similarity matrix <span class="math notranslate nohighlight">\(W\)</span><br />
 <strong>Require</strong>: the similarity matrix should indicate a connected graph</p>

@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -321,6 +316,16 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     MLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
     </a>
@@ -331,18 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -738,7 +733,7 @@ title="Print to PDF"
 </section>
 </div><p>So, for any regularization weight <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span> we have a unique regression solver, but for <span class="math notranslate nohighlight">\(\lambda=0\)</span> we can get infinitely many solutions. Yet, what kind of solution do we get for really small <span class="math notranslate nohighlight">\(\lambda\)</span>? Is there one solution of the infinitely many that is somewhat better than the others? We can answer this question indeed with “yes”, as the following theorem shows.</p>
 <div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 16 </span></p>
+<p class="admonition-title"><span class="caption-number">Theorem 15 </span></p>
 <section class="theorem-content" id="proof-content">
 <p>Let <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\in\mathbb{R}^{n\times p}\)</span> be the SVD of the design matrix of the <a class="reference internal" href="#ridge-task"><span class="std std-ref">Ridge Regression</span></a> task. If only <span class="math notranslate nohighlight">\(r&lt;p\)</span> singular values of <span class="math notranslate nohighlight">\(X\)</span> are nonzero (<span class="math notranslate nohighlight">\(X\)</span> has a rank of <span class="math notranslate nohighlight">\(r\)</span>), then the global minimizer <span class="math notranslate nohighlight">\(\bm{\beta}_{L_2}\)</span> converges for decreasing regularization weights <span class="math notranslate nohighlight">\(\lambda\rightarrow 0\)</span> to</p>
 <div class="amsmath math notranslate nohighlight">

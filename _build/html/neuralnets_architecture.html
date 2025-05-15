@@ -56,7 +56,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Function approximator" href="neuralnets_func_approx.html" />
-    <link rel="prev" title="From Linear Models to Neural Networks" href="neuralnets_intro.html" />
+    <link rel="prev" title="Training Neural Networks: Backpropagation and SGD" href="neuralnets_optimization.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -315,6 +315,16 @@ const thebe_selector_output = ".output, .cell_output"
      From Linear Models to Neural Networks
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     MLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Architecture
@@ -326,18 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -616,18 +616,6 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#neural-networks-architecture-and-building-blocks">
-   Neural Networks: Architecture and Building Blocks
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#linear-layers-and-activations">
-     4.1 Linear Layers and Activations
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#convolutional-neural-networks-cnns">
    Convolutional Neural Networks (CNNs)
   </a>
@@ -662,18 +650,6 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#neural-networks-architecture-and-building-blocks">
-   Neural Networks: Architecture and Building Blocks
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#linear-layers-and-activations">
-     4.1 Linear Layers and Activations
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#convolutional-neural-networks-cnns">
    Convolutional Neural Networks (CNNs)
   </a>
@@ -695,134 +671,6 @@ title="Print to PDF"
                 
   <section id="architecture">
 <h1>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">#</a></h1>
-<p>The artificial neuron unit is the building block of ANNs. Thus, let us precisely model its behavior. The output value <span class="math notranslate nohighlight">\( \hat{y} \)</span> of an arbitrary neuron with <span class="math notranslate nohighlight">\( D \)</span> inputs is computed as</p>
-<div class="math notranslate nohighlight" id="equation-neuron-output1">
-<span class="eqno">(51)<a class="headerlink" href="#equation-neuron-output1" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{eqnarray}
-\hat{y} &amp;=&amp; \phi(a) \nonumber \\
-&amp;=&amp; \phi \left( \sum_{i=1}^{D} w_{i} x_{i} + b \right),
-\end{eqnarray}\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\( x_{i} \)</span> is the input value (or feature) from the <span class="math notranslate nohighlight">\( i \)</span>-th previous neuron, <span class="math notranslate nohighlight">\( w_{i} \)</span> is the weight associated with the <span class="math notranslate nohighlight">\( i \)</span>-th input, <span class="math notranslate nohighlight">\( b \)</span> is a bias term, <span class="math notranslate nohighlight">\( \phi(\cdot) \)</span> is a non-linear activation function and <span class="math notranslate nohighlight">\( a = \sum_{i=1}^{D} w_{i} x_{i} + b  \)</span> is the activation. Alternatively, let the vector <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{1} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> collect the input values from the <span class="math notranslate nohighlight">\( D \)</span> previous neurons and let <span class="math notranslate nohighlight">\( {\bf w} = \begin{bmatrix} w_{1} &amp; \ldots &amp; w_{D} \end{bmatrix}^{T} \)</span> collect the corresponding weights. We can write then the output value as</p>
-<div class="math notranslate nohighlight" id="equation-neuron-output2">
-<span class="eqno">(52)<a class="headerlink" href="#equation-neuron-output2" title="Permalink to this equation">#</a></span>\[\begin{equation}
-\hat{y} = \phi \left( {\bf w}^{T} {\bf x} + b \right).
-\end{equation}\]</div>
-<p>Note therefore that <span class="math notranslate nohighlight">\( {\bf w}^{T} {\bf x} + b = 0 \)</span> defines a hyperplane over the <span class="math notranslate nohighlight">\(D\)</span>-dimensional input space. For convenience, we can further rewrite <a class="reference internal" href="#equation-neuron-output1">(51)</a> by making the bias term implicit. More precisely, we absorb the bias into the weights by making <span class="math notranslate nohighlight">\( w_{0} = b \)</span> and create a new dummy input <span class="math notranslate nohighlight">\( x_{0} = 1 \)</span>. Thus, we can write</p>
-<div class="math notranslate nohighlight" id="equation-neuron-output3">
-<span class="eqno">(53)<a class="headerlink" href="#equation-neuron-output3" title="Permalink to this equation">#</a></span>\[\begin{equation}
-\hat{y} = \phi \left( \sum_{i=0}^{D} w_{i} x_{i} \right).
-\end{equation}\]</div>
-<p>More compactly, we can rewrite <a class="reference internal" href="#equation-neuron-output3">(53)</a> in vector notation as</p>
-<div class="math notranslate nohighlight" id="equation-neuron-output4">
-<span class="eqno">(54)<a class="headerlink" href="#equation-neuron-output4" title="Permalink to this equation">#</a></span>\[\begin{equation}
-\hat{y} = \phi \left( {\bf w}^{T} {\bf x} \right),
-\end{equation}\]</div>
-<p>where the vectors were redefined such that <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{0} &amp; x_{1} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> and <span class="math notranslate nohighlight">\( {\bf w} = \begin{bmatrix} w_{0} &amp; w_{1} &amp; \ldots &amp; w_{D} \end{bmatrix}^{T} \)</span>. That is, the output value <span class="math notranslate nohighlight">\( \hat{y} \)</span> is an affine function <span class="math notranslate nohighlight">\( {\bf w}^{T} {\bf x} \)</span> of the inputs in <span class="math notranslate nohighlight">\( {\bf x} \)</span> (activation) followed by a non-linearity <span class="math notranslate nohighlight">\( \phi(\cdot) \)</span> (activation function).</p>
-<p><a class="reference internal" href="#computational-graph1a"><span class="std std-numref">Fig. 9</span></a> illustrates the neuron unit computation steps graphically.</p>
-<figure class="align-left" id="computational-graph1a">
-<a class="reference internal image-reference" href="_images/neuron_unit_computation_steps.png"><img alt="_images/neuron_unit_computation_steps.png" src="_images/neuron_unit_computation_steps.png" style="height: 480px;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Computation steps of a neuron.</span><a class="headerlink" href="#computational-graph1a" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p><a class="reference internal" href="#computational-graph1b"><span class="std std-numref">Fig. 10</span></a> shows the graphical representation of a single neuron unit. Note that the computational graph of a single neuron in <a class="reference internal" href="#computational-graph1b"><span class="std std-numref">Fig. 10</span></a> omits the summation in <a class="reference internal" href="#computational-graph1a"><span class="std std-numref">Fig. 9</span></a> required to compute the activation <span class="math notranslate nohighlight">\(a\)</span>. Thus, we assume that the inward weighted input signals in <a class="reference internal" href="#computational-graph1b"><span class="std std-numref">Fig. 10</span></a> are all added up before applying the non-linearity <span class="math notranslate nohighlight">\( \phi(\cdot) \)</span>.</p>
-<figure class="align-left" id="computational-graph1b">
-<a class="reference internal image-reference" href="_images/neuron_unit_computational_graph.png"><img alt="_images/neuron_unit_computational_graph.png" src="_images/neuron_unit_computational_graph.png" style="height: 480px;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Computational graph of a neuron.</span><a class="headerlink" href="#computational-graph1b" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p>An ANN is simply a computational graph comprising multiple artificial neurons (see <a class="reference internal" href="#computational-graph2"><span class="std std-numref">Fig. 11</span></a>). Furthermore, the network topology is designed – one can play for example with the number hidden layers, number of units per layer and number of connections per unit – according to the specific task the network must perform e.g. indicate the class of objects on images. The task in turn is mapped into some arbitrarily complex function of the network inputs. Learning in this case consists in adjusting the network parameters (weights) such that the entire network approximates as good as possible the task function.</p>
-<figure class="align-left" id="computational-graph2">
-<a class="reference internal image-reference" href="_images/example_toy_ANN.png"><img alt="_images/example_toy_ANN.png" src="_images/example_toy_ANN.png" style="height: 320px;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Computational graph representing a toy neuron network comprising four neuron units. The illustrated network computes a function <span class="math notranslate nohighlight">\( f: \mathbb{R}^{D} \rightarrow \mathbb{R} \)</span> of its inputs (features) collected by the vector <span class="math notranslate nohighlight">\( {\bf x} \)</span>. Note that <span class="math notranslate nohighlight">\( f(\cdot) \)</span> is an approximation to some task-related function that must be learned from data.</span><a class="headerlink" href="#computational-graph2" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p><a class="reference internal" href="#computational-graph3"><span class="std std-numref">Fig. 12</span></a> shows the computational graph of a single hidden layer neural network with an <em>input</em> layer with <span class="math notranslate nohighlight">\(D\)</span> input units storing observed features <span class="math notranslate nohighlight">\( \lbrace x_{i} \rbrace \)</span>, a <em>hidden</em> layer with <span class="math notranslate nohighlight">\( H \)</span> non-linear units (symbol <span class="math notranslate nohighlight">\( \phi \)</span>) computing <em>unobserved</em> (or embedded) features <span class="math notranslate nohighlight">\( \lbrace h_{j} \rbrace \)</span> and an <em>output</em> layer with a single linear unit (symbol <span class="math notranslate nohighlight">\( \sum \)</span>) yielding the network output <span class="math notranslate nohighlight">\( \hat{y} = f({\bf x}) \)</span>.</p>
-<figure class="align-left" id="computational-graph3">
-<a class="reference internal image-reference" href="_images/single_layer_MLP.png"><img alt="_images/single_layer_MLP.png" src="_images/single_layer_MLP.png" style="height: 320px;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Computational graph representing a single hidden layer neural network. Weights were omitted in the graph for the sake of clarity.</span><a class="headerlink" href="#computational-graph3" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p>The <span class="math notranslate nohighlight">\(j\)</span>-th hidden unit computes the <em>unobserved</em> feature as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-051681b2-63b7-4e3d-b02f-827da827fe07">
-<span class="eqno">(55)<a class="headerlink" href="#equation-051681b2-63b7-4e3d-b02f-827da827fe07" title="Permalink to this equation">#</a></span>\[\begin{equation}
-h_{j} = \phi \left( \sum_{i} w^{1}_{i,j} x_{i} \right). \nonumber
-\end{equation}\]</div>
-<p>Note that the superscript <span class="math notranslate nohighlight">\( 1 \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{1}_{i,j} \)</span> belongs to an unit at the <em>first</em> (hidden) layer. On the other hand, the subscripts <span class="math notranslate nohighlight">\( i,j \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{1}_{i,j} \)</span> corresponds to a synaptic connection between the <span class="math notranslate nohighlight">\(i\)</span>-th input unit and the <span class="math notranslate nohighlight">\(j\)</span>-th hidden unit. Lastly, the single output unit computes the network output as <div class="math notranslate nohighlight">
-\[ \hat{y} = \sum_{j} w^{2}_{j,1} h_j, \]</div>
- where the superscript <span class="math notranslate nohighlight">\( 2 \)</span> indicates that the weight <span class="math notranslate nohighlight">\( w^{2}_{j,1} \)</span> belongs to the single unit <span class="math notranslate nohighlight">\( 1 \)</span> at the <em>second</em> (output) layer.</p>
-<p>Alternatively, let the vectors <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_{0} = 1 &amp; x_{1} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> and <span class="math notranslate nohighlight">\( {\bf w}_{j}^{1} = \begin{bmatrix} w^{1}_{0,j} &amp; w^{1}_{1,j} &amp; \ldots &amp; w^{1}_{D,j} \end{bmatrix}^{T} \)</span> collect respectively the observed features and the corresponding weights at the <span class="math notranslate nohighlight">\(j\)</span>-th unit of the single hidden layer <span class="math notranslate nohighlight">\( 1 \)</span>. The <span class="math notranslate nohighlight">\(j\)</span>-th <em>unobserved</em> (or embedded) feature can be rewritten then as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-aca5a70e-6109-46fb-a61e-0fea5e7accee">
-<span class="eqno">(56)<a class="headerlink" href="#equation-aca5a70e-6109-46fb-a61e-0fea5e7accee" title="Permalink to this equation">#</a></span>\[\begin{equation}
-h_{j} = \phi \left( ({\bf w}_{j}^{1})^{T} {\bf x} \right). \nonumber
-\end{equation}\]</div>
-<p>Analogously, let <span class="math notranslate nohighlight">\( {\bf h} = \begin{bmatrix} h_{1} &amp; h_{2} &amp; \ldots &amp; h_{H} \end{bmatrix}^{T} \)</span> collect the embedded features and let <span class="math notranslate nohighlight">\( {\bf w}_{1}^{2} = \begin{bmatrix} w^{2}_{1,1} &amp; w^{2}_{2,1} &amp; \ldots &amp; w^{2}_{H,1} \end{bmatrix}^{T} \)</span> collect the corresponding weights at the single unit of the output layer <span class="math notranslate nohighlight">\( 2 \)</span>, we can rewrite the network output as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7e1db079-9ee9-4dd6-9cea-4cf5f91d4073">
-<span class="eqno">(57)<a class="headerlink" href="#equation-7e1db079-9ee9-4dd6-9cea-4cf5f91d4073" title="Permalink to this equation">#</a></span>\[\begin{equation}
-\hat{y} = ({\bf w}_{1}^{2})^{T} {\bf h}. \nonumber
-\end{equation}\]</div>
-<p>Now, let the matrices</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2f691b1e-8d10-463b-a946-44db32aef9c2">
-<span class="eqno">(58)<a class="headerlink" href="#equation-2f691b1e-8d10-463b-a946-44db32aef9c2" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-{\bf W}^{1} &amp;=&amp; \begin{bmatrix} {\bf w}_{1}^{1} &amp; \ldots &amp; {\bf w}_{H}^{1} \end{bmatrix} \nonumber \\
-&amp;=&amp; \begin{bmatrix} 
-w^{1}_{0,1} &amp; \ldots &amp; w^{1}_{0,H} \\
-w^{1}_{1,1} &amp; \ldots &amp; w^{1}_{1,H} \\
-\vdots &amp;  &amp; \vdots \\
-w^{1}_{D,1} &amp; \ldots &amp; w^{1}_{D,H} \nonumber
-\end{bmatrix}
-\end{eqnarray}\]</div>
-<p>and</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b00061ea-5bb3-484b-90b8-82c85c2f5ebe">
-<span class="eqno">(59)<a class="headerlink" href="#equation-b00061ea-5bb3-484b-90b8-82c85c2f5ebe" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-{\bf W}^{2} &amp;=&amp; \begin{bmatrix} {\bf w}_{1}^{2} \end{bmatrix} \nonumber \\
-&amp;=&amp; \begin{bmatrix} 
-w^{2}_{1,1} \\
-\vdots \\
-w^{2}_{H,1} \nonumber
-\end{bmatrix}
-\end{eqnarray}\]</div>
-<p>collect all weights at layers <span class="math notranslate nohighlight">\( 1 \)</span> and <span class="math notranslate nohighlight">\( 2 \)</span>, respectively, such that the <span class="math notranslate nohighlight">\(j\)</span>-th column stores the weights <span class="math notranslate nohighlight">\( \lbrace w^{\ell}_{\bullet,j} \rbrace \)</span> of the <span class="math notranslate nohighlight">\(j\)</span>-th unit at the corresponding layer <span class="math notranslate nohighlight">\( \ell \)</span>. We can further rewrite the network output in compact vector-matrix notation as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-df2d2e0d-cbad-4ac3-a58b-f4545eeb20fe">
-<span class="eqno">(60)<a class="headerlink" href="#equation-df2d2e0d-cbad-4ac3-a58b-f4545eeb20fe" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-\hat{y} &amp;=&amp; ({\bf W}^{2})^{T} {\bf h} \nonumber \\
-&amp;=&amp; ({\bf W}^{2})^{T} \phi \left( {\bf a} \right) \nonumber \\
-&amp;=&amp; ({\bf W}^{2})^{T} \phi \left( ({\bf W}^{1})^{T} {\bf x} \right), \nonumber
-\end{eqnarray}\]</div>
-<p>in which the non-linearity is applied element-wise along the activation vector <span class="math notranslate nohighlight">\( {\bf a} = \begin{bmatrix} a_{1} &amp; a_{2} &amp; \ldots &amp; a_{H} \end{bmatrix}^{T} \)</span> such that <span class="math notranslate nohighlight">\( h_{j} = \phi(a_{j}) \)</span>, <span class="math notranslate nohighlight">\( \forall j \in \lbrace 1, \ldots, H \rbrace \)</span>. Therefore, the output of the single hidden layer network in <a class="reference internal" href="#computational-graph3"><span class="std std-numref">Fig. 12</span></a> is equivalent to applying an affine transformation <span class="math notranslate nohighlight">\( ({\bf W}^{1})^{T} {\bf x} \)</span> to the network inputs <span class="math notranslate nohighlight">\( {\bf x} \)</span> followed by a non-linearity <span class="math notranslate nohighlight">\( \phi \)</span> to obtain the embedded features <span class="math notranslate nohighlight">\( {\bf h} \)</span> followed by a new affine transformation <span class="math notranslate nohighlight">\( ({\bf W}^{2})^{T} {\bf h} \)</span> to obtain the final output <span class="math notranslate nohighlight">\( \hat{y} \)</span>.</p>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>The network capacity is determined by the number of network parameters (weights). As we increase the network capacity, we increase the network flexibility to fit the training examples. Going too far increasing the capacity and the network will overfit the training examples. On the other hand, the network will underfit the training examples with a too small capacity. In both cases, the network loses its ability to properly generalize, i.e. to provide a good approximation of the task-related function for unseen input patterns <span class="math notranslate nohighlight">\( {\bf x} \)</span> belonging, for instance, to a testing dataset.</p>
-</div>
-</section>
-<section id="neural-networks-architecture-and-building-blocks">
-<h1>Neural Networks: Architecture and Building Blocks<a class="headerlink" href="#neural-networks-architecture-and-building-blocks" title="Permalink to this headline">#</a></h1>
-<p>Neural networks stack multiple linear models interleaved with <strong>nonlinear activation functions</strong> to create deep, hierarchical representations.</p>
-<section id="linear-layers-and-activations">
-<h2>4.1 Linear Layers and Activations<a class="headerlink" href="#linear-layers-and-activations" title="Permalink to this headline">#</a></h2>
-<p>The most basic neural network layer performs a linear transformation:</p>
-<div class="math notranslate nohighlight">
-\[
-\mathbf{z} = \mathbf{W}\mathbf{x} + \mathbf{b}
-\]</div>
-<p>This is followed by a <strong>nonlinear activation function</strong> <span class="math notranslate nohighlight">\( \phi \)</span>, such as:</p>
-<ul class="simple">
-<li><p>ReLU: <span class="math notranslate nohighlight">\( \phi(z) = \max(0, z) \)</span></p></li>
-<li><p>Sigmoid: <span class="math notranslate nohighlight">\( \phi(z) = \frac{1}{1 + e^{-z}} \)</span></p></li>
-<li><p>Tanh: <span class="math notranslate nohighlight">\( \phi(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}} \)</span></p></li>
-</ul>
-<p>A simple feedforward neural network (MLP) with one hidden layer:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align*}
-\mathbf{h} &amp;= \phi(\mathbf{W}_1 \mathbf{x} + \mathbf{b}_1) \\
-\hat{\mathbf{y}} &amp;= \text{softmax}(\mathbf{W}_2 \mathbf{h} + \mathbf{b}_2)
-\end{align*}
-\end{split}\]</div>
-<p>Each layer composes the previous one, enabling complex function approximation.</p>
-</section>
 </section>
 <section id="convolutional-neural-networks-cnns">
 <h1>Convolutional Neural Networks (CNNs)<a class="headerlink" href="#convolutional-neural-networks-cnns" title="Permalink to this headline">#</a></h1>
@@ -876,11 +724,11 @@ w^{2}_{H,1} \nonumber
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="neuralnets_intro.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="neuralnets_optimization.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">From Linear Models to Neural Networks</p>
+            <p class="prev-next-title">Training Neural Networks: Backpropagation and SGD</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="neuralnets_func_approx.html" title="next page">

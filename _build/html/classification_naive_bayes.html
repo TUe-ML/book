@@ -316,6 +316,16 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     MLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
     </a>
@@ -326,18 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -758,11 +758,11 @@ title="Print to PDF"
 <li><p><span class="math notranslate nohighlight">\(p(\vvec{x})\)</span> is the <strong>evidence</strong> (how probable is observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span>?)</p></li>
 </ul>
 </section>
-</div><p>The motivation for the Naive Bayes classifier is to approximate the Bayes optimal classifier <span class="math notranslate nohighlight">\(y^*=\argmax_y p^*(y\mid\vvec{x})\)</span> under simplifying assumptions. To estimate <span class="math notranslate nohighlight">\(p*(y\mid\vvec{x})\)</span>, Naive Bayes uses the Bayes rule.</p>
+</div><p>The motivation for the Naive Bayes classifier is to approximate the Bayes optimal classifier <span class="math notranslate nohighlight">\(y^*=\argmax_y p^*(y\mid\vvec{x})\)</span> under simplifying assumptions. To estimate <span class="math notranslate nohighlight">\(p^*(y\mid\vvec{x})\)</span>, Naive Bayes uses the Bayes rule.</p>
 <div class="proof theorem admonition" id="bayes_rule">
-<p class="admonition-title"><span class="caption-number">Theorem 19 </span> (Bayes rule)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 18 </span> (Bayes rule)</p>
 <section class="theorem-content" id="proof-content">
-<p>Given two random variables <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, then te Bayes rule is given as
+<p>Given two random variables <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, then the Bayes rule is given as
 <div class="math notranslate nohighlight">
 \[ p(y \mid x) = \frac{p(x \mid y) \, p(y)}{p(x)}\]</div>
 </p>
@@ -771,7 +771,7 @@ title="Print to PDF"
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \argmax_y p(y\mid \vvec{x}) &amp;= \argmax_y p(y\mid \vvec{x})p(\vvec{x})\\
-&amp;= p(\vvec{x}\mid y)p(y).
+&amp;= \argmax_y p(\vvec{x}\mid y)p(y).
 \end{align*}\]</div>
 <p>Hence, the only thing that is left to estimate is <span class="math notranslate nohighlight">\(p(\vvec{x}\mid y)\)</span>. To do so, Naive Bayes makes a simplifying assumption.</p>
 <div class="proof property admonition" id="property-2">
@@ -779,19 +779,19 @@ title="Print to PDF"
 <section class="property-content" id="proof-content">
 <p>We assume that all features are conditionally independent given the class <span class="math notranslate nohighlight">\(y\)</span>. In this case, we can write</p>
 <div class="math notranslate nohighlight" id="equation-naive-assumption">
-<span class="eqno">(33)<a class="headerlink" href="#equation-naive-assumption" title="Permalink to this equation">#</a></span>\[p({\bf x} \mid y) = p(x_1 \mid y)\cdot p(x_2\mid y) \ldots \cdot p(x_d\mid y) .\]</div>
+<span class="eqno">(33)<a class="headerlink" href="#equation-naive-assumption" title="Permalink to this equation">#</a></span>\[p({\bf x} \mid y) = p(\mathtt{x}_1 \mid y)\cdot p(\mathtt{x}_2\mid y) \ldots \cdot p(\mathtt{x}_d\mid y) .\]</div>
 </section>
 </div><p>Under this assumption, we can now define the inference (prediction step) of the Naive Bayes classifier.</p>
 </section>
 <section id="inference">
 <h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">#</a></h2>
-<p>Using Bayes’ Theorem and the Naïve assumption, the prediction is made by choosing the class  that maximizes the posterior probability <span class="math notranslate nohighlight">\(p(y\mid x)\)</span>.</p>
+<p>Using Bayes’ Theorem and the naive assumption, the prediction is made by choosing the class  that maximizes the posterior probability <span class="math notranslate nohighlight">\(p(y\mid x)\)</span>.</p>
 <div class="proof definition admonition" id="definition-3">
 <p class="admonition-title"><span class="caption-number">Definition 21 </span> (NB classifier)</p>
 <section class="definition-content" id="proof-content">
-<p>The naive Bayes classifier computes the probabilities that observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span> orrcurs together with label <span class="math notranslate nohighlight">\(y\)</span> under the naive Bayes assumption:</p>
+<p>The naive Bayes classifier computes the probabilities that observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span> occurs together with label <span class="math notranslate nohighlight">\(y\)</span> under the naive Bayes assumption:</p>
 <div class="math notranslate nohighlight" id="equation-f-nb">
-<span class="eqno">(34)<a class="headerlink" href="#equation-f-nb" title="Permalink to this equation">#</a></span>\[f_{nb}(\vvec{x})_y = p(y)\prod_{k=1}^d p(x_k\mid y)\]</div>
+<span class="eqno">(34)<a class="headerlink" href="#equation-f-nb" title="Permalink to this equation">#</a></span>\[f_{nb}(\vvec{x})_y = p(y)\prod_{k=1}^d p(\mathtt{x}_k\mid y)\]</div>
 <p>As a result, the naive Bayes classifier predicts the most likely label, given observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-yhat-nb">
 <span class="eqno">(35)<a class="headerlink" href="#equation-yhat-nb" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align*}
@@ -799,8 +799,8 @@ title="Print to PDF"
 &amp;= \argmax_y\ p(y\mid \vvec{x})
 \end{align*}\end{split}\]</div>
 </section>
-</div><p>The inference of Naive Bayes is quick if we have already stored all the probabilities <span class="math notranslate nohighlight">\(p(x_k \mid y)\)</span>.</p>
-<p>Good applications of Naive Bayes justify the assumption of conditional assumption of features, given the class. This assumption is for example given in text classification. The features are here usually the word frequencies in a text document or the binary presence of words. Although word occurrences are generally not independent from each other, individual word occurrences can give strong independent signals to the classifier. Think of the word “viagra” when training a spam-detector. Also in medical diagnosis, Naive Bayes can be useful if the features are not strongly correlated. That is, a prediction of a patient condition based on a set of features like “Blood pressure”, “heart rate”, and “cholesterol levels” is not a suitable application of Naive Bayes, since these features are strongly correlated.</p>
+</div><p>The inference of Naive Bayes is quick if we have already stored all the probabilities <span class="math notranslate nohighlight">\(p(\mathtt{x}_k \mid y)\)</span>.</p>
+<p>Good applications of Naive Bayes justify the assumption of conditional independence of features, given the class. This assumption is for example given in text classification. The features are here usually the word frequencies in a text document or the binary presence of words. Although word occurrences are generally not independent from each other, individual word occurrences can give strong independent signals to the classifier. Think of the word “viagra” when training a spam-detector. Also in medical diagnosis, Naive Bayes can be useful if the features are not strongly correlated. That is, a prediction of a patient condition based on a set of features like “Blood pressure”, “heart rate”, and “cholesterol levels” is not a suitable application of Naive Bayes, since these features are strongly correlated.</p>
 <section id="implementation-practice-log-probabilities">
 <h3>Implementation Practice: log probabilities<a class="headerlink" href="#implementation-practice-log-probabilities" title="Permalink to this headline">#</a></h3>
 <p>The classifier <span class="math notranslate nohighlight">\(f_{nb}\)</span> multiplies <span class="math notranslate nohighlight">\(d+1\)</span> probabilities that have values in <span class="math notranslate nohighlight">\([0,1]\)</span>. Especially for a high dimensional feature space (when <span class="math notranslate nohighlight">\(d\)</span> is large), the probabilities of <span class="math notranslate nohighlight">\(f_{np}\)</span> will be so close to zero that we run into numerical computation problems, such that nonzero probabilities are rounded to zero in floating-point precision. This effect is called <em>numerical underflow</em>. We can observe this effect in a minimal running example.</p>
@@ -808,8 +808,8 @@ title="Print to PDF"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="c1"># Generate 1000 random numbers in [0,1]</span>
-<span class="n">numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="c1"># Generate 1000 random numbers in [10^{-20},1]</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1e-20</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">product</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Product of 1000 numbers: </span><span class="si">{</span><span class="n">product</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">, is the product equal to zero? </span><span class="si">{</span><span class="n">product</span> <span class="o">==</span><span class="mi">0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Exponential notation for clarity</span>
@@ -837,7 +837,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-1033.1460373447192
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-980.3755587348755
 </pre></div>
 </div>
 </div>
@@ -846,27 +846,27 @@ title="Print to PDF"
 </section>
 <section id="multinomial-naive-bayes">
 <h2>Multinomial Naive Bayes<a class="headerlink" href="#multinomial-naive-bayes" title="Permalink to this headline">#</a></h2>
-<p>If we have discrete features <span class="math notranslate nohighlight">\(x_k\in\mathcal{X}_k\)</span>, where <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span> is a finite set, then we can assume multinomial probabilities <span class="math notranslate nohighlight">\(p(x_k\mid y)\)</span> that are approximated over the counts:</p>
+<p>If we have discrete features <span class="math notranslate nohighlight">\(\mathtt{x}_k\in\mathcal{X}_k\)</span>, where <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span> is a finite set, then we can assume multinomial probabilities <span class="math notranslate nohighlight">\(p(\mathtt{x}_k\mid y)\)</span> that are approximated over the counts:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-p(x_k = a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert}.
+p(\mathtt{x}_k = a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {x_i}_k = a, y_i=l \}\rvert}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert}.
 \end{align*}\]</div>
-<p>Every probability <span class="math notranslate nohighlight">\(p(x_k = a\mid y=l)\)</span> is approximated as the number of observations where feature <span class="math notranslate nohighlight">\(x_k\)</span> is equal to value <span class="math notranslate nohighlight">\(a\)</span> and the label is <span class="math notranslate nohighlight">\(y_i=l\)</span> over the number of observations where the label is <span class="math notranslate nohighlight">\(l\)</span>.</p>
+<p>Every probability <span class="math notranslate nohighlight">\(p(\mathtt{x}_k = a\mid y=l)\)</span> is approximated as the number of observations where feature <span class="math notranslate nohighlight">\(\mathtt{x}_k\)</span> is equal to value <span class="math notranslate nohighlight">\(a\)</span> and the label is <span class="math notranslate nohighlight">\(y_i=l\)</span> over the number of observations where the label is <span class="math notranslate nohighlight">\(l\)</span>.</p>
 <section id="implementation-practice-laplace-smoothing">
 <h3>Implementation Practice: Laplace Smoothing<a class="headerlink" href="#implementation-practice-laplace-smoothing" title="Permalink to this headline">#</a></h3>
-<p>Using the standard estimation of multinomial probabilities has the undesirable effect that some probabilities <span class="math notranslate nohighlight">\(p(x_k = a\mid y=l)\)</span> are equal to zero if the feature <span class="math notranslate nohighlight">\(x_k\)</span> is never equal to value <span class="math notranslate nohighlight">\(a\)</span> in class <span class="math notranslate nohighlight">\(y\)</span>. In this case, the classifier probabilities <span class="math notranslate nohighlight">\(f_{nb}(\vvec{x})_y\)</span> is equal to zero for all observations <span class="math notranslate nohighlight">\(\vvec{x}\)</span> where <span class="math notranslate nohighlight">\(x_k=a\)</span>. In particular if we have many classes, a high-dimensional feature space or features with a large domain (if <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span> is large), this effect might happen quite often. Laplace smoothing mitigates this effect by adding <span class="math notranslate nohighlight">\(\alpha\)</span> imaginary observations for each value of <span class="math notranslate nohighlight">\(x_k\)</span> and class <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>Using the standard estimation of multinomial probabilities has the undesirable effect that some probabilities <span class="math notranslate nohighlight">\(p(\mathtt{x}_k = a\mid y=l)\)</span> are equal to zero if the feature <span class="math notranslate nohighlight">\(\mathtt{x}_k\)</span> is never equal to value <span class="math notranslate nohighlight">\(a\)</span> in class <span class="math notranslate nohighlight">\(y\)</span>. In this case, the classifier probability <span class="math notranslate nohighlight">\(f_{nb}(\vvec{x})_y\)</span> is equal to zero for all observations <span class="math notranslate nohighlight">\(\vvec{x}\)</span> where <span class="math notranslate nohighlight">\(\mathtt{x}_k=a\)</span>. In particular if we have many classes, a high-dimensional feature space or features with a large domain (if <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span> is large), this effect might happen quite often. Laplace smoothing mitigates this effect by adding <span class="math notranslate nohighlight">\(\alpha\)</span> imaginary observations for each value of <span class="math notranslate nohighlight">\(\mathtt{x}_k\)</span> and class <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <div class="proof definition admonition" id="definition-4">
 <p class="admonition-title"><span class="caption-number">Definition 22 </span> (Laplace smoothing)</p>
 <section class="definition-content" id="proof-content">
-<p>Given a dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}\)</span> and feature <span class="math notranslate nohighlight">\(x_k\)</span> attaining values in the finite set <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span>. The class-conditioned multinomial probability estimations with Laplace smoothing with variable <span class="math notranslate nohighlight">\(\alpha&gt; 0\)</span> are then given as</p>
+<p>Given a dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}\)</span> and feature <span class="math notranslate nohighlight">\(\mathtt{x}_k\)</span> attaining values in the finite set <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span>. The class-conditioned multinomial probability estimations with Laplace smoothing with variable <span class="math notranslate nohighlight">\(\alpha&gt; 0\)</span> are then given as</p>
 <div class="math notranslate nohighlight" id="equation-freq-approx3">
-<span class="eqno">(36)<a class="headerlink" href="#equation-freq-approx3" title="Permalink to this equation">#</a></span>\[p_\alpha(x_{k} =a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\]</div>
+<span class="eqno">(36)<a class="headerlink" href="#equation-freq-approx3" title="Permalink to this equation">#</a></span>\[p_\alpha(\mathtt{x}_k =a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {x_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\]</div>
 </section>
 </div><p>Note that adding <span class="math notranslate nohighlight">\(\alpha \lvert\mathcal{X}_k\rvert\)</span> to the denominator makes the conditioned probability estimations with Laplace smoothing sum up to one:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-\sum_{a\in \mathcal{X}_k} p_\alpha(x_{k} =a\mid y=l) 
-&amp; = \sum_{a\in \mathcal{X}_k} \frac{\lvert\{ i\mid {\vvec{x}_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{i\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\\
+\sum_{a\in \mathcal{X}_k} p_\alpha(\mathtt{x}_k =a\mid y=l) 
+&amp; = \sum_{a\in \mathcal{X}_k} \frac{\lvert\{ i\mid {x_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{i\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\\
 &amp; =  \frac{\sum_{a\in \mathcal{X}_k}( \lvert\{ i\mid {x_i}_k = a, y_i=l \}\rvert+\alpha)}{\lvert\{i\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\\
 &amp;= 1.
 \end{align*}\]</div>
@@ -941,9 +941,9 @@ p(free = no\mid spam=no) &amp;= \frac{2 +1}{3+2} = \frac{3}{5}\\
 <p>If feature <span class="math notranslate nohighlight">\(x_k\)</span> attains continuous values, then a popular choice is to assume a Gaussian distribution for the class-conditioned probabilities:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-p(x_k = a\mid y=l) = \frac{1}{\sqrt{2\pi \sigma_{kl}^2}}\exp\left(-\frac{(a-\mu_{kl})^2}{2\sigma_{kl}^2}\right).
+p(\mathtt{x}_k = a\mid y=l) = \frac{1}{\sqrt{2\pi \sigma_{kl}^2}}\exp\left(-\frac{(a-\mu_{kl})^2}{2\sigma_{kl}^2}\right).
 \end{align*}\]</div>
-<p>The parameter <span class="math notranslate nohighlight">\(\mu_{kl}\)</span> is the estimated mean value <span class="math notranslate nohighlight">\(\sigma_{kl}\)</span> is the estimated variance of feature <span class="math notranslate nohighlight">\(x_k\)</span> in class <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>The parameter <span class="math notranslate nohighlight">\(\mu_{kl}\)</span> is the estimated mean value <span class="math notranslate nohighlight">\(\sigma_{kl}\)</span> is the estimated variance of feature <span class="math notranslate nohighlight">\(\mathtt{x}_k\)</span> in class <span class="math notranslate nohighlight">\(l\)</span>.</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\mu_{kl} = \frac{1}{\lvert\{i\mid y_i=l\}\rvert}\sum_{i:y_i=l} {x_i}_k \)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\sigma_{kl}^2 = \frac{1}{\lvert\{i\mid y_i=l\}\rvert} \sum_{i:y_i=l} ({x_i}_k-\mu_{kl})^2\)</span></p></li>
@@ -962,7 +962,7 @@ p(x_k = a\mid y=l) = \frac{1}{\sqrt{2\pi \sigma_{kl}^2}}\exp\left(-\frac{(a-\mu_
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span>
 
 
-<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
         <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
     <span class="p">)</span>
@@ -1005,10 +1005,10 @@ p(x_k = a\mid y=l) = \frac{1}{\sqrt{2\pi \sigma_{kl}^2}}\exp\left(-\frac{(a-\mu_
 <span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
 <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span><span class="p">,</span> <span class="n">LinearSegmentedColormap</span>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span>
-<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.dpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
 
 
-<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
         <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
     <span class="p">)</span>
@@ -1039,20 +1039,7 @@ p(x_k = a\mid y=l) = \frac{1}{\sqrt{2\pi \sigma_{kl}^2}}\exp\left(-\frac{(a-\mu_
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="nn">Input In [4],</span> in <span class="ni">&lt;cell line: 6&gt;</span><span class="nt">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span><span class="p">,</span> <span class="n">LinearSegmentedColormap</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span>
-<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.dpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span>         <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span>     <span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;mpl&#39; is not defined
-</pre></div>
-</div>
+<img alt="_images/classification_naive_bayes_8_0.png" src="_images/classification_naive_bayes_8_0.png" />
 </div>
 </div>
 </section>
@@ -1067,7 +1054,7 @@ p(x_k = a\mid y=l) = \frac{1}{\sqrt{2\pi \sigma_{kl}^2}}\exp\left(-\frac{(a-\mu_
 <ol class="simple">
 <li><p><strong>for</strong> <span class="math notranslate nohighlight">\(k\in\{1,\ldots,d\}\)</span></p>
 <ol class="simple">
-<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(x_k\)</span> is a discrete feature</p>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(\mathtt{x}_k\)</span> is a discrete feature</p>
 <ol class="simple">
 <li><p><strong>for</strong> <span class="math notranslate nohighlight">\(a\in\mathcal{X}_k\)</span></p>
 <ol class="simple">

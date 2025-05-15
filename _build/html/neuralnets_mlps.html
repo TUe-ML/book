@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Multi-Layer Perceptrons &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    <title>MLPs &#8212; Data Mining and Machine Learning Jupyter Book</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -55,8 +55,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Backpropagation" href="neuralnets_backprop.html" />
-    <link rel="prev" title="Function approximator" href="neuralnets_func_approx.html" />
+    <link rel="next" title="Training Neural Networks: Backpropagation and SGD" href="neuralnets_optimization.html" />
+    <link rel="prev" title="From Linear Models to Neural Networks" href="neuralnets_intro.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -315,6 +315,16 @@ const thebe_selector_output = ".output, .cell_output"
      From Linear Models to Neural Networks
     </a>
    </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     MLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
@@ -325,19 +335,9 @@ const thebe_selector_output = ".output, .cell_output"
      Function approximator
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     Multi-Layer Perceptrons
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -588,23 +588,114 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#an-artificial-neuron">
+   An Artificial Neuron
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#from-neuron-to-layer">
+   From Neuron to Layer
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#from-one-layer-to-the-multi-layer-perceptron">
+   From one Layer to the Multi-Layer Perceptron
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#activation-functions">
+   Activation Functions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sigmoid">
+     Sigmoid
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#relu-and-leaky-relu">
+     ReLU and Leaky ReLU
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Multi-Layer Perceptrons</h1>
+                <h1>MLPs</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#an-artificial-neuron">
+   An Artificial Neuron
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#from-neuron-to-layer">
+   From Neuron to Layer
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#from-one-layer-to-the-multi-layer-perceptron">
+   From one Layer to the Multi-Layer Perceptron
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#activation-functions">
+   Activation Functions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sigmoid">
+     Sigmoid
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#relu-and-leaky-relu">
+     ReLU and Leaky ReLU
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -612,72 +703,189 @@ title="Print to PDF"
                 
               <div>
                 
-  <section id="multi-layer-perceptrons">
-<h1>Multi-Layer Perceptrons<a class="headerlink" href="#multi-layer-perceptrons" title="Permalink to this headline">#</a></h1>
-<p>Multi-Layer Perceptrons (MLPs) a.k.a. Multi-Layer Feed-Forward Neural Networks are obtained by stacking multiple hidden layers. Each hidden layer can contain different number of hidden units. In general, a MLP has <span class="math notranslate nohighlight">\(L\)</span> hidden layers with <span class="math notranslate nohighlight">\(H_{1}, H_{2}, \ldots, H_{L} \)</span> hidden units, i.e. the <span class="math notranslate nohighlight">\(\ell\)</span>-th hidden layer contains <span class="math notranslate nohighlight">\(H_{\ell}\)</span> hidden units. For convenience, we also assume that the network inputs correspond to a layer <span class="math notranslate nohighlight">\( 0 \)</span> with <span class="math notranslate nohighlight">\( H_{0} = D \)</span> units. Lastly, the <span class="math notranslate nohighlight">\( L\)</span>-th layer can directly produce the network outputs. In this case, <span class="math notranslate nohighlight">\( H_{L} = O \)</span>. Alternatively, the <span class="math notranslate nohighlight">\( H_{L} \)</span> values at the last layer can be combined <em>somehow</em> to produce the final network estimate <span class="math notranslate nohighlight">\( \hat{\bf y} = f({\bf x}) \)</span>. In this case, <span class="math notranslate nohighlight">\( H_{L} \)</span> is not necessarily equal to <span class="math notranslate nohighlight">\( O \)</span>.</p>
-<p>The figures below illustrate MLPs with different number of hidden layers. <a class="reference internal" href="#mlp1-fig1"><span class="std std-numref">Fig. 18</span></a> shows a MLP network with a single hidden layer, <a class="reference internal" href="#mlp1-fig2"><span class="std std-numref">Fig. 19</span></a> a MLP with two hidden layers and <a class="reference internal" href="#mlp1-fig3"><span class="std std-numref">Fig. 20</span></a> a MLP with tree hidden layers. Note that each layer <span class="math notranslate nohighlight">\(\ell\)</span> can use a distinct activation function <span class="math notranslate nohighlight">\(\phi_{\ell}\)</span>. Note that the values from the last hidden layer units are being combined by means of a single linear unit – affine transform represented by the symbol <span class="math notranslate nohighlight">\( \sum \)</span> – to produce the final network estimate <span class="math notranslate nohighlight">\( \hat{y} = f({\bf x}) \)</span> (<span class="math notranslate nohighlight">\( O = 1 \)</span>). However, as we will see later, other ways to combine are also possible.</p>
-<figure class="align-left" id="mlp1-fig1">
-<a class="reference internal image-reference" href="_images/multi_layer_MLP_01.png"><img alt="_images/multi_layer_MLP_01.png" src="_images/multi_layer_MLP_01.png" style="height: 320px;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 18 </span><span class="caption-text">1-layer MLP (<span class="math notranslate nohighlight">\(L=1\)</span>).</span><a class="headerlink" href="#mlp1-fig1" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<figure class="align-left" id="mlp1-fig2">
-<a class="reference internal image-reference" href="_images/multi_layer_MLP_05.png"><img alt="_images/multi_layer_MLP_05.png" src="_images/multi_layer_MLP_05.png" style="height: 320px;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 19 </span><span class="caption-text">2-layer MLP (<span class="math notranslate nohighlight">\(L=2\)</span>)</span><a class="headerlink" href="#mlp1-fig2" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<figure class="align-left" id="mlp1-fig3">
-<a class="reference internal image-reference" href="_images/multi_layer_MLP_07.png"><img alt="_images/multi_layer_MLP_07.png" src="_images/multi_layer_MLP_07.png" style="height: 320px;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 20 </span><span class="caption-text">3-layer MLP (<span class="math notranslate nohighlight">\(L=3\)</span>).</span><a class="headerlink" href="#mlp1-fig3" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p>Let <span class="math notranslate nohighlight">\( w^{\ell}_{i,j} \)</span> denote the artificial synaptic weight from the <span class="math notranslate nohighlight">\(i\)</span>-th unit in previous layer <span class="math notranslate nohighlight">\( \ell-1 \)</span> to the <span class="math notranslate nohighlight">\(j\)</span>-th unit in the current layer <span class="math notranslate nohighlight">\( \ell\)</span> and let vector <span class="math notranslate nohighlight">\( {\bf w}^{\ell}_{j} = \begin{bmatrix} w^{\ell}_{0,j} &amp; w^{\ell}_{1,j} &amp; \ldots &amp; w^{\ell}_{H_{\ell-1},j} \end{bmatrix}^{T}\)</span> collect all weights of the <span class="math notranslate nohighlight">\(j\)</span>-th unit at layer <span class="math notranslate nohighlight">\(\ell\)</span>. Additionally, for convenience, let <span class="math notranslate nohighlight">\( {\bf h}^{0} = \begin{bmatrix} 1 &amp; x_{1} &amp; x_{2} &amp; \ldots &amp; x_{D} \end{bmatrix}^{T} \)</span> with <span class="math notranslate nohighlight">\( H_{0} = D \)</span> collect the observed features and let <span class="math notranslate nohighlight">\( {\bf h}^{\ell} = \begin{bmatrix} 1 &amp; h^{\ell}_{1} &amp; h^{\ell}_{2} &amp; \ldots &amp; h^{\ell}_{H_{\ell}} \end{bmatrix}^{T} \)</span> collect the embedded features for all <span class="math notranslate nohighlight">\( \ell \in \lbrace 1, \ldots, L \rbrace \)</span>. Thus, we can write the activation value of the <span class="math notranslate nohighlight">\(j\)</span>-th unit of the current layer <span class="math notranslate nohighlight">\( \ell \)</span> using vector notation as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fbc441b6-f6c2-457f-9496-e8c57fa75bbd">
-<span class="eqno">(69)<a class="headerlink" href="#equation-fbc441b6-f6c2-457f-9496-e8c57fa75bbd" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i} \nonumber \\
-&amp;=&amp; ({\bf w}_{j}^{\ell})^{T} {\bf h}^{\ell-1}. \nonumber
-\end{eqnarray}\]</div>
-<p>Finally, the output value of this neuron is computed as <div class="math notranslate nohighlight">
-\[ h^{\ell}_{j} = \phi_{\ell}\left( a^{\ell}_{j} \right). \]</div>
-</p>
-<p>Now, let the matrix <span class="math notranslate nohighlight">\( {\bf W}^{\ell} = \left[  w^{\ell}_{i,j} \right] \)</span> collect the weights of all units at the <span class="math notranslate nohighlight">\(\ell\)</span>-th layer such that its <span class="math notranslate nohighlight">\(j\)</span>-th column stores the weights associated with the <span class="math notranslate nohighlight">\(j\)</span>-th unit at layer <span class="math notranslate nohighlight">\(\ell\)</span>. Equivalently, we can write <span class="math notranslate nohighlight">\( {\bf W}^{\ell} = \begin{bmatrix} {\bf w}^{\ell}_{1} &amp; {\bf w}^{\ell}_{2} &amp; \ldots &amp; {\bf w}^{\ell}_{H_{\ell}} \end{bmatrix} \)</span>. Furthermore, let the vector <span class="math notranslate nohighlight">\( {\bf a}^{\ell} = \begin{bmatrix} a^{\ell}_{1} &amp; a^{\ell}_{2} &amp; \ldots &amp; a^{\ell}_{H_{\ell}} \end{bmatrix}^{T} \)</span> collect all activations <span class="math notranslate nohighlight">\(a^{\ell}_{j}\)</span> of layer <span class="math notranslate nohighlight">\(\ell\)</span>. Then, we can conveniently write <span class="math notranslate nohighlight">\({\bf a}^{\ell}\)</span> and <span class="math notranslate nohighlight">\( {\bf h}^{\ell} \)</span> as matrix-vector products</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b4b68936-e375-4998-8831-a08a08618816">
-<span class="eqno">(70)<a class="headerlink" href="#equation-b4b68936-e375-4998-8831-a08a08618816" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-{\bf a}^{\ell} &amp;=&amp; ({\bf W}^{\ell})^{T} \, {\bf h}^{\ell-1} \nonumber \\
-{\bf h}^{\ell} &amp;=&amp; \phi_{\ell}({\bf a}^{\ell}), \nonumber
-\end{eqnarray}\]</div>
-<p>in which the non-linearity <span class="math notranslate nohighlight">\( \phi_{\ell} \)</span> is applied element-wise on the vector <span class="math notranslate nohighlight">\( {\bf a}^{\ell} \)</span>.</p>
-<p>Therefore, the <span class="math notranslate nohighlight">\(\ell\)</span>-th layer output can be computed from the output of the previous layer <span class="math notranslate nohighlight">\( \ell -1 \)</span> as</p>
-<div class="math notranslate nohighlight" id="equation-mlp-recursion">
-<span class="eqno">(71)<a class="headerlink" href="#equation-mlp-recursion" title="Permalink to this equation">#</a></span>\[\begin{eqnarray}
-{\bf h}^{\ell} &amp;=&amp; \phi_{\ell} \left( ({\bf W}^{\ell})^{T} \, {\bf h}^{\ell-1} \right)
-\end{eqnarray}\]</div>
-<p>and the last layer output can be computed by recursively applying <a class="reference internal" href="#equation-mlp-recursion">(71)</a> starting with <span class="math notranslate nohighlight">\( {\bf h}^{0} \)</span> – vector storing the network inputs in <span class="math notranslate nohighlight">\( {\bf x} \)</span> – until obtain <span class="math notranslate nohighlight">\( {\bf h}^{L} \)</span> – vector collecting the values produced by the units at the last layer. Finally, the last layer output can be further <em>combined</em> to produce the network output <span class="math notranslate nohighlight">\( \hat{\bf y} = f({\bf x}) \)</span>.</p>
-<p>The computation performed by the 3-layer network illustrated in <a class="reference internal" href="#mlp1-fig3"><span class="std std-numref">Fig. 20</span></a> can be written using a single line as <div class="math notranslate nohighlight">
-\[ f({\bf x}) = \underbrace{({\bf W}^{4})^{T}
-\phi_3 \Big(
-\underbrace{({\bf W}^{3})^{T} \phi_2 \Big(
-\underbrace{({\bf W}^{2})^{T} 
-\phi_1 \Big(
-\underbrace{({\bf W}^{1})^{T} {\bf h}^{0}}_{\mathbf{a}^{1}} 
-\Big)}_{\mathbf{a}^{2}} \Big)}_{\mathbf{a}^{3}} \Big)}_{\hat{y}} \]</div>
- in which <span class="math notranslate nohighlight">\( \mathbf{W}^{4} \)</span> is <span class="math notranslate nohighlight">\(H_L \times O\)</span> matrix and <span class="math notranslate nohighlight">\( {\bf h}^{0} \triangleq \begin{bmatrix} 1 &amp; {\bf x}^{T} \end{bmatrix}^{T} \)</span> with <span class="math notranslate nohighlight">\( {\bf x} = \begin{bmatrix} x_1 &amp; x_2 &amp; \ldots &amp; x_D \end{bmatrix}^{T} \)</span>. In this example, the single linear output unit – node with symbol <span class="math notranslate nohighlight">\( \sum \)</span> in <a class="reference internal" href="#mlp1-fig3"><span class="std std-numref">Fig. 20</span></a> – uses an affine transform (<span class="math notranslate nohighlight">\( \mathbf{W}^{4} \)</span>) to combine the <span class="math notranslate nohighlight">\(H_L\)</span> values at last hidden layer into a single output <span class="math notranslate nohighlight">\( \hat{y} \)</span>, i.e. <span class="math notranslate nohighlight">\(O=1\)</span>. For multiple outputs, we can design <span class="math notranslate nohighlight">\( \mathbf{W}^{4} \)</span> such that <span class="math notranslate nohighlight">\(O &gt; 1\)</span>. The MLP is thus a nested sequence of matrix-vector multiplications each of them followed by an element-wise non-linearity.</p>
-<div class="proof definition admonition" id="definition-0">
-<p class="admonition-title"><span class="caption-number">Definition 33 </span> (Expressive Efficiency phenomenon)</p>
-<section class="definition-content" id="proof-content">
-<p>As stated by Pinkus <span id="id1">[<a class="reference internal" href="bibliography.html#id17" title="Allan Pinkus. Approximation theory of the mlp model in neural networks. Acta numerica, 8:143–195, 1999.">5</a>]</span> (see <a class="reference internal" href="neuralnets_func_approx.html"><span class="doc">Function approximator</span></a> page), single layer neural networks can approximate arbitrarily well any continuous function <span class="math notranslate nohighlight">\(f^{\ast} \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O}\)</span> for a wide range of non-linearities <span class="math notranslate nohighlight">\(\phi\)</span>. Thus, why do we need multiple layers?</p>
-<p>The motivation to use multiple layers is related to a phenomenon called <em>Expressive Efficiency</em>:</p>
-<ul class="simple">
-<li><p>Despite being universal approximators, shallow networks with a single hidden layer might require an exponential size – number of hidden layer units – on the number of inputs to approximate some function classes.</p></li>
-<li><p>On the other hand, the number of neurons required by a deep network with several hidden layers to represent the same functions has polynomial growth on the number of network inputs.</p></li>
-</ul>
-<p>Thus, deep networks can represent non-linear functions more efficiently than shallow ones. A classical example is the <em>parity function</em>, which requires exponential size in shallow networks, but polynomial size in deep networks.</p>
-<p>The intuition behind the <em>Expressive Efficiency</em> phenomenon is as follows. Typical real-world tasks e.g. <em>predict apple/pear from an image</em> are associated with highly non-linear functions of the type <span class="math notranslate nohighlight">\(f^{\ast} \colon \mathbb{R}^{D} \rightarrow \mathbb{R}^{O} \)</span>. However, common activation functions <span class="math notranslate nohighlight">\(\phi \colon \mathbb{R} \rightarrow \mathbb{R} \)</span> e.g. sigmoid and ReLU employed by the network units show simple non-linearities. A single layer (shallow) network therefore would required a prohibitive number of units to express these real-world non-linearities, i.e. to approximate <span class="math notranslate nohighlight">\(f^{\ast} \)</span>. On the other hand, by cascading multiple non-linear layers, a deep network improves its ability / flexibility to express non-linearities and, therefore, is able to provide a reasonable approximation to <span class="math notranslate nohighlight">\(f^{\ast} \)</span> using fewer neurons.</p>
+  <section id="mlps">
+<h1>MLPs<a class="headerlink" href="#mlps" title="Permalink to this headline">#</a></h1>
+<p>Neural networks get their name from their loose inspriration of connections between neurons in the brain and how the brain learns by strengthening these connections. While the mechanisms that enable a human brain to capture complex patterns are vastly different to how neural networks are designed, neural networks still borrow loads of their terminology from the description of the brain. One such example is the neuron that is in the name of neural networks.</p>
+<section id="an-artificial-neuron">
+<h2>An Artificial Neuron<a class="headerlink" href="#an-artificial-neuron" title="Permalink to this headline">#</a></h2>
+<p>The artificial neuron is supposed to simulate the firing process of an actual nueron. Getting an input vector <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, the artificial neuron computes a (typically nonnegative) output based on an affine function and a nonlinear activation function <span class="math notranslate nohighlight">\(\phi\)</span>. Graphically, this is typically presented like this:</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-850a0fa98a604377a5a1046794347a68e2718a65.svg" alt="Figure made with TikZ" /></p>
+</div><p>The input is inserted into the neuron and a weighted sum of the input with the coefficients of the vector <span class="math notranslate nohighlight">\(\vvec{w}\)</span> is symbolized by the directed edges from the input nodes to the output node. We can imagine that every edge from node <span class="math notranslate nohighlight">\(k\)</span> has edge weight <span class="math notranslate nohighlight">\(w_k\)</span>, which is multiplied with the input <span class="math notranslate nohighlight">\(x_k\)</span>, returning <span class="math notranslate nohighlight">\(w_kx_k\)</span> at the end of each single edge. All the edges are summed up, yielding <span class="math notranslate nohighlight">\(\sum_k w_kx_k\)</span>. Within the output node, we add a bias term and apply the <strong>activation function</strong> <span class="math notranslate nohighlight">\(\phi_a\)</span>. In summary, a neuron computes the following function:</p>
+<div class="math notranslate nohighlight" id="equation-neuron-output1">
+<span class="eqno">(51)<a class="headerlink" href="#equation-neuron-output1" title="Permalink to this equation">#</a></span>\[\begin{align*}
+\phi_a \left( \sum_{k=1}^{d} w_{k} x_{k} + b \right) = \phi(\vvec{w}^\top \vvec{x}+b)
+\end{align*}\]</div>
+<p>For convenience, we can further rewrite <a class="reference internal" href="#equation-neuron-output1">(51)</a> by making the bias term implicit. More precisely, we absorb the bias into the weights by making <span class="math notranslate nohighlight">\( w_{0} = b \)</span> and create a new dummy input <span class="math notranslate nohighlight">\( x_{0} = 1 \)</span>. Thus, we can write</p>
+<div class="math notranslate nohighlight" id="equation-neuron-output3">
+<span class="eqno">(52)<a class="headerlink" href="#equation-neuron-output3" title="Permalink to this equation">#</a></span>\[\begin{align*}
+\phi_a \left( \sum_{k=0}^{d} w_{k} x_{k} \right) = \phi(\vvec{w}^\top \vvec{x}).
+\end{align*}\]</div>
 </section>
-</div></section>
+<section id="from-neuron-to-layer">
+<h2>From Neuron to Layer<a class="headerlink" href="#from-neuron-to-layer" title="Permalink to this headline">#</a></h2>
+<p>We can stack now  multiple neurons into a <strong>layer</strong>. The plot below shows the input being transformed into a <span class="math notranslate nohighlight">\(d_1\)</span>-dimensional space by <span class="math notranslate nohighlight">\(d_1\)</span> neurons. Each neuron computes an affine function <span class="math notranslate nohighlight">\(\vvec{w}_j^\top\vvec{x}+b_j\)</span> followed by an activation function <span class="math notranslate nohighlight">\(\phi_a\)</span>.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-ebd6d7ebddacbff56bf88a818dd30e2c54d4503f.svg" alt="Figure made with TikZ" /></p>
+</div><p>Gathering all the weight vectors <span class="math notranslate nohighlight">\(\vvec{w}_j\)</span> in a matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{d_1\times d}\)</span>, such that <span class="math notranslate nohighlight">\(W_{j\cdot} = \vvec{w}_j^\top\)</span> and the bias terms in vector <span class="math notranslate nohighlight">\(\vvec{b}\in\mathbb{R}^{d_1}\)</span>, we can write the output vector generated by one layer as
+<div class="math notranslate nohighlight">
+\[\phi_a(W\vvec{x}+\vvec{b}).\]</div>
+
+The activation function is here applied element-wise, such that for vector <span class="math notranslate nohighlight">\(\vvec{z}\in\mathbb{R}^{d_1}\)</span>
+<div class="math notranslate nohighlight">
+\[\begin{split}\phi_a(\vvec{z}) = \begin{pmatrix}\phi_a(z_1)\\\vdots\\ \phi_a(z_{d_1})\end{pmatrix}.\end{split}\]</div>
+</p>
+</section>
+<section id="from-one-layer-to-the-multi-layer-perceptron">
+<h2>From one Layer to the Multi-Layer Perceptron<a class="headerlink" href="#from-one-layer-to-the-multi-layer-perceptron" title="Permalink to this headline">#</a></h2>
+<p>A Multi-Layer Perceptron (MLP), a.k.a. a feed forward neural network stacks multiple layers after each other, where each layer is an affine function followed by an activation function. The plot below shows an MLP with one input layer (left), a hidden layer (middle) and an output layer (right).</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-dfb4bcfc7acba5e0915c7cc5045ba6bc2134dfce.svg" alt="Figure made with TikZ" /></p>
+</div><p>The output function is computed layer by layer, that is the output vector <span class="math notranslate nohighlight">\(\vvec{z}\)</span> is computes as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\vvec{h}^{(1)} &amp;= \phi_1(W^{(1)}\vvec{x}+\vvec{b}_1)\\
+\vvec{z} &amp; = \phi_2(W^{(2)}\vvec{h}^{(1)}+\vvec{b}_2).
+\end{align*}\]</div>
+<p>Likewise, we can add another layer and get a MLP with four layers:</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-c0c42ed86ec73efe5313c9828812be165c4e957e.svg" alt="Figure made with TikZ" /></p>
+</div><p>Now, the output is the composition of three functions that are computed by each layer:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\vvec{h}^{(1)} &amp;= \phi_1(W^{(1)}\vvec{x}+\vvec{b}_1)\\
+\vvec{h}^{(2)}  &amp; = \phi_2(W^{(2)}\vvec{h}^{(1)}+\vvec{b}_2)\\
+\vvec{z} &amp;= \phi_3(W^{(3)}\vvec{h}^{(2)}+\vvec{b}_3)
+\end{align*}\]</div>
+<p>Note that each layer can have its own dimensionality. This is often difficult to depict visually, but we can either expand or decrease the dimensionality in each layer.</p>
+</section>
+<section id="activation-functions">
+<h2>Activation Functions<a class="headerlink" href="#activation-functions" title="Permalink to this headline">#</a></h2>
+<p>Each layer stacks an affine function with a <strong>nonlinear activation function</strong>. The nonlinearlity of the activation functions prevent that the stacked layers collapse to a single affine function. That is because the composition of affine functions is an affine function itself:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+W^{(2)}(W^{(1)}\vvec{x} + \vvec{b}^{(1)}) + \vvec{b}^{(2)} &amp;=
+W^{(2)}W^{(1)}\vvec{x} + W^{(2)}\vvec{b}^{(1)} + \vvec{b}^{(2)}\\
+&amp; = \tilde{W}\vvec{x} +\tilde{\vvec{b}},
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tilde{W} = W^{(2)}W^{(1)}\)</span> and <span class="math notranslate nohighlight">\(\tilde{\vvec{b}} = W^{(2)}\vvec{b}^{(1)} + \vvec{b}^{(2)}\)</span>. Applying a nonlinear function after each affine function prevents that the layers collapse to a simple affine function and allows the network to learn complex functions by stacking simple layers after each other.</p>
+<section id="sigmoid">
+<h3>Sigmoid<a class="headerlink" href="#sigmoid" title="Permalink to this headline">#</a></h3>
+<p>The sigmoid function has been used as an activation function back in the days, since it gives a nice interpretation of a neuron firing (sigmoid being close to one) or not (sigmoid being close to zero). The sigmoid function is defined as</p>
+<div class="math notranslate nohighlight">
+\[ \phi(x) = \frac{1}{1 + \exp^{-x}} \]</div>
+<p>Similar to the sigmoid function is the <span class="math notranslate nohighlight">\(\tanh\)</span> function, mapping real values to the rage of <span class="math notranslate nohighlight">\([-1,1]\)</span> in contrast to sigmoid having as range <span class="math notranslate nohighlight">\([0,1]\)</span>.</p>
+<p>However, the sigmoid  and tanh functions are not easy to optimize in a hidden layer, since they suffer from the vanishing gradient problem. If you look at the plot below, then you see that the derivative at points on the left and the right is close to zero. As a result, sigmoid and tanh are used only on the last layer, where a logarithmic loss function usually counteracts the vanishing gradient problem.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Define activation functions</span>
+<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Create input range</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">y_sigmoid</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_tanh</span> <span class="o">=</span> <span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Create side-by-side plots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Plot sigmoid</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_sigmoid</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Sigmoid Function&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot tanh</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_tanh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;magenta&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Tanh Function&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/neuralnets_mlps_1_0.png" src="_images/neuralnets_mlps_1_0.png" />
+</div>
+</div>
+</section>
+<section id="relu-and-leaky-relu">
+<h3>ReLU and Leaky ReLU<a class="headerlink" href="#relu-and-leaky-relu" title="Permalink to this headline">#</a></h3>
+<p>The Rectified Linear Unit (ReLU) is a currently very popular activation function. It is defined as
+<div class="math notranslate nohighlight">
+\[ ReLU(x) = \max(0, x). \]</div>
+
+ReLU is simple, and it also has a clear definition of a neuron being activated or firing if it returns a nonzero value. A potential drawback of ReLU is neurons whose affine function returns always a negative value become zero after ReLU, and those neurons are often not easily recovered during optimization (dead neuron effect). Depending on the application, this effect is not desired. In those cases, you can apply the Leaky ReLU that maps negative values to negative values close to zero:
+<div class="math notranslate nohighlight">
+\[\begin{split}LeakyReLU(x) = \begin{cases}x &amp; \text{ if } x\geq0\\
+\alpha x &amp; \text{ otherwise }\end{cases}\end{split}\]</div>
+
+The plots of both activation functions is below:</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Define activation functions</span>
+<span class="k">def</span> <span class="nf">relu</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">leaky_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Create input range</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">y_relu</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_leaky_relu</span> <span class="o">=</span> <span class="n">leaky_relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Create side-by-side plots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Plot ReLU</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_relu</span><span class="p">,</span>  <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ReLU&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot Leaky ReLU</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_leaky_relu</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;magenta&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Leaky ReLU (α=0.05)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Common settings</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Activation&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/neuralnets_mlps_3_0.png" src="_images/neuralnets_mlps_3_0.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -706,17 +914,17 @@ a^{\ell}_{j} &amp;=&amp; \sum_{i=0}^{H_{\ell-1}} w^{\ell}_{i,j} \, h^{\ell-1}_{i
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="neuralnets_func_approx.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="neuralnets_intro.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Function approximator</p>
+            <p class="prev-next-title">From Linear Models to Neural Networks</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="neuralnets_backprop.html" title="next page">
+    <a class='right-next' id="next-link" href="neuralnets_optimization.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Backpropagation</p>
+        <p class="prev-next-title">Training Neural Networks: Backpropagation and SGD</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

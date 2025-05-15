@@ -316,6 +316,16 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     MLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
     </a>
@@ -326,18 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -4112,7 +4112,7 @@ For any given <span class="math notranslate nohighlight">\(\delta\)</span> we ca
 \end{align*}\]</div>
 <p>This objective is already pretty good but the maximum of <span class="math notranslate nohighlight">\(\frac{1}{\lVert\vvec{w}\rVert}\)</span> is reached when <span class="math notranslate nohighlight">\(\lVert\vvec{w}\rVert\rightarrow 0\)</span>. This can result in numerical instabilities, since we don’t want to divide by zero. This issue is easily solved by minimizing <span class="math notranslate nohighlight">\(\lVert\vvec{w}\rVert^2\)</span> instead. We use the squared norm because this is easier to optimize than applying the square root from the Euclidean norm. As a result, we can conclude the following theorem, specifying the hard margin SVM objective.</p>
 <div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 21 </span> (Hard Margin SVM objective)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 20 </span> (Hard Margin SVM objective)</p>
 <section class="theorem-content" id="proof-content">
 <p>The following objective solves the <a class="reference internal" href="#hard-margin-svm-task"><span class="std std-ref">Hard Margin SVM</span></a> task
 <div class="math notranslate nohighlight">
@@ -4148,7 +4148,7 @@ Hence, we write</p>
 \end{align*}\]</div>
 <p>As a result, our dual objective looks now as follows:</p>
 <div class="proof theorem admonition" id="theorem-3">
-<p class="admonition-title"><span class="caption-number">Theorem 22 </span> (Hard Margin Dual)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 21 </span> (Hard Margin Dual)</p>
 <section class="theorem-content" id="proof-content">
 <p>The dual optimization objective to the <a class="reference internal" href="#hard-margin-svm-task"><span class="std std-ref">Hard Margin SVM</span></a> task is given as</p>
 <div class="math notranslate nohighlight" id="equation-svm-dual-hardmarg">
@@ -4160,7 +4160,7 @@ Hence, we write</p>
 </section>
 </div><p>The dual objective is a convex optimization problem. In particular, it is a so-called quadratic program for which many solvers exist.</p>
 <div class="proof theorem admonition" id="theorem-4">
-<p class="admonition-title"><span class="caption-number">Theorem 23 </span> (Quadratic Program Hard Margin)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 22 </span> (Quadratic Program Hard Margin)</p>
 <section class="theorem-content" id="proof-content">
 <p>The dual optimization objective to the <a class="reference internal" href="#hard-margin-svm-task"><span class="std std-ref">Hard Margin SVM</span></a> task is equivalent to the following convex quadratic program</p>
 <div class="math notranslate nohighlight" id="equation-svm-dual-quadr">
@@ -4180,7 +4180,7 @@ Hence, we write</p>
 </div>
 <p>Once we have solved the convex program, we can obtain the optimal hyperplane from the Lagrange multipliers. This is necessary to perform the inference step, the classification for unseen data points.</p>
 <div class="proof theorem admonition" id="theorem-5">
-<p class="admonition-title"><span class="caption-number">Theorem 24 </span> (Optimal hyperplane)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 23 </span> (Optimal hyperplane)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given the minimizer <span class="math notranslate nohighlight">\( \boldsymbol{\lambda}^{\ast} \)</span> of <a class="reference internal" href="#equation-svm-dual-quadr">(46)</a>, the solution to the <a class="reference internal" href="#hard-margin-svm-task"><span class="std std-ref">Hard Margin SVM</span></a> task is given by</p>
 <div class="math notranslate nohighlight" id="equation-primal-optimal">
@@ -4239,7 +4239,7 @@ We can indentify the support vectors as those vectors <span class="math notransl
 <h3>Optimization<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
 <p>The optimization of the soft-margin SVM is similar to the hard-margin SVM. We define the dual objective and apply a quadratic solver.</p>
 <div class="proof theorem admonition" id="theorem-7">
-<p class="admonition-title"><span class="caption-number">Theorem 25 </span></p>
+<p class="admonition-title"><span class="caption-number">Theorem 24 </span></p>
 <section class="theorem-content" id="proof-content">
 <p>The dual optimization objective to the <span class="xref std std-ref">Soft-Margin SVM</span> task is given as</p>
 <div class="math notranslate nohighlight" id="equation-svm-form9">

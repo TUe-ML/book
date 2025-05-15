@@ -84,6 +84,7 @@
 #     \end{align*}
 # ```
 # ```{prf:theorem} Jacobian of Element-wise Functions
+# :name: jacob_element_wise_func
 # The gradient and the Jacobian of any element-wise defined function
 # $$f(\vvec{x}) = (f(x_1),f(x_2),\ldots,f(x_d))$$
 # is the diagonal matrix

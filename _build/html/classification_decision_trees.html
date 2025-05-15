@@ -316,6 +316,16 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     MLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
     </a>
@@ -326,18 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -745,7 +745,7 @@ where</p>
 <li><p><span class="math notranslate nohighlight">\(\mathtt{x}_1\)</span> represents the glasses of wine per day (contiuous feature)</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathtt{x}_2\)</span> represents the ability to get others to do their work (binary feature)</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathtt{x}_3\)</span> represents the characteristic to burn everything down if issues persist (binary feature)</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mathtt{x}_4\)</span> represents the reliance on lists to organize big projects.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathtt{x}_4\)</span> represents the reliance on lists to organize big projects (binary feature).</p></li>
 </ul>
 <p>The root node (a decision node) of our GOT personality test could then be expressed by the split function
 <div class="math notranslate nohighlight">
@@ -785,7 +785,7 @@ and <span class="math notranslate nohighlight">\({{f_0}_1}_0(\vvec{x})\)</span> 
 </div></section>
 <section id="training">
 <h2>Training<a class="headerlink" href="#training" title="Permalink to this headline">#</a></h2>
-<p>We provide the pseudocode for the recursive creation of the Classification and Regression Tree (CART) algorithm <span id="id1">[<a class="reference internal" href="bibliography.html#id8" title="Leo Breiman, Jerome H Friedman, Richard A Olshen, and Charles J Stone. Classification and regression trees. Wadsworth Inc, 1984.">2</a>]</span> in <a class="reference internal" href="#dt_training">Algorithm 8</a>. The input of CART is a dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, but in principle CART has also various hyperparameters that are here summarized by the stopping criterion, that is here assumed to be hard-coded in the algorithm. We discuss possible stopping criteria in a subsection below. If the stopping criterium is satisfied, then the CART algorithm returns a probability vector that reflects the empirical class-distribution in the dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span></p>
+<p>We provide the pseudocode for the recursive creation of the Classification and Regression Tree (CART) algorithm <span id="id1">[<a class="reference internal" href="bibliography.html#id8" title="Leo Breiman, Jerome H Friedman, Richard A Olshen, and Charles J Stone. Classification and regression trees. Wadsworth Inc, 1984.">2</a>]</span> in <a class="reference internal" href="#dt_training">Algorithm 8</a>. The input of CART is here specified to be the dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> only, but in principle CART has various hyperparameters that are here summarized by the hard-coded stopping criterion. We discuss possible stopping criteria in a subsection below. If the stopping criterium is satisfied, then the CART algorithm returns a probability vector that reflects the empirical class-distribution in the dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span></p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 p_{\cal D} (y) = \frac{\lvert\{({\bf x}, l) \in {\cal D}\mid  l = y \}\rvert}{\lvert{\cal D}\rvert}. 
@@ -827,7 +827,7 @@ p_{\cal D} (y) = \frac{\lvert\{({\bf x}, l) \in {\cal D}\mid  l = y \}\rvert}{\l
 <li><p><span class="math notranslate nohighlight">\(q(\vvec{x})=\begin{cases}1&amp; \text{ if } x_k= t\ (\mathtt{x}_k \text{ is discrete) or } x_k\geq t\ (\mathtt{x}_k \text{ is continuous})\\0&amp; \text{ otherwise}\end{cases}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathcal{L}_0\leftarrow \{(\vvec{x},y)\in\mathcal{D}\mid q(\vvec{x})=1\}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathcal{L}_1\leftarrow \mathcal{D}\setminus \mathcal{L}_0\)</span></p></li>
-<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(IG(\mathcal{L}_0,\mathcal{L}_1,\mathcal{D})&gt;\mathtt{max\_ig}\)</span></p>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(IG(\mathcal{D},\mathcal{L}_0,\mathcal{L}_1)&gt;\mathtt{max\_ig}\)</span></p>
 <ol class="simple">
 <li><p><span class="math notranslate nohighlight">\(\mathtt{max\_ig}\leftarrow IG(\mathcal{L}_0,\mathcal{L}_1,\mathcal{D})\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathcal{L}_0^*\)</span>, <span class="math notranslate nohighlight">\(\mathcal{L}_1^*\leftarrow \mathcal{L}_0,\ \mathcal{L}_1\)</span></p></li>
@@ -867,9 +867,9 @@ E({\cal L}) &amp;= - \sum_{y =1}^c p_{\cal L}(y) \log p_{\cal L}(y) &amp;\text{ 
 C({\cal L}) &amp;= 1 - \max_{1\leq y \leq c} p_{\cal L}(y) &amp;\text{(Self classification error)}
 \end{align*}\]</div>
 </section>
-</div><p>For a comparison of the impurity measures, we plot them for the case of two classes. The horizontal axis indicates the empirical distribution of one of the two classes.</p>
-<div class="figure" style="text-align: center"><p><img  src="_images/tikz-3eea2a18c8aecc859d1fde169556fc97c4be35f6.svg" alt="Figure made with TikZ" /></p>
-</div><p>We observe that there are not big differences between the three impurity plots. Gini impurity and entropy increase visibly more steeply from the completely pure class distributions where <span class="math notranslate nohighlight">\(p\)</span> is either zero or one.</p>
+</div><p>For a comparison of the impurity measures, we plot them for the case of two classes. The horizontal axis indicates the empirical distribution of one of the two classes (class <span class="math notranslate nohighlight">\(y=0\)</span>).</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-24d617119f0db07dcb518ed21653fadc6a1354f3.svg" alt="Figure made with TikZ" /></p>
+</div><p>We observe that there are no big differences between the three impurity plots. Gini impurity and entropy increase visibly more steeply from the completely pure class distributions where <span class="math notranslate nohighlight">\(p_{\mathcal{L}}(0)\)</span> is either zero or one.</p>
 </section>
 <section id="stopping-criterion">
 <h3>Stopping Criterion<a class="headerlink" href="#stopping-criterion" title="Permalink to this headline">#</a></h3>
@@ -884,7 +884,7 @@ C({\cal L}) &amp;= 1 - \max_{1\leq y \leq c} p_{\cal L}(y) &amp;\text{(Self clas
 </section>
 <section id="decision-boundary">
 <h2>Decision Boundary<a class="headerlink" href="#decision-boundary" title="Permalink to this headline">#</a></h2>
-<p>The plot below indicates the decision boundary and the corresponding tree for the two moons dataset, setting the maximum tree depth to five. We observe the typical rectangular decision boundaries of the decision tree, that stem from feature-wise partitioning of the space. Each decision node partitions the feature space in two halves. The root node splits at <span class="math notranslate nohighlight">\(x[1]\leq 0.218\)</span>, resulting in a horizontal split that separates roughly the twoo moons from each other. The next split in the lower horizontal half (for <span class="math notranslate nohighlight">\(x[1]\leq 0.218\)</span>) is a vertical split at <span class="math notranslate nohighlight">\(x[0]\leq 0.363\)</span>. The rectangle defined by <span class="math notranslate nohighlight">\(x[1]\leq 0.218\)</span> and <span class="math notranslate nohighlight">\(x[0]\leq 0.363\)</span> is then assigned to the blue class by the prediction node when going twice left in the decision tree. This way, rectangular decision boundaries are created.</p>
+<p>The plot below indicates the decision boundary and the corresponding tree for the two moons dataset, setting the maximum tree depth to five. We observe the typical rectangular decision boundaries of the decision tree, that stem from feature-wise partitioning of the space. Each decision node partitions the feature space in two halves. The root node splits at <span class="math notranslate nohighlight">\(x[1]\leq 0.218\)</span>, resulting in a horizontal split that separates roughly the two moons from each other. The next split in the lower horizontal half (for <span class="math notranslate nohighlight">\(x[1]\leq 0.218\)</span>) is a vertical split at <span class="math notranslate nohighlight">\(x[0]\leq 0.363\)</span>. The rectangle defined by <span class="math notranslate nohighlight">\(x[1]\leq 0.218\)</span> and <span class="math notranslate nohighlight">\(x[0]\leq 0.363\)</span> is then assigned to the blue class by the prediction node when going twice left in the decision tree. This way, rectangular decision boundaries are created.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>

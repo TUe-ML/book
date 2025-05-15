@@ -37,7 +37,7 @@
 # * $\mathtt{x}_1$ represents the glasses of wine per day (contiuous feature)
 # * $\mathtt{x}_2$ represents the ability to get others to do their work (binary feature)
 # * $\mathtt{x}_3$ represents the characteristic to burn everything down if issues persist (binary feature)
-# * $\mathtt{x}_4$ represents the reliance on lists to organize big projects.      
+# * $\mathtt{x}_4$ represents the reliance on lists to organize big projects (binary feature).      
 # 
 # The root node (a decision node) of our GOT personality test could then be expressed by the split function
 # $$q(\vvec{x})=\begin{cases}1 & \text{if }x_1\geq 5\\0 & \text{otherwise}\end{cases}$$
@@ -60,7 +60,7 @@
 # and ${{f_0}_1}_0(\vvec{x})$ returns a probability vector with the highest probability assigned to `Arya` and ${{f_0}_1}_1(\vvec{x})$ assigns the highest probability to `John Snow`.
 # ```
 # ### Training
-# We provide the pseudocode for the recursive creation of the Classification and Regression Tree (CART) algorithm {cite}`breiman1984classification` in {prf:ref}`dt_training`. The input of CART is a dataset $\mathcal{D}$, but in principle CART has also various hyperparameters that are here summarized by the stopping criterion, that is here assumed to be hard-coded in the algorithm. We discuss possible stopping criteria in a subsection below. If the stopping criterium is satisfied, then the CART algorithm returns a probability vector that reflects the empirical class-distribution in the dataset $\mathcal{D}$ 
+# We provide the pseudocode for the recursive creation of the Classification and Regression Tree (CART) algorithm {cite}`breiman1984classification` in {prf:ref}`dt_training`. The input of CART is here specified to be the dataset $\mathcal{D}$ only, but in principle CART has various hyperparameters that are here summarized by the hard-coded stopping criterion. We discuss possible stopping criteria in a subsection below. If the stopping criterium is satisfied, then the CART algorithm returns a probability vector that reflects the empirical class-distribution in the dataset $\mathcal{D}$ 
 # \begin{align*}
 # p_{\cal D} (y) = \frac{\lvert\{({\bf x}, l) \in {\cal D}\mid  l = y \}\rvert}{\lvert{\cal D}\rvert}. 
 # \end{align*}
@@ -91,7 +91,7 @@
 #         1. $q(\vvec{x})=\begin{cases}1& \text{ if } x_k= t\ (\mathtt{x}_k \text{ is discrete) or } x_k\geq t\ (\mathtt{x}_k \text{ is continuous})\\0& \text{ otherwise}\end{cases}$     
 #         2. $\mathcal{L}_0\leftarrow \{(\vvec{x},y)\in\mathcal{D}\mid q(\vvec{x})=1\}$   
 #         3. $\mathcal{L}_1\leftarrow \mathcal{D}\setminus \mathcal{L}_0$   
-#         4. **if** $IG(\mathcal{L}_0,\mathcal{L}_1,\mathcal{D})>\mathtt{max\_ig}$      
+#         4. **if** $IG(\mathcal{D},\mathcal{L}_0,\mathcal{L}_1)>\mathtt{max\_ig}$      
 #             1. $\mathtt{max\_ig}\leftarrow IG(\mathcal{L}_0,\mathcal{L}_1,\mathcal{D})$     
 #             2. $\mathcal{L}_0^*$, $\mathcal{L}_1^*\leftarrow \mathcal{L}_0,\ \mathcal{L}_1$
 #             3. $q^*\gets q$
@@ -120,9 +120,9 @@
 # \end{align*}
 # 
 # ```
-# For a comparison of the impurity measures, we plot them for the case of two classes. The horizontal axis indicates the empirical distribution of one of the two classes. 
+# For a comparison of the impurity measures, we plot them for the case of two classes. The horizontal axis indicates the empirical distribution of one of the two classes (class $y=0$). 
 # ```{tikz}
-# \begin{axis}[width=.8\textwidth,xlabel=$p$,ylabel=impurity,axis lines = center, 
+# \begin{axis}[width=.8\textwidth,xlabel=$p_{\mathcal{L}}(0)$,ylabel=impurity,axis lines = center, 
 # domain=0:1, axis equal,legend pos=outer north east,]
 # \addplot[blue,thick]
 # {1-\x^2 - (1-\x)^2};
@@ -135,7 +135,7 @@
 # \addlegendentry{Self classification error}
 # \end{axis}
 # ```
-# We observe that there are not big differences between the three impurity plots. Gini impurity and entropy increase visibly more steeply from the completely pure class distributions where $p$ is either zero or one.  
+# We observe that there are no big differences between the three impurity plots. Gini impurity and entropy increase visibly more steeply from the completely pure class distributions where $p_{\mathcal{L}}(0)$ is either zero or one.  
 # #### Stopping Criterion
 # Common stopping criterions, that can also be combined, are the following:
 # 
@@ -145,7 +145,7 @@
 # 
 # The stopping criterion is the main property to prohibit overfitting, which is generally associated with a big tree. In addition, pruning strategies exist to remove less significant branches after the training. But this is out of the scope of this section.
 # ### Decision Boundary
-# The plot below indicates the decision boundary and the corresponding tree for the two moons dataset, setting the maximum tree depth to five. We observe the typical rectangular decision boundaries of the decision tree, that stem from feature-wise partitioning of the space. Each decision node partitions the feature space in two halves. The root node splits at $x[1]\leq 0.218$, resulting in a horizontal split that separates roughly the twoo moons from each other. The next split in the lower horizontal half (for $x[1]\leq 0.218$) is a vertical split at $x[0]\leq 0.363$. The rectangle defined by $x[1]\leq 0.218$ and $x[0]\leq 0.363$ is then assigned to the blue class by the prediction node when going twice left in the decision tree. This way, rectangular decision boundaries are created.
+# The plot below indicates the decision boundary and the corresponding tree for the two moons dataset, setting the maximum tree depth to five. We observe the typical rectangular decision boundaries of the decision tree, that stem from feature-wise partitioning of the space. Each decision node partitions the feature space in two halves. The root node splits at $x[1]\leq 0.218$, resulting in a horizontal split that separates roughly the two moons from each other. The next split in the lower horizontal half (for $x[1]\leq 0.218$) is a vertical split at $x[0]\leq 0.363$. The rectangle defined by $x[1]\leq 0.218$ and $x[0]\leq 0.363$ is then assigned to the blue class by the prediction node when going twice left in the decision tree. This way, rectangular decision boundaries are created.
 
 # In[1]:
 

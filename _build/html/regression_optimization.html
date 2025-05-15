@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -321,6 +316,16 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     MLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
     </a>
@@ -331,18 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -747,7 +742,7 @@ The matrix <span class="math notranslate nohighlight">\(X\)</span> is called the
 <h2>Convexity of the RSS<a class="headerlink" href="#convexity-of-the-rss" title="Permalink to this headline">#</a></h2>
 <p>The RSS is a convex optimization objective as it is a composition of an affine function and a convex function (the squared <span class="math notranslate nohighlight">\(L_2\)</span>-norm), which is again convex.</p>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 13 </span></p>
+<p class="admonition-title"><span class="caption-number">Theorem 12 </span></p>
 <section class="theorem-content" id="proof-content">
 <p>The function <span class="math notranslate nohighlight">\(RSS(\bm\beta)=\lVert \vvec{y}-X\bm{\beta}\rVert^2\)</span> is convex.</p>
 </section>
@@ -899,7 +894,7 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
 </section>
 </div><p>The notation of Observation <a class="reference internal" href="#obs-sigma-r"><span class="std std-ref"> (Singular value matrix of rank r)</span></a> helps us now to derive the set of all regression solvers.</p>
 <div class="proof theorem admonition" id="theorem-4">
-<p class="admonition-title"><span class="caption-number">Theorem 14 </span> (Set of all regression solvers)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 13 </span> (Set of all regression solvers)</p>
 <section class="theorem-content" id="proof-content">
 <p>Let <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\in\mathbb{R}^{n\times p}\)</span> be the SVD of the design matrix of the <a class="reference internal" href="#regr-task"><span class="std std-ref">Linear Regression</span></a> task. If only <span class="math notranslate nohighlight">\(r&lt;p\)</span> singular values of <span class="math notranslate nohighlight">\(X\)</span> are nonzero (<span class="math notranslate nohighlight">\(X\)</span> has a rank of <span class="math notranslate nohighlight">\(r\)</span>), then the set of global minimizers <span class="math notranslate nohighlight">\(\bm{\beta}\)</span> is given by
 <div class="math notranslate nohighlight">

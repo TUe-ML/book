@@ -55,8 +55,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Dimensionality Reduction Techniques" href="dim_reduction.html" />
-    <link rel="prev" title="Backpropagation" href="neuralnets_backprop.html" />
+    <link rel="next" title="Architecture" href="neuralnets_architecture.html" />
+    <link rel="prev" title="MLPs" href="neuralnets_mlps.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -321,6 +316,16 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     MLPs
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
     </a>
@@ -331,18 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
-    </a>
-   </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -616,14 +611,38 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sgd">
-   SGD
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#backpropagation">
    Backpropagation
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivative-of-the-cross-entropy-loss">
+     Derivative of the Cross Entropy Loss
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivatives-of-affine-functions">
+     Derivatives of Affine Functions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivatives-of-activations">
+     Derivatives of Activations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sgd">
+   SGD
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#properties-of-sgd">
+     Properties of SGD
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -645,14 +664,38 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sgd">
-   SGD
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#backpropagation">
    Backpropagation
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivative-of-the-cross-entropy-loss">
+     Derivative of the Cross Entropy Loss
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivatives-of-affine-functions">
+     Derivatives of Affine Functions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivatives-of-activations">
+     Derivatives of Activations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sgd">
+   SGD
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#properties-of-sgd">
+     Properties of SGD
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -666,26 +709,258 @@ title="Print to PDF"
                 
   <section id="training-neural-networks-backpropagation-and-sgd">
 <h1>Training Neural Networks: Backpropagation and SGD<a class="headerlink" href="#training-neural-networks-backpropagation-and-sgd" title="Permalink to this headline">#</a></h1>
-<p>Neural networks are trained by minimizing a loss function, often via <strong>stochastic gradient descent (SGD)</strong>.</p>
-<section id="sgd">
-<h2>SGD<a class="headerlink" href="#sgd" title="Permalink to this headline">#</a></h2>
-</section>
+<p>Neural networks have <em>a lot</em> of parameters. Every layer introduces <span class="math notranslate nohighlight">\(d_j\cdot d_{j+1}\)</span> parameters for the weight matrix and <span class="math notranslate nohighlight">\(d_{j+1}\)</span> parameters for the bias term. The composition of affine functions and nonlinear activations make it impossible to compute the optimum analytically, or to compute the optimum subject to one weight, fixing all the others (the gradients of the nonlinear activations have no inverse function, which is needed to solve the equations given by FONC). The optimization method is crucial for the performance of the neural network and as a result there exist various optimizers that have been applied and developed for neural networks. Typically, neural networks are optimized with a version of gradient descent with momentum. We will discuss the most popular and not too complicated version of gradient descent that is applied in the context of neural networks, called stochastic gradient descent. But first, we discuss how to get the gradient of neural networks.</p>
 <section id="backpropagation">
 <h2>Backpropagation<a class="headerlink" href="#backpropagation" title="Permalink to this headline">#</a></h2>
-<p>The <strong>backpropagation algorithm</strong> efficiently computes gradients of the loss with respect to all parameters using the chain rule of calculus. For a network with parameters <span class="math notranslate nohighlight">\( \theta \)</span>, inputs <span class="math notranslate nohighlight">\( \mathbf{x} \)</span>, and loss <span class="math notranslate nohighlight">\( \mathcal{L} \)</span>, we compute:</p>
+<p>We consider the optimization of our loss function</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathcal{L}(\mathcal{D},\theta) &amp;= \frac{1}{n} \sum_{i=1}^n CE(y_i,f_\theta(\vvec{x}_i))\\
+&amp;= -\frac{1}{n} \sum_{i=1}^n \log(f_\theta(\vvec{x}_i)_{y_i}),
+\end{align*}\]</div>
+<p>where</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f_\theta(\vvec{x}_i) &amp; = \softmax(W\vvec{h}^{(L)}+\vvec{b}),
+\end{align*}\]</div>
+<p>and the hidden layers are recursively defined</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\vvec{h}^{(\ell)} = \phi_{\ell}(W^{(\ell)}\vvec{h}^{(\ell-1)}+\vvec{b}^{(\ell)}).
+\end{align*}\]</div>
+<p>The layer-wise definition of a neural network is helpful to compute the gradient of the loss with the chain rule. This motivates the so-called <strong>backpropagation algorithm</strong> that is in essence an efficiently implementation of the chain rule. Let’s have a look how we would apply the chain rule to the loss function above. First, we notice that the gradient subject to <span class="math notranslate nohighlight">\(\theta\)</span> gathers all partial derivatives subject to all parameters, that is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla_\theta \mathcal{L}(\mathcal{D},\theta) = \begin{pmatrix}\frac{\partial}{\partial W_{11}}\mathcal{L}(\mathcal{D},\theta)\\
+\vdots \\
+\frac{\partial}{\partial W_{cd_L}}\mathcal{L}(\mathcal{D},\theta)\\
+\frac{\partial}{\partial b_1}\mathcal{L}(\mathcal{D},\theta)\\
+\vdots\\
+\frac{\partial}{\partial b_c}\mathcal{L}(\mathcal{D},\theta)\\
+\frac{\partial}{\partial W^{(L)}_{11}}\mathcal{L}(\mathcal{D},\theta)\\
+\vdots\\
+\frac{\partial}{\partial b^{(1)}_{d_1}}\mathcal{L}(\mathcal{D},\theta)\\
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>Let’s have a look how we can determine partial derivative subject to weight matrix entry <span class="math notranslate nohighlight">\(W^{(\ell)}_{kj}\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial}{\partial W^{(\ell)}_{kj}}\mathcal{L}(\mathcal{D},\theta) &amp; = \frac{1}{n} \sum_{i=1}^n \frac{\partial}{\partial W^{(\ell)}_{kj}} CE(y_i,f_\theta(\vvec{x}_i))
+\end{align*}\]</div>
+<p>We have a look at the Jacobian of the cross entropy with the chain rule</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\frac{\partial}{\partial W^{(\ell)}_{kj}} CE(y_i,f_\theta(\vvec{x}_i))\\ 
+&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial h^{(L)}}  \frac{\partial h^{(L)}}{\partial W^{(\ell)}_{kj}}\\
+&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial h^{(L)}}  \frac{\partial \phi_l(W^{(L)}h^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(\ell)}_{kj}}\\
+&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial h^{(L)}}  \frac{\partial \phi_L(W^{(L)}h^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(L)}h^{(L-1)}+\vvec{b}^{(L)}}\frac{\partial W^{(L)}h^{(L-1)}+\vvec{b}^{(L)}}{\partial W^{(\ell)}_{kj}}\\
+&amp;=\ldots\\
+&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial h^{(L)}}  \frac{\partial \phi_L(W^{(L)}h^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(L)}h^{(L-1)}+\vvec{b}^{(L)}}\frac{\partial W^{(L)}h^{(L-1)}+\vvec{b}^{(L)}}{\partial \vvec{h}^{(L-1)}}\cdot\ldots\cdot \frac{\partial W^{(\ell)}h^{(\ell-1)}+\vvec{b}^{(\ell)}}{\partial W^{(\ell)}_{kj}}.
+\end{align*}\]</div>
+<p>We can see how the gradient multiplies the Jacobians of each activation and the affine function of each layer. Hence, if we know the derivatives of the activations, then we can compute the Jacobian. We also observe how we go from the output layer of the network to the front of the network where the weight <span class="math notranslate nohighlight">\(W^{(\ell)}_{kj}\)</span> is. This is why it’s called backpropagation, we propagate backwards the partial derivatives (Jacobians) of the layers and multiply them.</p>
+<section id="derivative-of-the-cross-entropy-loss">
+<h3>Derivative of the Cross Entropy Loss<a class="headerlink" href="#derivative-of-the-cross-entropy-loss" title="Permalink to this headline">#</a></h3>
+<div class="proof lemma admonition" id="lemma-0">
+<p class="admonition-title"><span class="caption-number">Lemma 7 </span></p>
+<section class="lemma-content" id="proof-content">
+<p>The partial derivatives of the cross-entropy function, applied to a function <span class="math notranslate nohighlight">\(f(\vvec{h})=\softmax(W\vvec{h}+\vvec{b})\)</span> that returns the softmax of an affine function
 <div class="math notranslate nohighlight">
-\[
-\frac{\partial \mathcal{L}}{\partial \theta}
-\]</div>
-<p>by propagating derivatives from the output layer back to earlier layers.</p>
+\[CE(y,f(\vvec{h})) = -\log(\softmax(W\vvec{h}+\vvec{b})_y)\]</div>
+
+are given by
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial CE(y,f(\vvec{x}))}{\partial h_j} = \begin{cases}f(\vvec{h})_j -1 &amp; \text{ if }j=y\\f(\vvec{h})_j &amp; \text{ otherwise}\end{cases}\end{split}\]</div>
+</p>
+</section>
+</div></section>
+<section id="derivatives-of-affine-functions">
+<h3>Derivatives of Affine Functions<a class="headerlink" href="#derivatives-of-affine-functions" title="Permalink to this headline">#</a></h3>
+<p>We already know the Jacobian of the affine functions subject to the hidden layer outputs (see the Optimization exercises):
+<div class="math notranslate nohighlight">
+\[\frac{\partial W\vvec{h} +\vvec{b}}{\partial \vvec{h} } = W^\top\]</div>
+
+Based on this insight, we can derive the Jacobian of the affine function subject to the bias vector:
+<div class="math notranslate nohighlight">
+\[\frac{\partial W\vvec{h} +\vvec{b}}{\partial \vvec{b} } = I.\]</div>
+
+Likewise, we can derive the Jacobian of the affine function subject to a weight matrix entry <span class="math notranslate nohighlight">\(W_{kj}\)</span>:
+<div class="math notranslate nohighlight">
+\[\frac{\partial W\vvec{h} +b_k}{\partial W_{kj}} = h_j\]</div>
+</p>
+</section>
+<section id="derivatives-of-activations">
+<h3>Derivatives of Activations<a class="headerlink" href="#derivatives-of-activations" title="Permalink to this headline">#</a></h3>
+<div class="proof lemma admonition" id="lemma-1">
+<p class="admonition-title"><span class="caption-number">Lemma 8 </span></p>
+<section class="lemma-content" id="proof-content">
+<p>The (sub-)derivative of the <span class="math notranslate nohighlight">\(ReLU(x)=\max{x,0}\)</span> function is
+<div class="math notranslate nohighlight">
+\[\begin{split}ReLU'(x) = \begin{cases}1&amp; \text{ if }x&gt;0\\
+[0,1]&amp; \text{ if }x=0\\
+0&amp; \text{ if }x&lt;0\end{cases}.\end{split}\]</div>
+</p>
+</section>
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the derivative of ReLU does not exist strictly speaking, practical implementations gloss over this fact and set
+<div class="math notranslate nohighlight">
+\[\begin{split}ReLU'(x) = \begin{cases}1&amp; \text{ if }x&gt;0\\
+0&amp; \text{ if }x\leq 0\end{cases}.\end{split}\]</div>
+
+In practice, this doesn’t affect performance and it makes the computation of gradients consistent.</p>
+</div>
+<p>Correspondingly, we obtain as the Jacobian of the element-wise applied activation function a diagonal matrix (see <span class="xref std std-ref">jacob_element_wise_func</span>)</p>
+<div class="proof corollary admonition" id="corollary-2">
+<p class="admonition-title"><span class="caption-number">Corollary 5 </span></p>
+<section class="corollary-content" id="proof-content">
+<p>The Jacobian of the ReLU activation subject to a vector <span class="math notranslate nohighlight">\(\vvec{x}\in\mathbb{R}^d\)</span> is given as
+<div class="math notranslate nohighlight">
+\[\frac{\partial ReLU(\vvec{x})}{\partial\vvec{x}}=\diag(ReLU'(x_1),\ldots,ReLU'(x_d))\]</div>
+</p>
+</section>
+</div></section>
+</section>
+<section id="sgd">
+<h2>SGD<a class="headerlink" href="#sgd" title="Permalink to this headline">#</a></h2>
+<p>We have now discussed how to derive the gradient of the cross-entropy loss, that we can use to optimize the weights of a neural network by gradient descent. The only problem is that neural networks typically require (comparably) vast amounts of data to learn a suitable feature transformation that is able to discriminate between the classes. The computation of the gradient, which requires to add the gradients of the cross-entropy for each data point is typically too costly if the dataset is big.</p>
+<p><strong>Stochastic Gradient Descent (SGD)</strong> offers here a solution by updating the weights using only a small batch of training examples at a time. That is, in every update step, SGD performs a gradient descent step on the loss function
+<div class="math notranslate nohighlight">
+\[\mathcal{L}(\mathcal{B},\theta)\frac{1}{\lvert\mathcal{B}\rvert} \sum_{(\vvec{x},y)\in\mathcal{B}} CE(y,f_\theta(\vvec{x})),\]</div>
+
+where <span class="math notranslate nohighlight">\(\mathcal{B}\subseteq \mathcal{D}\)</span> is a <strong>batch</strong>. Typically, the batches are chosen as disjunctive subsets of the dataset: <span class="math notranslate nohighlight">\(\mathcal{B}_1\cup\ldots\cup\mathcal{B}_m=\mathcal{D}\)</span> and <span class="math notranslate nohighlight">\(\mathcal{B}_b\cap \mathcal{B}_j =\emptyset\)</span>. Performing the updates on all batches of this disjunctive decomposition is then called an <strong>epoch</strong>.</p>
+<div class="proof algorithm admonition" id="algorithm-3">
+<p class="admonition-title"><span class="caption-number">Algorithm 11 </span> (SGD)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Input</strong>: training data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, network <span class="math notranslate nohighlight">\(f_\theta\)</span>, step-size <span class="math notranslate nohighlight">\(\eta\)</span></p>
+<ol class="simple">
+<li><p>Initialize weights <span class="math notranslate nohighlight">\(\theta\)</span> randomly</p></li>
+<li><p><strong>for</strong> epoch <span class="math notranslate nohighlight">\(t\in\{1,\ldots,t_{max}\}\)</span></p>
+<ol class="simple">
+<li><p>Divide the data into mini-batches <span class="math notranslate nohighlight">\(\mathcal{B}_1\cup\ldots\cup\mathcal{B}_m=\mathcal{D}\)</span></p></li>
+<li><p><strong>for</strong> each batch <span class="math notranslate nohighlight">\(\mathcal{B}\)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(\theta\gets \theta -\eta\nabla \mathcal{L}(\mathcal{B},\theta)\)</span></p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+</div><p>Likewise, we can integrate momentum in this optimization scheme, by performing the updates on a batch only.</p>
+<section id="properties-of-sgd">
+<h3>Properties of SGD<a class="headerlink" href="#properties-of-sgd" title="Permalink to this headline">#</a></h3>
+<p>SGD is not only more efficient in its computation of the gradients, it also has many theoretical advantages to gradient descent. The computation of the gradients on batches only introduces noise into the gradient descent updates, that are often useful in navigating complex loss landscapes and escaping local minima.</p>
+<p><a class="reference internal" href="#loss-ladscape-fig"><span class="std std-numref">Fig. 9</span></a> gives an impression of the landscape of a neural network with only two parameters. We see how there are multiple local optima and only one very narrow valley that forms the global optimum. SGD can help in these cases, because it’s randomness helps to survey the loss landscape without getting stuck in smaller local minima.</p>
+<figure class="align-center" id="loss-ladscape-fig">
+<a class="reference internal image-reference" href="_images/loss_landscape.png"><img alt="_images/loss_landscape.png" src="_images/loss_landscape.png" style="height: 320px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Loss landscape of neural networks for a bi-dimensional parameter space (borrowed from <span id="id1">[<a class="reference internal" href="bibliography.html#id20" title="Hao Li, Zheng Xu, Gavin Taylor, Christoph Studer, and Tom Goldstein. Visualizing the loss landscape of neural nets. arXiv preprint arXiv:1712.09913, 2017.">4</a>]</span>). There are several local minima and one global minimum.</span><a class="headerlink" href="#loss-ladscape-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>However, the randomness of SGD might also be a problem when it comes to the convergence of this method. In fact, SGD requires a decreasing step-size to converge. Hence it requires the application of learning rate schedulers. Additionally, SGD can greatly benefit from additional optimization techniques like momentum.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make plot of loss function for logistic regression and then plot sgd trajectory based on various step sizes.</span>
-<span class="c1"># best use pytorch and autograd otherwise it&#39;s a computational nightmare</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="c1"># Generate and prepare data</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">X_train_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">y_train_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+
+<span class="c1"># Base class with latent layer output</span>
+<span class="k">class</span> <span class="nc">BaseNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_latent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+<span class="c1"># Two hidden layers: input -&gt; hidden -&gt; 2D latent -&gt; output</span>
+<span class="k">class</span> <span class="nc">TwoHiddenLayerNet</span><span class="p">(</span><span class="n">BaseNet</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">264</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latent</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">264</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_latent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="c1"># Training function</span>
+<span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.99</span><span class="p">):</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="n">momentum</span><span class="p">)</span>
+    <span class="n">loss_fn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">epoch</span><span class="o">%</span><span class="k">100</span>==0: #print
+            <span class="n">_</span> <span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">correct</span> <span class="o">=</span> <span class="n">predicted</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loss: </span><span class="si">%.3f</span><span class="s1"> | Acc: </span><span class="si">%.3f%%</span><span class="s1">&#39;</span><span class="o">%</span> <span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="mf">100.</span><span class="o">*</span><span class="n">correct</span><span class="o">/</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="c1"># Plot latent space</span>
+<span class="k">def</span> <span class="nf">plot_latent</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Latent Space&quot;</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_latent</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;magenta&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;z1&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;z2&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Train and plot</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">TwoHiddenLayerNet</span><span class="p">(),</span> <span class="n">X_train_tensor</span><span class="p">,</span> <span class="n">y_train_tensor</span><span class="p">)</span>
+<span class="n">plot_latent</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_train_tensor</span><span class="p">,</span> <span class="n">y_train_tensor</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Latent Space (2 Hidden Layers)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loss: 0.906 | Acc: 50.000%
+Loss: 0.272 | Acc: 89.125%
+Loss: 0.126 | Acc: 95.250%
+</pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loss: 0.076 | Acc: 97.125%
+Loss: 0.066 | Acc: 97.125%
+Loss: 0.061 | Acc: 97.750%
+Loss: 0.059 | Acc: 97.875%
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loss: 0.057 | Acc: 97.875%
+Loss: 0.057 | Acc: 97.750%
+Loss: 0.056 | Acc: 97.750%
+</pre></div>
+</div>
+<img alt="_images/neuralnets_optimization_1_3.png" src="_images/neuralnets_optimization_1_3.png" />
+</div>
+</div>
+</section>
 </section>
 </section>
 
@@ -716,17 +991,17 @@ title="Print to PDF"
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="neuralnets_backprop.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="neuralnets_mlps.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Backpropagation</p>
+            <p class="prev-next-title">MLPs</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="dim_reduction.html" title="next page">
+    <a class='right-next' id="next-link" href="neuralnets_architecture.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Dimensionality Reduction Techniques</p>
+        <p class="prev-next-title">Architecture</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

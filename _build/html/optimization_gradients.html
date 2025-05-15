@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -321,6 +316,16 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     MLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
     </a>
@@ -331,18 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -714,19 +709,7 @@ We can now concatenate these derivatives according to linearity and the chain ru
         &amp;= \underbrace{\frac{\partial \vvec{f}(\vvec{g}(\vvec{x}))}{\partial \vvec{g}(\vvec{x})}}_{p\times c}\underbrace{\frac{\partial \vvec{g}(\vvec{x})}{\partial \vvec{x}}}_{c\times d} 
     \end{align*}\]</div>
 </section>
-</div><div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 12 </span> (Jacobian of Element-wise Functions)</p>
-<section class="theorem-content" id="proof-content">
-<p>The gradient and the Jacobian of any element-wise defined function
-<div class="math notranslate nohighlight">
-\[f(\vvec{x}) = (f(x_1),f(x_2),\ldots,f(x_d))\]</div>
-
-is the diagonal matrix
-<div class="math notranslate nohighlight">
-\[\nabla f(\vvec{x}) = \frac{\partial f(\vvec{x})}{\partial \vvec{x}}=\diag(f'(x_1),\ldots, f'(x_d)).\]</div>
-</p>
-</section>
-</div><div class="proof example admonition" id="example-3">
+</div><div class="proof example admonition" id="example-2">
 <p class="admonition-title"><span class="caption-number">Example 10 </span></p>
 <section class="example-content" id="proof-content">
 <p>Consider the exponential function applied element-wise to a vector

@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -321,6 +316,16 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_mlps.html">
+     MLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_optimization.html">
+     Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
     </a>
@@ -331,18 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
      Backpropagation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
   </ul>
@@ -701,7 +696,7 @@ title="Print to PDF"
 <h2>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">#</a></h2>
 <p>Given a (training) dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_1,y_1),\ldots, (\vvec{x}_n,y_n)\}\)</span> and a distance metric <span class="math notranslate nohighlight">\(dist(\vvec{x}_i,\vvec{x}_j)\in\mathbb{R}_+\)</span> returning the nonnegative distance between two vectors <span class="math notranslate nohighlight">\(\vvec{x}_i,\vvec{x}_j\in\mathbb{R}^d\)</span>. We define the function <span class="math notranslate nohighlight">\(\kappa NN(\vvec{x})=\{i_1,\ldots, i_k\}\)</span> returning the indices of the <span class="math notranslate nohighlight">\(\kappa\)</span> closest neighbors of <span class="math notranslate nohighlight">\(\vvec{x}\)</span> in <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>. That is, we have
 <div class="math notranslate nohighlight">
-\[dist(x,x_{i_j})\leq dist(x,x_i) \text{ for all } 1\leq i\leq n.\]</div>
+\[dist(x,x_{i_j})\leq dist(x,x_i) \text{ for all } i \notin \kappa NN(\vvec{x}).\]</div>
 </p>
 <div class="proof definition admonition" id="definition-0">
 <p class="admonition-title"><span class="caption-number">Definition 19 </span> (kNN classifier)</p>
@@ -722,14 +717,14 @@ f_{knn}(\vvec{x})_l = \frac{1}{\kappa} \lvert\{i\in \kappa NN(x)\mid y_i=l\}\rve
 <div class="math notranslate nohighlight">
 \[dist(\vvec{x}_i,\vvec{x}_j)=\lVert \vvec{x}_i - \vvec{x}_j\rVert,\]</div>
 
-but we can also integrate distance functions for discrete features, such as the Hamming distance (assuming we have <span class="math notranslate nohighlight">\(d\)</span> categorical features)
+but we can also integrate distance functions for discrete features, such as the Hamming distance (assuming <span class="math notranslate nohighlight">\(x\)</span> reflects one categorical feature)
 <div class="math notranslate nohighlight">
-\[dist(\vvec{x}_i,\vvec{x}_j) = \lvert \{{\vvec{x}_i}_k\neq {\vvec{x}_j}_m\mid 1\leq k,m\leq d\}\rvert\]</div>
+\[\begin{split}dist(x_i,x_j) = \begin{cases}1 &amp; \text{ if }x_i\neq x_j\\0 &amp; \text{ otherwise}\end{cases}\end{split}\]</div>
 </p>
 <p>However, combining the distance functions over various kinds of features can be tricky and vastly influence the performance, as some distances may be weighted disproportionally to others.</p>
 <section id="implementation-practice">
 <h3>Implementation Practice<a class="headerlink" href="#implementation-practice" title="Permalink to this headline">#</a></h3>
-<p>Computing a prediction of the <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier requires in principle the computation of distances to all datapoints, hence a computation time in <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span>. This is quite costly for one prediction. We can imagine that in particular for bigger training datasets, this is far too expensive. However, there are some common strategies that are frequently applied in machine learning when we need to access local neighborhoods in an efficient manner. Two popular approaches to do so are kd-trees and locality-sensitive hashing.</p>
+<p>Computing a prediction of the <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier requires in principle the computation of distances to all datapoints, hence one prediction costs <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span>. This is quite costly and for bigger training datasets this quickly becomes too expensive. However, there are some common strategies that are applied in machine learning when we need to access local neighborhoods in an efficient manner. Two popular approaches to do so are kd-trees and locality-sensitive hashing.</p>
 <p>A k-dimensional tree (kd-tree) partitions the feature space recursively, allowing for faster nearest-neighbor queries in low-dimensional spaces (<span class="math notranslate nohighlight">\(d&lt;20\)</span>). The search complexity is approximately <span class="math notranslate nohighlight">\(\mathcal{O}(\log ⁡n)\)</span> in the average case.</p>
 <p>Locality-Sensitive Hashing (LSH) maps similar points to the same hash buckets. The proximity between points is reflected by their physical storage places. To find the nearest neighbors of a data point, we compute the hash key of this data point and access neighbors by looking into the hash buckets close to the hash bucket of the data point.</p>
 </section>
@@ -746,9 +741,10 @@ but we can also integrate distance functions for discrete features, such as the 
 <span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
 <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
         <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
     <span class="p">)</span>
@@ -771,7 +767,7 @@ but we can also integrate distance functions for discrete features, such as the 
     <span class="p">)</span>
     <span class="n">scatter</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_train</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cm_points</span><span class="p">)</span>
     <span class="n">_</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Two moons classification</span><span class="se">\n</span><span class="s2">($\kappa$=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Two moons classification</span><span class="se">\n</span><span class="s2">($\kappa$=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">)</span><span class="se">\n</span><span class="s2">Test Acc </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">knn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -792,7 +788,7 @@ but we can also integrate distance functions for discrete features, such as the 
 <h2>Bayes consistency<a class="headerlink" href="#bayes-consistency" title="Permalink to this headline">#</a></h2>
 <p>Although the <span class="math notranslate nohighlight">\(\kappa\)</span>NN classifier is very simple, it is theoretically sound in the sense that we can show that it converges to the Bayes-optimal classifier in theory.</p>
 <div class="proof theorem admonition" id="theorem-1">
-<p class="admonition-title"><span class="caption-number">Theorem 18 </span></p>
+<p class="admonition-title"><span class="caption-number">Theorem 17 </span></p>
 <section class="theorem-content" id="proof-content">
 <p>The kNN classifier converges to the Bayes classifier for <span class="math notranslate nohighlight">\(n\rightarrow \infty\)</span> when choosing <span class="math notranslate nohighlight">\(\kappa\)</span> such that</p>
 <ul class="simple">

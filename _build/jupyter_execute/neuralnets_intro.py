@@ -97,7 +97,7 @@ plt.show()
 
 # For multiclass classification, the softmax regression generalizes logistic regression to $c$ classes by learning one hyperplane per class. The more a point lies on the positive side of a hyperplane, the more confidently it is assigned to that class. The confidence is again interpreted as a probability that a sample belongs to a class, which is now computed over the softmax function. 
 # ```{prf:definition} Softmax Regression
-# The **softmax regression** classifier computes the probability that point $\vvec{x}$ belongs to class $y$ by means of $c$ hyperplanes, defined by parameters $\vvec{w}_k$ and $b_k$. Gathering the $c$ hyperplane defining parameters in a matrix $W$, such that $W_{k\cdot} = \vvec{w}_k^\top$, and $vvec{b}$, then the probability that point $\vvec{x}$ belongs to class $k$ is 
+# The **softmax regression** classifier computes the probability that point $\vvec{x}$ belongs to class $y$ by means of $c$ hyperplanes, defined by parameters $\vvec{w}_k$ and $b_k$. Gathering the $c$ hyperplane defining parameters in a matrix $W$, such that $W_{k\cdot} = \vvec{w}_k^\top$, and $\vvec{b}$, then the probability that point $\vvec{x}$ belongs to class $k$ is 
 # $$
 # p(y = l \mid \mathbf{x}) =\mathrm{softmax}(W\vvec{x}+\vvec{b})_l= \frac{\exp(\vvec{w}_k^\top \mathbf{x} + b_k)}{\sum_{j=1}^{c} \exp(\mathbf{w}_j^\top \mathbf{x} + b_j)}
 # $$
@@ -139,7 +139,10 @@ for k in clf.classes_:
 plt.show()
 
 
-# ## Representation Learning
+# ### Training
+# 
+
+# ### Representation Learning
 # 
 # Logistic or Softmax regression rely on linear decision boundaries. In practice, data often lies on complex, nonlinear manifolds. Hence, we apply a similar trick as we have seen in linear regression and the SVM to use a linear model for nonlinear problems by appling a feature transformation first. In regression, the feature transformation is given by the basis functions and in the SVM it is implicitly defined over the kernel. Neural networks **learn the feature transformation** by stacking various simple functions after one another, whose parameters are optimized jointly with the classifier's parameters. That is we get something that looks like that:
 # 
@@ -204,14 +207,4 @@ plt.show()
 # \end{tikzpicture}
 # ```
 # 
-# 
-# 
-# 
-# ## Universal Approximation and the Representer Theorem
-# 
-# The **Universal Approximation Theorem** states that a neural network with one hidden layer and enough hidden units can approximate any continuous function on a compact domain to arbitrary accuracy.
-# 
-# This power comes from **nonlinearity and compositional depth**.
-# 
-# In contrast, the **Representer Theorem** applies in kernel methods and shows that solutions to certain regularized learning problems lie in the span of training data. While neural networks do not directly satisfy the conditions of the theorem, they similarly perform **implicit regularization** through stochastic gradient descent and architectural constraints, guiding them toward simple, generalizable functions.
-# 
+# On the left we see the vector $\vvec{x}$ being put as input to the graph, producing an intermediate output $\phi(\vvec{x})$, that is the feature transformation that is classified with a softmax regression, creating the output of the graph. We discuss in the following how we can interpret this graph and how the feature transformation $\phi$ is computed. 

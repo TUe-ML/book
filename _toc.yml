@@ -42,11 +42,11 @@ chapters:
 - file: neuralnets
   sections:
   - file: neuralnets_intro
+  - file: neuralnets_mlps
+  - file: neuralnets_optimization
   - file: neuralnets_architecture
   - file: neuralnets_func_approx
-  - file: neuralnets_mlps
   - file: neuralnets_backprop
-  - file: neuralnets_optimization
 - file: dim_reduction
   sections:
   - file: dim_reduction_mf

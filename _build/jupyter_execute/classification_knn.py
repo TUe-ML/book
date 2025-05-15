@@ -7,7 +7,7 @@
 # 
 # ### Inference 
 # Given a (training) dataset $\mathcal{D}=\{(\vvec{x}_1,y_1),\ldots, (\vvec{x}_n,y_n)\}$ and a distance metric $dist(\vvec{x}_i,\vvec{x}_j)\in\mathbb{R}_+$ returning the nonnegative distance between two vectors $\vvec{x}_i,\vvec{x}_j\in\mathbb{R}^d$. We define the function $\kappa NN(\vvec{x})=\{i_1,\ldots, i_k\}$ returning the indices of the $\kappa$ closest neighbors of $\vvec{x}$ in $\mathcal{D}$. That is, we have
-# $$dist(x,x_{i_j})\leq dist(x,x_i) \text{ for all } 1\leq i\leq n.$$
+# $$dist(x,x_{i_j})\leq dist(x,x_i) \text{ for all } i \notin \kappa NN(\vvec{x}).$$
 # ```{prf:definition} kNN classifier
 # The kNN classifier returns the class probabilities estimated from the $\kappa$ neighbors: 
 # \begin{align*}
@@ -21,12 +21,12 @@
 # ```
 # As a distance function we can use basically anything. Standard norm-induced distances are possible for continuous features
 # $$dist(\vvec{x}_i,\vvec{x}_j)=\lVert \vvec{x}_i - \vvec{x}_j\rVert,$$
-# but we can also integrate distance functions for discrete features, such as the Hamming distance (assuming we have $d$ categorical features)
-# $$dist(\vvec{x}_i,\vvec{x}_j) = \lvert \{{\vvec{x}_i}_k\neq {\vvec{x}_j}_m\mid 1\leq k,m\leq d\}\rvert$$
+# but we can also integrate distance functions for discrete features, such as the Hamming distance (assuming $x$ reflects one categorical feature)
+# $$dist(x_i,x_j) = \begin{cases}1 & \text{ if }x_i\neq x_j\\0 & \text{ otherwise}\end{cases}$$
 # 
 # However, combining the distance functions over various kinds of features can be tricky and vastly influence the performance, as some distances may be weighted disproportionally to others.
 # #### Implementation Practice 
-# Computing a prediction of the $\kappa$NN classifier requires in principle the computation of distances to all datapoints, hence a computation time in $\mathcal{O}(n)$. This is quite costly for one prediction. We can imagine that in particular for bigger training datasets, this is far too expensive. However, there are some common strategies that are frequently applied in machine learning when we need to access local neighborhoods in an efficient manner. Two popular approaches to do so are kd-trees and locality-sensitive hashing.     
+# Computing a prediction of the $\kappa$NN classifier requires in principle the computation of distances to all datapoints, hence one prediction costs $\mathcal{O}(n)$. This is quite costly and for bigger training datasets this quickly becomes too expensive. However, there are some common strategies that are applied in machine learning when we need to access local neighborhoods in an efficient manner. Two popular approaches to do so are kd-trees and locality-sensitive hashing.     
 # 
 # A k-dimensional tree (kd-tree) partitions the feature space recursively, allowing for faster nearest-neighbor queries in low-dimensional spaces ($d<20$). The search complexity is approximately $\mathcal{O}(\log ⁡n)$ in the average case.    
 # 
@@ -46,9 +46,10 @@ from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn.neighbors import KNeighborsClassifier
 from matplotlib.colors import ListedColormap
 from sklearn.datasets import make_moons
+import numpy as np
 
 
-X,y = make_moons(noise=0.3, random_state=0, n_samples=200)
+X,y = make_moons(noise=0.3, random_state=0, n_samples=300)
 X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.4, random_state=42
     )
@@ -71,7 +72,7 @@ for ax, k in zip(axs, (1,10,50)):
     )
     scatter = disp.ax_.scatter(X_train[:, 0], X_train[:, 1], c=y_train, edgecolors="k",cmap = cm_points)
     _ = disp.ax_.set_title(
-        f"Two moons classification\n($\kappa$={k})"
+        f"Two moons classification\n($\kappa$={k})\nTest Acc {np.mean(knn.predict(X_test) == y_test)}"
     )
 
 plt.show()
