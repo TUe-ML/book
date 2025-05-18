@@ -716,7 +716,7 @@ title="Print to PDF"
 <div class="proof definition admonition" id="definition-0">
 <p class="admonition-title"><span class="caption-number">Definition 25 </span> (Random Forest)</p>
 <section class="definition-content" id="proof-content">
-<p>A Random Forest classifier is an ensemble of <span class="math notranslate nohighlight">\(m\)</span> decision trees <span class="math notranslate nohighlight">\(f_{dt1},\ldots,f_{dtm}\)</span> that aggregates predictions of single trees via a mahority vote. Let <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})\in\{0,1\}^c\)</span> denote the one-hot encoded argmax function (also called hardmax), such that <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})_y=1\)</span> if and only if <span class="math notranslate nohighlight">\(y = \argmax_{1\leq l\leq c} p_l\)</span>. We define then the random forest classifier as
+<p>A Random Forest classifier is an ensemble of <span class="math notranslate nohighlight">\(m\)</span> decision trees <span class="math notranslate nohighlight">\(f_{dt1},\ldots,f_{dtm}\)</span> that aggregates predictions of single trees via a majority vote. Let <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})\in\{0,1\}^c\)</span> denote the one-hot encoded argmax function (also called hardmax), such that <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})_y=1\)</span> if and only if <span class="math notranslate nohighlight">\(y = \argmax_{1\leq l\leq c} p_l\)</span>. We define then the random forest classifier as
 <div class="math notranslate nohighlight">
 \[ f_{rf}(\vvec{x})= \frac{1}{m}\sum_{j=1}^m \mathbb{1}(f_{dtj}(\vvec{x})).\]</div>
 
@@ -897,11 +897,11 @@ In detail, the learning algorithm for random forests look as follows.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original data D [1 2 3 4 5]
 
 Bootstrap samples:
-D1: [2 1 4 2 3]
-D2: [5 4 3 1 2]
-D3: [1 1 4 4 4]
-D4: [5 4 3 2 4]
-D5: [2 5 3 5 4]
+D1: [4 2 1 4 3]
+D2: [5 4 4 5 5]
+D3: [5 1 4 1 5]
+D4: [5 2 1 2 4]
+D5: [4 3 1 3 4]
 </pre></div>
 </div>
 </div>

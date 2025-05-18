@@ -12,7 +12,7 @@
 # 
 # ### Inference 
 # ```{prf:definition} Random Forest
-# A Random Forest classifier is an ensemble of $m$ decision trees $f_{dt1},\ldots,f_{dtm}$ that aggregates predictions of single trees via a mahority vote. Let $\mathbb{1}(\vvec{p})\in\{0,1\}^c$ denote the one-hot encoded argmax function (also called hardmax), such that $\mathbb{1}(\vvec{p})_y=1$ if and only if $y = \argmax_{1\leq l\leq c} p_l$. We define then the random forest classifier as 
+# A Random Forest classifier is an ensemble of $m$ decision trees $f_{dt1},\ldots,f_{dtm}$ that aggregates predictions of single trees via a majority vote. Let $\mathbb{1}(\vvec{p})\in\{0,1\}^c$ denote the one-hot encoded argmax function (also called hardmax), such that $\mathbb{1}(\vvec{p})_y=1$ if and only if $y = \argmax_{1\leq l\leq c} p_l$. We define then the random forest classifier as 
 # $$ f_{rf}(\vvec{x})= \frac{1}{m}\sum_{j=1}^m \mathbb{1}(f_{dtj}(\vvec{x})).$$
 # As a result, the random forest predicts the class that wins the majority vote of all decision trees.
 # \begin{align*}

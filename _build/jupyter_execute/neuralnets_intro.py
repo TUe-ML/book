@@ -97,9 +97,9 @@ plt.show()
 
 # For multiclass classification, the softmax regression generalizes logistic regression to $c$ classes by learning one hyperplane per class. The more a point lies on the positive side of a hyperplane, the more confidently it is assigned to that class. The confidence is again interpreted as a probability that a sample belongs to a class, which is now computed over the softmax function. 
 # ```{prf:definition} Softmax Regression
-# The **softmax regression** classifier computes the probability that point $\vvec{x}$ belongs to class $y$ by means of $c$ hyperplanes, defined by parameters $\vvec{w}_k$ and $b_k$. Gathering the $c$ hyperplane defining parameters in a matrix $W$, such that $W_{k\cdot} = \vvec{w}_k^\top$, and $\vvec{b}$, then the probability that point $\vvec{x}$ belongs to class $k$ is 
+# The **softmax regression** classifier computes the probability that point $\vvec{x}$ belongs to class $y$ by means of $c$ hyperplanes, defined by parameters $\vvec{w}_l$ and $b_l$. Gathering the $c$ hyperplane defining parameters in a matrix $W$, such that $W_{l\cdot} = \vvec{w}_l^\top$, and $\vvec{b}$, then the softmax regression classifier models the probability that point $\vvec{x}$ belongs to class $l$ over the parameters $W$ and $\vvec{b}$
 # $$
-# p(y = l \mid \mathbf{x}) =\mathrm{softmax}(W\vvec{x}+\vvec{b})_l= \frac{\exp(\vvec{w}_k^\top \mathbf{x} + b_k)}{\sum_{j=1}^{c} \exp(\mathbf{w}_j^\top \mathbf{x} + b_j)}
+# f_{sr}(\vvec{x})_l=p(y = l \mid \mathbf{x},W,\vvec{b}) =\mathrm{softmax}(W\vvec{x}+\vvec{b})_l= \frac{\exp(\vvec{w}_k^\top \mathbf{x} + b_k)}{\sum_{j=1}^{c} \exp(\mathbf{w}_j^\top \mathbf{x} + b_j)}
 # $$
 # ```
 # The softmax function $\mathrm{softmax}:\mathbb{R}^d\rightarrow [0,1]^c$, $\mathrm{softmax}(\vvec{x})_y=\frac{\exp(x_y)}{\sum_{j=1}^c\exp{x_j}}$ returns a vector reflecting the confidences for each class. We can easily show the confidences sum up tp one. The plot below show the confidences and the hyperplanes learned for a 3-class classification problem.  
@@ -140,7 +140,36 @@ plt.show()
 
 
 # ### Training
+# `````{admonition} Task (softmax regression)
+# :class: tip
+# :name: softmax_regr_task
+# **Given** a classification training data set that is sampled i.i.d. $\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n, y_i\in\{1,\ldots,c\}\}$.       
 # 
+# **Find** the parameters $\theta=(W,\vvec{b})$ such that the posterior probabilities, that are modeled as
+# $$p(y=l\mid \vvec{x},\theta) = \softmax(W\vvec{x}+\vvec{b})_l$$
+# are maximized
+# :::{math}
+# :label: eq:obj_smr
+# \begin{align*}\max{\theta}\mathcal{L}(\theta,\mathcal{D}) = \prod_{i=1}^n p(y=y_i\mid \vvec{x}_i,\theta)\end{align*}
+# :::
+# **Return** the classifier defining parameters $\theta$.
+# `````
+# As discussed in the scope of naive Bayes, computing the product of probabilities is generally not a good idea, because we might run into underflow. Hence, we apply again the log-probabilities trick and minimize the log-probabilities instead of the probabilities directly. We divide by the number of samples in the dataset and apply the logarithm to Eq. {eq}`eq:obj_smr` and obtain the equivalent objective
+# \begin{align*}
+# \max_{\theta} \frac1n \log(\prod_{i=1}^n p(y=y_i\mid \vvec{x}_i,\theta)) =
+# \max_{\theta} \frac1n \sum_{i=1}^n\log p(y=y_i\mid \vvec{x}_i,\theta)
+# \end{align*}
+# Instead of maximizing the logarithmic values, which are negative, we further multiply with minus one and obtain the following equivalent objective, introducing the cross entropy:
+# \begin{align*}
+# \min_{\theta} -\frac1n \sum_{i=1}^n\log p(y=y_i\mid \vvec{x}_i,\theta)=
+# \min_{\theta} \frac1n \sum_{i=1}^nCE(y_i,p(y\mid \vvec{x}_i,\theta)).
+# \end{align*}
+# ```{prf:definition} Cross-entropy
+# The cross entropy is a function $CE:\{1,\ldots,c\}\times [0,1]^c\rightarrow \mathbb{R}_+$,
+# mapping a label $y\in\{1,\ldots,c\}$ and a probability vector $\vvec{z}\in[0,1]^c$ to the negative logarithm of the probability vector at position $y$:
+# $$CE(y,\vvec{z}) = -\log(z_y).$$
+# ```
+# Cross entropy is a popular loss for classification tasks, since it penalizes heavily low probability predictions for the correct class. In addition, applying the logarithm to the softmax output dampenes the vanishing gradient effect that the sigmoid and softmax function are suffering from. Hence, applying Cross-Entropy as a loss helps to numerically optimize the softmax output of the softmax regression classifier.
 
 # ### Representation Learning
 # 

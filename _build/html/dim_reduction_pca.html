@@ -1162,10 +1162,10 @@ latter are NOT linearly separable from each other.
 <p>Mathematically, a direction can be indicated by a vector. For example, the direction onto the Z-axis is given by the vector <span class="math notranslate nohighlight">\((0,0,1)\)</span>. From the linear arlgebra recap, you might remember that a projection onto a vector is given by the inner product with a vector of norm one. That means that if we want to project our data onto a direction, then we need to multiply the data points with a vector pointing in that direction, having norm one.</p>
 <p>Given the <span class="math notranslate nohighlight">\(n\times d\)</span> data matrix <span class="math notranslate nohighlight">\(D\)</span> gathering <span class="math notranslate nohighlight">\(n\)</span> observations of <span class="math notranslate nohighlight">\(d\)</span> features <span class="math notranslate nohighlight">\(\mathtt{F}_1,\ldots,\mathtt{F}_d\)</span>, we define a new feature as</p>
 <div class="amsmath math notranslate nohighlight" id="equation-acd620c0-bf0e-4a30-95df-4d2b9f22a139">
-<span class="eqno">(96)<a class="headerlink" href="#equation-acd620c0-bf0e-4a30-95df-4d2b9f22a139" title="Permalink to this equation">#</a></span>\[\begin{align}\mathtt{F}_{d+1}= \sum_{k=1}^d \alpha_k\mathtt{F}_k.\end{align}\]</div>
+<span class="eqno">(98)<a class="headerlink" href="#equation-acd620c0-bf0e-4a30-95df-4d2b9f22a139" title="Permalink to this equation">#</a></span>\[\begin{align}\mathtt{F}_{d+1}= \sum_{k=1}^d \alpha_k\mathtt{F}_k.\end{align}\]</div>
 <p>We have <span class="math notranslate nohighlight">\(n\)</span> observations of this new feature, given by</p>
 <div class="amsmath math notranslate nohighlight" id="equation-bb9a54ff-752b-459d-9803-27c14180b42f">
-<span class="eqno">(97)<a class="headerlink" href="#equation-bb9a54ff-752b-459d-9803-27c14180b42f" title="Permalink to this equation">#</a></span>\[\begin{align}D_{\cdot d+1} =\sum_{k=1}^d \alpha_kD_{\cdot k}=D\bm\alpha\in\mathbb{R}^n\end{align}\]</div>
+<span class="eqno">(99)<a class="headerlink" href="#equation-bb9a54ff-752b-459d-9803-27c14180b42f" title="Permalink to this equation">#</a></span>\[\begin{align}D_{\cdot d+1} =\sum_{k=1}^d \alpha_kD_{\cdot k}=D\bm\alpha\in\mathbb{R}^n\end{align}\]</div>
 <p>That means that the <span class="math notranslate nohighlight">\(i\)</span>-th feature value of the new feature is computed by the inner product <span class="math notranslate nohighlight">\(D_{i\cdot}\alpha\)</span> of the <span class="math notranslate nohighlight">\(i\)</span>-th observation and the coefficient vector <span class="math notranslate nohighlight">\(\alpha\)</span>. We can write the inner product <span class="math notranslate nohighlight">\(D_{i\cdot}\alpha = D_{i\cdot} \frac{\alpha}{\lVert\alpha\rVert}\lVert\alpha\rVert\)</span> as the inner product of vector <span class="math notranslate nohighlight">\(D_{i\cdot}\)</span> and the unit norm vector <span class="math notranslate nohighlight">\(\frac{\alpha}{\lVert\alpha\rVert}\)</span>, multiplied with the scalar <span class="math notranslate nohighlight">\(\lVert\alpha\rVert\)</span>. Geometrically, this inner product describes a projection of the vector <span class="math notranslate nohighlight">\(D_{i\cdot}\)</span> onto the vector <span class="math notranslate nohighlight">\(\frac{\alpha}{\lVert\alpha\rVert}\)</span>, scaled with the norm <span class="math notranslate nohighlight">\(\lVert\alpha\rVert\)</span>. Let’s explore this by an example. We create an example dataset which has teh shape of a multivariate Gaussian.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -23538,7 +23538,7 @@ IiISSgowEREJJQWYiIiEkgJMRERCSQEmIiKhpAATEZFQUoCJiEgoKcBERCSUFGAiIhJKCjAREQml\
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> and a rank <span class="math notranslate nohighlight">\(r\)</span>, denoting the number of dimensions available for.</p>
 <p><strong>Find</strong> the <span class="math notranslate nohighlight">\(r\)</span> orthogonal direction of largest variance, given by the columns <span class="math notranslate nohighlight">\(Z_{\cdot s}\)</span> which are the solution to the following series of optimization problems:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-53dc4b0e-f193-4ad1-baa6-cf510764b013">
-<span class="eqno">(98)<a class="headerlink" href="#equation-53dc4b0e-f193-4ad1-baa6-cf510764b013" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(100)<a class="headerlink" href="#equation-53dc4b0e-f193-4ad1-baa6-cf510764b013" title="Permalink to this equation">#</a></span>\[\begin{align}
     \max\ &amp; \mathrm{var}(DZ_{\cdot 1}) \\
     &amp;\text{s.t. } \lVert Z_{\cdot 1}\rVert^2=1\\
     \max\ &amp; \mathrm{var}(DZ_{\cdot 2}) \\
@@ -23551,7 +23551,7 @@ IiISSgowEREJJQWYiIiEkgJMRERCSQEmIiKhpAATEZFQUoCJiEgoKcBERCSUFGAiIhJKCjAREQml\
 </div>
 <p>We compute the sample mean as</p>
 <div class="amsmath math notranslate nohighlight" id="equation-ed9121f4-aa0b-4d4d-811b-eae2e3fba098">
-<span class="eqno">(99)<a class="headerlink" href="#equation-ed9121f4-aa0b-4d4d-811b-eae2e3fba098" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(101)<a class="headerlink" href="#equation-ed9121f4-aa0b-4d4d-811b-eae2e3fba098" title="Permalink to this equation">#</a></span>\[\begin{align}
     \mu_{\mathtt{F}_{d+1}} &amp;= \frac1n \sum_{i=1}^n D_{i d+1}
     = {\bm \mu_\mathtt{F}^\top \alpha},
     &amp;\text{ where }\bm\mu_\mathtt{F} = \begin{pmatrix}
@@ -23561,14 +23561,14 @@ IiISSgowEREJJQWYiIiEkgJMRERCSQEmIiKhpAATEZFQUoCJiEgoKcBERCSUFGAiIhJKCjAREQml\
 <p>is the vector gathering all sample means for the <span class="math notranslate nohighlight">\(d\)</span> features.</p>
 <p>We compute the <strong>sample variance</strong> as</p>
 <div class="amsmath math notranslate nohighlight" id="equation-cef974bf-52f1-4c3f-b680-4213cca71c13">
-<span class="eqno">(100)<a class="headerlink" href="#equation-cef974bf-52f1-4c3f-b680-4213cca71c13" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(102)<a class="headerlink" href="#equation-cef974bf-52f1-4c3f-b680-4213cca71c13" title="Permalink to this equation">#</a></span>\[\begin{align}
     \sigma_{\mathtt{F}_{d+1}}^2 &amp;=\frac1n\sum_{i=1}^n (D_{id+1}-\mu_{\mathtt{F}_{d+1}})^2
     =\frac1n\left\lVert \left(D -\vvec{1}{\bm \mu_\mathtt{F}^\top }\right){\bm\alpha}\right\rVert^2
 \end{align}\]</div>
 <p>We are interested in the direction of maximal variance, so we can restrict the length of vector <span class="math notranslate nohighlight">\(\bm{\alpha}\)</span>: <span class="math notranslate nohighlight">\(\lVert\bm{\alpha}\rVert=1\)</span></p>
 <p>The direction of largest variance <span class="math notranslate nohighlight">\({\bm\alpha}\)</span> is the solution to the following optimization problem:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-69184095-b058-49f5-9a95-e98064445364">
-<span class="eqno">(101)<a class="headerlink" href="#equation-69184095-b058-49f5-9a95-e98064445364" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(103)<a class="headerlink" href="#equation-69184095-b058-49f5-9a95-e98064445364" title="Permalink to this equation">#</a></span>\[\begin{align}
     \max_{\lVert \bm{\alpha}\rVert=1}\sigma_{d+1}^2
 &amp;=\max_{\lVert \bm{\alpha}\rVert=1}
 \frac1n\left\lVert \left(D-\vvec{1}{\bm\mu_\mathtt{F}^\top}\right){\bm\alpha}\right\rVert^2 \\
@@ -23585,7 +23585,7 @@ IiISSgowEREJJQWYiIiEkgJMRERCSQEmIiKhpAATEZFQUoCJiEgoKcBERCSUFGAiIhJKCjAREQml\
 <h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
 <p>If <span class="math notranslate nohighlight">\(C=U\Sigma V^\top\)</span> is the SVD of the centered data matrix <span class="math notranslate nohighlight">\(C\)</span>, then the solution to PCA is given by truncated SVD:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-407cbfae-1d7c-4245-91e8-e51d86809616">
-<span class="eqno">(102)<a class="headerlink" href="#equation-407cbfae-1d7c-4245-91e8-e51d86809616" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(104)<a class="headerlink" href="#equation-407cbfae-1d7c-4245-91e8-e51d86809616" title="Permalink to this equation">#</a></span>\[\begin{align}
     Y &amp;= U_{\cdot \mathcal{K}}\Sigma_{\mathcal{K}\mathcal{K}} &amp;\text{ (new coordinates)},\\ 
     X&amp; =V_{\cdot \mathcal{K}} &amp;\text{ (Principal Components)}
 \end{align}\]</div>
@@ -23607,7 +23607,7 @@ IiISSgowEREJJQWYiIiEkgJMRERCSQEmIiKhpAATEZFQUoCJiEgoKcBERCSUFGAiIhJKCjAREQml\
 <strong>Find</strong>
 the <span class="math notranslate nohighlight">\(r\)</span> orthogonal basis vectors, given by the columns <span class="math notranslate nohighlight">\(Z_{\cdot s}\)</span>, which span an <span class="math notranslate nohighlight">\(r\)</span>-dimensional subspace in which the most</p>
 <div class="amsmath math notranslate nohighlight" id="equation-5ab71eb2-6f3d-4bdc-9669-b4d9e73628ee">
-<span class="eqno">(103)<a class="headerlink" href="#equation-5ab71eb2-6f3d-4bdc-9669-b4d9e73628ee" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(105)<a class="headerlink" href="#equation-5ab71eb2-6f3d-4bdc-9669-b4d9e73628ee" title="Permalink to this equation">#</a></span>\[\begin{align}
     \max_{Z}&amp; \tr(Z^\top C^\top C Z) &amp; \text{s.t. } Z\in\mathbb{R}^{d\times r},\ Z^\top Z =I
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(C=D-\vvec{1}{\bm\mu_\mathtt{F}^\top}\)</span> is the centered data matrix.</p>

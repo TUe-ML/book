@@ -1,0 +1,133 @@
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/homebrew/Cellar/python@3.9/3.9.13_1/Frameworks/Python.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 647, in run_until_complete
+    return future.result()
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/homebrew/lib/python3.9/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.nn.functional as F
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_moons
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler    
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+cm_0 = LinearSegmentedColormap.from_list("mycmap", ["#ffffff","#a0c3ff"])
+
+
+# Generate and prepare data
+X, y = make_moons(n_samples=1000, noise=0.2, random_state=42)
+X = StandardScaler().fit_transform(X)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
+y_train_tensor = torch.tensor(y_train, dtype=torch.long)
+
+# Base class with latent layer output
+class BaseNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+    def get_latent(self, x):
+        raise NotImplementedError()
+
+# Two hidden layers: input -> hidden -> 2D latent -> output
+class TwoHiddenLayerNet(BaseNet):
+    def __init__(self):
+        super().__init__()
+        self.hidden = nn.Linear(2, 264)
+        self.latent = nn.Linear(264, 2)
+        self.output = nn.Linear(2, 2)
+
+    def forward(self, x):
+        x = torch.relu(self.hidden(x))
+        z = torch.relu(self.latent(x))
+        return self.output(z)
+
+    def get_latent(self, x):
+        x = torch.relu(self.hidden(x))
+        return self.latent(x)
+
+
+# Training function
+def train_model(model, X, y, epochs=1000, lr=0.01, momentum=0.99):
+    optimizer = optim.SGD(model.parameters(), lr=lr, momentum=momentum)
+    loss_fn = nn.CrossEntropyLoss()
+
+    for epoch in range(epochs):
+        model.train()
+        optimizer.zero_grad()
+        output = model(X)
+        loss = loss_fn(output, y)
+        if epoch%100==0: #print
+            _ , predicted = output.max(1)
+            correct = predicted.eq(y).sum().item()
+            print('Loss: %.3f | Acc: %.3f%%'% (loss, 100.*correct/y.shape[0]))
+        loss.backward()
+        optimizer.step()
+    return model
+
+# Plot latent space
+def plot_latent(model, X, y):
+    model.eval()
+    with torch.no_grad():
+        z = model.get_latent(X).numpy()
+    plt.figure(figsize=(6, 5))
+    
+    d,c = 2, 2
+    x_ = np.arange(min(z[:,0])-1, max(z[:,0])+1, 0.02)
+    y_ = np.arange(min(z[:,1])-1, max(z[:,1])+1, 0.02)
+
+    xx, yy = np.meshgrid(x_, y_)
+    XY = np.array([xx,yy]).reshape(2,x_.shape[0]*y_.shape[0]).T
+    with torch.no_grad():
+        logit = model.output(torch.tensor(XY, dtype=torch.float32))
+        conf = F.softmax(logit,dim=1).numpy().T
+    conf = conf.reshape(c,y_.shape[0],x_.shape[0])
+
+    h = plt.contourf(x_,y_,conf.max(axis=0), cmap=cm_0)    
+    plt.clim(0, 1)   
+    cb = plt.colorbar()
+    cb.set_label('Confidence')
+    
+    plt.scatter(z[y==0, 0], z[y==0, 1], c='blue')
+    plt.scatter(z[y==1, 0], z[y==1, 1], c='magenta')
+    
+    plt.axis('scaled')
+    plt.title(title)
+    plt.xlabel("z1")
+    plt.ylabel("z2")
+    plt.grid(True)
+    plt.show()
+
+# Train and plot
+model = train_model(TwoHiddenLayerNet(), X_train_tensor, y_train_tensor)
+plot_latent(model, X_train_tensor, y_train_tensor, title="Latent Space (2 Hidden Layers)")
+#plot_conf(lambda x: nn.softmax(model(x),dim=0),show_class_assignment=False, x_max =max(X[:,0])+1, y_max =max(X[:,1])+1, x_min =min(X[:,0])-1, y_min =min(X[:,1])-1)
+
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mTypeError[0m                                 Traceback (most recent call last)
+Input [0;32mIn [1][0m, in [0;36m<cell line: 100>[0;34m()[0m
+[1;32m     98[0m [38;5;66;03m# Train and plot[39;00m
+[1;32m     99[0m model [38;5;241m=[39m train_model(TwoHiddenLayerNet(), X_train_tensor, y_train_tensor)
+[0;32m--> 100[0m [43mplot_latent[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[43mX_train_tensor[49m[43m,[49m[43m [49m[43my_train_tensor[49m[43m,[49m[43m [49m[43mtitle[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mLatent Space (2 Hidden Layers)[39;49m[38;5;124;43m"[39;49m[43m)[49m
+
+[0;31mTypeError[0m: plot_latent() got an unexpected keyword argument 'title'
+TypeError: plot_latent() got an unexpected keyword argument 'title'
+

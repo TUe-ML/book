@@ -495,7 +495,7 @@ print(np.array([4,3])-np.abs(w1*4+w2*3-np.abs(b+1))/(w1**2+w2**2)*np.array([w1,w
 # * The training data points that are at minimum distance to the hyperplane are called **support vectors**.
 # * The SVM decision boundary defined over the equation $\mathbf{w}^\top \mathbf{x} +b = 0$.
 # * The hyperplanes that go through the support vectors are defined over the equation $\mathbf{w}^\top \mathbf{x} +b = \pm 1$.
-# * The **margin** is defined as $\frac{1}{\lVert\vvec{w}\rVert}$, can be interpreted as the width of the thickest board that can be put inbetween the classes.
+# * The **margin** is defined as $\frac{2}{\lVert\vvec{w}\rVert}$, can be interpreted as the width of the thickest board that can be put inbetween the classes.
 # ```{tikz}
 # \begin{tikzpicture}[font=\large, thick, >=Stealth]
 # \begin{axis}[
@@ -552,15 +552,17 @@ print(np.array([4,3])-np.abs(w1*4+w2*3-np.abs(b+1))/(w1**2+w2**2)*np.array([w1,w
 # We can now specify the Lagrangian:
 # ```{math}
 # :label: svm_lagrangian
+# \begin{align*}
 # \mathcal{L}((\vvec{w},b),\bm\lambda) = \lVert \vvec{w}\rVert^2 - \sum_{i=1}^n \lambda_i(y_i(\vvec{w}^\top\vvec{x}_i+b)-1)
+# \end{align*}
 # ```
-# The objective function and the constraints are continuously differentiable, hence we can apply the KKT conditions. The first condition of the KKT conditions is that the gradient of the Lagrangian subject to the parameters $\vvec{w}$ and $b$ is equal to zero.
+# The Lagrangian is convex with respect to $\vvec{w}$ and $b$, it is the sum of the convex squared L2 norm and affine functions. Hence, the stationary points subject to $\vvec{w}$ and $b$ are the minimizers of the Lagrangian. 
 # Hence, we write
 # ```{math}
-# :label:svm_grad_zero
+# :label: svm_grad_zero
 # \begin{align*}
-# \nabla_{\bf w} {\cal L}((\vvec{w},b), \boldsymbol{\lambda}) &= 0 \Leftrightarrow {\bf w} = \frac12\sum_{i=1}^{n} \lambda_{i} y_{i} {\bf x}_{i}\\
-# \frac{\partial {\cal L}((\vvec{w},b), \boldsymbol{\lambda})}{\partial b} &= 0 \Leftrightarrow \sum_{i=1}^{n} \lambda_{i} y_{i} = 0.
+# \nabla_{\bf w} {\cal L}((\vvec{w},b), \bm\lambda) &= 0 \Leftrightarrow {\bf w} = \frac12\sum_{i=1}^{n} \lambda_{i} y_i {\bf x}_i\\
+# \frac{\partial {\cal L}((\vvec{w},b), \bm\lambda)}{\partial b} &= 0 \Leftrightarrow \sum_{i=1}^{n} \lambda_i y_i = 0.
 # \end{align*}
 # ```
 # Now, we plug in the results from above to obtain the dual objective function:
@@ -597,7 +599,10 @@ print(np.array([4,3])-np.abs(w1*4+w2*3-np.abs(b+1))/(w1**2+w2**2)*np.array([w1,w
 # ````
 # ```{prf:proof}
 # We show that the objective above is convex.
-# * The objective function is convex: the function $\vvec{x}^\top Q\vvec{x}$ is convex for all p.s.d. matrices $Q$ (see exercises). The matrix $Q=Z^\top Z$ is p.s.d. because we have $\vvec{x}^\top Q\vvec{x}=\vvec{x}^\top Z^\top Z\vvec{x}=\lVert Z\vvec{x}\rVert\geq 0$ for all $\vvec{x}\in\mathbb{R}^{n}$. Hence the objective function of the quadratic program is the sum of a convex function $\bm{\lambda}^\top Q\bm{\lambda}$ and a linear function $-\bm{\lambda}^\top\mathbf{1}$ and hence convex. 
+# * The objective function is convex: the function 
+# \begin{align*}\vvec{x}^\top Q\vvec{x} = \vvec{x}^\top \frac14 \diag(\vvec{y})DD^\top\diag(\vvec{y})\vvec{x} = \frac14\lVert D^\top\diag(\vvec{y})\vvec{x}\rVert^2
+# \end{align*}
+# is convex because it is a composition of a convex function (the squared L2 norm) and an affine function. Hence the objective function of the quadratic program is the sum of a convex function $\bm{\lambda}^\top Q\bm{\lambda}$ and a linear function $-\bm{\lambda}^\top\mathbf{1}$ and hence convex. 
 # * The feasible set is convex: the feasible set is the nonnegative subspace of a hyperplane, defined by $\bm{\lambda}^\top\vvec{y}=0$ and is hence a convex set. As a result, the objective above is convex. 
 # ```
 # Once we have solved the convex program, we can obtain the optimal hyperplane from the Lagrange multipliers. This is necessary to perform the inference step, the classification for unseen data points.
@@ -613,13 +618,14 @@ print(np.array([4,3])-np.abs(w1*4+w2*3-np.abs(b+1))/(w1**2+w2**2)*np.array([w1,w
 # ````
 # ````{toggle}
 # ```{prf:proof}
+# According to Slater's condition, we have strong duality for the SVM objective and hence, solving the dual gives also the solution to the primal problem.
 # The definition of minimizer $\vvec{w}^*$ follows from Eq.{eq}`svm_grad_zero` and the optimal bias term is computed based on the fact that some data points have to lie exactly on the margin hyperplanes, because otherwise, we could increase the margin until we touch points with the margin hyperplanes.
 # \begin{align*}
 # y_i(\vvec{w}^\top\vvec{x}_i+b)=1\ & \Leftrightarrow b=\frac{1}{y_i}-\vvec{w}^\top\vvec{x}_i\\
 # &\Leftrightarrow b=y_i-\vvec{w}^\top\vvec{x}_i.
 # \end{align*}
 # The last equality follows from the fact that $y_i\in\{-1,+1\}$.     
-# We can indentify the support vectors as those vectors $\vvec{x}_i$ for which $\lambda_i>0$. There needs to be at least one $\lambda_i>0$, because otherwise the Lagrangian in Eq.{eq}`svm_lagrangian` would be equal to $\lVert\vvec{w}\rVert^2$ and the margin could be maximized until it violates a constraint. However, if we have a violated constraint, then the optimal Lagrangian multiplier $\lambda_i>0$ would be as big as possible to maximize the dual objective, hence we have a contradiction. Further, we can't have $\lambda_i>0$ if $y_i(\vvec{w}^\top\vvec{x}_i+b)>1$, because in that case, $\lambda_i=0$ maximizes the Lagrangian.
+# We can indentify the support vectors as those vectors $\vvec{x}_i$ for which $\lambda_i>0$. There needs to be at least one $\lambda_i>0$, because otherwise the Lagrangian in Eq.{eq}`svm_lagrangian` would be equal to $\lVert\vvec{w}\rVert^2$ and the margin could be maximized further, hence we wouldn't be at the global minimum.
 # ```
 # ````
 # ### Training of an SVM when Classes are Non-Separable
@@ -724,13 +730,13 @@ print(np.array([4,3])-np.abs(w1*4+w2*3-np.abs(b+1))/(w1**2+w2**2)*np.array([w1,w
 # ```{prf:proof}
 # The Lagrangian is given as
 # \begin{align*}
-# \mathcal{L}((\vvec{w},b,\bm{\xi}),\bm{\lambda},\bm{mu}) = \lVert\vvec{w}\rVert^2 +C\sum_{i=1}^n\xi_i -\sum_{i=1}^n\lambda_i(y_i(\vvec{w}^\top\vvec{x}_i +b)-1+\xi_i) -\sum_{i=1}^n\mu_i\xi_i,
+# \mathcal{L}((\vvec{w},b,\bm{\xi}),\bm{\lambda},\bm{\mu}) = \lVert\vvec{w}\rVert^2 +C\sum_{i=1}^n\xi_i -\sum_{i=1}^n\lambda_i(y_i(\vvec{w}^\top\vvec{x}_i +b)-1+\xi_i) -\sum_{i=1}^n\mu_i\xi_i,
 # \end{align*}
 # where $\lambda_i,\mu_i\geq 0$ are Lagrange multipliers. Setting the gradients subject to the parameters to zero yields
 # \begin{align*}
-# \nabla_{\bf w} {\cal L}((\vvec{w},b,\bm{\xi}),\bm{\lambda},\bm{mu}) &= 0 \Leftrightarrow {\bf w} = \frac12\sum_{i=1}^{n} \lambda_{i} y_{i} {\bf x}_{i}\\
-# \frac{\partial {\cal L}((\vvec{w},b,\bm{\xi}),\bm{\lambda},\bm{mu}}{\partial b} &= 0 \Leftrightarrow \sum_{i=1}^{n} \lambda_{i} y_{i} = 0\\
-# \frac{\partial {\cal L}((\vvec{w},b,\bm{\xi}),\bm{\lambda},\bm{mu}}{\partial \xi_i} &= 0 \Leftrightarrow C = \lambda_i + \mu_i.
+# \nabla_{\bf w} {\cal L}((\vvec{w},b,\bm{\xi}),\bm{\lambda},\bm{\mu}) &= 0 \Leftrightarrow {\bf w} = \frac12\sum_{i=1}^{n} \lambda_{i} y_{i} {\bf x}_{i}\\
+# \frac{\partial {\cal L}((\vvec{w},b,\bm{\xi}),\bm{\lambda},\bm{\mu})}{\partial b} &= 0 \Leftrightarrow \sum_{i=1}^{n} \lambda_{i} y_{i} = 0\\
+# \frac{\partial {\cal L}((\vvec{w},b,\bm{\xi}),\bm{\lambda},\bm{\mu})}{\partial \xi_i} &= 0 \Leftrightarrow C = \lambda_i + \mu_i.
 # \end{align*}
 # Plugging in those results yields the dual objective function that is stated above. The Lagrange multipliers $\mu_i$ are not needed, since we can replace the condition $\mu_i\geq 0$ with $\lambda_i\leq C$, since $\lambda_i=C-\mu_i$. 
 # ```

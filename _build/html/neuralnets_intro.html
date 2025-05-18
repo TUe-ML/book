@@ -703,10 +703,10 @@ The plot below shows the sigmoid function.</p>
 <div class="proof definition admonition" id="definition-0">
 <p class="admonition-title"><span class="caption-number">Definition 32 </span> (Softmax Regression)</p>
 <section class="definition-content" id="proof-content">
-<p>The <strong>softmax regression</strong> classifier computes the probability that point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> belongs to class <span class="math notranslate nohighlight">\(y\)</span> by means of <span class="math notranslate nohighlight">\(c\)</span> hyperplanes, defined by parameters <span class="math notranslate nohighlight">\(\vvec{w}_k\)</span> and <span class="math notranslate nohighlight">\(b_k\)</span>. Gathering the <span class="math notranslate nohighlight">\(c\)</span> hyperplane defining parameters in a matrix <span class="math notranslate nohighlight">\(W\)</span>, such that <span class="math notranslate nohighlight">\(W_{k\cdot} = \vvec{w}_k^\top\)</span>, and <span class="math notranslate nohighlight">\(\vvec{b}\)</span>, then the probability that point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> belongs to class <span class="math notranslate nohighlight">\(k\)</span> is
+<p>The <strong>softmax regression</strong> classifier computes the probability that point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> belongs to class <span class="math notranslate nohighlight">\(y\)</span> by means of <span class="math notranslate nohighlight">\(c\)</span> hyperplanes, defined by parameters <span class="math notranslate nohighlight">\(\vvec{w}_l\)</span> and <span class="math notranslate nohighlight">\(b_l\)</span>. Gathering the <span class="math notranslate nohighlight">\(c\)</span> hyperplane defining parameters in a matrix <span class="math notranslate nohighlight">\(W\)</span>, such that <span class="math notranslate nohighlight">\(W_{l\cdot} = \vvec{w}_l^\top\)</span>, and <span class="math notranslate nohighlight">\(\vvec{b}\)</span>, then the softmax regression classifier models the probability that point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> belongs to class <span class="math notranslate nohighlight">\(l\)</span> over the parameters <span class="math notranslate nohighlight">\(W\)</span> and <span class="math notranslate nohighlight">\(\vvec{b}\)</span>
 <div class="math notranslate nohighlight">
 \[
-p(y = l \mid \mathbf{x}) =\mathrm{softmax}(W\vvec{x}+\vvec{b})_l= \frac{\exp(\vvec{w}_k^\top \mathbf{x} + b_k)}{\sum_{j=1}^{c} \exp(\mathbf{w}_j^\top \mathbf{x} + b_j)}
+f_{sr}(\vvec{x})_l=p(y = l \mid \mathbf{x},W,\vvec{b}) =\mathrm{softmax}(W\vvec{x}+\vvec{b})_l= \frac{\exp(\vvec{w}_k^\top \mathbf{x} + b_k)}{\sum_{j=1}^{c} \exp(\mathbf{w}_j^\top \mathbf{x} + b_j)}
 \]</div>
 </p>
 </section>
@@ -752,6 +752,40 @@ p(y = l \mid \mathbf{x}) =\mathrm{softmax}(W\vvec{x}+\vvec{b})_l= \frac{\exp(\vv
 </section>
 <section id="training">
 <h2>Training<a class="headerlink" href="#training" title="Permalink to this headline">#</a></h2>
+<div class="tip admonition" id="softmax-regr-task">
+<p class="admonition-title">Task (softmax regression)</p>
+<p><strong>Given</strong> a classification training data set that is sampled i.i.d. <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n, y_i\in\{1,\ldots,c\}\}\)</span>.</p>
+<p><strong>Find</strong> the parameters <span class="math notranslate nohighlight">\(\theta=(W,\vvec{b})\)</span> such that the posterior probabilities, that are modeled as
+<div class="math notranslate nohighlight">
+\[p(y=l\mid \vvec{x},\theta) = \softmax(W\vvec{x}+\vvec{b})_l\]</div>
+
+are maximized</p>
+<div class="math notranslate nohighlight" id="equation-eq-obj-smr">
+<span class="eqno">(52)<a class="headerlink" href="#equation-eq-obj-smr" title="Permalink to this equation">#</a></span>\[\begin{align*}\max{\theta}\mathcal{L}(\theta,\mathcal{D}) = \prod_{i=1}^n p(y=y_i\mid \vvec{x}_i,\theta)\end{align*}\]</div>
+<p><strong>Return</strong> the classifier defining parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+</div>
+<p>As discussed in the scope of naive Bayes, computing the product of probabilities is generally not a good idea, because we might run into underflow. Hence, we apply again the log-probabilities trick and minimize the log-probabilities instead of the probabilities directly. We divide by the number of samples in the dataset and apply the logarithm to Eq. <a class="reference internal" href="#equation-eq-obj-smr">(52)</a> and obtain the equivalent objective</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\max_{\theta} \frac1n \log(\prod_{i=1}^n p(y=y_i\mid \vvec{x}_i,\theta)) =
+\max_{\theta} \frac1n \sum_{i=1}^n\log p(y=y_i\mid \vvec{x}_i,\theta)
+\end{align*}\]</div>
+<p>Instead of maximizing the logarithmic values, which are negative, we further multiply with minus one and obtain the following equivalent objective, introducing the cross entropy:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\min_{\theta} -\frac1n \sum_{i=1}^n\log p(y=y_i\mid \vvec{x}_i,\theta)=
+\min_{\theta} \frac1n \sum_{i=1}^nCE(y_i,p(y\mid \vvec{x}_i,\theta)).
+\end{align*}\]</div>
+<div class="proof definition admonition" id="definition-1">
+<p class="admonition-title"><span class="caption-number">Definition 33 </span> (Cross-entropy)</p>
+<section class="definition-content" id="proof-content">
+<p>The cross entropy is a function <span class="math notranslate nohighlight">\(CE:\{1,\ldots,c\}\times [0,1]^c\rightarrow \mathbb{R}_+\)</span>,
+mapping a label <span class="math notranslate nohighlight">\(y\in\{1,\ldots,c\}\)</span> and a probability vector <span class="math notranslate nohighlight">\(\vvec{z}\in[0,1]^c\)</span> to the negative logarithm of the probability vector at position <span class="math notranslate nohighlight">\(y\)</span>:
+<div class="math notranslate nohighlight">
+\[CE(y,\vvec{z}) = -\log(z_y).\]</div>
+</p>
+</section>
+</div><p>Cross entropy is a popular loss for classification tasks, since it penalizes heavily low probability predictions for the correct class. In addition, applying the logarithm to the softmax output dampenes the vanishing gradient effect that the sigmoid and softmax function are suffering from. Hence, applying Cross-Entropy as a loss helps to numerically optimize the softmax output of the softmax regression classifier.</p>
 </section>
 <section id="representation-learning">
 <h2>Representation Learning<a class="headerlink" href="#representation-learning" title="Permalink to this headline">#</a></h2>

@@ -121,10 +121,14 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torch.nn.functional as F
 import matplotlib.pyplot as plt
 from sklearn.datasets import make_moons
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler    
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+cm_0 = LinearSegmentedColormap.from_list("mycmap", ["#ffffff","#a0c3ff"])
+
 
 # Generate and prepare data
 X, y = make_moons(n_samples=1000, noise=0.2, random_state=42)
@@ -179,13 +183,32 @@ def train_model(model, X, y, epochs=1000, lr=0.01, momentum=0.99):
     return model
 
 # Plot latent space
-def plot_latent(model, X, y, title="Latent Space"):
+def plot_latent(model, X, y):
     model.eval()
     with torch.no_grad():
         z = model.get_latent(X).numpy()
     plt.figure(figsize=(6, 5))
+    
+    d,c = 2, 2
+    x_ = np.arange(min(z[:,0])-1, max(z[:,0])+1, 0.02)
+    y_ = np.arange(min(z[:,1])-1, max(z[:,1])+1, 0.02)
+
+    xx, yy = np.meshgrid(x_, y_)
+    XY = np.array([xx,yy]).reshape(2,x_.shape[0]*y_.shape[0]).T
+    with torch.no_grad():
+        logit = model.output(torch.tensor(XY, dtype=torch.float32))
+        conf = F.softmax(logit,dim=1).numpy().T
+    conf = conf.reshape(c,y_.shape[0],x_.shape[0])
+
+    h = plt.contourf(x_,y_,conf.max(axis=0), cmap=cm_0)    
+    plt.clim(0, 1)   
+    cb = plt.colorbar()
+    cb.set_label('Confidence')
+    
     plt.scatter(z[y==0, 0], z[y==0, 1], c='blue')
     plt.scatter(z[y==1, 0], z[y==1, 1], c='magenta')
+    
+    plt.axis('scaled')
     plt.title(title)
     plt.xlabel("z1")
     plt.ylabel("z2")
@@ -195,6 +218,80 @@ def plot_latent(model, X, y, title="Latent Space"):
 # Train and plot
 model = train_model(TwoHiddenLayerNet(), X_train_tensor, y_train_tensor)
 plot_latent(model, X_train_tensor, y_train_tensor, title="Latent Space (2 Hidden Layers)")
+#plot_conf(lambda x: nn.softmax(model(x),dim=0),show_class_assignment=False, x_max =max(X[:,0])+1, y_max =max(X[:,1])+1, x_min =min(X[:,0])-1, y_min =min(X[:,1])-1)
+
+
+# In[79]:
+
+
+import torch
+import numpy as np
+import matplotlib.pyplot as plt
+import torch.nn.functional as F
+
+def plot_latent_and_input(model, X, y, cm_0, title=""):
+    model.eval()
+    with torch.no_grad():
+        Z = model.get_latent(X).numpy()
+        X_np = X.numpy()
+        y_np = y.numpy()
+
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+    # ----------------------
+    # Plot in latent space
+    # ----------------------
+    ax = axes[1]
+    d, c = 2, 2
+    x_ = np.arange(Z[:, 0].min()-1, Z[:, 0].max()+1, 0.02)
+    y_ = np.arange(Z[:, 1].min()-1, Z[:, 1].max()+1, 0.02)
+    xx, yy = np.meshgrid(x_, y_)
+    XY = np.c_[xx.ravel(), yy.ravel()]
+
+    with torch.no_grad():
+        logits_latent = model.output(torch.tensor(XY, dtype=torch.float32))
+        conf_latent = F.softmax(logits_latent, dim=1).numpy().T
+    conf_latent = conf_latent.reshape(c, len(y_), len(x_))
+
+    ax.contourf(x_, y_, conf_latent.max(axis=0), cmap=cm_0)
+    fig.colorbar(ax.contourf(x_, y_, conf_latent.max(axis=0), cmap=cm_0), ax=ax)
+
+    ax.set_title("Latent Space Confidence")
+    ax.scatter(Z[y_np==0, 0], Z[y_np==0, 1], c='blue', label='Class 0')
+    ax.scatter(Z[y_np==1, 0], Z[y_np==1, 1], c='magenta', label='Class 1')
+    ax.set_xlabel("z1")
+    ax.set_ylabel("z2")
+    ax.axis('scaled')
+    ax.grid(True)
+    
+    # ----------------------
+    # Plot in input space
+    # ----------------------
+    ax = axes[0]
+    x_ = np.arange(X_np[:, 0].min()-1, X_np[:, 0].max()+1, 0.02)
+    y_ = np.arange(X_np[:, 1].min()-1, X_np[:, 1].max()+1, 0.02)
+    xx, yy = np.meshgrid(x_, y_)
+    XY_input = np.c_[xx.ravel(), yy.ravel()]
+    with torch.no_grad():
+        logits_input = model(torch.tensor(XY_input, dtype=torch.float32))
+        conf_input = F.softmax(logits_input, dim=1).numpy().T
+    conf_input = conf_input.reshape(c, len(y_), len(x_))
+
+    ax.contourf(x_, y_, conf_input.max(axis=0), cmap=cm_0)
+    fig.colorbar(ax.contourf(x_, y_, conf_input.max(axis=0), cmap=cm_0), ax=ax)
+
+    ax.set_title("Input Space Confidence")
+    ax.scatter(X_np[y_np==0, 0], X_np[y_np==0, 1], c='blue', label='Class 0')
+    ax.scatter(X_np[y_np==1, 0], X_np[y_np==1, 1], c='magenta', label='Class 1')
+    ax.set_xlabel("x1")
+    ax.set_ylabel("x2")
+    ax.axis('scaled')
+    ax.grid(True)
+    
+    plt.suptitle(title)
+    plt.tight_layout()
+    plt.show()
+plot_latent_and_input(model, X_train_tensor, y_train_tensor, cm_0)
 
 
 # In[ ]:
