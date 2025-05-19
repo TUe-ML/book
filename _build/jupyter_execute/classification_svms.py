@@ -567,8 +567,8 @@ print(np.array([4,3])-np.abs(w1*4+w2*3-np.abs(b+1))/(w1**2+w2**2)*np.array([w1,w
 # ```
 # Now, we plug in the results from above to obtain the dual objective function:
 # \begin{align*}
-# {\cal L}_{dual}(\boldsymbol{\lambda}) &=\left\lVert \frac12\sum_{i=1}^{n} \lambda_{i} y_{i} {\bf x}_{i}\right\rVert^2 - \sum_{i=1}^n \lambda_i\left(y_i\left(\frac12\sum_{j=1}^{n} \lambda_{j} y_{j}\vvec{x}_j^\top\vvec{x}_i+b\right)-1\right)\\
-# &=\frac{1}{4} \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda_{i} \lambda_{j} y_{i} y_{j} {\bf x}_{i}^{T} {\bf x}_{j}  - \frac12\sum_{i=1}^{n} \lambda_{i}y_{i} {\bf x}_{i} \sum_{j=1}^{n} \lambda_{j} y_{j} {\bf x}_{j} - \underbrace{\sum_{i=1}^{n} \lambda_{i} y_{i}}_{= 0} b + \sum_{i=1}^{n} \lambda_{i} \\
+# {\cal L}_{dual}(\bm\lambda) &=\left\lVert \frac12\sum_{i=1}^{n} \lambda_{i} y_{i} {\bf x}_{i}\right\rVert^2 - \sum_{i=1}^n \lambda_i\left(y_i\left(\frac12\sum_{j=1}^{n} \lambda_{j} y_{j}\vvec{x}_j^\top\vvec{x}_i+b\right)-1\right)\\
+# &=\frac{1}{4} \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda_{i} \lambda_{j} y_{i} y_{j} {\bf x}_{i}^\top {\bf x}_{j}  - \frac12\sum_{i=1}^{n} \lambda_{i}y_{i} \sum_{j=1}^{n} \lambda_{j} y_{j} {\bf x}_{j}^\top {\bf x}_{i} - \underbrace{\sum_{i=1}^{n} \lambda_{i} y_{i}}_{= 0} b + \sum_{i=1}^{n} \lambda_{i} \\
 # &= - \frac{1}{4} \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda_{i} \lambda_{j} y_{i} y_{j} {\bf x}_{i}^\top {\bf x}_{j} + \sum_{i=1}^{n} \lambda_{i}.
 # \end{align*}
 # 
@@ -689,7 +689,7 @@ print(np.array([4,3])-np.abs(w1*4+w2*3-np.abs(b+1))/(w1**2+w2**2)*np.array([w1,w
 # **Given** a binary classification training data set $\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n, y_i\in\{-1,1\}\}$ and parameter $C>0$.       
 # 
 # **Find** the hyperplane defined as all points in the set $\{\vvec{x}\mid\vvec{w}^\top\vvec{x}+b=0\}$ separating the classes and having maximum margin.
-# $$\min_{\vvec{w},b}\lVert \vvec{w}\rVert^2+C\sum_{i=1}^n\xi_i\quad\text{ s.t. } y_i(\vvec{w}^\top\vvec{x}_i+b)\geq 1 -\xi_i,\ \xi_i\geq 0 \text{ for }1\leq i\leq n$$
+# $$\min_{\vvec{w},b,\bm\xi}\lVert \vvec{w}\rVert^2+C\sum_{i=1}^n\xi_i\quad\text{ s.t. } y_i(\vvec{w}^\top\vvec{x}_i+b)\geq 1 -\xi_i,\ \xi_i\geq 0 \text{ for }1\leq i\leq n$$
 # **Return** the hyperplane defining parameters $\vvec{w},b$ 
 # `````
 # 
