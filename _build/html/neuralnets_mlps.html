@@ -55,7 +55,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Training Neural Networks: Backpropagation and SGD" href="neuralnets_optimization.html" />
+    <link rel="next" title="Backpropagation" href="neuralnets_backprop.html" />
     <link rel="prev" title="From Linear Models to Neural Networks" href="neuralnets_intro.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -321,23 +321,23 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_sgd.html">
+     SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_conv.html">
+     Convolution
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_func_approx.html">
-     Function approximator
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_backprop.html">
-     Backpropagation
     </a>
    </li>
   </ul>
@@ -631,13 +631,30 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#sigmoid">
-     Sigmoid
+    <a class="reference internal nav-link" href="#sigmoid-and-tanh">
+     Sigmoid and Tanh
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#relu-and-leaky-relu">
      ReLU and Leaky ReLU
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mlps-are-universal-function-approximators">
+   MLPs are Universal Function Approximators
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mlps-with-a-softmax-regression-classifier-head">
+   MLPs with a Softmax Regression Classifier Head
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#defining-a-classifier-mlp-in-pytorch">
+     Defining a Classifier MLP in Pytorch
     </a>
    </li>
   </ul>
@@ -682,13 +699,30 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#sigmoid">
-     Sigmoid
+    <a class="reference internal nav-link" href="#sigmoid-and-tanh">
+     Sigmoid and Tanh
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#relu-and-leaky-relu">
      ReLU and Leaky ReLU
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mlps-are-universal-function-approximators">
+   MLPs are Universal Function Approximators
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mlps-with-a-softmax-regression-classifier-head">
+   MLPs with a Softmax Regression Classifier Head
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#defining-a-classifier-mlp-in-pytorch">
+     Defining a Classifier MLP in Pytorch
     </a>
    </li>
   </ul>
@@ -708,18 +742,24 @@ title="Print to PDF"
 <p>Neural networks get their name from their loose inspriration of connections between neurons in the brain and how the brain learns by strengthening these connections. While the mechanisms that enable a human brain to capture complex patterns are vastly different to how neural networks are designed, neural networks still borrow loads of their terminology from the description of the brain. One such example is the neuron that is in the name of neural networks.</p>
 <section id="an-artificial-neuron">
 <h2>An Artificial Neuron<a class="headerlink" href="#an-artificial-neuron" title="Permalink to this headline">#</a></h2>
-<p>The artificial neuron is supposed to simulate the firing process of an actual nueron. Getting an input vector <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, the artificial neuron computes a (typically nonnegative) output based on an affine function and a nonlinear activation function <span class="math notranslate nohighlight">\(\phi\)</span>. Graphically, this is typically presented like this:</p>
+<p>The artificial neuron is supposed to simulate the firing process of an actual neuron. Getting an input vector <span class="math notranslate nohighlight">\(\vvec{x}\)</span>, the artificial neuron computes a (typically nonnegative) output based on an affine function and a nonlinear activation function <span class="math notranslate nohighlight">\(\phi\)</span>. Graphically, this is typically presented like this:</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-850a0fa98a604377a5a1046794347a68e2718a65.svg" alt="Figure made with TikZ" /></p>
-</div><p>The input is inserted into the neuron and a weighted sum of the input with the coefficients of the vector <span class="math notranslate nohighlight">\(\vvec{w}\)</span> is symbolized by the directed edges from the input nodes to the output node. We can imagine that every edge from node <span class="math notranslate nohighlight">\(k\)</span> has edge weight <span class="math notranslate nohighlight">\(w_k\)</span>, which is multiplied with the input <span class="math notranslate nohighlight">\(x_k\)</span>, returning <span class="math notranslate nohighlight">\(w_kx_k\)</span> at the end of each single edge. All the edges are summed up, yielding <span class="math notranslate nohighlight">\(\sum_k w_kx_k\)</span>. Within the output node, we add a bias term and apply the <strong>activation function</strong> <span class="math notranslate nohighlight">\(\phi_a\)</span>. In summary, a neuron computes the following function:</p>
+</div><p>The input is inserted into the neuron and a weighted sum of the input with the coefficients of the vector <span class="math notranslate nohighlight">\(\vvec{w}\)</span> is symbolized by the directed edges from the input nodes to the output node. We can imagine that every edge from node <span class="math notranslate nohighlight">\(k\)</span> has edge weight <span class="math notranslate nohighlight">\(w_k\)</span>, which is multiplied with the input <span class="math notranslate nohighlight">\(x_k\)</span>, returning <span class="math notranslate nohighlight">\(w_kx_k\)</span> at the end of each single edge. All the edges are summed up, yielding <span class="math notranslate nohighlight">\(\sum_k w_kx_k\)</span>.</p>
+<p>Within the output node, we add a bias term and apply the <strong>activation function</strong> <span class="math notranslate nohighlight">\(\phi_a\)</span>. In the beginning, the sigmoid function has been used as an activation function, since it has this nice interpretation as a soft thresholding function that simulates the <em>firing</em> or <em>not firing</em> status of a neuron. However, the sigmoid function suffers from optimization issues, which is why other activations became more popular. We discuss this later.</p>
+<p>In summary, a neuron computes the following function:</p>
 <div class="math notranslate nohighlight" id="equation-neuron-output1">
 <span class="eqno">(53)<a class="headerlink" href="#equation-neuron-output1" title="Permalink to this equation">#</a></span>\[\begin{align*}
 \phi_a \left( \sum_{k=1}^{d} w_{k} x_{k} + b \right) = \phi(\vvec{w}^\top \vvec{x}+b)
 \end{align*}\]</div>
-<p>For convenience, we can further rewrite <a class="reference internal" href="#equation-neuron-output1">(53)</a> by making the bias term implicit. More precisely, we absorb the bias into the weights by making <span class="math notranslate nohighlight">\( w_{0} = b \)</span> and create a new dummy input <span class="math notranslate nohighlight">\( x_{0} = 1 \)</span>. Thus, we can write</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Any affine function in <span class="math notranslate nohighlight">\(d\)</span> dimensions can be written as a linear function in <span class="math notranslate nohighlight">\(d+1\)</span> dimensions (as we also did it for the application of linear regression for learning affine functions). That is, we absorb the bias into the weights by specifying <span class="math notranslate nohighlight">\( w_{0} = b \)</span> and creating a new dummy input <span class="math notranslate nohighlight">\( x_{0} = 1 \)</span>. This way we can write an affine function as a linear function.</p>
 <div class="math notranslate nohighlight" id="equation-neuron-output3">
 <span class="eqno">(54)<a class="headerlink" href="#equation-neuron-output3" title="Permalink to this equation">#</a></span>\[\begin{align*}
 \phi_a \left( \sum_{k=0}^{d} w_{k} x_{k} \right) = \phi(\vvec{w}^\top \vvec{x}).
 \end{align*}\]</div>
+<p>Because of this notational possibility, we speak in machine learning often of a linear function although we technically mean an affine function. This happens in particular in the  neural networks terminology.</p>
+</div>
 </section>
 <section id="from-neuron-to-layer">
 <h2>From Neuron to Layer<a class="headerlink" href="#from-neuron-to-layer" title="Permalink to this headline">#</a></h2>
@@ -733,19 +773,23 @@ The activation function is here applied element-wise, such that for vector <span
 <div class="math notranslate nohighlight">
 \[\begin{split}\phi_a(\vvec{z}) = \begin{pmatrix}\phi_a(z_1)\\\vdots\\ \phi_a(z_{d_1})\end{pmatrix}.\end{split}\]</div>
 </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A layer that models an activation function applied to an affine function as discussed above is usually referred to as a <strong>linear layer</strong> (because of the rather technical distinction between affine and linear functions noted above) or a <strong>dense layer</strong>, or a <strong>fully connected layer</strong>.</p>
+</div>
 </section>
 <section id="from-one-layer-to-the-multi-layer-perceptron">
 <h2>From one Layer to the Multi-Layer Perceptron<a class="headerlink" href="#from-one-layer-to-the-multi-layer-perceptron" title="Permalink to this headline">#</a></h2>
-<p>A Multi-Layer Perceptron (MLP), a.k.a. a feed forward neural network stacks multiple layers after each other, where each layer is an affine function followed by an activation function. The plot below shows an MLP with one input layer (left), a hidden layer (middle) and an output layer (right).</p>
-<div class="figure" style="text-align: center"><p><img  src="_images/tikz-dfb4bcfc7acba5e0915c7cc5045ba6bc2134dfce.svg" alt="Figure made with TikZ" /></p>
-</div><p>The output function is computed layer by layer, that is the output vector <span class="math notranslate nohighlight">\(\vvec{z}\)</span> is computes as</p>
+<p>A <strong>Multi-Layer Perceptron</strong> (MLP), a.k.a. <strong>feed forward neural network</strong> stacks multiple layers after each other, where each layer is an affine function followed by an activation function. The plot below shows an MLP with one input layer (left), a hidden layer (middle) and an output layer (right).</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-709b42571e4321b58f86ca02ec16690d70160579.svg" alt="Figure made with TikZ" /></p>
+</div><p>The output function is computed layer by layer, that is the output vector <span class="math notranslate nohighlight">\(\vvec{z}\)</span> is computed as</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \vvec{h}^{(1)} &amp;= \phi_1(W^{(1)}\vvec{x}+\vvec{b}_1)\\
 \vvec{z} &amp; = \phi_2(W^{(2)}\vvec{h}^{(1)}+\vvec{b}_2).
 \end{align*}\]</div>
 <p>Likewise, we can add another layer and get a MLP with four layers:</p>
-<div class="figure" style="text-align: center"><p><img  src="_images/tikz-c0c42ed86ec73efe5313c9828812be165c4e957e.svg" alt="Figure made with TikZ" /></p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-08af1bc550fe9f46ce25b61d3653702c585dedc0.svg" alt="Figure made with TikZ" /></p>
 </div><p>Now, the output is the composition of three functions that are computed by each layer:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -757,7 +801,7 @@ The activation function is here applied element-wise, such that for vector <span
 </section>
 <section id="activation-functions">
 <h2>Activation Functions<a class="headerlink" href="#activation-functions" title="Permalink to this headline">#</a></h2>
-<p>Each layer stacks an affine function with a <strong>nonlinear activation function</strong>. The nonlinearlity of the activation functions prevent that the stacked layers collapse to a single affine function. That is because the composition of affine functions is an affine function itself:</p>
+<p>Each layer stacks an affine function with a <strong>nonlinear activation function</strong>. The nonlinearlity of the activation functions prevent that the stacked layers collapse to a single affine function. That is because the composition of affine functions is an affine function itself. Assume we don’t use a linear activation function after the first hidden layer, then the first two layers collapse to one linear layer:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 W^{(2)}(W^{(1)}\vvec{x} + \vvec{b}^{(1)}) + \vvec{b}^{(2)} &amp;=
@@ -765,8 +809,8 @@ W^{(2)}W^{(1)}\vvec{x} + W^{(2)}\vvec{b}^{(1)} + \vvec{b}^{(2)}\\
 &amp; = \tilde{W}\vvec{x} +\tilde{\vvec{b}},
 \end{align*}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\tilde{W} = W^{(2)}W^{(1)}\)</span> and <span class="math notranslate nohighlight">\(\tilde{\vvec{b}} = W^{(2)}\vvec{b}^{(1)} + \vvec{b}^{(2)}\)</span>. Applying a nonlinear function after each affine function prevents that the layers collapse to a simple affine function and allows the network to learn complex functions by stacking simple layers after each other.</p>
-<section id="sigmoid">
-<h3>Sigmoid<a class="headerlink" href="#sigmoid" title="Permalink to this headline">#</a></h3>
+<section id="sigmoid-and-tanh">
+<h3>Sigmoid and Tanh<a class="headerlink" href="#sigmoid-and-tanh" title="Permalink to this headline">#</a></h3>
 <p>The sigmoid function has been used as an activation function back in the days, since it gives a nice interpretation of a neuron firing (sigmoid being close to one) or not (sigmoid being close to zero). The sigmoid function is defined as</p>
 <div class="math notranslate nohighlight">
 \[ \phi(x) = \frac{1}{1 + \exp^{-x}} \]</div>
@@ -829,11 +873,12 @@ W^{(2)}W^{(1)}\vvec{x} + W^{(2)}\vvec{b}^{(1)} + \vvec{b}^{(2)}\\
 <div class="math notranslate nohighlight">
 \[ ReLU(x) = \max(0, x). \]</div>
 
-ReLU is simple, and it also has a clear definition of a neuron being activated or firing if it returns a nonzero value. A potential drawback of ReLU is neurons whose affine function returns always a negative value become zero after ReLU, and those neurons are often not easily recovered during optimization (dead neuron effect). Depending on the application, this effect is not desired. In those cases, you can apply the Leaky ReLU that maps negative values to negative values close to zero:
+ReLU is simple, and it also has a clear definition of a neuron being activated or firing if it returns a nonzero value. A potential drawback of ReLU is neurons whose affine function returns always a negative value become zero after ReLU, and those neurons are often not easily recovered during optimization (dead neuron effect). Depending on the application, this can lead to perfomance issues. In those cases, you can apply the Leaky ReLU that maps negative values to negative values close to zero:
 <div class="math notranslate nohighlight">
 \[\begin{split}LeakyReLU(x) = \begin{cases}x &amp; \text{ if } x\geq0\\
 \alpha x &amp; \text{ otherwise }\end{cases}\end{split}\]</div>
 
+The value of <span class="math notranslate nohighlight">\(\alpha\)</span> is typically close to zero, like <span class="math notranslate nohighlight">\(\alpha=0.01\)</span>.
 The plots of both activation functions is below:</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -885,6 +930,74 @@ The plots of both activation functions is below:</p>
 </div>
 </section>
 </section>
+<section id="mlps-are-universal-function-approximators">
+<h2>MLPs are Universal Function Approximators<a class="headerlink" href="#mlps-are-universal-function-approximators" title="Permalink to this headline">#</a></h2>
+<p>One of the foundational theoretical results for neural networks is the <strong>Universal Approximation Theorem</strong>. This theorem formalizes the power of neural networks: a sufficiently large neural network can approximate any reasonable function to arbitrary accuracy.</p>
+<p>The following theorem is a popular variant of a series of universal approximation theorems, stating that a feedforward neural network (MLP) with at least one hidden layer and a suitable activation function (like the sigmoid or ReLU), can approximate any continuous function on a compact subset of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>, given enough hidden units.</p>
+<div class="proof theorem admonition" id="theorem-0">
+<p class="admonition-title"><span class="caption-number">Theorem 26 </span> (Universal Approximation Theorem)</p>
+<section class="theorem-content" id="proof-content">
+<p>Let <span class="math notranslate nohighlight">\(f: \mathbb{R}^d \to \mathbb{R}\)</span> be a continuous function, and let <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span>. Then there exists a neural network (MLP) <span class="math notranslate nohighlight">\(f_\theta\)</span> with a single hidden layer with a ReLU, Leaky ReLU or sigmoid activation and a finite number of neurons such that:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+ \sup_{x \in \mathcal{K}} \lvert f(x) - f_\theta(x)\rvert &lt; \epsilon
+\end{align*}\]</div>
+<p>for any compact set <span class="math notranslate nohighlight">\(\mathcal{K} \subset \mathbb{R}^d\)</span>.</p>
+</section>
+</div><p>This means neural networks can get as close as we want to any target function in theory - with just a single hidden layer. We call networks that have just a single layer, that is typically very wide, a <strong>shallow network</strong>. However, the theorem and its variants are non-constructive: it tells us such a network exists but not how to find it. Still, the theorem motivates research in training neural networks to their full potential. In the context of machine learning, we are particularly interested in training the neural networks such that they learn useful and meaningful representations of the data.</p>
+<p>In practice, <strong>deep neural networks</strong>, using many layers, are more efficiently trained and stored. Shallow neural networks often need a huge amount of neurons in their hidden layer to learn good representations. Stacking instead multiple lower dimensional layers after one another requires often fewer parameters to be trained.</p>
+</section>
+<section id="mlps-with-a-softmax-regression-classifier-head">
+<h2>MLPs with a Softmax Regression Classifier Head<a class="headerlink" href="#mlps-with-a-softmax-regression-classifier-head" title="Permalink to this headline">#</a></h2>
+<p>If we want to pursue specific machine learning tasks, such as classification, we can stack together a more general MLP, stacking linear layers, and a classification module, such as the softmax regression. For example, we can add a softmax regression module to the MLP with two hidden layers, obtaining the following structure:</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-8797eba3773c51578eb5bf6faeccc48deb98af37.svg" alt="Figure made with TikZ" /></p>
+</div><section id="defining-a-classifier-mlp-in-pytorch">
+<h3>Defining a Classifier MLP in Pytorch<a class="headerlink" href="#defining-a-classifier-mlp-in-pytorch" title="Permalink to this headline">#</a></h3>
+<p>Pytorch is an open source deep learning framework that allows for a flexible definition of MLPs and its optimization. Any neural network, such as our MLP from above, can be implemented as a subclass of <code class="docutils literal notranslate"><span class="pre">torch.nn.Module</span></code>. For classification, the neural network is expected to output the <strong>logits</strong> (the output before softmax) instead of the softmax probabilities, because the softmax is integrated in the computation of the loss functions.<br />
+To define a network, we initialize the layers in the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> function. An affine layer mapping from a <span class="math notranslate nohighlight">\(5\)</span>-dimensional layer to a <span class="math notranslate nohighlight">\(10\)</span>-dimensional layer is defined as <code class="docutils literal notranslate"><span class="pre">nn.Linear(5,10)</span></code>. The example below implements a two-hidden-layer network and shows the output (the logits) for five randomly generated data points.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="c1"># Two hidden layers: input -&gt; hidden -&gt; 2D latent -&gt; output</span>
+<span class="k">class</span> <span class="nc">TwoHiddenLayerNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_dim</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    
+<span class="n">model</span> <span class="o">=</span> <span class="n">TwoHiddenLayerNet</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="c1"># Create dummy input: batch of 5 samples, each with 10 features</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Forward pass</span>
+<span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Output</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Logits:&quot;</span><span class="p">,</span> <span class="n">logits</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Logits: tensor([[0.2266, 0.0792, 0.2939],
+        [0.1126, 0.0769, 0.2159],
+        [0.2218, 0.0604, 0.2889],
+        [0.1166, 0.0918, 0.2860],
+        [0.1217, 0.0043, 0.2555]], grad_fn=&lt;AddmmBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We see that the output has an additional variable called <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code>. This variable stores information that is necessary to compute the gradient of the network subject to the weights in the hidden layers. How we are going to compute that, we will see in the next section.</p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -921,10 +1034,10 @@ The plots of both activation functions is below:</p>
             <p class="prev-next-title">From Linear Models to Neural Networks</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="neuralnets_optimization.html" title="next page">
+    <a class='right-next' id="next-link" href="neuralnets_backprop.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Training Neural Networks: Backpropagation and SGD</p>
+        <p class="prev-next-title">Backpropagation</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

@@ -64,7 +64,7 @@ plt.show()
 # 
 # This probability is computed over the sigmoid function 
 # $$\sigma(x) = \frac{1}{1 + \exp^{-x}}.$$
-# Recall from what we discussed regarding the SVM that $\mathbf{w}^\top \mathbf{x} + b = dist(\mathbf{x},\mathcal{H}_{\vvec{w},b})\lVert\vvec{w}\rVert$ is the scaled distance of point $\vvec{x}$ to the hyperplane defined by $\vvec{w}$ and $b$. The sigmoid function maps this scaled distance onto a probability between 0 and 1.
+# Recall from what we discussed regarding the SVM that $\lvert\mathbf{w}^\top \mathbf{x} + b\rvert = dist(\mathbf{x},\mathcal{H}_{\vvec{w},b})\lVert\vvec{w}\rVert$ is the scaled distance of point $\vvec{x}$ to the hyperplane defined by $\vvec{w}$ and $b$. The sigmoid function maps this scaled distance onto a probability between 0 and 1.
 # The plot below shows the sigmoid function.
 # 
 
@@ -97,12 +97,12 @@ plt.show()
 
 # For multiclass classification, the softmax regression generalizes logistic regression to $c$ classes by learning one hyperplane per class. The more a point lies on the positive side of a hyperplane, the more confidently it is assigned to that class. The confidence is again interpreted as a probability that a sample belongs to a class, which is now computed over the softmax function. 
 # ```{prf:definition} Softmax Regression
-# The **softmax regression** classifier computes the probability that point $\vvec{x}$ belongs to class $y$ by means of $c$ hyperplanes, defined by parameters $\vvec{w}_l$ and $b_l$. Gathering the $c$ hyperplane defining parameters in a matrix $W$, such that $W_{l\cdot} = \vvec{w}_l^\top$, and $\vvec{b}$, then the softmax regression classifier models the probability that point $\vvec{x}$ belongs to class $l$ over the parameters $W$ and $\vvec{b}$
+# The **softmax regression** (a.k.a. multinomial logistic regression) classifier computes the probability that point $\vvec{x}$ belongs to class $y$ by means of $c$ hyperplanes, defined by parameters $\vvec{w}_l$ and $b_l$. Gathering the $c$ hyperplane defining parameters in a matrix $W$, such that $W_{l\cdot} = \vvec{w}_l^\top$, and $\vvec{b}$, then the softmax regression classifier models the probability that point $\vvec{x}$ belongs to class $l$ over the parameters $W$ and $\vvec{b}$
 # $$
-# f_{sr}(\vvec{x})_l=p(y = l \mid \mathbf{x},W,\vvec{b}) =\mathrm{softmax}(W\vvec{x}+\vvec{b})_l= \frac{\exp(\vvec{w}_k^\top \mathbf{x} + b_k)}{\sum_{j=1}^{c} \exp(\mathbf{w}_j^\top \mathbf{x} + b_j)}
+# f_{sr}(\vvec{x})_l=p(y = l \mid \mathbf{x},W,\vvec{b}) =\mathrm{softmax}(W\vvec{x}+\vvec{b})_l= \frac{\exp(\vvec{w}_l^\top \mathbf{x} + b_l)}{\sum_{j=1}^{c} \exp(\mathbf{w}_j^\top \mathbf{x} + b_j)}
 # $$
 # ```
-# The softmax function $\mathrm{softmax}:\mathbb{R}^d\rightarrow [0,1]^c$, $\mathrm{softmax}(\vvec{x})_y=\frac{\exp(x_y)}{\sum_{j=1}^c\exp{x_j}}$ returns a vector reflecting the confidences for each class. We can easily show the confidences sum up tp one. The plot below show the confidences and the hyperplanes learned for a 3-class classification problem.  
+# The softmax function $\mathrm{softmax}:\mathbb{R}^d\rightarrow [0,1]^c$, $\mathrm{softmax}(\vvec{x})_y=\frac{\exp(x_y)}{\sum_{j=1}^c\exp{x_j}}$ returns a vector reflecting the confidences for each class. We can easily show the confidences sum up to one. The plot below show the confidences and the hyperplanes learned for a 3-class classification problem.  
 # 
 
 # In[3]:
@@ -150,7 +150,7 @@ plt.show()
 # are maximized
 # :::{math}
 # :label: eq:obj_smr
-# \begin{align*}\max{\theta}\mathcal{L}(\theta,\mathcal{D}) = \prod_{i=1}^n p(y=y_i\mid \vvec{x}_i,\theta)\end{align*}
+# \begin{align*}\max_{\theta}\mathcal{L}(\theta,\mathcal{D}) = \prod_{i=1}^n p(y=y_i\mid \vvec{x}_i,\theta)\end{align*}
 # :::
 # **Return** the classifier defining parameters $\theta$.
 # `````
@@ -170,6 +170,48 @@ plt.show()
 # $$CE(y,\vvec{z}) = -\log(z_y).$$
 # ```
 # Cross entropy is a popular loss for classification tasks, since it penalizes heavily low probability predictions for the correct class. In addition, applying the logarithm to the softmax output dampenes the vanishing gradient effect that the sigmoid and softmax function are suffering from. Hence, applying Cross-Entropy as a loss helps to numerically optimize the softmax output of the softmax regression classifier.
+# ### Softmax Regression as a Computational Graph
+# The plot below shows a visualization of the softmax regression model as it is common for neural networks. The affine function is visualized by the edges connecting the input layer on the left with the output layer. The output layer has $c$ nodes, one for each class. Every edge has a weight that is given by the matrix $W$. For example, the edge from input node $x_i$ to output class node $l$ is $W_{il}$. At each output node, the weighted sum of the edge weights multiplied with the input is computed, the bias term is added and the softmax function is applied.
+# ```{tikz}
+# \tikzset{%
+#   every neuron/.style={
+#     circle,
+#     draw,
+#     minimum size=0.5cm
+#   },
+#   neuron missing/.style={
+#     draw=none, 
+#     scale=2,
+#     text height=0.25cm,
+#     execute at begin node=$\vdots$
+#   },
+# }
+# 
+# \begin{tikzpicture}[x=1.5cm, y=1cm, >=stealth]
+# 
+# \foreach \m/\l [count=\y] in {1,2,3,missing,4}
+#   \node [every neuron/.try, neuron \m/.try] (input-\m) at (0,2.5-\y) {};
+# 
+# \foreach \m [count=\y] in {1,missing,2}
+#   \node [every neuron/.try, neuron \m/.try ] (output-\m) at (1.5,1.5-\y) {};
+# 
+# \foreach \l [count=\i] in {1,2,3,d}
+#   \draw [<-] (input-\i) -- ++(-0.7,0)
+#     node [above, midway] {$x_\l$};
+# 
+# \foreach \l [count=\i] in {1,c}
+#   \draw [->] (output-\i) -- ++(2.8,0)
+#     node [above, midway] {$\mathrm{softmax}(W\mathbf{x}+\mathbf{b})_\l$};
+# 
+# \foreach \i in {1,...,4}
+#   \foreach \j in {1,...,2}
+#     \draw [->] (input-\i) -- (output-\j);
+# 
+# 
+# \node [above right=-0.1cm and 0.8cm of input-1.north] {$W$};
+# \end{tikzpicture}
+# ```
+# The output of the final layer before the application of the softmax function are also called the **logits**. For the simple softmax regression problem, the logits are hence given by the vector $\vvec{z} = W\vvec{x}+\vvec{b}$. 
 
 # ### Representation Learning
 # 
@@ -212,7 +254,7 @@ plt.show()
 #   \node [above] at (hidden2-\i.north) {$\phi(x)_{\l}$};
 # 
 # \foreach \l [count=\i] in {1,c}
-#   \draw [->] (output-\i) -- ++(4,0)
+#   \draw [->] (output-\i) -- ++(3,0)
 #     node [above, midway] {$\mathrm{softmax}(W\phi(\mathbf{x})+\mathbf{b})_\l$};
 # 
 # \foreach \i in {1,...,4}

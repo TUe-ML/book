@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -321,28 +316,28 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_architecture.html">
-     Architecture
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_func_approx.html">
-     Function approximator
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
+     MLPs
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
-     Backpropagation
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
+    <a class="reference internal" href="neuralnets_sgd.html">
+     SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_conv.html">
+     Convolution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
   </ul>
@@ -1096,8 +1091,8 @@ Yah, it gets interesting with the matrix product.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.4, 0.2, 0.2, 0.2, 0.4],
-       [1. , 0.4, 0.6, 0.5, 0.9]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.2, 0.3, 0.2, 0.2, 0.3],
+       [0.4, 0.6, 0.3, 0.6, 0.5]])
 </pre></div>
 </div>
 </div>
@@ -1153,8 +1148,8 @@ The matrix product is the sum of outer products of corresponding column- and row
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0. , 0.3, 0.2],
-       [0.3, 0.7, 0.3]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.1, 0.1, 0.2],
+       [0.4, 0.3, 0.1]])
 </pre></div>
 </div>
 </div>
@@ -1166,8 +1161,8 @@ The matrix product is the sum of outer products of corresponding column- and row
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0. , 0.3, 0.2],
-       [0.3, 0.7, 0.3]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.1, 0.1, 0.2],
+       [0.4, 0.3, 0.1]])
 </pre></div>
 </div>
 </div>
@@ -1246,8 +1241,8 @@ Diagonal matrices with nonzero elements on the diagonal have an inverse:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution time of our naive implementation in seconds: 1.6566731929779053
-Execution time of the numpy implementation in seconds: 0.0007297992706298828
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Execution time of our naive implementation in seconds: 1.6531269550323486
+Execution time of the numpy implementation in seconds: 0.0005710124969482422
 </pre></div>
 </div>
 </div>

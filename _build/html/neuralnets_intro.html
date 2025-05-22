@@ -321,23 +321,23 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
+    <a class="reference internal" href="neuralnets_backprop.html">
+     Backpropagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_sgd.html">
+     SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_conv.html">
+     Convolution
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_func_approx.html">
-     Function approximator
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_backprop.html">
-     Backpropagation
     </a>
    </li>
   </ul>
@@ -621,6 +621,11 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#softmax-regression-as-a-computational-graph">
+   Softmax Regression as a Computational Graph
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#representation-learning">
    Representation Learning
   </a>
@@ -652,6 +657,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#training">
    Training
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#softmax-regression-as-a-computational-graph">
+   Softmax Regression as a Computational Graph
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -692,7 +702,7 @@ P(y=1 \mid \mathbf{x}) = \sigma(\mathbf{w}^\top \mathbf{x} + b).
 <div class="math notranslate nohighlight">
 \[\sigma(x) = \frac{1}{1 + \exp^{-x}}.\]</div>
 
-Recall from what we discussed regarding the SVM that <span class="math notranslate nohighlight">\(\mathbf{w}^\top \mathbf{x} + b = dist(\mathbf{x},\mathcal{H}_{\vvec{w},b})\lVert\vvec{w}\rVert\)</span> is the scaled distance of point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> to the hyperplane defined by <span class="math notranslate nohighlight">\(\vvec{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span>. The sigmoid function maps this scaled distance onto a probability between 0 and 1.
+Recall from what we discussed regarding the SVM that <span class="math notranslate nohighlight">\(\lvert\mathbf{w}^\top \mathbf{x} + b\rvert = dist(\mathbf{x},\mathcal{H}_{\vvec{w},b})\lVert\vvec{w}\rVert\)</span> is the scaled distance of point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> to the hyperplane defined by <span class="math notranslate nohighlight">\(\vvec{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span>. The sigmoid function maps this scaled distance onto a probability between 0 and 1.
 The plot below shows the sigmoid function.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
@@ -703,14 +713,14 @@ The plot below shows the sigmoid function.</p>
 <div class="proof definition admonition" id="definition-0">
 <p class="admonition-title"><span class="caption-number">Definition 32 </span> (Softmax Regression)</p>
 <section class="definition-content" id="proof-content">
-<p>The <strong>softmax regression</strong> classifier computes the probability that point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> belongs to class <span class="math notranslate nohighlight">\(y\)</span> by means of <span class="math notranslate nohighlight">\(c\)</span> hyperplanes, defined by parameters <span class="math notranslate nohighlight">\(\vvec{w}_l\)</span> and <span class="math notranslate nohighlight">\(b_l\)</span>. Gathering the <span class="math notranslate nohighlight">\(c\)</span> hyperplane defining parameters in a matrix <span class="math notranslate nohighlight">\(W\)</span>, such that <span class="math notranslate nohighlight">\(W_{l\cdot} = \vvec{w}_l^\top\)</span>, and <span class="math notranslate nohighlight">\(\vvec{b}\)</span>, then the softmax regression classifier models the probability that point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> belongs to class <span class="math notranslate nohighlight">\(l\)</span> over the parameters <span class="math notranslate nohighlight">\(W\)</span> and <span class="math notranslate nohighlight">\(\vvec{b}\)</span>
+<p>The <strong>softmax regression</strong> (a.k.a. multinomial logistic regression) classifier computes the probability that point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> belongs to class <span class="math notranslate nohighlight">\(y\)</span> by means of <span class="math notranslate nohighlight">\(c\)</span> hyperplanes, defined by parameters <span class="math notranslate nohighlight">\(\vvec{w}_l\)</span> and <span class="math notranslate nohighlight">\(b_l\)</span>. Gathering the <span class="math notranslate nohighlight">\(c\)</span> hyperplane defining parameters in a matrix <span class="math notranslate nohighlight">\(W\)</span>, such that <span class="math notranslate nohighlight">\(W_{l\cdot} = \vvec{w}_l^\top\)</span>, and <span class="math notranslate nohighlight">\(\vvec{b}\)</span>, then the softmax regression classifier models the probability that point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> belongs to class <span class="math notranslate nohighlight">\(l\)</span> over the parameters <span class="math notranslate nohighlight">\(W\)</span> and <span class="math notranslate nohighlight">\(\vvec{b}\)</span>
 <div class="math notranslate nohighlight">
 \[
-f_{sr}(\vvec{x})_l=p(y = l \mid \mathbf{x},W,\vvec{b}) =\mathrm{softmax}(W\vvec{x}+\vvec{b})_l= \frac{\exp(\vvec{w}_k^\top \mathbf{x} + b_k)}{\sum_{j=1}^{c} \exp(\mathbf{w}_j^\top \mathbf{x} + b_j)}
+f_{sr}(\vvec{x})_l=p(y = l \mid \mathbf{x},W,\vvec{b}) =\mathrm{softmax}(W\vvec{x}+\vvec{b})_l= \frac{\exp(\vvec{w}_l^\top \mathbf{x} + b_l)}{\sum_{j=1}^{c} \exp(\mathbf{w}_j^\top \mathbf{x} + b_j)}
 \]</div>
 </p>
 </section>
-</div><p>The softmax function <span class="math notranslate nohighlight">\(\mathrm{softmax}:\mathbb{R}^d\rightarrow [0,1]^c\)</span>, <span class="math notranslate nohighlight">\(\mathrm{softmax}(\vvec{x})_y=\frac{\exp(x_y)}{\sum_{j=1}^c\exp{x_j}}\)</span> returns a vector reflecting the confidences for each class. We can easily show the confidences sum up tp one. The plot below show the confidences and the hyperplanes learned for a 3-class classification problem.</p>
+</div><p>The softmax function <span class="math notranslate nohighlight">\(\mathrm{softmax}:\mathbb{R}^d\rightarrow [0,1]^c\)</span>, <span class="math notranslate nohighlight">\(\mathrm{softmax}(\vvec{x})_y=\frac{\exp(x_y)}{\sum_{j=1}^c\exp{x_j}}\)</span> returns a vector reflecting the confidences for each class. We can easily show the confidences sum up to one. The plot below show the confidences and the hyperplanes learned for a 3-class classification problem.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make 3-class dataset for classification</span>
@@ -761,7 +771,7 @@ f_{sr}(\vvec{x})_l=p(y = l \mid \mathbf{x},W,\vvec{b}) =\mathrm{softmax}(W\vvec{
 
 are maximized</p>
 <div class="math notranslate nohighlight" id="equation-eq-obj-smr">
-<span class="eqno">(52)<a class="headerlink" href="#equation-eq-obj-smr" title="Permalink to this equation">#</a></span>\[\begin{align*}\max{\theta}\mathcal{L}(\theta,\mathcal{D}) = \prod_{i=1}^n p(y=y_i\mid \vvec{x}_i,\theta)\end{align*}\]</div>
+<span class="eqno">(52)<a class="headerlink" href="#equation-eq-obj-smr" title="Permalink to this equation">#</a></span>\[\begin{align*}\max_{\theta}\mathcal{L}(\theta,\mathcal{D}) = \prod_{i=1}^n p(y=y_i\mid \vvec{x}_i,\theta)\end{align*}\]</div>
 <p><strong>Return</strong> the classifier defining parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 </div>
 <p>As discussed in the scope of naive Bayes, computing the product of probabilities is generally not a good idea, because we might run into underflow. Hence, we apply again the log-probabilities trick and minimize the log-probabilities instead of the probabilities directly. We divide by the number of samples in the dataset and apply the logarithm to Eq. <a class="reference internal" href="#equation-eq-obj-smr">(52)</a> and obtain the equivalent objective</p>
@@ -787,10 +797,16 @@ mapping a label <span class="math notranslate nohighlight">\(y\in\{1,\ldots,c\}\
 </section>
 </div><p>Cross entropy is a popular loss for classification tasks, since it penalizes heavily low probability predictions for the correct class. In addition, applying the logarithm to the softmax output dampenes the vanishing gradient effect that the sigmoid and softmax function are suffering from. Hence, applying Cross-Entropy as a loss helps to numerically optimize the softmax output of the softmax regression classifier.</p>
 </section>
+<section id="softmax-regression-as-a-computational-graph">
+<h2>Softmax Regression as a Computational Graph<a class="headerlink" href="#softmax-regression-as-a-computational-graph" title="Permalink to this headline">#</a></h2>
+<p>The plot below shows a visualization of the softmax regression model as it is common for neural networks. The affine function is visualized by the edges connecting the input layer on the left with the output layer. The output layer has <span class="math notranslate nohighlight">\(c\)</span> nodes, one for each class. Every edge has a weight that is given by the matrix <span class="math notranslate nohighlight">\(W\)</span>. For example, the edge from input node <span class="math notranslate nohighlight">\(x_i\)</span> to output class node <span class="math notranslate nohighlight">\(l\)</span> is <span class="math notranslate nohighlight">\(W_{il}\)</span>. At each output node, the weighted sum of the edge weights multiplied with the input is computed, the bias term is added and the softmax function is applied.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-60f85c6b4ef63be8b3e131a4d29bd0fd495fba9c.svg" alt="Figure made with TikZ" /></p>
+</div><p>The output of the final layer before the application of the softmax function are also called the <strong>logits</strong>. For the simple softmax regression problem, the logits are hence given by the vector <span class="math notranslate nohighlight">\(\vvec{z} = W\vvec{x}+\vvec{b}\)</span>.</p>
+</section>
 <section id="representation-learning">
 <h2>Representation Learning<a class="headerlink" href="#representation-learning" title="Permalink to this headline">#</a></h2>
 <p>Logistic or Softmax regression rely on linear decision boundaries. In practice, data often lies on complex, nonlinear manifolds. Hence, we apply a similar trick as we have seen in linear regression and the SVM to use a linear model for nonlinear problems by appling a feature transformation first. In regression, the feature transformation is given by the basis functions and in the SVM it is implicitly defined over the kernel. Neural networks <strong>learn the feature transformation</strong> by stacking various simple functions after one another, whose parameters are optimized jointly with the classifier’s parameters. That is we get something that looks like that:</p>
-<div class="figure" style="text-align: center"><p><img  src="_images/tikz-0a890f8a888d7ca8549f3881e8842fb4fe2faf1b.svg" alt="Figure made with TikZ" /></p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-713fddd55a72d1485733a126a5cbb77e6e2492e8.svg" alt="Figure made with TikZ" /></p>
 </div><p>On the left we see the vector <span class="math notranslate nohighlight">\(\vvec{x}\)</span> being put as input to the graph, producing an intermediate output <span class="math notranslate nohighlight">\(\phi(\vvec{x})\)</span>, that is the feature transformation that is classified with a softmax regression, creating the output of the graph. We discuss in the following how we can interpret this graph and how the feature transformation <span class="math notranslate nohighlight">\(\phi\)</span> is computed.</p>
 </section>
 </section>

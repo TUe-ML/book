@@ -321,23 +321,23 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
+    <a class="reference internal" href="neuralnets_backprop.html">
      Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_sgd.html">
+     SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_conv.html">
+     Convolution
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_func_approx.html">
-     Function approximator
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_backprop.html">
-     Backpropagation
     </a>
    </li>
   </ul>
@@ -687,7 +687,7 @@ title="Print to PDF"
 <figure class="align-left" id="non-linear-transformation-fig">
 <a class="reference internal image-reference" href="_images/degree2_monomials.png"><img alt="_images/degree2_monomials.png" src="_images/degree2_monomials.png" style="height: 320px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Non-linear transformation <span class="math notranslate nohighlight">\(\phi: \mathbb{R}^2 \rightarrow \mathbb{R}^3 \)</span> mapping feature vectors <span class="math notranslate nohighlight">\( {\bf x}\in\mathbb{R}^2\)</span> to transformed feature vectors <span class="math notranslate nohighlight">\( {\bf z}\in\mathbb{R}^3\)</span> with the transformation <span class="math notranslate nohighlight">\( {\bf z} = \phi({\bf x}) = ( x_1^2 , \sqrt{2} x_1 x_2 , x_2^2 ) \)</span>.  (borrowed from <span id="id1">[<a class="reference internal" href="bibliography.html#id10">6</a>]</span>).</span><a class="headerlink" href="#non-linear-transformation-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Non-linear transformation <span class="math notranslate nohighlight">\(\phi: \mathbb{R}^2 \rightarrow \mathbb{R}^3 \)</span> mapping feature vectors <span class="math notranslate nohighlight">\( {\bf x}\in\mathbb{R}^2\)</span> to transformed feature vectors <span class="math notranslate nohighlight">\( {\bf z}\in\mathbb{R}^3\)</span> with the transformation <span class="math notranslate nohighlight">\( {\bf z} = \phi({\bf x}) = ( x_1^2 , \sqrt{2} x_1 x_2 , x_2^2 ) \)</span>.  (borrowed from <span id="id1">[<a class="reference internal" href="bibliography.html#id10">5</a>]</span>).</span><a class="headerlink" href="#non-linear-transformation-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The challenge of this approach is the high dimensionality that is often required to make classes linearly separable in the transformed feature space. The SVM dual objective enables here the application of the so-called kernel trick, that allows even for the efficient computation of infinite dimensional feature transformations.</p>

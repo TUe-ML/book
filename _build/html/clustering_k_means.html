@@ -321,23 +321,23 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
+    <a class="reference internal" href="neuralnets_backprop.html">
      Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_sgd.html">
+     SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_conv.html">
+     Convolution
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_func_approx.html">
-     Function approximator
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_backprop.html">
-     Backpropagation
     </a>
    </li>
   </ul>
@@ -676,7 +676,7 @@ title="Print to PDF"
 <figure class="align-center" id="deck-of-cards">
 <a class="reference internal image-reference" href="_images/deckOfCards.jpg"><img alt="_images/deckOfCards.jpg" src="_images/deckOfCards.jpg" style="height: 300px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 29 </span><span class="caption-text">A deck of cards can be clustered into various forms of valid clusterings.</span><a class="headerlink" href="#deck-of-cards" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">A deck of cards can be clustered into various forms of valid clusterings.</span><a class="headerlink" href="#deck-of-cards" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="cell tag_remove-input docutils container">
@@ -711,8 +711,8 @@ We denote the set of all partitions from <span class="math notranslate nohighlig
 <p class="admonition-title">Task (k-means)</p>
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> and the number of clusters <span class="math notranslate nohighlight">\(r\)</span>.<br />
 <strong>Find</strong> clusters <span class="math notranslate nohighlight">\(\{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\in\mathcal{P}_n\)</span> which create a partition of <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span>, minimizing the distance between points within clusters (<strong>within cluster scatter</strong>):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4ee136e2-057f-44e3-8d83-535cd19da9d8">
-<span class="eqno">(110)<a class="headerlink" href="#equation-4ee136e2-057f-44e3-8d83-535cd19da9d8" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-1194c40d-c2b7-4f0a-a161-77db68bebbfd">
+<span class="eqno">(75)<a class="headerlink" href="#equation-1194c40d-c2b7-4f0a-a161-77db68bebbfd" title="Permalink to this equation">#</a></span>\[\begin{align}
 \min_{\{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\in\mathcal{P}_n} &amp;\ Dist(\mathcal{C}_1,\ldots,\mathcal{C}_r) = \sum_{s=1}^r\frac{1}{|\mathcal{C}_s|}\sum_{j,i\in\mathcal{C}_s}\|D_{j\cdot}-D_{i\cdot}\|^2 \label{eq:k-means}
 \end{align}\]</div>
 <p><strong>Return</strong> the clustering <span class="math notranslate nohighlight">\(\{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\in\mathcal{P}_n\)</span></p>
@@ -738,8 +738,8 @@ Transform the objective to get a better idea.</p>
 </div><div class="toggle docutils container">
 <div class="proof admonition" id="proof">
 <p>Proof. The objective function in Eq.~\eqref{eq:k-means} returning the average distance of points within one cluster can be transformed as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b1617904-3c4c-4b54-bd2f-5c28d6591413">
-<span class="eqno">(111)<a class="headerlink" href="#equation-b1617904-3c4c-4b54-bd2f-5c28d6591413" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a8482be2-ad86-4a41-966e-91f9a83eb10b">
+<span class="eqno">(76)<a class="headerlink" href="#equation-a8482be2-ad86-4a41-966e-91f9a83eb10b" title="Permalink to this equation">#</a></span>\[\begin{align}
     Dist(\mathcal{C}_1,\ldots,\mathcal{C}_r)
 &amp;=\sum_{s=1}^r\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}{\color{magenta}\sum_{i\in\mathcal{C}_s}}\lVert {\color{magenta}D_{i\cdot}}-D_{j\cdot}\rVert^2\\ 
     &amp;= \sum_{s=1}^r\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}{\color{magenta}\sum_{i\in\mathcal{C}_s}}\left(
@@ -756,15 +756,15 @@ Transform the objective to get a better idea.</p>
     &amp;=\sum_{s=1}^r\left(2{\color{magenta}\sum_{i\in\mathcal{C}_s}\lVert D_{i\cdot}\rVert^2}-2{\color{magenta}\sum_{i\in\mathcal{C}_s} D_{i\cdot}} \frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}D_{j\cdot}^\top\right) 
 \end{align}\]</div>
 <p>This transformation introduces the centroid to the objective, it is given by the term on the right:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a665aa0f-c159-4769-98cf-0bfa979804b7">
-<span class="eqno">(112)<a class="headerlink" href="#equation-a665aa0f-c159-4769-98cf-0bfa979804b7" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-ef58a098-5650-42d4-8e1d-2b33c1db7628">
+<span class="eqno">(77)<a class="headerlink" href="#equation-ef58a098-5650-42d4-8e1d-2b33c1db7628" title="Permalink to this equation">#</a></span>\[\begin{align}
     Dist(\mathcal{C}_1,\ldots,\mathcal{C}_r)
     &amp;=2\sum_{s=1}^r\Biggl(\sum_{i\in\mathcal{C}_s}\lVert D_{i\cdot}\rVert^2-\sum_{i\in\mathcal{C}_s} D_{i\cdot} \underbrace{\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}D_{j\cdot}^\top}_{X_{\cdot s}}\Biggr)
 \end{align}\]</div>
 <p><span class="math notranslate nohighlight">\(X_{\cdot s}\)</span> is the centroid (the arithmetic mean position) of all points assigned to cluster <span class="math notranslate nohighlight">\(\mathcal{C}_s\)</span>.
 We rearrange the terms now, such that we can again apply the binomial formula for norms, where the norm is used to measure  the distance of a point in a cluster to the corresponding centroid:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c4eff407-1462-46b1-9987-484fc064f8d1">
-<span class="eqno">(113)<a class="headerlink" href="#equation-c4eff407-1462-46b1-9987-484fc064f8d1" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d6828c62-8695-49db-a0f6-e1234390b50e">
+<span class="eqno">(78)<a class="headerlink" href="#equation-d6828c62-8695-49db-a0f6-e1234390b50e" title="Permalink to this equation">#</a></span>\[\begin{align}
         Dist(\mathcal{C}_1,\ldots,\mathcal{C}_r)
     &amp;=2\sum_{s=1}^r\Biggl({\color{magenta}\sum_{i\in\mathcal{C}_s}\lVert D_{i\cdot}\rVert^2}-\underbrace{\underbrace{{\color{magenta}\sum_{i\in\mathcal{C}_s} D_{i\cdot}}}_{\lvert\mathcal{C}_s\rvert X_{\cdot s}^\top} \underbrace{\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}D_{j\cdot}^\top}_{X_{\cdot s}}}_{{\color{magenta}\sum_{i\in\mathcal{C}_s}}\lVert X_{\cdot s}\rVert^2}\Biggr)\\
     &amp;=2\sum_{s=1}^r{\color{magenta}\sum_{i\in\mathcal{C}_s}} \left({\color{magenta}\lVert D_{i\cdot}\rVert^2}- 2{\color{magenta}D_{i\cdot}}X_{\cdot s} +\lVert X_{\cdot s}\rVert^2\right)\\
@@ -983,42 +983,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_img86fac7487b9143c8be154fc27ec8bea3">
+  <img id="_anim_imgfb385ceaf86e4cc1865812a4d321b31c">
   <div class="anim-controls">
-    <input id="_anim_slider86fac7487b9143c8be154fc27ec8bea3" type="range" class="anim-slider"
+    <input id="_anim_sliderfb385ceaf86e4cc1865812a4d321b31c" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="anim86fac7487b9143c8be154fc27ec8bea3.set_frame(parseInt(this.value));">
+           oninput="animfb385ceaf86e4cc1865812a4d321b31c.set_frame(parseInt(this.value));">
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim86fac7487b9143c8be154fc27ec8bea3.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="animfb385ceaf86e4cc1865812a4d321b31c.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="anim86fac7487b9143c8be154fc27ec8bea3.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="animfb385ceaf86e4cc1865812a4d321b31c.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="anim86fac7487b9143c8be154fc27ec8bea3.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="animfb385ceaf86e4cc1865812a4d321b31c.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="anim86fac7487b9143c8be154fc27ec8bea3.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="animfb385ceaf86e4cc1865812a4d321b31c.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="anim86fac7487b9143c8be154fc27ec8bea3.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="animfb385ceaf86e4cc1865812a4d321b31c.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="anim86fac7487b9143c8be154fc27ec8bea3.play_animation()">
+      <button title="Play" aria-label="Play" onclick="animfb385ceaf86e4cc1865812a4d321b31c.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="anim86fac7487b9143c8be154fc27ec8bea3.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="animfb385ceaf86e4cc1865812a4d321b31c.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="anim86fac7487b9143c8be154fc27ec8bea3.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="animfb385ceaf86e4cc1865812a4d321b31c.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="anim86fac7487b9143c8be154fc27ec8bea3.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="animfb385ceaf86e4cc1865812a4d321b31c.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select86fac7487b9143c8be154fc27ec8bea3"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectfb385ceaf86e4cc1865812a4d321b31c"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_86fac7487b9143c8be154fc27ec8bea3"
+      <input type="radio" name="state" value="once" id="_anim_radio1_fb385ceaf86e4cc1865812a4d321b31c"
              >
-      <label for="_anim_radio1_86fac7487b9143c8be154fc27ec8bea3">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_86fac7487b9143c8be154fc27ec8bea3"
+      <label for="_anim_radio1_fb385ceaf86e4cc1865812a4d321b31c">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_fb385ceaf86e4cc1865812a4d321b31c"
              checked>
-      <label for="_anim_radio2_86fac7487b9143c8be154fc27ec8bea3">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_86fac7487b9143c8be154fc27ec8bea3"
+      <label for="_anim_radio2_fb385ceaf86e4cc1865812a4d321b31c">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_fb385ceaf86e4cc1865812a4d321b31c"
              >
-      <label for="_anim_radio3_86fac7487b9143c8be154fc27ec8bea3">Reflect</label>
+      <label for="_anim_radio3_fb385ceaf86e4cc1865812a4d321b31c">Reflect</label>
     </form>
   </div>
 </div>
@@ -1028,9 +1028,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_img86fac7487b9143c8be154fc27ec8bea3";
-    var slider_id = "_anim_slider86fac7487b9143c8be154fc27ec8bea3";
-    var loop_select_id = "_anim_loop_select86fac7487b9143c8be154fc27ec8bea3";
+    var img_id = "_anim_imgfb385ceaf86e4cc1865812a4d321b31c";
+    var slider_id = "_anim_sliderfb385ceaf86e4cc1865812a4d321b31c";
+    var loop_select_id = "_anim_loop_selectfb385ceaf86e4cc1865812a4d321b31c";
     var frames = new Array(9);
 
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -4921,7 +4921,7 @@ IkkAE0IIEZH+H0r0K76ieYXyAAAAAElFTkSuQmCC\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        anim86fac7487b9143c8be154fc27ec8bea3 = new Animation(frames, img_id, slider_id, 200.0,
+        animfb385ceaf86e4cc1865812a4d321b31c = new Animation(frames, img_id, slider_id, 200.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -4929,7 +4929,7 @@ IkkAE0IIEZH+H0r0K76ieYXyAAAAAElFTkSuQmCC\
 </div></div>
 </div>
 <div class="proof algorithm admonition" id="algorithm-1">
-<p class="admonition-title"><span class="caption-number">Algorithm 15 </span> (k-means (a.k.a. Lloyds algorithm))</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 13 </span> (k-means (a.k.a. Lloyds algorithm))</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Input</strong>: <span class="math notranslate nohighlight">\(D, r\)</span></p>
 <ol class="simple">

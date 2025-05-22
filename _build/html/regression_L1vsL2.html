@@ -55,8 +55,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Exercises" href="regression_exercises.html" />
-    <link rel="prev" title="Lasso" href="regression_lasso.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -116,7 +114,7 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="notation.html">
    Notation
@@ -191,16 +189,16 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
   </ul>
  </li>
- <li class="toctree-l1 current active has-children">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="regression.html">
    Regression
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul class="current">
+  <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="regression_objective.html">
      Regression Objective
@@ -234,11 +232,6 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="regression_lasso.html">
      Lasso
-    </a>
-   </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     L1 vs L2 Regularization
     </a>
    </li>
    <li class="toctree-l2">
@@ -321,28 +314,28 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_architecture.html">
-     Architecture
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_func_approx.html">
-     Function approximator
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
+     MLPs
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
-     Backpropagation
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
+    <a class="reference internal" href="neuralnets_sgd.html">
+     SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_conv.html">
+     Convolution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
   </ul>
@@ -621,14 +614,14 @@ title="Print to PDF"
 <h1>L1 vs L2 Regularization<a class="headerlink" href="#l1-vs-l2-regularization" title="Permalink to this headline">#</a></h1>
 <p>Ok, but what is now better, <span class="math notranslate nohighlight">\(L_1\)</span>- or <span class="math notranslate nohighlight">\(L_2\)</span>-norm regularization? We will make an illustration of the regression solutions when we penalize with <span class="math notranslate nohighlight">\(L_1\)</span>- and <span class="math notranslate nohighlight">\(L_2\)</span>-norm. To make that illustration, using the constrained objective formulation is more suitable than the penalized one. As discussed in the <strong>Sparse Regression</strong> section, we can transform the penalized objective into a constrained one and vice versa.</p>
 <p>That is, for every <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span> there exists a radius <span class="math notranslate nohighlight">\(s&gt;0\)</span> and vice versa, such that the following optimization problems are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-bc564e3e-b3dc-4661-a69e-ddc1cf693756">
-<span class="eqno">(32)<a class="headerlink" href="#equation-bc564e3e-b3dc-4661-a69e-ddc1cf693756" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3bb39bbc-d11a-4cc1-8e73-3a41a1385b81">
+<span class="eqno">()<a class="headerlink" href="#equation-3bb39bbc-d11a-4cc1-8e73-3a41a1385b81" title="Permalink to this equation">#</a></span>\[\begin{align}
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda \lVert\bm{\beta}\rVert^2 &amp; \text{s.t. }\bm{\beta}\in\mathbb{R}^p  \\
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 &amp; \text{s.t. } \lVert\bm{\beta}\rVert^2\leq s^2,\bm{\beta}\in\mathbb{R}^p  \\
 \end{align}\]</div>
 <p>Similarly, for every <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span> there exists a radius <span class="math notranslate nohighlight">\(s&gt;0\)</span> and vice versa, such that the following optimization problems are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c9372914-d1bc-4d57-ab71-cd46a170ee0e">
-<span class="eqno">(33)<a class="headerlink" href="#equation-c9372914-d1bc-4d57-ab71-cd46a170ee0e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-0c07944a-799f-4ca9-9e61-f7aa217c018c">
+<span class="eqno">()<a class="headerlink" href="#equation-0c07944a-799f-4ca9-9e61-f7aa217c018c" title="Permalink to this equation">#</a></span>\[\begin{align}
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda \lvert\bm{\beta}\rvert &amp; \text{s.t. }\bm{\beta}\in\mathbb{R}^p  \\
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 &amp; \text{s.t. } \lvert\bm{\beta}\rvert\leq s,\bm{\beta}\in\mathbb{R}^p  \\
 \end{align}\]</div>
@@ -699,13 +692,13 @@ title="Print to PDF"
 </div>
 </div>
 <p>In summary, we considered the ridge regression objective</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c65869e8-f22d-4aba-89dd-34f001758739">
-<span class="eqno">(34)<a class="headerlink" href="#equation-c65869e8-f22d-4aba-89dd-34f001758739" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-960745f7-ad5f-462c-b95c-1221d3a8b96a">
+<span class="eqno">()<a class="headerlink" href="#equation-960745f7-ad5f-462c-b95c-1221d3a8b96a" title="Permalink to this equation">#</a></span>\[\begin{align}
         \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_2}(\bm{\beta}) = \lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda\lVert\bm{\beta}\rVert^2
 \end{align}\]</div>
 <p>and the Lasso</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9f0617b5-7bc3-4876-844f-930d151e9a40">
-<span class="eqno">(35)<a class="headerlink" href="#equation-9f0617b5-7bc3-4876-844f-930d151e9a40" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-950c83ee-1abb-4cf9-809a-40c14d3e6fb1">
+<span class="eqno">()<a class="headerlink" href="#equation-950c83ee-1abb-4cf9-809a-40c14d3e6fb1" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_1}(\bm{\beta}) = \lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda\lvert\bm{\beta}\rvert
 \end{align}\]</div>
 <p>The solution of Ridge Regression is computable very fast, analyically. The Ridge Regression minimizer is uniquely defined, but usually not sparse.
@@ -739,20 +732,6 @@ Lasso is optimized with coordinate descent, which is a theoretically well-founde
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="regression_lasso.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Lasso</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="regression_exercises.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Exercises</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
 </div>
             </footer>
         </div>

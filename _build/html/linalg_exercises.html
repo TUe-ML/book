@@ -237,11 +237,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="regression_L1vsL2.html">
-     L1 vs L2 Regularization
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="regression_exercises.html">
      Exercises
     </a>
@@ -321,28 +316,28 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_architecture.html">
-     Architecture
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_func_approx.html">
-     Function approximator
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_mlps.html">
-     Multi-Layer Perceptrons
+     MLPs
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
-     Backpropagation
+     Training Neural Networks: Backpropagation and SGD
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
-     Training Neural Networks: Backpropagation and SGD
+    <a class="reference internal" href="neuralnets_sgd.html">
+     SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_conv.html">
+     Convolution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_architecture.html">
+     Architecture
     </a>
    </li>
   </ul>
@@ -947,8 +942,8 @@ Compute the matrix <span class="math notranslate nohighlight">\(AA^\top\)</span>
 </div>
 </li>
 <li><p>Every system of linear equations can be written as a matrix equation <span class="math notranslate nohighlight">\(A\vvec{x}=\vvec{y}\)</span>. Given the following system of linear equations, what would be the matrix <span class="math notranslate nohighlight">\(A\)</span> and vector <span class="math notranslate nohighlight">\(\vvec{y}\)</span> such that the system of linear equations is equivalent to solving <span class="math notranslate nohighlight">\(A\vvec{x}=\vvec{y}\)</span>?</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dd7c14ac-aff7-47dd-86d8-9cca28ef734a">
-<span class="eqno">(1)<a class="headerlink" href="#equation-dd7c14ac-aff7-47dd-86d8-9cca28ef734a" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-37002232-967b-4830-8ea8-d5b5eef8ca85">
+<span class="eqno">(1)<a class="headerlink" href="#equation-37002232-967b-4830-8ea8-d5b5eef8ca85" title="Permalink to this equation">#</a></span>\[\begin{align}
         2x_1 &amp;+&amp; 3x_2 &amp;&amp; &amp;=&amp;4\\
         x_1  &amp;-&amp; 2x_2 &amp;+&amp; x_3 &amp;=&amp; 3\\
         -x_1 &amp;+&amp; 2x_2 &amp;+&amp; 3x_3 &amp;=&amp; 1

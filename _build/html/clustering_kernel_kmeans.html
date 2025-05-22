@@ -321,23 +321,23 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_optimization.html">
+    <a class="reference internal" href="neuralnets_backprop.html">
      Training Neural Networks: Backpropagation and SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_sgd.html">
+     SGD
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="neuralnets_conv.html">
+     Convolution
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_architecture.html">
      Architecture
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_func_approx.html">
-     Function approximator
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_backprop.html">
-     Backpropagation
     </a>
    </li>
   </ul>
@@ -703,8 +703,8 @@ the kernel matrix is given by
 <p class="admonition-title">Task (Kernel <span class="math notranslate nohighlight">\(k\)</span>-means)</p>
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>, a feature transformation <span class="math notranslate nohighlight">\(\phi:\mathbb{R}^{d}\rightarrow \mathbb{R}^p\)</span> mapping into a <span class="math notranslate nohighlight">\(p\)</span>-dimensional feature space, where <span class="math notranslate nohighlight">\(p\in\mathbb{N}\cup\{\infty\}\)</span>, and the number of clusters <span class="math notranslate nohighlight">\(r\)</span>.<br />
 <strong>Find</strong> clusters indicated by the matrix <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span> which minimize the within cluster scatter in the transformed feature space</p>
-<div class="amsmath math notranslate nohighlight" id="equation-31ac369c-e78a-462f-aacf-4e058b8cc717">
-<span class="eqno">(122)<a class="headerlink" href="#equation-31ac369c-e78a-462f-aacf-4e058b8cc717" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c8a4ed87-a392-4044-9ec1-5ddb5c1af876">
+<span class="eqno">(87)<a class="headerlink" href="#equation-c8a4ed87-a392-4044-9ec1-5ddb5c1af876" title="Permalink to this equation">#</a></span>\[\begin{align}
 \min_{Y} \|{\bm\phi}(D)-YX^\top\|^2 \text{  s.t. } X= {\bm\phi}(D^\top) Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMPhi}
 \end{align}\]</div>
 <p><strong>Return</strong> the clustering <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span></p>
@@ -718,8 +718,8 @@ the kernel matrix is given by
 <section class="theorem-content" id="proof-content">
 <p>Given a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>,
 the following objectives are equivalent <span class="math notranslate nohighlight">\(k\)</span>-means objectives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b4bbda42-1b37-4252-89fe-0d60d679de45">
-<span class="eqno">(123)<a class="headerlink" href="#equation-b4bbda42-1b37-4252-89fe-0d60d679de45" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-9b0d5588-704d-4a5d-b9cf-e0ffa3790ca8">
+<span class="eqno">(88)<a class="headerlink" href="#equation-9b0d5588-704d-4a5d-b9cf-e0ffa3790ca8" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y} \lVert D-YX^\top\rVert^2 \text{  s.t. } X= D^\top Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:km}\\
 &amp;\max_{Y} \tr(Z^\top DD^\top Z)\qquad\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} \label{eq:kmeansTr}
 \end{align}\]</div>
@@ -773,8 +773,8 @@ Points within one cluster need to be similar:
 <section class="theorem-content" id="proof-content">
 <p>Given the kernel matrix <span class="math notranslate nohighlight">\(K={\bm\phi}(D){\bm\phi}(D)^\top\)</span>,
 the following objectives are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-faea7abc-1a01-466c-93f9-b0869a5d4ada">
-<span class="eqno">(124)<a class="headerlink" href="#equation-faea7abc-1a01-466c-93f9-b0869a5d4ada" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a8d49822-6a72-457e-a94d-c4c27d203af2">
+<span class="eqno">(89)<a class="headerlink" href="#equation-a8d49822-6a72-457e-a94d-c4c27d203af2" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y} \|{\bm\phi}(D)-YX^\top\|^2 \text{  s.t. } X= {\bm\phi}(D^\top) Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMPhi1}\\
 &amp;\max_{Y} \tr(Z^\top K Z)\qquad\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMtr}
 \end{align}\]</div>
@@ -797,15 +797,15 @@ Kernel matrices are positive semi-definite!</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a kernel matrix and its symmetric decomposition <span class="math notranslate nohighlight">\(K=AA^\top\)</span>,
 the following objectives are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d3052fd0-e539-43a6-928d-826d0baa3b13">
-<span class="eqno">(125)<a class="headerlink" href="#equation-d3052fd0-e539-43a6-928d-826d0baa3b13" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-028ffd45-c579-4135-a341-c2ebdd4c27f8">
+<span class="eqno">(90)<a class="headerlink" href="#equation-028ffd45-c579-4135-a341-c2ebdd4c27f8" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y}\ \|A-YX^\top\|^2 &amp;\text{ s.t. } X= A^\top Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r}\label{eq:kmeansA} \\
 &amp;\max_{Y}\ \tr(Z^\top K Z)&amp;\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} 
 \end{align}\]</div>
 </section>
 </div><p>Algorithm Idea: Use the objective in Eq.~\eqref{eq:kmeansA}: compute a symmetric decomposition <span class="math notranslate nohighlight">\(AA^\top=K\)</span> by means of the eigendecomposition <span class="math notranslate nohighlight">\(A=V\Lambda^{1/2}\)</span> and run <span class="math notranslate nohighlight">\(k\)</span>-means on <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <div class="proof algorithm admonition" id="algorithm-4">
-<p class="admonition-title"><span class="caption-number">Algorithm 16 </span> (kernel k-means)</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 14 </span> (kernel k-means)</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Input</strong>: kernel matrix <span class="math notranslate nohighlight">\(K\)</span>, number of clusters <span class="math notranslate nohighlight">\(r\)</span></p>
 <ol class="simple">
