@@ -46,7 +46,7 @@ chapters:
   - file: neuralnets_backprop
   - file: neuralnets_sgd
   - file: neuralnets_conv
-  - file: neuralnets_architecture
+  - file: neuralnets_pooling
 - file: dim_reduction
   sections:
   - file: dim_reduction_mf

@@ -322,7 +322,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
-     Training Neural Networks: Backpropagation and SGD
+     Backpropagation
     </a>
    </li>
    <li class="toctree-l2">
@@ -850,8 +850,8 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
     X^\top X = V\Sigma^\top \underbrace{U^\top U}_{=I} \Sigma V^\top = V\Sigma^\top \Sigma V^\top.
 \end{align*}\]</div>
 <p>Given the singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span>, we can try to solve Eq. <a class="reference internal" href="#equation-eq-minimizers">(9)</a> for <span class="math notranslate nohighlight">\(\bm\beta\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-90339ba6-6cc5-4ae2-98ec-a8ff451add7d">
-<span class="eqno">(10)<a class="headerlink" href="#equation-90339ba6-6cc5-4ae2-98ec-a8ff451add7d" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8a653034-d59b-4014-8e5e-45217a5aaec3">
+<span class="eqno">(10)<a class="headerlink" href="#equation-8a653034-d59b-4014-8e5e-45217a5aaec3" title="Permalink to this equation">#</a></span>\[\begin{align}
    X^\top X\bm{\beta} &amp;= X^\top \vvec{y} \quad 
    \Leftrightarrow \quad V\Sigma^\top\Sigma V^\top \bm{\beta}= V\Sigma^\top U^\top\vvec{y}
    \quad 
@@ -905,8 +905,8 @@ to do so, we have a look into the SVD of <span class="math notranslate nohighlig
 </div><div class="toggle docutils container">
 <div class="proof admonition" id="proof">
 <p>Proof. We start at the characterization of regression solvers by SVD (Observation):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-90acbc54-0e4e-4631-9e05-b49a46f36702">
-<span class="eqno">(11)<a class="headerlink" href="#equation-90acbc54-0e4e-4631-9e05-b49a46f36702" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3bb67d68-597d-4899-a7a3-0544babaae31">
+<span class="eqno">(11)<a class="headerlink" href="#equation-3bb67d68-597d-4899-a7a3-0544babaae31" title="Permalink to this equation">#</a></span>\[\begin{align}
 \Sigma^\top\Sigma V^\top\bm\beta &amp;= \Sigma^\top U_r^\top y\\
 \Leftrightarrow
 \left(\begin{array}{cc}
@@ -924,8 +924,8 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
 \end{array}\right) U_r^\top y
 \end{align}\]</div>
 <p>We see here that only the first <span class="math notranslate nohighlight">\(r\)</span> equations are relevant, the remaining equations <span class="math notranslate nohighlight">\(0=0\)</span> are evidently true. We further shorten the notation by setting <span class="math notranslate nohighlight">\(\hat{\bm\beta}=V^\top\bm\beta\)</span>. We have then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1aa5cd9c-8ca0-4ac2-b2e2-89d3add18e62">
-<span class="eqno">(12)<a class="headerlink" href="#equation-1aa5cd9c-8ca0-4ac2-b2e2-89d3add18e62" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3e2d701a-8b16-403f-8d4b-764aaa171204">
+<span class="eqno">(12)<a class="headerlink" href="#equation-3e2d701a-8b16-403f-8d4b-764aaa171204" title="Permalink to this equation">#</a></span>\[\begin{align}
 \Sigma_r\begin{pmatrix} \Sigma_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= \Sigma_r U_r^\top y\\ 
 \Leftrightarrow
 \begin{pmatrix} \Sigma_r &amp; \vvec{0}\end{pmatrix}\hat{\bm\beta} &amp;= U_r^\top y\\ 
@@ -935,8 +935,8 @@ V^\top \bm\beta &amp;=  \left(\begin{array}{cc}
 \hat{\bm\beta}_{0:r} &amp;= \Sigma_r^{-1} U_r^\top y
 \end{align}\]</div>
 <p>We see that only the first <span class="math notranslate nohighlight">\(r\)</span> coordinates of <span class="math notranslate nohighlight">\(\hat{\bm\beta}\)</span> are determined by the given equation. What we have in the rest of the coordinates is free to choose and the equation will still hold. We model the coordinates that are free to choose with the vector <span class="math notranslate nohighlight">\(z\)</span>. Then we have</p>
-<div class="amsmath math notranslate nohighlight" id="equation-af32f38e-1132-47b1-83e5-d3b8f6ca8659">
-<span class="eqno">(13)<a class="headerlink" href="#equation-af32f38e-1132-47b1-83e5-d3b8f6ca8659" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e6309a30-aa6a-4d30-99dc-d7b547093dee">
+<span class="eqno">(13)<a class="headerlink" href="#equation-e6309a30-aa6a-4d30-99dc-d7b547093dee" title="Permalink to this equation">#</a></span>\[\begin{align}
 \hat{\bm\beta} &amp;= \begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}\\
 \Leftrightarrow V^\top\bm\beta &amp;= \begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}\\
 \Leftrightarrow \bm\beta &amp;= V\begin{pmatrix}\Sigma_r^{-1} U_r^\top y\\z \end{pmatrix}

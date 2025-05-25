@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# ## SGD
+# ## Training 
+# Neural networks are often highly overparameterized, meaning that they have enough capacity to perfectly memorize the training data — even when the labels are random. The surprising result of the training methods of neural networks is that this overparametrization is not a big issue if you use a _good_ optimizer and some additional tricks to prevent overfitting. This is what we are going to discuss in this section.
+# 
+# ### SGD
 # 
 # We have now discussed how to derive the gradient of the cross-entropy loss, that we can use to optimize the weights of a neural network by gradient descent. The only problem is that neural networks typically require (comparably) vast amounts of data to learn a suitable feature transformation that is able to discriminate between the classes. The computation of the gradient, which requires to add the gradients of the cross-entropy for each data point is typically too costly if the dataset is big.
 # 
@@ -38,7 +41,7 @@
 # 
 # However, the randomness of SGD might also be a problem when it comes to the convergence of this method. In fact, SGD requires a decreasing step-size to converge. Hence it requires a learning rate scheduler, and a good learning rate scheduler is in practice often not trivial to find. Additionally, SGD can greatly benefit from additional optimization techniques like momentum.
 # 
-# ### Training with SGD in Pytorch
+# #### Training with SGD in Pytorch
 # We have used the Pytorch SGD optimizer already in the previous example, but there we computed gradient descent because we didn't split the data into batches. In order to perform SGD, we load the data into a `DataLoader`. In this example, we set the `batch_size=32`, meaning that each update is performed on 32 randomly sampled examples. The parameter `shuffle=True` reshuffles the dataset in every epoch, such that we get a new split in every epoch.     
 # We train here a simple shallow network with a single hidden layer of 16 neurons and ReLU activation. When we perform the evaluation to track the loss and accuracy on the train and test-data, we use the command `with torch.no_grad():` to perform the computations without simultaneous gradient tracking.     
 # 
@@ -149,6 +152,113 @@ ax2.grid(True)
 
 plt.tight_layout()
 plt.show()
+
+
+# ### Weight Decay
+# The integration of an $L2$ regularization is integrated into Pytorch's optimizer by the `weight_decay` parameter. Defining the optimizer as    
+# `optimizer = optim.SGD(model.parameters(), lr=0.1, weight_decay=0.1)`      
+# adds an $L2$ regularization with regularization weight $\lambda=0.1$. That is, the optimized loss is
+# $$\mathcal{L}(\mathcal{D},\theta)+\lambda\lVert\theta\rVert^2.$$
+# Integrating an $L2$ penalization is useful in most applications, since it penalizes big weights and big weights are typically associated with overfitting. You can imagine that the model output is more sensitive to the model input if the weights differ a lot in magnitude. input values that are multiplied with big weights have a bigger variance than input values multiplied with smaller weights.    
+# 
+# Usually, neural network are optimized with a small value of weight decay $\lambda \approx 0.0001$
+
+# ### Dropout
+# Dropout is a regularization technique that is also supposed to prevent overfitting in neural networks. During a forward pass, a dropout layer is __dropping out__ (setting to zero) a random subset of the neurons. As a result, the network learns to perform well with a random subset of the nodes, hence reducing dependence on single nodes and being able to deal also with noisy input. The resulting network is supposed to be more robust to small changes in the input. Theoretical works on the effect of dropout suggest that it results in learning weight matrices of low rank. That is, the weight matrices $W=U\Sigma V^\top$ after a dropout layer have an SVD where only few singular values are nonzero.      
+# 
+# The image below visualizes the effect of a dropout layer: two neurons are dropped and their input is not used in the forward pass. 
+
+# ```{tikz}
+# \tikzset{%
+#   every neuron/.style={
+#     circle,
+#     draw,
+#     minimum size=0.5cm
+#   },
+# }
+# 
+# \begin{tikzpicture}[x=1.5cm, y=1cm, >=stealth]
+# 
+# % Create input nodes
+# \foreach \m/\l [count=\y] in {1,2,3,4,5,6}
+#   \node [every neuron/.try, neuron \m/.try] (input-\m) at (0,2.5-\y) {};
+# 
+# % add cross to dropout nodes
+# \draw[-] ($(input-3.center)+(-0.2,-0.2)$) -- ($(input-3.center)+(0.2,0.2)$);
+# \draw[-] ($(input-3.center)+(-0.2,0.2)$) -- ($(input-3.center)+(0.2,-0.2)$);
+# \draw[-] ($(input-5.center)+(-0.2,-0.2)$) -- ($(input-5.center)+(0.2,0.2)$);
+# \draw[-] ($(input-5.center)+(-0.2,0.2)$) -- ($(input-5.center)+(0.2,-0.2)$);
+# 
+# 
+# % Create output layer nodes
+# \foreach \m [count=\y] in {1,2,3,4}
+#   \node [every neuron/.try, neuron \m/.try ] (output-\m) at (2,1.8-\y) {};
+# 
+# \foreach \l [count=\i] in {1,2,3,4,5,6}
+#   \draw [<-] (input-\i) -- ++(-0.7,0)
+#     node [above, midway] {$h^{(\ell)}_\l$};
+# 
+# %Connect input to output layer
+# \foreach \i in {1,2,4,6}
+#   \foreach \j in {1,2,3,4}
+#     \draw [->] (input-\i) -- (output-\j);
+#     
+# 
+# \end{tikzpicture}
+# ```
+
+# The pseudocode below details how a dropout layer works. 
+# ```{prf:algorithm}  Dropout layer
+# **Input**: the output of the previous hidden layer $\vvec{h}^{(\ell)}$ with dimensionality $d_{\ell}$, the probability of dropout $p$
+# 1. **if** not `training`
+#     1. **return** $\vvec{h}^{(\ell)}$
+# 2. Sample $\vvec{u}\sim\mathcal{U}([0,1])^{d_\ell}$
+# 3. $1_u \gets \vvec{u}>p$
+# 4. **return** $\frac{1}{1-p} 1_u\circ\vvec{h}^{(\ell)} $ #element-wise product
+# ```
+# Maybe a bit surprisingly, dropout doesn't just deactivate neurons, but it also scales the output with $\frac{1}{1-p}$. The reason for that is to keep the expected value of the output of a neuron the same with dropout. Let $\mathrm{dropout}(x)$ be the dropout output of hidden layer neuron $x$, then we drop the neuron with probability $p$ and keep it with probability $1-p$. If we keep it, then the output is $\frac{x}{1-p}$. Hence, the expected value of this neuron after dropout is
+# \begin{align*}
+# \mathbb{E}[\mathrm{dropout}(x)] = 0\cdot p + \frac{x}{1-p}\cdot (1-p) = x
+# \end{align*}
+# In Pytorch, we keep track of whether the model is trained or not by setting either `model.train()` or `model.eval()`. In evaluation mode, the dropout layer is letting through the input and the network acts deterministic. In training mode, the dropout layer is on and the model output is not deterministic.
+
+# In[3]:
+
+
+import torch
+import torch.nn as nn
+
+class SimpleNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.Linear(10, 10)
+        self.dropout = nn.Dropout(p=0.5)
+        self.fc2 = nn.Linear(10, 1)
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = self.dropout(x)
+        return self.fc2(x)
+
+model = SimpleNet()
+x = torch.ones(1, 10)
+
+with torch.no_grad():
+    # During training: dropout is active
+    model.train()
+    y_train = model(x)
+    print("Output 1 with dropout (train mode):", y_train)
+    # During training: dropout is active
+    y_train = model(x)
+    print("Output 2 with dropout (train mode):", y_train)
+
+    # During evaluation: dropout is disabled
+    model.eval()
+    y_eval = model(x)
+    print("Output 1 without dropout (eval mode):", y_eval)
+    # During evaluation: dropout is disabled
+    y_eval = model(x)
+    print("Output 2 without dropout (eval mode):", y_eval)
 
 
 # In[ ]:

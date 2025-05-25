@@ -322,7 +322,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
-     Training Neural Networks: Backpropagation and SGD
+     Backpropagation
     </a>
    </li>
    <li class="toctree-l2">
@@ -689,8 +689,8 @@ title="Print to PDF"
 \[\begin{equation*}\mathcal{D}=\left\{(\vvec{x}_i,y_i)\vert \vvec{x}_i\in\mathbb{R}^{d}, y_i\in\mathbb{R}, 1\leq i \leq n\right\},\end{equation*}\]</div>
 <p>the design matrix <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{n\times p}\)</span>, where <span class="math notranslate nohighlight">\(X_{i\cdot}=\bm\phi(\vvec{x}_i)^\top\)</span> and a regularization weight <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span>.<br />
 <strong>Find</strong> the regression vector <span class="math notranslate nohighlight">\(\bm\beta\)</span>, solving the following objective</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e5f8112e-8e9e-4dc3-8908-2d9e663ea862">
-<span class="eqno">(22)<a class="headerlink" href="#equation-e5f8112e-8e9e-4dc3-8908-2d9e663ea862" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-89dd6678-c036-4dcb-bfc5-fac4cec9c441">
+<span class="eqno">(22)<a class="headerlink" href="#equation-89dd6678-c036-4dcb-bfc5-fac4cec9c441" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_2}(\bm{\beta})&amp;= \lVert \vvec{y}-X\bm\beta\rVert^2 +\lambda \lVert\bm{\beta}\rVert^2. 
 \end{align}\]</div>
 <p><strong>Return</strong> the predictor function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec{x})^\top\bm\beta\)</span></p>
@@ -715,8 +715,8 @@ title="Print to PDF"
 </section>
 </div><div class="proof admonition" id="proof">
 <p>Proof. Let <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\)</span> be the singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span>, then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d1168960-e4fa-4747-9f6b-fc1aff4a7398">
-<span class="eqno">(24)<a class="headerlink" href="#equation-d1168960-e4fa-4747-9f6b-fc1aff4a7398" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c24f5bf4-264c-4160-a963-1da5301688c9">
+<span class="eqno">(24)<a class="headerlink" href="#equation-c24f5bf4-264c-4160-a963-1da5301688c9" title="Permalink to this equation">#</a></span>\[\begin{align}
     X^\top X+\lambda I 
     &amp;= V(\Sigma^\top\Sigma +\lambda I )V^\top
 \end{align}\]</div>

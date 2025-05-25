@@ -322,7 +322,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
-     Training Neural Networks: Backpropagation and SGD
+     Backpropagation
     </a>
    </li>
    <li class="toctree-l2">
@@ -695,14 +695,14 @@ title="Print to PDF"
 </table>
 <p>When it comes to the analysis of a gene expression dataset, we might want to explore more than just the prediction of the target survival time. The identification of the relevant features is also of interest to guide medical research by pointing out the relevant genes.</p>
 <p>The regression vector <span class="math notranslate nohighlight">\(\bm{\beta}\)</span> encodes which features are relevant for prediction by nonnegative entries:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-97a338e2-7210-4f7b-8c8e-3c085a9a4e40">
-<span class="eqno">(16)<a class="headerlink" href="#equation-97a338e2-7210-4f7b-8c8e-3c085a9a4e40" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-60184778-18d8-418d-a159-f6993234157d">
+<span class="eqno">(16)<a class="headerlink" href="#equation-60184778-18d8-418d-a159-f6993234157d" title="Permalink to this equation">#</a></span>\[\begin{align}
     f(\vvec{x}) =  \vvec{x}^\top{\bm\beta} = \sum_{i=1}^p \beta_ix_i 
     =\sum_{i:\beta_k\neq 0} \beta_ix_i
 \end{align}\]</div>
 <p>The number of nonnegative entries is given by the <span class="math notranslate nohighlight">\(L_0\)</span>-‘norm’:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7a3ff5f6-16b5-4410-b71d-c744e21a31ae">
-<span class="eqno">(17)<a class="headerlink" href="#equation-7a3ff5f6-16b5-4410-b71d-c744e21a31ae" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-4d5dc1e5-fcea-48b2-91f1-a18f6f70cad8">
+<span class="eqno">(17)<a class="headerlink" href="#equation-4d5dc1e5-fcea-48b2-91f1-a18f6f70cad8" title="Permalink to this equation">#</a></span>\[\begin{align}
     \lVert\bm{\beta}\rVert_0 = \lvert\{i\mid \beta_i\neq 0\}\rvert. 
 \end{align}\]</div>
 <p>Note that the <span class="math notranslate nohighlight">\(L_0\)</span>-‘norm’ is not a real norm. We define the sparse regression task to find the regression model that minimizes the prediction error while using only <span class="math notranslate nohighlight">\(s\)</span> features.</p>
@@ -713,8 +713,8 @@ title="Print to PDF"
 \[\begin{equation*}\mathcal{D}=\left\{(\vvec{x}_i,y_i)\vert \vvec{x}_i\in\mathbb{R}^{d}, y_i\in\mathbb{R}, 1\leq i \leq n\right\},\end{equation*}\]</div>
 <p>the design matrix <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{n\times p}\)</span>, where <span class="math notranslate nohighlight">\(X_{i\cdot}=\bm\phi(\vvec{x}_i)^\top\)</span> and the integer <span class="math notranslate nohighlight">\(s\)</span>.</p>
 <p><strong>Find</strong> the regression vector <span class="math notranslate nohighlight">\(\bm\beta\)</span>, solving the following objective</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a2104cea-70ab-426f-93b8-bb07b3e500e2">
-<span class="eqno">(18)<a class="headerlink" href="#equation-a2104cea-70ab-426f-93b8-bb07b3e500e2" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-b8bc3b61-aa97-45f7-a5cc-6dbbd02489ff">
+<span class="eqno">(18)<a class="headerlink" href="#equation-b8bc3b61-aa97-45f7-a5cc-6dbbd02489ff" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{\bm\beta\in\mathbb{R}^p} &amp; \lVert \vvec{y}-X\bm\beta\rVert^2 &amp;
     \text{s.t. }&amp; \lVert\bm{\beta}\rVert_0\leq s.
 \end{align}\]</div>
@@ -724,8 +724,8 @@ title="Print to PDF"
 <section id="relaxing-the-sparsity-constraint">
 <h2>Relaxing the sparsity constraint<a class="headerlink" href="#relaxing-the-sparsity-constraint" title="Permalink to this headline">#</a></h2>
 <p>The <span class="math notranslate nohighlight">\(L_0\)</span>-‘norm’ is a natural extension from the <span class="math notranslate nohighlight">\(L_p\)</span>-norms, which are actual norms for <span class="math notranslate nohighlight">\(p\geq 1\)</span>. Those are defined as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a18570e7-3280-42b9-b996-dbaf4d309139">
-<span class="eqno">(19)<a class="headerlink" href="#equation-a18570e7-3280-42b9-b996-dbaf4d309139" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-617875b3-a5d4-4e7e-af9e-13379a472ec3">
+<span class="eqno">(19)<a class="headerlink" href="#equation-617875b3-a5d4-4e7e-af9e-13379a472ec3" title="Permalink to this equation">#</a></span>\[\begin{align}
     \lVert \vvec{x}\rVert_p = \left(\sum_{k=1}^d \lvert x_k\rvert^p\right)^{1/p}
 \end{align}\]</div>
 <p>If <span class="math notranslate nohighlight">\(p\in (0,1)\)</span>, then we can compute the value defined above, but it’s not a real norm. For <span class="math notranslate nohighlight">\(p=0\)</span> we can’t compute the value above directly, because we would have to divide by zero. The <span class="math notranslate nohighlight">\(L_0\)</span>-‘norm’ is given by computing the formula above for <span class="math notranslate nohighlight">\(p=0\)</span> without the root term. That is, we have <span class="math notranslate nohighlight">\(\lim_{p\rightarrow 0}\lVert\mathbf{x}\rVert_p^p=\lVert \mathbf{x}\rVert_0\)</span>. For optimization purposes this is good enough, since it means that we can relax the constraint <span class="math notranslate nohighlight">\(\lVert \mathbf{x}\rVert_0\leq s\)</span> with the constraint <span class="math notranslate nohighlight">\(\lVert \mathbf{x}\rVert_p^p \leq s\)</span> for a small <span class="math notranslate nohighlight">\(p\approx 0\)</span>, or equivalently <span class="math notranslate nohighlight">\(\lVert \mathbf{x}\rVert_p \leq s^{1/p}\)</span>.</p>
@@ -738,14 +738,14 @@ title="Print to PDF"
 </figure>
 <p>Going over the dual is in practice often difficult. In particular if the resulting Lagrangian is not continuously differentiable, solving the dual becomes often impossible. A popular approach is to simply penalize the objective function with the constraints.<br />
 That is, given the <span class="math notranslate nohighlight">\(L_p\)</span>-constrained regression problem for <span class="math notranslate nohighlight">\(s&gt;0\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-5a36920e-bf6a-4a0c-9047-d9bcd01f4927">
-<span class="eqno">(20)<a class="headerlink" href="#equation-5a36920e-bf6a-4a0c-9047-d9bcd01f4927" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-bd24f87c-52e3-4eb0-bf0e-c4581fc06c37">
+<span class="eqno">(20)<a class="headerlink" href="#equation-bd24f87c-52e3-4eb0-bf0e-c4581fc06c37" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{\bm\beta}&amp; \lVert \vvec{y} -X \bm{\beta}\rVert^2 &amp; \text{s.t. } \lVert\bm{\beta}\rVert_p\leq s,
 \end{align}\]</div>
 <p>we can reformulate this objective into an unconstrained one by means of the Lagrangian.
 If the duality gap is zero, there exists a parameter <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span> such that the objective above is solved by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8efd2852-00d7-4a6f-bfe7-b69c173ab070">
-<span class="eqno">(21)<a class="headerlink" href="#equation-8efd2852-00d7-4a6f-bfe7-b69c173ab070" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-35d66612-8749-4a9e-a10a-d1ca7ce45fa4">
+<span class="eqno">(21)<a class="headerlink" href="#equation-35d66612-8749-4a9e-a10a-d1ca7ce45fa4" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{\bm\beta}&amp; \lVert \vvec{y} -X \bm{\beta}\rVert^2 +\lambda\lVert \bm{\beta}\rVert_p.
 \end{align}\]</div>
 <p>The question is now, which <span class="math notranslate nohighlight">\(p\)</span>-norm we are going to choose. We have here a trade-off between <span class="math notranslate nohighlight">\(p\)</span>-norms that are well-optimizable, since they are differentiable, or even smooth, and <span class="math notranslate nohighlight">\(p\)</span>-norms that are not so easily optimizable, but that are close to the behavior of the <span class="math notranslate nohighlight">\(L_0\)</span>-norm in their penalization behavior. We compare the <span class="math notranslate nohighlight">\(p\)</span>-norms with regard to their <em>optimizability</em> below:</p>

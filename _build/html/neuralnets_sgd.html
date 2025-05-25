@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>SGD &#8212; Data Mining and Machine Learning Jupyter Book</title>
+    <title>Training &#8212; Data Mining and Machine Learning Jupyter Book</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -327,7 +327,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     SGD
+     Training
     </a>
    </li>
    <li class="toctree-l2">
@@ -336,8 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_architecture.html">
-     Architecture
+    <a class="reference internal" href="neuralnets_pooling.html">
+     Pooling
     </a>
    </li>
   </ul>
@@ -611,13 +611,30 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#properties-of-sgd">
-   Properties of SGD
+  <a class="reference internal nav-link" href="#sgd">
+   SGD
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#properties-of-sgd">
+     Properties of SGD
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training-with-sgd-in-pytorch">
+     Training with SGD in Pytorch
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#weight-decay">
+   Weight Decay
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#training-with-sgd-in-pytorch">
-   Training with SGD in Pytorch
+  <a class="reference internal nav-link" href="#dropout">
+   Dropout
   </a>
  </li>
 </ul>
@@ -629,7 +646,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>SGD</h1>
+                <h1>Training</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -640,13 +657,30 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#properties-of-sgd">
-   Properties of SGD
+  <a class="reference internal nav-link" href="#sgd">
+   SGD
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#properties-of-sgd">
+     Properties of SGD
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training-with-sgd-in-pytorch">
+     Training with SGD in Pytorch
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#weight-decay">
+   Weight Decay
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#training-with-sgd-in-pytorch">
-   Training with SGD in Pytorch
+  <a class="reference internal nav-link" href="#dropout">
+   Dropout
   </a>
  </li>
 </ul>
@@ -659,8 +693,11 @@ title="Print to PDF"
                 
               <div>
                 
-  <section id="sgd">
-<h1>SGD<a class="headerlink" href="#sgd" title="Permalink to this headline">#</a></h1>
+  <section id="training">
+<h1>Training<a class="headerlink" href="#training" title="Permalink to this headline">#</a></h1>
+<p>Neural networks are often highly overparameterized, meaning that they have enough capacity to perfectly memorize the training data — even when the labels are random. The surprising result of the training methods of neural networks is that this overparametrization is not a big issue if you use a <em>good</em> optimizer and some additional tricks to prevent overfitting. This is what we are going to discuss in this section.</p>
+<section id="sgd">
+<h2>SGD<a class="headerlink" href="#sgd" title="Permalink to this headline">#</a></h2>
 <p>We have now discussed how to derive the gradient of the cross-entropy loss, that we can use to optimize the weights of a neural network by gradient descent. The only problem is that neural networks typically require (comparably) vast amounts of data to learn a suitable feature transformation that is able to discriminate between the classes. The computation of the gradient, which requires to add the gradients of the cross-entropy for each data point is typically too costly if the dataset is big.</p>
 <p><strong>Stochastic Gradient Descent (SGD)</strong> offers here a solution by updating the weights using only a small batch of training examples at a time. That is, in every update step, SGD performs a gradient descent step on the loss function
 <div class="math notranslate nohighlight">
@@ -687,7 +724,7 @@ where <span class="math notranslate nohighlight">\(\mathcal{B}\subseteq \mathcal
 </section>
 </div><p>Likewise, we can integrate momentum in this optimization scheme, by performing the updates on a batch only.</p>
 <section id="properties-of-sgd">
-<h2>Properties of SGD<a class="headerlink" href="#properties-of-sgd" title="Permalink to this headline">#</a></h2>
+<h3>Properties of SGD<a class="headerlink" href="#properties-of-sgd" title="Permalink to this headline">#</a></h3>
 <p>SGD is not only more efficient in its computation of the gradients, it also has many theoretical advantages to gradient descent. The computation of the gradients on batches only introduces noise into the gradient descent updates, that are often useful in navigating complex loss landscapes and escaping local minima.</p>
 <p><a class="reference internal" href="#loss-ladscape-fig"><span class="std std-numref">Fig. 9</span></a> gives an impression of the landscape of a neural network with only two parameters. We see how there are multiple local optima and only one very narrow valley that forms the global optimum. SGD can help in these cases, because it’s randomness helps to survey the loss landscape without getting stuck in smaller local minima.</p>
 <figure class="align-center" id="loss-ladscape-fig">
@@ -700,7 +737,7 @@ where <span class="math notranslate nohighlight">\(\mathcal{B}\subseteq \mathcal
 <p>However, the randomness of SGD might also be a problem when it comes to the convergence of this method. In fact, SGD requires a decreasing step-size to converge. Hence it requires a learning rate scheduler, and a good learning rate scheduler is in practice often not trivial to find. Additionally, SGD can greatly benefit from additional optimization techniques like momentum.</p>
 </section>
 <section id="training-with-sgd-in-pytorch">
-<h2>Training with SGD in Pytorch<a class="headerlink" href="#training-with-sgd-in-pytorch" title="Permalink to this headline">#</a></h2>
+<h3>Training with SGD in Pytorch<a class="headerlink" href="#training-with-sgd-in-pytorch" title="Permalink to this headline">#</a></h3>
 <p>We have used the Pytorch SGD optimizer already in the previous example, but there we computed gradient descent because we didn’t split the data into batches. In order to perform SGD, we load the data into a <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code>. In this example, we set the <code class="docutils literal notranslate"><span class="pre">batch_size=32</span></code>, meaning that each update is performed on 32 randomly sampled examples. The parameter <code class="docutils literal notranslate"><span class="pre">shuffle=True</span></code> reshuffles the dataset in every epoch, such that we get a new split in every epoch.<br />
 We train here a simple shallow network with a single hidden layer of 16 neurons and ReLU activation. When we perform the evaluation to track the loss and accuracy on the train and test-data, we use the command <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">torch.no_grad():</span></code> to perform the computations without simultaneous gradient tracking.</p>
 <p>Feel free to try playing with the parameters yourself. Note in particular how we need now only 100 epochs to train this simple model, while we needed 1000 gradient descent steps and a multiple-layer network to achieve a similar accuracy.</p>
@@ -813,6 +850,94 @@ We train here a simple shallow network with a single hidden layer of 16 neurons 
 </div>
 <div class="cell_output docutils container">
 <img alt="_images/neuralnets_sgd_3_0.png" src="_images/neuralnets_sgd_3_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="weight-decay">
+<h2>Weight Decay<a class="headerlink" href="#weight-decay" title="Permalink to this headline">#</a></h2>
+<p>The integration of an <span class="math notranslate nohighlight">\(L2\)</span> regularization is integrated into Pytorch’s optimizer by the <code class="docutils literal notranslate"><span class="pre">weight_decay</span></code> parameter. Defining the optimizer as<br />
+<code class="docutils literal notranslate"><span class="pre">optimizer</span> <span class="pre">=</span> <span class="pre">optim.SGD(model.parameters(),</span> <span class="pre">lr=0.1,</span> <span class="pre">weight_decay=0.1)</span></code><br />
+adds an <span class="math notranslate nohighlight">\(L2\)</span> regularization with regularization weight <span class="math notranslate nohighlight">\(\lambda=0.1\)</span>. That is, the optimized loss is
+<div class="math notranslate nohighlight">
+\[\mathcal{L}(\mathcal{D},\theta)+\lambda\lVert\theta\rVert^2.\]</div>
+
+Integrating an <span class="math notranslate nohighlight">\(L2\)</span> penalization is useful in most applications, since it penalizes big weights and big weights are typically associated with overfitting. You can imagine that the model output is more sensitive to the model input if the weights differ a lot in magnitude. input values that are multiplied with big weights have a bigger variance than input values multiplied with smaller weights.</p>
+<p>Usually, neural network are optimized with a small value of weight decay <span class="math notranslate nohighlight">\(\lambda \approx 0.0001\)</span></p>
+</section>
+<section id="dropout">
+<h2>Dropout<a class="headerlink" href="#dropout" title="Permalink to this headline">#</a></h2>
+<p>Dropout is a regularization technique that is also supposed to prevent overfitting in neural networks. During a forward pass, a dropout layer is <strong>dropping out</strong> (setting to zero) a random subset of the neurons. As a result, the network learns to perform well with a random subset of the nodes, hence reducing dependence on single nodes and being able to deal also with noisy input. The resulting network is supposed to be more robust to small changes in the input. Theoretical works on the effect of dropout suggest that it results in learning weight matrices of low rank. That is, the weight matrices <span class="math notranslate nohighlight">\(W=U\Sigma V^\top\)</span> after a dropout layer have an SVD where only few singular values are nonzero.</p>
+<p>The image below visualizes the effect of a dropout layer: two neurons are dropped and their input is not used in the forward pass.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-28dc441a901b85b91c0e9fd7cfbe39a6a8e941e9.svg" alt="Figure made with TikZ" /></p>
+</div><p>The pseudocode below details how a dropout layer works.</p>
+<div class="proof algorithm admonition" id="algorithm-1">
+<p class="admonition-title"><span class="caption-number">Algorithm 12 </span> (Dropout layer)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Input</strong>: the output of the previous hidden layer <span class="math notranslate nohighlight">\(\vvec{h}^{(\ell)}\)</span> with dimensionality <span class="math notranslate nohighlight">\(d_{\ell}\)</span>, the probability of dropout <span class="math notranslate nohighlight">\(p\)</span></p>
+<ol class="simple">
+<li><p><strong>if</strong> not <code class="docutils literal notranslate"><span class="pre">training</span></code></p>
+<ol class="simple">
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\(\vvec{h}^{(\ell)}\)</span></p></li>
+</ol>
+</li>
+<li><p>Sample <span class="math notranslate nohighlight">\(\vvec{u}\sim\mathcal{U}([0,1])^{d_\ell}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(1_u \gets \vvec{u}&gt;p\)</span></p></li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\(\frac{1}{1-p} 1_u\circ\vvec{h}^{(\ell)} \)</span> #element-wise product</p></li>
+</ol>
+</section>
+</div><p>Maybe a bit surprisingly, dropout doesn’t just deactivate neurons, but it also scales the output with <span class="math notranslate nohighlight">\(\frac{1}{1-p}\)</span>. The reason for that is to keep the expected value of the output of a neuron the same with dropout. Let <span class="math notranslate nohighlight">\(\mathrm{dropout}(x)\)</span> be the dropout output of hidden layer neuron <span class="math notranslate nohighlight">\(x\)</span>, then we drop the neuron with probability <span class="math notranslate nohighlight">\(p\)</span> and keep it with probability <span class="math notranslate nohighlight">\(1-p\)</span>. If we keep it, then the output is <span class="math notranslate nohighlight">\(\frac{x}{1-p}\)</span>. Hence, the expected value of this neuron after dropout is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{E}[\mathrm{dropout}(x)] = 0\cdot p + \frac{x}{1-p}\cdot (1-p) = x
+\end{align*}\]</div>
+<p>In Pytorch, we keep track of whether the model is trained or not by setting either <code class="docutils literal notranslate"><span class="pre">model.train()</span></code> or <code class="docutils literal notranslate"><span class="pre">model.eval()</span></code>. In evaluation mode, the dropout layer is letting through the input and the network acts deterministic. In training mode, the dropout layer is on and the model output is not deterministic.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="k">class</span> <span class="nc">SimpleNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">SimpleNet</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="c1"># During training: dropout is active</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output 1 with dropout (train mode):&quot;</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="c1"># During training: dropout is active</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output 2 with dropout (train mode):&quot;</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+    <span class="c1"># During evaluation: dropout is disabled</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">y_eval</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output 1 without dropout (eval mode):&quot;</span><span class="p">,</span> <span class="n">y_eval</span><span class="p">)</span>
+    <span class="c1"># During evaluation: dropout is disabled</span>
+    <span class="n">y_eval</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output 2 without dropout (eval mode):&quot;</span><span class="p">,</span> <span class="n">y_eval</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output 1 with dropout (train mode): tensor([[-0.8045]])
+Output 2 with dropout (train mode): tensor([[-0.4288]])
+Output 1 without dropout (eval mode): tensor([[-0.4461]])
+Output 2 without dropout (eval mode): tensor([[-0.4461]])
+</pre></div>
+</div>
 </div>
 </div>
 </section>

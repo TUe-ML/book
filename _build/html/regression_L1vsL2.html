@@ -320,7 +320,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
-     Training Neural Networks: Backpropagation and SGD
+     Backpropagation
     </a>
    </li>
    <li class="toctree-l2">
@@ -614,14 +614,14 @@ title="Print to PDF"
 <h1>L1 vs L2 Regularization<a class="headerlink" href="#l1-vs-l2-regularization" title="Permalink to this headline">#</a></h1>
 <p>Ok, but what is now better, <span class="math notranslate nohighlight">\(L_1\)</span>- or <span class="math notranslate nohighlight">\(L_2\)</span>-norm regularization? We will make an illustration of the regression solutions when we penalize with <span class="math notranslate nohighlight">\(L_1\)</span>- and <span class="math notranslate nohighlight">\(L_2\)</span>-norm. To make that illustration, using the constrained objective formulation is more suitable than the penalized one. As discussed in the <strong>Sparse Regression</strong> section, we can transform the penalized objective into a constrained one and vice versa.</p>
 <p>That is, for every <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span> there exists a radius <span class="math notranslate nohighlight">\(s&gt;0\)</span> and vice versa, such that the following optimization problems are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3bb39bbc-d11a-4cc1-8e73-3a41a1385b81">
-<span class="eqno">()<a class="headerlink" href="#equation-3bb39bbc-d11a-4cc1-8e73-3a41a1385b81" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e8e71d8f-4bac-4064-8f24-5c16329ff20d">
+<span class="eqno">()<a class="headerlink" href="#equation-e8e71d8f-4bac-4064-8f24-5c16329ff20d" title="Permalink to this equation">#</a></span>\[\begin{align}
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda \lVert\bm{\beta}\rVert^2 &amp; \text{s.t. }\bm{\beta}\in\mathbb{R}^p  \\
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 &amp; \text{s.t. } \lVert\bm{\beta}\rVert^2\leq s^2,\bm{\beta}\in\mathbb{R}^p  \\
 \end{align}\]</div>
 <p>Similarly, for every <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span> there exists a radius <span class="math notranslate nohighlight">\(s&gt;0\)</span> and vice versa, such that the following optimization problems are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0c07944a-799f-4ca9-9e61-f7aa217c018c">
-<span class="eqno">()<a class="headerlink" href="#equation-0c07944a-799f-4ca9-9e61-f7aa217c018c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-0b91ca81-a419-4816-b8b4-e3339ac3d650">
+<span class="eqno">()<a class="headerlink" href="#equation-0b91ca81-a419-4816-b8b4-e3339ac3d650" title="Permalink to this equation">#</a></span>\[\begin{align}
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda \lvert\bm{\beta}\rvert &amp; \text{s.t. }\bm{\beta}\in\mathbb{R}^p  \\
         \min &amp;\lVert \vvec{y}-X\bm{\beta}\rVert^2 &amp; \text{s.t. } \lvert\bm{\beta}\rvert\leq s,\bm{\beta}\in\mathbb{R}^p  \\
 \end{align}\]</div>
@@ -692,13 +692,13 @@ title="Print to PDF"
 </div>
 </div>
 <p>In summary, we considered the ridge regression objective</p>
-<div class="amsmath math notranslate nohighlight" id="equation-960745f7-ad5f-462c-b95c-1221d3a8b96a">
-<span class="eqno">()<a class="headerlink" href="#equation-960745f7-ad5f-462c-b95c-1221d3a8b96a" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-ee6c6ec7-7d97-45ff-b67b-04ad3b8807e9">
+<span class="eqno">()<a class="headerlink" href="#equation-ee6c6ec7-7d97-45ff-b67b-04ad3b8807e9" title="Permalink to this equation">#</a></span>\[\begin{align}
         \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_2}(\bm{\beta}) = \lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda\lVert\bm{\beta}\rVert^2
 \end{align}\]</div>
 <p>and the Lasso</p>
-<div class="amsmath math notranslate nohighlight" id="equation-950c83ee-1abb-4cf9-809a-40c14d3e6fb1">
-<span class="eqno">()<a class="headerlink" href="#equation-950c83ee-1abb-4cf9-809a-40c14d3e6fb1" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e1579ad2-6489-45c4-8f76-b55be529b9d7">
+<span class="eqno">()<a class="headerlink" href="#equation-e1579ad2-6489-45c4-8f76-b55be529b9d7" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_1}(\bm{\beta}) = \lVert \vvec{y}-X\bm{\beta}\rVert^2 + \lambda\lvert\bm{\beta}\rvert
 \end{align}\]</div>
 <p>The solution of Ridge Regression is computable very fast, analyically. The Ridge Regression minimizer is uniquely defined, but usually not sparse.

@@ -68,7 +68,7 @@ sphinx:
           "bm": ["{\\boldsymbol #1}",1]
           "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"
         preamble: \usepackage{arydshln}
-    tikz_tikzlibraries: calc, angles, intersections, arrows.meta, matrix, decorations.pathreplacing, positioning, shapes.geometric, fit, pgfplots.groupplots, pgfplots.fillbetween
+    tikz_tikzlibraries: calc, angles, intersections, arrows.meta, matrix, decorations.pathreplacing, positioning, shapes.geometric, fit, pgfplots.groupplots, pgfplots.fillbetween, 3d, decorations.text, shapes.arrows, backgrounds
     tikz_latex_preamble: \usepackage{pgfplotstable}
   extra_extensions:
     - sphinx_proof

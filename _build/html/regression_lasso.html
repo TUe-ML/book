@@ -322,7 +322,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_backprop.html">
-     Training Neural Networks: Backpropagation and SGD
+     Backpropagation
     </a>
    </li>
    <li class="toctree-l2">
@@ -676,8 +676,8 @@ title="Print to PDF"
 <p><strong>Return</strong> the predictor function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec{x})^\top\bm\beta\)</span>.</p>
 </div>
 <p>The drawback of using a <span class="math notranslate nohighlight">\(L_1\)</span>-regularization term is that the resulting objective function in Eq. <a class="reference internal" href="#equation-eq-lasso-obj">(25)</a> is not differentiable if any value of <span class="math notranslate nohighlight">\(\beta\)</span> is zero. However, we can generalize from the concept of a gradient to a subgradient, and the subgradient of the <span class="math notranslate nohighlight">\(L_1\)</span>-norm is given as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6e483de1-9c4b-44a1-913e-1265cc1ff866">
-<span class="eqno">(26)<a class="headerlink" href="#equation-6e483de1-9c4b-44a1-913e-1265cc1ff866" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7cbb7144-3f83-4731-9787-9d88f6add581">
+<span class="eqno">(26)<a class="headerlink" href="#equation-7cbb7144-3f83-4731-9787-9d88f6add581" title="Permalink to this equation">#</a></span>\[\begin{align}
     \frac{\partial\lvert\bm\beta\rvert}{\partial \beta_k} \in 
     \begin{cases}
         \{1\},&amp; \text{if } \beta_k&gt;0\\
@@ -698,8 +698,8 @@ Minimizers of objective functions which have a subgradient satisfy <span class="
 \[\beta_k^* = \argmin_{\beta_k\in\mathbb{R}} \lVert\vvec{y}-X\bm\beta\rVert^2+\lambda\lvert\bm\beta\rvert\]</div>
 
 is given for <span class="math notranslate nohighlight">\(c_k =  X_{\cdot k}^\top \vvec{y}- \sum_{i\neq k}X_{\cdot k}^\top X_{\cdot i}\beta_i\)</span> by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-267df333-2569-43bb-8f78-0f855946e6f4">
-<span class="eqno">(27)<a class="headerlink" href="#equation-267df333-2569-43bb-8f78-0f855946e6f4" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e2bac911-8de8-4d1a-bbe9-d7eed8ec5c1d">
+<span class="eqno">(27)<a class="headerlink" href="#equation-e2bac911-8de8-4d1a-bbe9-d7eed8ec5c1d" title="Permalink to this equation">#</a></span>\[\begin{align}
 \beta_k^*&amp;= \begin{cases}
 \frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k -\frac \lambda 2) &amp; \text{if } c_k&gt;\frac \lambda 2\\
 \frac{1}{\lVert X_{\cdot k}\rVert^2}(c_k +\frac \lambda 2) &amp; \text{if } c_k&lt;-\frac \lambda 2\\
@@ -857,7 +857,7 @@ If <span class="math notranslate nohighlight">\(\beta_k&lt;0\)</span>, then the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.001 	 [ 0.0835  0.4046 -0.0944]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.001 	 [-0.5892  0.8054 -0.1479]
 1 	 [-0.      0.4504 -0.1002]
 10 	 [ 0.      0.0334 -0.014 ]
 100 	 [ 0.     -0.     -0.0044]
