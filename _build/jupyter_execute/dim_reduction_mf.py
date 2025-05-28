@@ -467,10 +467,11 @@ plot_matrix(2*np.reshape(P2_, (1, P2_.shape[0])), axs[6])
 # ````
 # 
 
-# ## Implementation of a Recommender System
-# Ok, so the truncated SVD solves the task to determine a low-rank approximation of my data.
-# How can we apply the low-rank approximation to provide recommendations? 
-# Fill missing values with the mean value and compute the truncated SVD.
+# ## A Simple Matrix Completion Recommender System
+# We can use truncated SVD to compute a low-rank approximation of the data.
+# How can we use this to provide recommendations? After all, we need a complete matrix in order to compute the SVD. For now, we consider a quick hack: we fill the missing values with the mean (neutral rating) and compute the truncated SVD with the hope that the SVD reconstructs mainly the given ratings that are often not equal to the mean rating, such that the imputed values get a more accurate prediction of a rating with the SVD.      
+# 
+# Let's go through an example. The table below shows a movie-ratings database that is filled by some ratings, but not all movies have been seen by all costumers and we want to fill in the missing values with the approximate rating that would be given by the user if the had seen the movie.
 # 
 # | Id| $A$ | $B$ | $C$ | $D$|
 # |---|-----|-----|-----|----|
@@ -481,9 +482,7 @@ plot_matrix(2*np.reshape(P2_, (1, P2_.shape[0])), axs[6])
 # | 5 | ★★★★★ | ★★★★★ | ? | ? |
 # | 6 | ? | ★★★★☆| ★★★★★ | ★★★☆☆ |
 # 
-# Can we fill the question marks with the rating which would be given by the user if they had seen the movie?
-# 
-# Quick hack: we replace the unobserved entries with the mean rating $\mu=\frac{1+2+3+4+5}{5}=3$.
+# We apply our quick hack and replace the unobserved entries with the mean rating $\mu=\frac{1+2+3+4+5}{5}=3$. This gives us the following data matrix:
 
 # In[5]:
 
@@ -492,15 +491,23 @@ D = np.array([[5,3,1,1],[3,1,5,3],[2,1,5,3],[4,3,4,2],[5,5,3,1],[3,1,5,3]])
 D
 
 
+# We visualize the rating matrix with the image below. A white pixel indicates a low rating and a blue pixel indicates a higher rating. 
+
 # In[6]:
 
 
-plt.imshow(D,vmin = -5, vmax = 5)
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+cm_0 = LinearSegmentedColormap.from_list("mycmap0", ["#ffffff","#a0c3ff"])
+cm_1 = LinearSegmentedColormap.from_list("mycmap1", ["#ffffff", "#ffa1cf"])
+cm_2 = LinearSegmentedColormap.from_list("mycmap2", ["#ffffff", "#f37726"])
+
+plt.imshow(D,vmin = 0, vmax = 5, cmap=cm_0)
 plt.title("D")
-plt.set_cmap('PiYG')
 plt.axis('off')
 plt.show()
 
+
+# We compute the SVD of the matrix $D$:
 
 # In[7]:
 
@@ -508,7 +515,9 @@ plt.show()
 U, s, Vᵀ = np.linalg.svd(D,full_matrices=True)
 
 
-# We get a rank-2 approximation of $D$ by the truncated SVD $D\approx U_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}V_{\cdot \{1,2\}}^\top$. This tri-factorization can be expressed as a factorization into two matrices by setting $Y=U_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}^{1/2}$ and $X=V_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}^{1/2}$. 
+# We get a rank-2 approximation of $D$ by truncating the SVD to two singular values and vectors: 
+# $$D\approx U_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}V_{\cdot \{1,2\}}^\top.$$ 
+# The tri-factorization of SVD can be expressed as a factorization into two matrices by making an arbitrary split into the product of two matrices. For example, we could set $Y=U_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}^{1/2}$ and $X=V_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}^{1/2}$. This way, we can expect that $Y$ and $X$ are similarly scaled, since they both are matrices with unitary vectors that are scaled by the square roots of the singular values. However, in principle, any split of the SVD product into two matrices will do. 
 # ```{note}
 # The matrix $A^{1/2}$ is defined as the matrix that satisfies the equation $A^{1/2}A^{1/2}=A$. Not for all matrices $A$ exists such a matrix $A^{1/2}$. However, for nonnegative, diagonal matrices $\Sigma$, the matrix $\Sigma^{1/2}=\diag(\sqrt{\sigma_1},\ldots, \sqrt{\sigma_r})$ exists.
 # ```
@@ -518,23 +527,19 @@ U, s, Vᵀ = np.linalg.svd(D,full_matrices=True)
 
 np.set_printoptions(precision=2,suppress=True)
 Y = U[:,0:2]*np.sqrt(s[0:2])
-Y
-
-
-# In[9]:
-
-
 X = Vᵀ.T[:,0:2]*np.sqrt(s[0:2])
-X
+Y,X
 
 
 # The low rank approximation can be used to give recommendations.
 
-# In[10]:
+# In[9]:
 
 
 Y@X.T
 
+
+# If we compare the matrix above with the matrix having missing values, then we see that the low rank approximation gives some tendencies for recommendations, but often no very clear recommendation indications. This is not very surprising, since we had just a small dataset and comparatively many missing values. The rank-2 approximation is already a bit too well adapting to the missing values neutral rating.
 
 # \begin{align}
 #   \begin{pmatrix}
@@ -556,11 +561,37 @@ Y@X.T
 #   \end{pmatrix}
 # \end{align}
 
-# ## Interpretation of the Factorization
-# The approximation matrix represented by the matrix product is composed by the two outer products (because the factorization rank is two). We visualize here the matrix decomposition by means of colors. The more saturated the color, the  higher is the absolute value of the corresponding element in the matrix. Positive values are green and negative values are pink.  
-# The visualization makes the grid structure apparent which is induced by the outer product.
+# If we plot the original data and the approximation next to another, then we also see that there are no big differences. 
 
-# \begin{align}
+# In[10]:
+
+
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+cm_0 = LinearSegmentedColormap.from_list("mycmap0", ["#ffffff","#a0c3ff"])
+cm_1 = LinearSegmentedColormap.from_list("mycmap1", ["#ffffff", "#ffa1cf"])
+cm_2 = LinearSegmentedColormap.from_list("mycmap2", ["#ffffff", "#f37726"])
+
+# Create subplots
+fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+
+# Plot first matrix
+axes[0].imshow(Y@X.T, vmin=0, vmax=5, cmap=cm_0)
+axes[0].set_title("Y X.T")
+axes[0].axis('off')
+
+# Plot second matrix
+axes[1].imshow(D, vmin=0, vmax=5, cmap=cm_0)
+axes[1].set_title("D")
+axes[1].axis('off')
+
+plt.tight_layout()
+plt.show()
+
+
+# ### Interpretation of the Factorization
+# The rank-two matrix product is composed by the sum of two outer products. Every outer product indicates the interaction of a user-pattern with a movie pattern. Hence, looking at the outer-product decomposition is useful for interpretation purposes. The equation below shows again the rank-two approximation. 
+
+# \begin{align*}
 #   \begin{pmatrix}
 #     5 & \mu & 1 & 1 \\
 #     \mu & 1 & 5 & \mu  \\\
@@ -582,9 +613,9 @@ Y@X.T
 #     -9.0 & -5.8 & -9.5 & -5.3\\
 #     2.6 & 3.3 & -3.3 & -2.2\\
 #   \end{pmatrix}
-# \end{align}
-# Every user's preferences are approximated by a linear combination of the rows in the second matrix:
-# \begin{align}
+# \end{align*}
+# Every user's preferences are approximated by a linear combination of the rows in the second matrix. The rows in the second matrix have an interpretation as movie patterns. For example, the first user adheres to the first movie pattern with a factor of $-0.3$ and to the second movie pattern with a factor of $0.5$.
+# \begin{align*}
 #     \begin{pmatrix}
 #         5 & \mu & 1 & 1 
 #     \end{pmatrix}
@@ -597,36 +628,45 @@ Y@X.T
 #     \begin{pmatrix}
 #         2.6 & 3.3 & -3.3 & -2.2
 #     \end{pmatrix}    
-# \end{align}
+# \end{align*}
+# We visualize the sum of the two outer products with colored matrices. The more saturated the color, the  higher is the absolute value of the corresponding element in the matrix. Positive values are blue and negative values are pink.  
+# The visualization makes the grid structure apparent which is induced by the outer product. The first movie pattern is $\begin{pmatrix}-9.0 & -5.8 & -9.5 & -5.3\end{pmatrix}$, but because all values in the first user pattern are also negative, it would be more intuitive to consider the first movie pattern as $\begin{pmatrix}9 & 5.8 & 9.5 & 5.3\end{pmatrix}$. We see this pattern in the first outer product $Y_{\cdot 1}X_{\cdot 1}^\top$: the first and third column have a higher intensity than the other columns, corresponding to the high values in the pattern matrix $9$ and $9.5$. We can roughly say that the first outer product indicates how much the user likes movie 1 and movie 3 but not so much the other movies.      
+# However, we cannot make general statements from the first outer product (e.g., user 2 likes movie 1 and movie 3 because their (sign-corrected) coefficient for the first movie pattern is 0.4, which is comparatively high). That is because the second outer product may correct what the first outer product indicates by subtracting and adding values. For evample, user 2 doesn't particularly like movie 1 (in fact, it's a missing value) and although the first outer product indicates a score of $0.4\cdot 9=3.6$. The second outer product corrects this by subtracting $-0.4\cdot2.6=-1.04$.     
+# 
+# Hence, we can't make general statements based on one outer product alone. However, the significance of the outer products in the sense of how they influence the approximation, drops with the index of the outer product. That is because the singular values are decreasing in magnitude with the index. Visually, we can observe this with the fading colors making up the second outer product.  
 
 # In[11]:
 
 
 plt.figure(2, figsize=(18, 5))
+cm_bm = LinearSegmentedColormap.from_list("mycmapbm", ["#ffa1cf","#ffffff","#a0c3ff"])
 #--------------
 plt.subplot(1,3,1)
-plt.imshow(Y@X.T,vmin = -5, vmax = 5)
-plt.title("YXᵀ")
+plt.imshow(Y@X.T,vmin = -5, vmax = 5,cmap=cm_bm)
+plt.title("$YX^T$")
 plt.axis('equal')
 plt.axis('off')
 plt.text(5,3, '=')
 
 plt.subplot(1,3,2)
-plt.imshow(np.outer(Y[:,0],X[:,0]),vmin = -5, vmax = 5)
-plt.title("Y_1X_1ᵀ")
+plt.imshow(np.outer(Y[:,0],X[:,0]),vmin = -5, vmax = 5,cmap=cm_bm)
+plt.title("$Y_{\cdot 1}X_{\cdot 1}^T$")
 plt.axis('equal')
 plt.axis('off')
 plt.text(5,3, '+')
 
 plt.subplot(1,3,3)
-plt.imshow(np.outer(Y[:,1],X[:,1]),vmin = -5, vmax = 5)
-plt.title("Y_2X_2ᵀ")
-plt.axis('equal')
+plt.imshow(np.outer(Y[:,1],X[:,1]),vmin = -5, vmax = 5,cmap=cm_bm)
+plt.title("$Y_{\cdot 2}X_{\cdot 2}^T$")
+plt.axis('equal') 
 plt.axis('off')
 plt.show()
 
 
 # ## What Happens When We Increase the Rank?
+# The rank of the matrix factorization is a hyperparameter. If we choose the rank too low, then the approximation might underfit and some of the patterns in the data remain undiscovered. If the rank is too high, then the model also approximates noise-effects from the data and overfits. Noise effects could be in the recommender setting fluctuations in the mood of the user at the time of the rating. In the setting of the matrix completion task, a too high rank also results in an approximation of the neutral rankings that are imputed for the missing values. 
+# 
+# We visualize the factorization with a rank of three below. We see that the third outer product does make some minor corrections for user 1 and 5. At this point, the information in the third outer product becomes neglectable and should not be included in the model.
 
 # In[12]:
 
@@ -641,57 +681,115 @@ Y = U[:,0:3]*np.sqrt(s[0:3])
 plt.figure(2, figsize=(18, 5))
 #--------------
 plt.subplot(1,4,1)
-plt.imshow(Y@X.T,vmin = -5, vmax = 5)
-plt.title("YXᵀ")
-plt.set_cmap('PiYG')
+plt.imshow(Y@X.T,vmin = -5, vmax = 5,cmap=cm_bm)
+plt.title("$YX^T$")
 plt.axis('equal')
 plt.axis('off')
 plt.text(5,3, '=')
 
 plt.subplot(1,4,2)
-plt.imshow(np.outer(Y[:,0],X[:,0]),vmin = -5, vmax = 5)
-plt.title("Y_1X_1ᵀ")
+plt.imshow(np.outer(Y[:,0],X[:,0]),vmin = -5, vmax = 5,cmap=cm_bm)
+plt.title("$Y_{\cdot 1}X_{\cdot 1}^T$")
 plt.axis('equal')
 plt.axis('off')
 plt.text(5,3, '+')
 
 plt.subplot(1,4,3)
-plt.imshow(np.outer(Y[:,1],X[:,1]),vmin = -5, vmax = 5)
-plt.title("Y_2X_2ᵀ")
+plt.imshow(np.outer(Y[:,1],X[:,1]),vmin = -5, vmax = 5,cmap=cm_bm)
+plt.title("$Y_{\cdot 2}X_{\cdot 2}^T$")
 plt.axis('equal')
 plt.axis('off')
 plt.text(5,3, '+')
 
 plt.subplot(1,4,4)
-plt.imshow(np.outer(Y[:,2],X[:,2]),vmin = -5, vmax = 5)
-plt.title("Y_3X_3ᵀ")
+plt.imshow(np.outer(Y[:,2],X[:,2]),vmin = -5, vmax = 5,cmap=cm_bm)
+plt.title("$Y_{\cdot 3}X_{\cdot 3}^T$")
 plt.axis('equal')
 plt.axis('off')
 plt.show()
 
 
-# The approximating data matrix, visualized by the matrix on the left above, is given as:
-
-# In[14]:
-
-
-Y@X.T
-
-
-# ## Towards a More Advanced Recommender System
-# How can we prevent the approximation to the inserted mean values?
+# ## Low-Rank MF on Observed Entries
+# The SVD of the rating matrix with neutral rating imputations gave us some indications of possible recommendations, but an issue with this simple approach is that the imputed missing values are also approximated by the factorization. Especially when observations are sparse, which is usually the case for movie recommendations for example, then this method won't work because the actual ratings will be perceived as outliers.
 # 
-# Adapt the objective to approximate only observed entries.
-# The following approach has been used in the Netflix Price 2009 competition and made it to the top-3:
-# `````{admonition} Task (Rank-r Matrix Factorization with Missing Values)
+# An idea to solve the matrix completion task more accurately is to compute a factorization that approximates only the values of observed entries.
+# This approach has been used in the Netflix Price 2009 competition and made it to the top-3.
+# `````{admonition} Task (Low-Rank Matrix Factorization with Missing Values)
 # :class: tip
-# **Given** a data matrix $D\in\mathbb{R}^{n\times d}$ having observed entries $D_{ik}$ for $(i,k)\in\mathcal{O}\subseteq \{1,\ldots,n\}\times \{1,\ldots d\}$ the set of observed matrix entries, and a rank $r<\min\{n,d\}$.     
+# **Given** a data matrix $D\in\mathbb{R}^{n\times d}$ having observed entries $D_{ik}$ for indices $(i,k)$ where the binary indicator matrix $O\in\{0,1\}^{n\times d}$ has an entry of one $O_{ik}=1$, and a rank $r<\min\{n,d\}$.     
 #     
-# **Find** matrices $X\in\mathbb{R}^{d\times r}$ and $Y\in\mathbb{R}^{n\times r}$ whose product approximates the data matrix only on observed entries, indicated by $\mathbb{1}_{\mathcal{O}}$:
+# **Find** matrices $X\in\mathbb{R}^{d\times r}$ and $Y\in\mathbb{R}^{n\times r}$ whose product approximates the data matrix only on observed entries:
 # \begin{align}
-#     \min_{X,Y}&\lVert \mathbb{1}_{\mathcal{O}}\circ(D- YX^\top)\rVert^2 =\sum_{(i,k)\in\mathcal{O}}(D_{ik}-Y_{i\cdot}X_{k\cdot}^\top)^2\\ 
+#     \min_{X,Y}&\lVert O\circ(D- YX^\top)\rVert^2 +\lambda\lVert X\rVert^2+\lambda\lVert Y\rVert^2 =\sum_{(i,k):O_{ik}=1}(D_{ik}-Y_{i\cdot}X_{k\cdot}^\top)^2\\ 
 #     \text{s.t. }& X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}
 # \end{align}
 # **Return** the low-dimensional approximation of the data $(X,Y)$.  
 # `````
-# We can optimze this objective with coordinate descent. We will not go through this approach in detail, but you can try to implement this for yourself.
+# ### Optimization
+# The low-rank MF on observed entries can not be computed directly by SVD. However, we can derive the minimizers of one column of $X$ and $Y$ when fixing the other matrix.
+# ```{prf:theorem}
+# The minimizers of the objective to minimize $\lVert \mathbb{1}_{\mathcal{O}}\circ(D- YX^\top)\rVert^2$ subject to a row of $X$ or $Y$ is given as:
+# \begin{align*}
+# D_{\cdot k}^\top \diag(O_{\cdot k})Y(Y^\top \diag(O_{\cdot k}) Y+\lambda I)^{-1} &= \argmin_{X_{k\cdot}}
+# \lVert O\circ(D- YX^\top)\rVert^2 + \lambda\lVert X\rVert^2\\
+# D_{i\cdot} \diag(O_{i\cdot})X(X^\top \diag(O_{i\cdot}) X+\lambda I)^{-1} &= \argmin_{Y_{i\cdot}}
+# \lVert O\circ(D- YX^\top)\rVert^2 + \lambda\lVert Y\rVert^2
+# \end{align*}
+# 
+# ```
+# ````{toggle}
+# ```{prf:proof}
+# We show the result for minimizing over $X_{k\cdot}$, the result for $Y_{i\cdot}$ follows by transposing the factorization. First, we observe that the minimization subject to $X_{k\cdot}$ reduces to the minimization over the $k$-th column:
+# \begin{align*}
+# \argmin_{X_{k\cdot}}&
+# \lVert O\circ(D- YX^\top)\rVert^2 + \lambda\lVert X\rVert^2\\
+# &= \argmin_{X_{k\cdot}}
+# \lVert O_{\cdot k}\circ(D_{\cdot k}- YX_{k\cdot }^\top)\rVert^2+ \lambda\lVert X_{k\cdot}\rVert^2
+# \end{align*}
+# The element-wise multiplication with the binary vector $O_{\cdot k}$ selects the rows for which we have observed entries in column $k$. This selection of rows can also be performed with a multiplication of $\diag(O_{\cdot k})$ from the left. This way, we can write the objective to optimize subject to $X_{k\cdot}$ as
+# \begin{align*}
+# \argmin_{X_{k\cdot}}&
+# \lVert \mathbb{1}_{\mathcal{O}}\circ(D- YX^\top)\rVert^2 + \lambda\lVert X\rVert^2\\ 
+# &= \argmin_{X_{k\cdot}}
+# \lVert \underbrace{\diag(O_{\cdot k})D_{\cdot k}}_{=\tilde{\vvec{y}}}- \underbrace{\diag(O_{\cdot k})Y}_{=\tilde{X}}\underbrace{X_{k\cdot }^\top}_{=\tilde{\beta}})\rVert^2 + \lambda\lVert X\rVert^2 
+# \end{align*}
+# The objective above is equivalent to a ridge regression objective (using the notation of ridge regression, the target vector $\tilde{\vvec{y}}$, the design matrix $\tilde{X}$ and the parameter vector $\tilde{\beta}$ are annotated above). We know the minimizer of this objective, it is given by the vector
+# \begin{align*}
+# (\tilde{X}^\top \tilde{X}+\lambda I)^{-1}\tilde{X}^\top\tilde{\vvec{y}}
+# &= (Y^\top \diag(O_{\cdot k})^2 Y +\lambda I)^{-1} Y^\top\diag(O_{\cdot k})^2D_{\cdot k}\\
+# &=(Y^\top \diag(O_{\cdot k}) Y +\lambda I)^{-1} Y^\top\diag(O_{\cdot k})D_{\cdot k}
+# \end{align*}
+# where the last equation follows from the fact that binary values do not change when they are squared.
+# ```
+# ````
+# The theorem above motivates a block-coordinate descent approach, where we go in every iteration through each column of $X$ and $Y$ and update it. This procedure is described in the algorithm below.
+# ```{prf:algorithm} MatrixCompletion
+# 
+# **Input**: the dataset $D$, rank $r$, maximum number of iterations $t_{max} = 100$, and regularization weight  $\lambda = 0.1$
+# 1. $(X, Y) \gets$ `InitRandom`$(n, d, r)$ 
+# 2. $O \gets$ `IndicatorNonzero`$(D)$
+# 2. **for** $t\in\{1,\ldots,t_{max}\}$
+#     1. **for** $k \in \{1, \ldots, d\}$
+#         1. $X_{k\cdot} \leftarrow D_{\cdot k}^{\top} \diag(O_{\cdot k})Y (Y^{\top} \diag(O_{\cdot k}) Y + \lambda I)^{-1}$
+#     2. **for** $i \in \{1, \ldots, n\}$
+#         1. $Y_{i\cdot} \leftarrow D_{i\cdot}\diag(O_{i\cdot}) X (X^{\top} \diag(O_{i\cdot}) X + \lambda I)^{-1}$
+# 3. **return** $(X,Y)$
+# ```
+
+# ### From Unsupervised Matrix Completion to Supervised Behavioral Modeling
+# 
+# Early recommender systems, such as those based on matrix factorization, are traditionally framed as unsupervised learning problems. The central task is to complete a sparse user-item rating matrix by learning latent factors that explain the observed ratings. This process resembled dimensionality reduction (e.g., via SVD), and the goal was to estimate the missing entries as accurately as possible.
+# 
+# However, this perspective has shifted in modern systems.
+# Today, most recommendation systems rely not on explicit ratings, but on **implicit feedback**:
+# 
+# - Clicks, taps, swipes
+# - Watch time or scroll depth
+# - Song plays, skips, replays
+# - Add-to-cart or wishlist events
+# 
+# These behaviors are logged at scale, and treated as training signals for supervised learning. The recommendation problem becomes:
+# 
+# > _Given past behavior, predict whether a user will interact with an item._
+# 
+# This makes modern recommendation fundamentally a prediction task, rather than a pure matrix completion task. Reformulating the unsupervised recommender system task into a supervised one has the advantages that we can test the performance. In addition, it provides guidance to the model in terms of what makes a user hooked to the screen, which is generally easier to monetize than solving the more general task to provide good recommendations.

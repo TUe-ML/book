@@ -327,7 +327,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_sgd.html">
-     SGD
+     Training
     </a>
    </li>
    <li class="toctree-l2">
@@ -336,8 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_architecture.html">
-     Architecture
+    <a class="reference internal" href="neuralnets_pooling.html">
+     Pooling
     </a>
    </li>
   </ul>
@@ -621,14 +621,16 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementation-of-a-recommender-system">
-   Implementation of a Recommender System
+  <a class="reference internal nav-link" href="#a-simple-matrix-completion-recommender-system">
+   A Simple Matrix Completion Recommender System
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#interpretation-of-the-factorization">
-   Interpretation of the Factorization
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#interpretation-of-the-factorization">
+     Interpretation of the Factorization
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#what-happens-when-we-increase-the-rank">
@@ -636,9 +638,21 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#towards-a-more-advanced-recommender-system">
-   Towards a More Advanced Recommender System
+  <a class="reference internal nav-link" href="#low-rank-mf-on-observed-entries">
+   Low-Rank MF on Observed Entries
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Optimization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-unsupervised-matrix-completion-to-supervised-behavioral-modeling">
+     From Unsupervised Matrix Completion to Supervised Behavioral Modeling
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -670,14 +684,16 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementation-of-a-recommender-system">
-   Implementation of a Recommender System
+  <a class="reference internal nav-link" href="#a-simple-matrix-completion-recommender-system">
+   A Simple Matrix Completion Recommender System
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#interpretation-of-the-factorization">
-   Interpretation of the Factorization
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#interpretation-of-the-factorization">
+     Interpretation of the Factorization
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#what-happens-when-we-increase-the-rank">
@@ -685,9 +701,21 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#towards-a-more-advanced-recommender-system">
-   Towards a More Advanced Recommender System
+  <a class="reference internal nav-link" href="#low-rank-mf-on-observed-entries">
+   Low-Rank MF on Observed Entries
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Optimization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-unsupervised-matrix-completion-to-supervised-behavioral-modeling">
+     From Unsupervised Matrix Completion to Supervised Behavioral Modeling
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -878,8 +906,8 @@ Likewise, we identify a second pattern of movies that is popular among the group
 <p class="admonition-title">Task (Rank-r Matrix Factorization)</p>
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> and a rank <span class="math notranslate nohighlight">\(r&lt;\min\{n,d\}\)</span>.</p>
 <p><strong>Find</strong> matrices <span class="math notranslate nohighlight">\(X\in \mathbb{R}^{d\times r}\)</span> and <span class="math notranslate nohighlight">\(Y\in\mathbb{R}^{n\times r}\)</span> whose product approximates the data matrix:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-835ad877-10df-4e4c-910f-7887a1f665b1">
-<span class="eqno">(55)<a class="headerlink" href="#equation-835ad877-10df-4e4c-910f-7887a1f665b1" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d11bb00c-c2e6-4a39-a9e2-ea5d228f4fea">
+<span class="eqno">(55)<a class="headerlink" href="#equation-d11bb00c-c2e6-4a39-a9e2-ea5d228f4fea" title="Permalink to this equation">#</a></span>\[\begin{align}
     \min_{X,Y}&amp;\lVert D- YX^\top\rVert^2 &amp; \text{s.t. } X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}
 \end{align}\]</div>
 <p><strong>Return</strong> the low-dimensional approximation of the data <span class="math notranslate nohighlight">\((X,Y)\)</span>.</p>
@@ -900,8 +928,8 @@ First, we analyze properties of the objective, as it turns out, the low-dimensio
 <div class="toggle docutils container">
 <div class="proof admonition" id="proof">
 <p>Proof. We show that the <span class="math notranslate nohighlight">\(RSS(X,Y)\)</span> is not a convex function. Therefore we assume first that the <span class="math notranslate nohighlight">\(RSS(X,Y)\)</span> is a convex function and show then that this assumption leads to a contradiction. Assuming that the <span class="math notranslate nohighlight">\(RSS(X,Y)\)</span> is a convex function means that the following inequality has to hold for all matrices <span class="math notranslate nohighlight">\(X_1,X_2\in\mathbb{R}^{d\times r}\)</span> and <span class="math notranslate nohighlight">\(Y_1,Y_2\in\mathbb{R}^{n\times r}\)</span> and <span class="math notranslate nohighlight">\(\alpha\in[0,1]\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c9aba4d6-b061-4ef5-b425-111f72437d24">
-<span class="eqno">(56)<a class="headerlink" href="#equation-c9aba4d6-b061-4ef5-b425-111f72437d24" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-dd8cd2cb-98ad-44bb-8fd9-a9927888df85">
+<span class="eqno">(56)<a class="headerlink" href="#equation-dd8cd2cb-98ad-44bb-8fd9-a9927888df85" title="Permalink to this equation">#</a></span>\[\begin{align}
         RSS(\alpha X_1+ (1-\alpha)X_2,\alpha Y_1 + (1-\alpha)Y_2) \leq \alpha RSS(X_1,Y_1) + (1-\alpha)RSS(X_2,Y_2).
 \end{align}\]</div>
 <p>For any global minimizer <span class="math notranslate nohighlight">\((X,Y)\)</span> of the rank-<span class="math notranslate nohighlight">\(r\)</span> MF problem, <span class="math notranslate nohighlight">\((\gamma X, \frac{1}{\gamma} Y)\)</span> is also a global minimizer for <span class="math notranslate nohighlight">\(\gamma\neq 0\)</span>.
@@ -931,13 +959,13 @@ However, for <span class="math notranslate nohighlight">\(\alpha=1/2\)</span> th
 <p class="admonition-title"><span class="caption-number">Theorem 28 </span> (Truncated SVD)</p>
 <section class="theorem-content" id="proof-content">
 <p>Let <span class="math notranslate nohighlight">\(D=U\Sigma V^\top\in\mathbb{R}^{n\times d}\)</span> be the singular decomposition of <span class="math notranslate nohighlight">\(D\)</span>. Then the global minimizers <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>  of the rank-<span class="math notranslate nohighlight">\(r\)</span> MF problem</p>
-<div class="amsmath math notranslate nohighlight" id="equation-eb11aa13-e399-4245-bd19-2773312ce382">
-<span class="eqno">(57)<a class="headerlink" href="#equation-eb11aa13-e399-4245-bd19-2773312ce382" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7b9c528f-494f-4a5d-8b7d-3e2d8c647068">
+<span class="eqno">(57)<a class="headerlink" href="#equation-7b9c528f-494f-4a5d-8b7d-3e2d8c647068" title="Permalink to this equation">#</a></span>\[\begin{align}
 \min_{X,Y}\lVert D-YX^\top\rVert^2 \text{s.t. } X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}.
 \end{align}\]</div>
 <p>satisfy</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1369b46b-648c-43ef-a0e1-f7d5f19e9bf0">
-<span class="eqno">(58)<a class="headerlink" href="#equation-1369b46b-648c-43ef-a0e1-f7d5f19e9bf0" title="Permalink to this equation">#</a></span>\[\begin{align} 
+<div class="amsmath math notranslate nohighlight" id="equation-08db669f-3209-4376-a2fb-07e5e5aa9450">
+<span class="eqno">(58)<a class="headerlink" href="#equation-08db669f-3209-4376-a2fb-07e5e5aa9450" title="Permalink to this equation">#</a></span>\[\begin{align} 
 YX^\top = U_{\cdot \mathcal{R}}\Sigma_{\mathcal{R}\mathcal{R}}V_{\cdot \mathcal{R}}^\top, \text{ where }\mathcal{R}=\{1,\ldots, r\}.
 \end{align}\]</div>
 </section>
@@ -950,11 +978,11 @@ the orthogonal invariance of the Frobenius norm, yielding:</p>
 \end{align*}\]</div>
 </div>
 </section>
-<section id="implementation-of-a-recommender-system">
-<h2>Implementation of a Recommender System<a class="headerlink" href="#implementation-of-a-recommender-system" title="Permalink to this headline">#</a></h2>
-<p>Ok, so the truncated SVD solves the task to determine a low-rank approximation of my data.
-How can we apply the low-rank approximation to provide recommendations?
-Fill missing values with the mean value and compute the truncated SVD.</p>
+<section id="a-simple-matrix-completion-recommender-system">
+<h2>A Simple Matrix Completion Recommender System<a class="headerlink" href="#a-simple-matrix-completion-recommender-system" title="Permalink to this headline">#</a></h2>
+<p>We can use truncated SVD to compute a low-rank approximation of the data.
+How can we use this to provide recommendations? After all, we need a complete matrix in order to compute the SVD. For now, we consider a quick hack: we fill the missing values with the mean (neutral rating) and compute the truncated SVD with the hope that the SVD reconstructs mainly the given ratings that are often not equal to the mean rating, such that the imputed values get a more accurate prediction of a rating with the SVD.</p>
+<p>Let’s go through an example. The table below shows a movie-ratings database that is filled by some ratings, but not all movies have been seen by all costumers and we want to fill in the missing values with the approximate rating that would be given by the user if the had seen the movie.</p>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Id</p></th>
@@ -1003,8 +1031,7 @@ Fill missing values with the mean value and compute the truncated SVD.</p>
 </tr>
 </tbody>
 </table>
-<p>Can we fill the question marks with the rating which would be given by the user if they had seen the movie?</p>
-<p>Quick hack: we replace the unobserved entries with the mean rating <span class="math notranslate nohighlight">\(\mu=\frac{1+2+3+4+5}{5}=3\)</span>.</p>
+<p>We apply our quick hack and replace the unobserved entries with the mean rating <span class="math notranslate nohighlight">\(\mu=\frac{1+2+3+4+5}{5}=3\)</span>. This gives us the following data matrix:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">]])</span>
@@ -1023,20 +1050,13 @@ Fill missing values with the mean value and compute the truncated SVD.</p>
 </div>
 </div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="s1">&#39;PiYG&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
+<p>We visualize the rating matrix with the image below. A white pixel indicates a low rating and a blue pixel indicates a higher rating.</p>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/dim_reduction_mf_16_0.png" src="_images/dim_reduction_mf_16_0.png" />
+<img alt="_images/dim_reduction_mf_17_0.png" src="_images/dim_reduction_mf_17_0.png" />
 </div>
 </div>
+<p>We compute the SVD of the matrix <span class="math notranslate nohighlight">\(D\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vᵀ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">full_matrices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1044,7 +1064,11 @@ Fill missing values with the mean value and compute the truncated SVD.</p>
 </div>
 </div>
 </div>
-<p>We get a rank-2 approximation of <span class="math notranslate nohighlight">\(D\)</span> by the truncated SVD <span class="math notranslate nohighlight">\(D\approx U_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}V_{\cdot \{1,2\}}^\top\)</span>. This tri-factorization can be expressed as a factorization into two matrices by setting <span class="math notranslate nohighlight">\(Y=U_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}^{1/2}\)</span> and <span class="math notranslate nohighlight">\(X=V_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}^{1/2}\)</span>.</p>
+<p>We get a rank-2 approximation of <span class="math notranslate nohighlight">\(D\)</span> by truncating the SVD to two singular values and vectors:
+<div class="math notranslate nohighlight">
+\[D\approx U_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}V_{\cdot \{1,2\}}^\top.\]</div>
+
+The tri-factorization of SVD can be expressed as a factorization into two matrices by making an arbitrary split into the product of two matrices. For example, we could set <span class="math notranslate nohighlight">\(Y=U_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}^{1/2}\)</span> and <span class="math notranslate nohighlight">\(X=V_{\cdot \{1,2\}}\Sigma_{\{1,2\}\{1,2\}}^{1/2}\)</span>. This way, we can expect that <span class="math notranslate nohighlight">\(Y\)</span> and <span class="math notranslate nohighlight">\(X\)</span> are similarly scaled, since they both are matrices with unitary vectors that are scaled by the square roots of the singular values. However, in principle, any split of the SVD product into two matrices will do.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The matrix <span class="math notranslate nohighlight">\(A^{1/2}\)</span> is defined as the matrix that satisfies the equation <span class="math notranslate nohighlight">\(A^{1/2}A^{1/2}=A\)</span>. Not for all matrices <span class="math notranslate nohighlight">\(A\)</span> exists such a matrix <span class="math notranslate nohighlight">\(A^{1/2}\)</span>. However, for nonnegative, diagonal matrices <span class="math notranslate nohighlight">\(\Sigma\)</span>, the matrix <span class="math notranslate nohighlight">\(\Sigma^{1/2}=\diag(\sqrt{\sigma_1},\ldots, \sqrt{\sigma_r})\)</span> exists.</p>
@@ -1053,33 +1077,22 @@ Fill missing values with the mean value and compute the truncated SVD.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">Y</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">Y</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">Vᵀ</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">Y</span><span class="p">,</span><span class="n">X</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-1.3 ,  1.26],
-       [-1.61, -0.85],
-       [-1.46, -1.04],
-       [-1.71,  0.21],
-       [-1.81,  1.27],
-       [-1.61, -0.85]])
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">Vᵀ</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">X</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-2.3 ,  1.08],
-       [-1.49,  1.38],
-       [-2.43, -1.36],
-       [-1.35, -0.92]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-1.3 ,  1.26],
+        [-1.61, -0.85],
+        [-1.46, -1.04],
+        [-1.71,  0.21],
+        [-1.81,  1.27],
+        [-1.61, -0.85]]),
+ array([[-2.3 ,  1.08],
+        [-1.49,  1.38],
+        [-2.43, -1.36],
+        [-1.35, -0.92]]))
 </pre></div>
 </div>
 </div>
@@ -1102,8 +1115,9 @@ Fill missing values with the mean value and compute the truncated SVD.</p>
 </div>
 </div>
 </div>
-<div class="amsmath math notranslate nohighlight" id="equation-eb56197d-be97-44df-9673-d956bbb7ee2d">
-<span class="eqno">(59)<a class="headerlink" href="#equation-eb56197d-be97-44df-9673-d956bbb7ee2d" title="Permalink to this equation">#</a></span>\[\begin{align}
+<p>If we compare the matrix above with the matrix having missing values, then we see that the low rank approximation gives some tendencies for recommendations, but often no very clear recommendation indications. This is not very surprising, since we had just a small dataset and comparatively many missing values. The rank-2 approximation is already a bit too well adapting to the missing values neutral rating.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-af17e339-72ad-4e66-b191-929e9571dbb2">
+<span class="eqno">(59)<a class="headerlink" href="#equation-af17e339-72ad-4e66-b191-929e9571dbb2" title="Permalink to this equation">#</a></span>\[\begin{align}
   \begin{pmatrix}
     5 &amp; \mu &amp; 1 &amp; 1 \\
     \mu &amp; 1 &amp; 5 &amp; \mu  \\\
@@ -1122,13 +1136,17 @@ Fill missing values with the mean value and compute the truncated SVD.</p>
     2.8 &amp; 1.2 &amp; 5.1 &amp; 3.0
   \end{pmatrix}
 \end{align}\]</div>
-</section>
+<p>If we plot the original data and the approximation next to another, then we also see that there are no big differences.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/dim_reduction_mf_27_0.png" src="_images/dim_reduction_mf_27_0.png" />
+</div>
+</div>
 <section id="interpretation-of-the-factorization">
-<h2>Interpretation of the Factorization<a class="headerlink" href="#interpretation-of-the-factorization" title="Permalink to this headline">#</a></h2>
-<p>The approximation matrix represented by the matrix product is composed by the two outer products (because the factorization rank is two). We visualize here the matrix decomposition by means of colors. The more saturated the color, the  higher is the absolute value of the corresponding element in the matrix. Positive values are green and negative values are pink.<br />
-The visualization makes the grid structure apparent which is induced by the outer product.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-868923d7-b2fe-4a01-b8dd-02cb63867464">
-<span class="eqno">(60)<a class="headerlink" href="#equation-868923d7-b2fe-4a01-b8dd-02cb63867464" title="Permalink to this equation">#</a></span>\[\begin{align}
+<h3>Interpretation of the Factorization<a class="headerlink" href="#interpretation-of-the-factorization" title="Permalink to this headline">#</a></h3>
+<p>The rank-two matrix product is composed by the sum of two outer products. Every outer product indicates the interaction of a user-pattern with a movie pattern. Hence, looking at the outer-product decomposition is useful for interpretation purposes. The equation below shows again the rank-two approximation.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
   \begin{pmatrix}
     5 &amp; \mu &amp; 1 &amp; 1 \\
     \mu &amp; 1 &amp; 5 &amp; \mu  \\\
@@ -1150,10 +1168,10 @@ The visualization makes the grid structure apparent which is induced by the oute
     -9.0 &amp; -5.8 &amp; -9.5 &amp; -5.3\\
     2.6 &amp; 3.3 &amp; -3.3 &amp; -2.2\\
   \end{pmatrix}
-\end{align}\]</div>
-<p>Every user’s preferences are approximated by a linear combination of the rows in the second matrix:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-207c87b3-c7a4-4e37-89b4-2a44622f5d63">
-<span class="eqno">(61)<a class="headerlink" href="#equation-207c87b3-c7a4-4e37-89b4-2a44622f5d63" title="Permalink to this equation">#</a></span>\[\begin{align}
+\end{align*}\]</div>
+<p>Every user’s preferences are approximated by a linear combination of the rows in the second matrix. The rows in the second matrix have an interpretation as movie patterns. For example, the first user adheres to the first movie pattern with a factor of <span class="math notranslate nohighlight">\(-0.3\)</span> and to the second movie pattern with a factor of <span class="math notranslate nohighlight">\(0.5\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
     \begin{pmatrix}
         5 &amp; \mu &amp; 1 &amp; 1 
     \end{pmatrix}
@@ -1166,41 +1184,22 @@ The visualization makes the grid structure apparent which is induced by the oute
     \begin{pmatrix}
         2.6 &amp; 3.3 &amp; -3.3 &amp; -2.2
     \end{pmatrix}    
-\end{align}\]</div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="c1">#--------------</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Y</span><span class="nd">@X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;YXᵀ&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]),</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Y_1X_1ᵀ&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Y_2X_2ᵀ&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
+\end{align*}\]</div>
+<p>We visualize the sum of the two outer products with colored matrices. The more saturated the color, the  higher is the absolute value of the corresponding element in the matrix. Positive values are blue and negative values are pink.<br />
+The visualization makes the grid structure apparent which is induced by the outer product. The first movie pattern is <span class="math notranslate nohighlight">\(\begin{pmatrix}-9.0 &amp; -5.8 &amp; -9.5 &amp; -5.3\end{pmatrix}\)</span>, but because all values in the first user pattern are also negative, it would be more intuitive to consider the first movie pattern as <span class="math notranslate nohighlight">\(\begin{pmatrix}9 &amp; 5.8 &amp; 9.5 &amp; 5.3\end{pmatrix}\)</span>. We see this pattern in the first outer product <span class="math notranslate nohighlight">\(Y_{\cdot 1}X_{\cdot 1}^\top\)</span>: the first and third column have a higher intensity than the other columns, corresponding to the high values in the pattern matrix <span class="math notranslate nohighlight">\(9\)</span> and <span class="math notranslate nohighlight">\(9.5\)</span>. We can roughly say that the first outer product indicates how much the user likes movie 1 and movie 3 but not so much the other movies.<br />
+However, we cannot make general statements from the first outer product (e.g., user 2 likes movie 1 and movie 3 because their (sign-corrected) coefficient for the first movie pattern is 0.4, which is comparatively high). That is because the second outer product may correct what the first outer product indicates by subtracting and adding values. For evample, user 2 doesn’t particularly like movie 1 (in fact, it’s a missing value) and although the first outer product indicates a score of <span class="math notranslate nohighlight">\(0.4\cdot 9=3.6\)</span>. The second outer product corrects this by subtracting <span class="math notranslate nohighlight">\(-0.4\cdot2.6=-1.04\)</span>.</p>
+<p>Hence, we can’t make general statements based on one outer product alone. However, the significance of the outer products in the sense of how they influence the approximation, drops with the index of the outer product. That is because the singular values are decreasing in magnitude with the index. Visually, we can observe this with the fading colors making up the second outer product.</p>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/dim_reduction_mf_26_0.png" src="_images/dim_reduction_mf_26_0.png" />
+<img alt="_images/dim_reduction_mf_30_0.png" src="_images/dim_reduction_mf_30_0.png" />
 </div>
 </div>
 </section>
+</section>
 <section id="what-happens-when-we-increase-the-rank">
 <h2>What Happens When We Increase the Rank?<a class="headerlink" href="#what-happens-when-we-increase-the-rank" title="Permalink to this headline">#</a></h2>
+<p>The rank of the matrix factorization is a hyperparameter. If we choose the rank too low, then the approximation might underfit and some of the patterns in the data remain undiscovered. If the rank is too high, then the model also approximates noise-effects from the data and overfits. Noise effects could be in the recommender setting fluctuations in the mood of the user at the time of the rating. In the setting of the matrix completion task, a too high rank also results in an approximation of the neutral rankings that are imputed for the missing values.</p>
+<p>We visualize the factorization with a rank of three below. We see that the third outer product does make some minor corrections for user 1 and 5. At this point, the information in the third outer product becomes neglectable and should not be included in the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">Vᵀ</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
@@ -1209,81 +1208,114 @@ The visualization makes the grid structure apparent which is induced by the oute
 </div>
 </div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="c1">#--------------</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Y</span><span class="nd">@X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;YXᵀ&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="s1">&#39;PiYG&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]),</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Y_1X_1ᵀ&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Y_2X_2ᵀ&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]),</span><span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Y_3X_3ᵀ&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/dim_reduction_mf_29_0.png" src="_images/dim_reduction_mf_29_0.png" />
-</div>
-</div>
-<p>The approximating data matrix, visualized by the matrix on the left above, is given as:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span><span class="nd">@X</span><span class="o">.</span><span class="n">T</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[5.02, 2.97, 1.03, 0.94],
-       [2.98, 1.03, 4.97, 3.07],
-       [2.05, 0.93, 5.08, 2.84],
-       [3.99, 3.02, 3.98, 2.04],
-       [5.  , 5.01, 2.99, 1.01],
-       [2.98, 1.03, 4.97, 3.07]])
-</pre></div>
-</div>
+<img alt="_images/dim_reduction_mf_33_0.png" src="_images/dim_reduction_mf_33_0.png" />
 </div>
 </div>
 </section>
-<section id="towards-a-more-advanced-recommender-system">
-<h2>Towards a More Advanced Recommender System<a class="headerlink" href="#towards-a-more-advanced-recommender-system" title="Permalink to this headline">#</a></h2>
-<p>How can we prevent the approximation to the inserted mean values?</p>
-<p>Adapt the objective to approximate only observed entries.
-The following approach has been used in the Netflix Price 2009 competition and made it to the top-3:</p>
+<section id="low-rank-mf-on-observed-entries">
+<h2>Low-Rank MF on Observed Entries<a class="headerlink" href="#low-rank-mf-on-observed-entries" title="Permalink to this headline">#</a></h2>
+<p>The SVD of the rating matrix with neutral rating imputations gave us some indications of possible recommendations, but an issue with this simple approach is that the imputed missing values are also approximated by the factorization. Especially when observations are sparse, which is usually the case for movie recommendations for example, then this method won’t work because the actual ratings will be perceived as outliers.</p>
+<p>An idea to solve the matrix completion task more accurately is to compute a factorization that approximates only the values of observed entries.
+This approach has been used in the Netflix Price 2009 competition and made it to the top-3.</p>
 <div class="tip admonition">
-<p class="admonition-title">Task (Rank-r Matrix Factorization with Missing Values)</p>
-<p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> having observed entries <span class="math notranslate nohighlight">\(D_{ik}\)</span> for <span class="math notranslate nohighlight">\((i,k)\in\mathcal{O}\subseteq \{1,\ldots,n\}\times \{1,\ldots d\}\)</span> the set of observed matrix entries, and a rank <span class="math notranslate nohighlight">\(r&lt;\min\{n,d\}\)</span>.</p>
-<p><strong>Find</strong> matrices <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{d\times r}\)</span> and <span class="math notranslate nohighlight">\(Y\in\mathbb{R}^{n\times r}\)</span> whose product approximates the data matrix only on observed entries, indicated by <span class="math notranslate nohighlight">\(\mathbb{1}_{\mathcal{O}}\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-86267dcc-1a08-40af-9589-265c5b945c8d">
-<span class="eqno">(62)<a class="headerlink" href="#equation-86267dcc-1a08-40af-9589-265c5b945c8d" title="Permalink to this equation">#</a></span>\[\begin{align}
-    \min_{X,Y}&amp;\lVert \mathbb{1}_{\mathcal{O}}\circ(D- YX^\top)\rVert^2 =\sum_{(i,k)\in\mathcal{O}}(D_{ik}-Y_{i\cdot}X_{k\cdot}^\top)^2\\ 
+<p class="admonition-title">Task (Low-Rank Matrix Factorization with Missing Values)</p>
+<p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> having observed entries <span class="math notranslate nohighlight">\(D_{ik}\)</span> for indices <span class="math notranslate nohighlight">\((i,k)\)</span> where the binary indicator matrix <span class="math notranslate nohighlight">\(O\in\{0,1\}^{n\times d}\)</span> has an entry of one <span class="math notranslate nohighlight">\(O_{ik}=1\)</span>, and a rank <span class="math notranslate nohighlight">\(r&lt;\min\{n,d\}\)</span>.</p>
+<p><strong>Find</strong> matrices <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{d\times r}\)</span> and <span class="math notranslate nohighlight">\(Y\in\mathbb{R}^{n\times r}\)</span> whose product approximates the data matrix only on observed entries:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5a3b49cf-fd4c-45c1-a6f5-357bc9c8c552">
+<span class="eqno">(60)<a class="headerlink" href="#equation-5a3b49cf-fd4c-45c1-a6f5-357bc9c8c552" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \min_{X,Y}&amp;\lVert O\circ(D- YX^\top)\rVert^2 +\lambda\lVert X\rVert^2+\lambda\lVert Y\rVert^2 =\sum_{(i,k):O_{ik}=1}(D_{ik}-Y_{i\cdot}X_{k\cdot}^\top)^2\\ 
     \text{s.t. }&amp; X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}
 \end{align}\]</div>
 <p><strong>Return</strong> the low-dimensional approximation of the data <span class="math notranslate nohighlight">\((X,Y)\)</span>.</p>
 </div>
-<p>We can optimze this objective with coordinate descent. We will not go through this approach in detail, but you can try to implement this for yourself.</p>
+<section id="id1">
+<h3>Optimization<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
+<p>The low-rank MF on observed entries can not be computed directly by SVD. However, we can derive the minimizers of one column of <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> when fixing the other matrix.</p>
+<div class="proof theorem admonition" id="theorem-3">
+<p class="admonition-title"><span class="caption-number">Theorem 29 </span></p>
+<section class="theorem-content" id="proof-content">
+<p>The minimizers of the objective to minimize <span class="math notranslate nohighlight">\(\lVert \mathbb{1}_{\mathcal{O}}\circ(D- YX^\top)\rVert^2\)</span> subject to a row of <span class="math notranslate nohighlight">\(X\)</span> or <span class="math notranslate nohighlight">\(Y\)</span> is given as:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+D_{\cdot k}^\top \diag(O_{\cdot k})Y(Y^\top \diag(O_{\cdot k}) Y+\lambda I)^{-1} &amp;= \argmin_{X_{k\cdot}}
+\lVert O\circ(D- YX^\top)\rVert^2 + \lambda\lVert X\rVert^2\\
+D_{i\cdot} \diag(O_{i\cdot})X(X^\top \diag(O_{i\cdot}) X+\lambda I)^{-1} &amp;= \argmin_{Y_{i\cdot}}
+\lVert O\circ(D- YX^\top)\rVert^2 + \lambda\lVert Y\rVert^2
+\end{align*}\]</div>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. We show the result for minimizing over <span class="math notranslate nohighlight">\(X_{k\cdot}\)</span>, the result for <span class="math notranslate nohighlight">\(Y_{i\cdot}\)</span> follows by transposing the factorization. First, we observe that the minimization subject to <span class="math notranslate nohighlight">\(X_{k\cdot}\)</span> reduces to the minimization over the <span class="math notranslate nohighlight">\(k\)</span>-th column:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\argmin_{X_{k\cdot}}&amp;
+\lVert O\circ(D- YX^\top)\rVert^2 + \lambda\lVert X\rVert^2\\
+&amp;= \argmin_{X_{k\cdot}}
+\lVert O_{\cdot k}\circ(D_{\cdot k}- YX_{k\cdot }^\top)\rVert^2+ \lambda\lVert X_{k\cdot}\rVert^2
+\end{align*}\]</div>
+<p>The element-wise multiplication with the binary vector <span class="math notranslate nohighlight">\(O_{\cdot k}\)</span> selects the rows for which we have observed entries in column <span class="math notranslate nohighlight">\(k\)</span>. This selection of rows can also be performed with a multiplication of <span class="math notranslate nohighlight">\(\diag(O_{\cdot k})\)</span> from the left. This way, we can write the objective to optimize subject to <span class="math notranslate nohighlight">\(X_{k\cdot}\)</span> as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\argmin_{X_{k\cdot}}&amp;
+\lVert \mathbb{1}_{\mathcal{O}}\circ(D- YX^\top)\rVert^2 + \lambda\lVert X\rVert^2\\ 
+&amp;= \argmin_{X_{k\cdot}}
+\lVert \underbrace{\diag(O_{\cdot k})D_{\cdot k}}_{=\tilde{\vvec{y}}}- \underbrace{\diag(O_{\cdot k})Y}_{=\tilde{X}}\underbrace{X_{k\cdot }^\top}_{=\tilde{\beta}})\rVert^2 + \lambda\lVert X\rVert^2 
+\end{align*}\]</div>
+<p>The objective above is equivalent to a ridge regression objective (using the notation of ridge regression, the target vector <span class="math notranslate nohighlight">\(\tilde{\vvec{y}}\)</span>, the design matrix <span class="math notranslate nohighlight">\(\tilde{X}\)</span> and the parameter vector <span class="math notranslate nohighlight">\(\tilde{\beta}\)</span> are annotated above). We know the minimizer of this objective, it is given by the vector</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+(\tilde{X}^\top \tilde{X}+\lambda I)^{-1}\tilde{X}^\top\tilde{\vvec{y}}
+&amp;= (Y^\top \diag(O_{\cdot k})^2 Y +\lambda I)^{-1} Y^\top\diag(O_{\cdot k})^2D_{\cdot k}\\
+&amp;=(Y^\top \diag(O_{\cdot k}) Y +\lambda I)^{-1} Y^\top\diag(O_{\cdot k})D_{\cdot k}
+\end{align*}\]</div>
+<p>where the last equation follows from the fact that binary values do not change when they are squared.</p>
+</div>
+</div>
+<p>The theorem above motivates a block-coordinate descent approach, where we go in every iteration through each column of <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> and update it. This procedure is described in the algorithm below.</p>
+<div class="proof algorithm admonition" id="algorithm-4">
+<p class="admonition-title"><span class="caption-number">Algorithm 13 </span> (MatrixCompletion)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Input</strong>: the dataset <span class="math notranslate nohighlight">\(D\)</span>, rank <span class="math notranslate nohighlight">\(r\)</span>, maximum number of iterations <span class="math notranslate nohighlight">\(t_{max} = 100\)</span>, and regularization weight  <span class="math notranslate nohighlight">\(\lambda = 0.1\)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\((X, Y) \gets\)</span> <code class="docutils literal notranslate"><span class="pre">InitRandom</span></code><span class="math notranslate nohighlight">\((n, d, r)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(O \gets\)</span> <code class="docutils literal notranslate"><span class="pre">IndicatorNonzero</span></code><span class="math notranslate nohighlight">\((D)\)</span></p></li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(t\in\{1,\ldots,t_{max}\}\)</span></p>
+<ol class="simple">
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(k \in \{1, \ldots, d\}\)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(X_{k\cdot} \leftarrow D_{\cdot k}^{\top} \diag(O_{\cdot k})Y (Y^{\top} \diag(O_{\cdot k}) Y + \lambda I)^{-1}\)</span></p></li>
+</ol>
+</li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(i \in \{1, \ldots, n\}\)</span></p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(Y_{i\cdot} \leftarrow D_{i\cdot}\diag(O_{i\cdot}) X (X^{\top} \diag(O_{i\cdot}) X + \lambda I)^{-1}\)</span></p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\((X,Y)\)</span></p></li>
+</ol>
+</section>
+</div></section>
+<section id="from-unsupervised-matrix-completion-to-supervised-behavioral-modeling">
+<h3>From Unsupervised Matrix Completion to Supervised Behavioral Modeling<a class="headerlink" href="#from-unsupervised-matrix-completion-to-supervised-behavioral-modeling" title="Permalink to this headline">#</a></h3>
+<p>Early recommender systems, such as those based on matrix factorization, are traditionally framed as unsupervised learning problems. The central task is to complete a sparse user-item rating matrix by learning latent factors that explain the observed ratings. This process resembled dimensionality reduction (e.g., via SVD), and the goal was to estimate the missing entries as accurately as possible.</p>
+<p>However, this perspective has shifted in modern systems.
+Today, most recommendation systems rely not on explicit ratings, but on <strong>implicit feedback</strong>:</p>
+<ul class="simple">
+<li><p>Clicks, taps, swipes</p></li>
+<li><p>Watch time or scroll depth</p></li>
+<li><p>Song plays, skips, replays</p></li>
+<li><p>Add-to-cart or wishlist events</p></li>
+</ul>
+<p>These behaviors are logged at scale, and treated as training signals for supervised learning. The recommendation problem becomes:</p>
+<blockquote>
+<div><p><em>Given past behavior, predict whether a user will interact with an item.</em></p>
+</div></blockquote>
+<p>This makes modern recommendation fundamentally a prediction task, rather than a pure matrix completion task. Reformulating the unsupervised recommender system task into a supervised one has the advantages that we can test the performance. In addition, it provides guidance to the model in terms of what makes a user hooked to the screen, which is generally easier to monetize than solving the more general task to provide good recommendations.</p>
+</section>
 </section>
 </section>
 
