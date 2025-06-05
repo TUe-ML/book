@@ -363,11 +363,11 @@ HTML(anim.to_jshtml())
 # In order to understand how we can find the directions of maximum variance, we have a look how the variance $\mathrm{var}(D\vvec{z})$ is computed for a unit vector $\vvec{z}$.
 # ```{prf:lemma}
 # :label: pca_var_prod
-# The variance of data, given by the data matrix $D\in\mathbb{R}^{n\times d}$, projected onto unit norm vector $\vvec{z}$ is given as the squared norm of the projection of the centered data matrix onto $\vvec{z}$:
+# Given a data matrix $D\in\mathbb{R}^{n\times d}$. The variance of $D\vvec{z}$ is given as the squared norm of the centered data matrix multiplied with $\vvec{z}$:
 # \begin{align*}
 # \mathrm{var}(D\vvec{z}) = \frac1n\left\lVert \left(D -\vvec{1}{\bm \mu^\top }\right)\vvec{z}\right\rVert^2 = \frac1n\left\lVert C\vvec{z}\right\rVert^2. 
 # \end{align*}
-# The vector $\bm\mu = (\mu(D_{\cdot 1}),\ldots,\mu(D_{\cdot d}))$ is the mean vector of the data and the matrix $C=D -\vvec{1}{\bm \mu^\top} $ is the centered data matrix (having mean zero).
+# The vector $\bm\mu = (\mu(D_{\cdot 1}),\ldots,\mu(D_{\cdot d}))$ is the mean vector of the data and the matrix $C=D -\vvec{1}{\bm \mu^\top} $ is the centered data matrix (the centered data points have mean zero).
 # ```
 # ````{toggle}
 # ```{prf:proof}
