@@ -358,11 +358,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="dim_reduction_matrix_completion.html">
-     Matrix Completion
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="dim_reduction_pca.html">
      Principal Component Analysis
     </a>
@@ -684,7 +679,7 @@ title="Print to PDF"
 <div class="toggle docutils container">
 <p>The matrix has two obvious movie patterns. The first pattern is <span class="math notranslate nohighlight">\((5,5,1,1)\)</span>, indicating that movie 1 and 2 is liked (rated with 5/5 stars) and the last two movies are not liked (rated with 1 of 5 stars). The second pattern is <span class="math notranslate nohighlight">\((1,1,5,5)\)</span>,  indicating that the first two movies are not liked  and the last two are liked. The last user likes all movies, which could be understood like he belongs to  both patterns. In fact, we can write the matrix <span class="math notranslate nohighlight">\(D\)</span> as the following rank-2 MF:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-97c8e51e-69ec-4e47-9343-8a9c4e2508c7">
-<span class="eqno">(69)<a class="headerlink" href="#equation-97c8e51e-69ec-4e47-9343-8a9c4e2508c7" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(64)<a class="headerlink" href="#equation-97c8e51e-69ec-4e47-9343-8a9c4e2508c7" title="Permalink to this equation">#</a></span>\[\begin{align}
 D\approx\begin{pmatrix}
     5 &amp; 5 &amp; 1 &amp; 1\\
 5 &amp; 5 &amp; 1 &amp; 1\\
@@ -834,7 +829,7 @@ Due to the orthogonal invariance of the Frobenius norm, we have</p>
 <div class="toggle docutils container">
 <p>The constraint <span class="math notranslate nohighlight">\(Z^\top Z=I\)</span> implies that the entry <span class="math notranslate nohighlight">\(s,t\)</span> for <span class="math notranslate nohighlight">\(1\leq s,t\leq r\)</span> of <span class="math notranslate nohighlight">\(Z^\top Z\)</span> is equal to zero if <span class="math notranslate nohighlight">\(s\neq t\)</span> and equal to one otherwise. We have</p>
 <div class="amsmath math notranslate nohighlight" id="equation-e7f50b24-9e42-4b34-8517-a07ae6f141e1">
-<span class="eqno">(70)<a class="headerlink" href="#equation-e7f50b24-9e42-4b34-8517-a07ae6f141e1" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(65)<a class="headerlink" href="#equation-e7f50b24-9e42-4b34-8517-a07ae6f141e1" title="Permalink to this equation">#</a></span>\[\begin{align}
     Z^\top Z &amp;=I\nonumber\\
     \Leftrightarrow (Z^\top Z)_{s,t}=Z_{\cdot s}^\top Z_{\cdot t}&amp;=\begin{cases}
 0&amp; \text{if } s\neq t\\
@@ -1006,12 +1001,12 @@ Z_{\cdot s}^\top Z_{\cdot s} = \lVert Z_{\cdot s}\rVert^2 &amp;=1 &amp;\text{for
 <ol>
 <li><p>Given the <span class="math notranslate nohighlight">\(n\)</span> observations of the new feature</p>
 <div class="amsmath math notranslate nohighlight" id="equation-82a5bd31-bd99-4fef-ace9-dda70bf6b88b">
-<span class="eqno">(71)<a class="headerlink" href="#equation-82a5bd31-bd99-4fef-ace9-dda70bf6b88b" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(66)<a class="headerlink" href="#equation-82a5bd31-bd99-4fef-ace9-dda70bf6b88b" title="Permalink to this equation">#</a></span>\[\begin{align}
     D_{\cdot d+1} =\sum_{k=1}^d \alpha_kD_{\cdot k}=D\bm\alpha\in\mathbb{R}^n, \label{eq:DnewF}
     \end{align}\]</div>
 <p>the sample mean can be computed by:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-fb096b7a-95ab-4826-8e25-43718062bb2f">
-<span class="eqno">(72)<a class="headerlink" href="#equation-fb096b7a-95ab-4826-8e25-43718062bb2f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(67)<a class="headerlink" href="#equation-fb096b7a-95ab-4826-8e25-43718062bb2f" title="Permalink to this equation">#</a></span>\[\begin{align}
     \mu_{\mathtt{F}_{d+1}} &amp;= \frac1n \sum_{i=1}^n D_{i d+1} &amp;\text{(Definition sample mean)}\nonumber\\
     &amp;= \frac1n\vvec{1}^\top D_{\cdot d+1} &amp; (\mathbf{1}\in\{1\}^n \text{ is constant one vector})\nonumber\\
     &amp;= \frac1n\vvec{1}^\top D{\bm\alpha} &amp; \text{(Eq.~\eqref{eq:DnewF})}\nonumber\\

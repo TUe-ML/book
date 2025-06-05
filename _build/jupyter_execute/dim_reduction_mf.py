@@ -720,7 +720,8 @@ plt.show()
 #     
 # **Find** matrices $X\in\mathbb{R}^{d\times r}$ and $Y\in\mathbb{R}^{n\times r}$ whose product approximates the data matrix only on observed entries:
 # \begin{align}
-#     \min_{X,Y}&\lVert O\circ(D- YX^\top)\rVert^2 +\lambda\lVert X\rVert^2+\lambda\lVert Y\rVert^2 =\sum_{(i,k):O_{ik}=1}(D_{ik}-Y_{i\cdot}X_{k\cdot}^\top)^2\\ 
+#     \min_{X,Y}&\lVert O\circ(D- YX^\top)\rVert^2 +\lambda\lVert X\rVert^2+\lambda\lVert Y\rVert^2\\ 
+#     &=\sum_{(i,k):O_{ik}=1}(D_{ik}-Y_{i\cdot}X_{k\cdot}^\top)^2+\lambda\lVert X\rVert^2+\lambda\lVert Y\rVert^2\\ 
 #     \text{s.t. }& X\in \mathbb{R}^{d\times r}, Y\in\mathbb{R}^{n\times r}
 # \end{align}
 # **Return** the low-dimensional approximation of the data $(X,Y)$.  
@@ -728,11 +729,13 @@ plt.show()
 # ### Optimization
 # The low-rank MF on observed entries can not be computed directly by SVD. However, we can derive the minimizers of one column of $X$ and $Y$ when fixing the other matrix.
 # ```{prf:theorem}
-# The minimizers of the objective to minimize $\lVert \mathbb{1}_{\mathcal{O}}\circ(D- YX^\top)\rVert^2$ subject to a row of $X$ or $Y$ is given as:
+# The minimizers of the objective to minimize $\lVert O\circ(D- YX^\top)\rVert^2$ subject to a row of $X$ or $Y$ is given as:
 # \begin{align*}
-# D_{\cdot k}^\top \diag(O_{\cdot k})Y(Y^\top \diag(O_{\cdot k}) Y+\lambda I)^{-1} &= \argmin_{X_{k\cdot}}
+# &D_{\cdot k}^\top \diag(O_{\cdot k})Y(Y^\top \diag(O_{\cdot k}) Y+\lambda I)^{-1}\\ 
+# &\quad = \argmin_{X_{k\cdot}}
 # \lVert O\circ(D- YX^\top)\rVert^2 + \lambda\lVert X\rVert^2\\
-# D_{i\cdot} \diag(O_{i\cdot})X(X^\top \diag(O_{i\cdot}) X+\lambda I)^{-1} &= \argmin_{Y_{i\cdot}}
+# &D_{i\cdot} \diag(O_{i\cdot})X(X^\top \diag(O_{i\cdot}) X+\lambda I)^{-1}\\ 
+# &\quad = \argmin_{Y_{i\cdot}}
 # \lVert O\circ(D- YX^\top)\rVert^2 + \lambda\lVert Y\rVert^2
 # \end{align*}
 # 
@@ -749,7 +752,7 @@ plt.show()
 # The element-wise multiplication with the binary vector $O_{\cdot k}$ selects the rows for which we have observed entries in column $k$. This selection of rows can also be performed with a multiplication of $\diag(O_{\cdot k})$ from the left. This way, we can write the objective to optimize subject to $X_{k\cdot}$ as
 # \begin{align*}
 # \argmin_{X_{k\cdot}}&
-# \lVert \mathbb{1}_{\mathcal{O}}\circ(D- YX^\top)\rVert^2 + \lambda\lVert X\rVert^2\\ 
+# \lVert O\circ(D- YX^\top)\rVert^2 + \lambda\lVert X\rVert^2\\ 
 # &= \argmin_{X_{k\cdot}}
 # \lVert \underbrace{\diag(O_{\cdot k})D_{\cdot k}}_{=\tilde{\vvec{y}}}- \underbrace{\diag(O_{\cdot k})Y}_{=\tilde{X}}\underbrace{X_{k\cdot }^\top}_{=\tilde{\beta}})\rVert^2 + \lambda\lVert X\rVert^2 
 # \end{align*}
@@ -767,7 +770,7 @@ plt.show()
 # 
 # **Input**: the dataset $D$, rank $r$, maximum number of iterations $t_{max} = 100$, and regularization weight  $\lambda = 0.1$
 # 1. $(X, Y) \gets$ `InitRandom`$(n, d, r)$ 
-# 2. $O \gets$ `IndicatorNonzero`$(D)$
+# 2. $O \gets$ `IndicatorObserved`$(D)$
 # 2. **for** $t\in\{1,\ldots,t_{max}\}$
 #     1. **for** $k \in \{1, \ldots, d\}$
 #         1. $X_{k\cdot} \leftarrow D_{\cdot k}^{\top} \diag(O_{\cdot k})Y (Y^{\top} \diag(O_{\cdot k}) Y + \lambda I)^{-1}$

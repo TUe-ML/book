@@ -50,7 +50,6 @@ chapters:
 - file: dim_reduction
   sections:
   - file: dim_reduction_mf
-  - file: dim_reduction_matrix_completion
   - file: dim_reduction_pca
   - file: dim_reduction_exercises
 - file: clustering

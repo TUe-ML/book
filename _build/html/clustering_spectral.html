@@ -358,11 +358,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="dim_reduction_matrix_completion.html">
-     Matrix Completion
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="dim_reduction_pca.html">
      Principal Component Analysis
     </a>
@@ -795,7 +790,7 @@ The <strong>graph Laplacian</strong> is the matrix <div class="math notranslate 
 \[Y_{\cdot s}^\top \underbrace{(I_W - W)}_{=L}Y_{\cdot s }=0\]</div>
 </p>
 <div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 39 </span> (Minimum Cut and Maximum Similarity Equivalences )</p>
+<p class="admonition-title"><span class="caption-number">Theorem 42 </span> (Minimum Cut and Maximum Similarity Equivalences )</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a symmetric similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, the degree matrix <span class="math notranslate nohighlight">\(I_W\)</span> and the Graph Laplacian <span class="math notranslate nohighlight">\(L=I_W-W\)</span>, then the following objectives are equivalent:</p>
 <div class="amsmath math notranslate nohighlight">
@@ -806,7 +801,7 @@ The <strong>graph Laplacian</strong> is the matrix <div class="math notranslate 
 </section>
 </div><p>The maximum similarity objective is equal to the kernel <span class="math notranslate nohighlight">\(k\)</span>-means objective. However, note that <span class="math notranslate nohighlight">\(-L\)</span> is not a kernel matrix (it’s negative semi-definite).</p>
 <div class="proof lemma admonition" id="lemma-3">
-<p class="admonition-title"><span class="caption-number">Lemma 9 </span> (Positive Definiteness of Laplacians)</p>
+<p class="admonition-title"><span class="caption-number">Lemma 11 </span> (Positive Definiteness of Laplacians)</p>
 <section class="lemma-content" id="proof-content">
 <p>Given a symmetric similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, the Laplacian <span class="math notranslate nohighlight">\(L=I_W -W\)</span> is positive semi-definite.</p>
 </section>
@@ -823,7 +818,7 @@ v^\top Lv &amp;= v^\top I_W v - v^\top W v
 </div>
 </div>
 <div class="proof theorem admonition" id="theorem-4">
-<p class="admonition-title"><span class="caption-number">Theorem 40 </span> (Connected Components and Eigenvectors)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 43 </span> (Connected Components and Eigenvectors)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a graph indicated by the symmetric matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, then the indicator vectors of the connected components are eigenvectors of the Laplacian <span class="math notranslate nohighlight">\(L=I_W-W\)</span> to the smallest eigenvalue <span class="math notranslate nohighlight">\(0\)</span>.</p>
 </section>
@@ -831,7 +826,7 @@ v^\top Lv &amp;= v^\top I_W v - v^\top W v
 <div class="proof admonition" id="proof">
 <p>Proof. For every connected component there exists an order of columns and rows such that <span class="math notranslate nohighlight">\(W\)</span> has a block-diagonal form:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-7d96029e-d128-42bc-947b-78d3e2f490e1">
-<span class="eqno">(89)<a class="headerlink" href="#equation-7d96029e-d128-42bc-947b-78d3e2f490e1" title="Permalink to this equation">#</a></span>\[\begin{align} 
+<span class="eqno">(84)<a class="headerlink" href="#equation-7d96029e-d128-42bc-947b-78d3e2f490e1" title="Permalink to this equation">#</a></span>\[\begin{align} 
 Wv = 
 \left(
 \begin{array}{c:r}
