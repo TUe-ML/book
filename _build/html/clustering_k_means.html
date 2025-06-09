@@ -605,17 +605,22 @@ title="Print to PDF"
     </div>
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#informal-problem-definition">
-   Informal Problem Definition
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   k-Means
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#motivation">
+   Motivation
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#formal-problem-definition">
    Formal Problem Definition
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#optimization">
    Optimization
   </a>
@@ -639,17 +644,22 @@ title="Print to PDF"
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#informal-problem-definition">
-   Informal Problem Definition
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   k-Means
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#motivation">
+   Motivation
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#formal-problem-definition">
    Formal Problem Definition
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#optimization">
    Optimization
   </a>
@@ -664,79 +674,90 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="k-means">
+  <section id="k-means">
 <h1>k-Means<a class="headerlink" href="#k-means" title="Permalink to this headline">#</a></h1>
-<section id="informal-problem-definition">
-<h2>Informal Problem Definition<a class="headerlink" href="#informal-problem-definition" title="Permalink to this headline">#</a></h2>
+<p>Clustering is a fundamental task in unsupervised learning, where the goal is to discover <em>meaningful groupings</em> in the data. Unlike supervised learning, there is no target to learn — the algorithm must infer structure based solely on the features of the data.</p>
+<p>One of the most widely used clustering algorithms is k-means, which aims to partition a dataset into <span class="math notranslate nohighlight">\(r\)</span> clusters such that points within each cluster are close to each other in feature space. Originally, the number of clusters was <span class="math notranslate nohighlight">\(k\)</span>, hence k-means, but in the notation of this course, <span class="math notranslate nohighlight">\(r\)</span> is the number of low-dimensional representations. Despite k-means being a very simple method, it often reveals interpretable structure and serves as a useful baseline in exploratory data analysis.</p>
+</section>
+<section id="motivation">
+<h1>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h1>
 <figure class="align-center" id="deck-of-cards">
 <a class="reference internal image-reference" href="_images/deckOfCards.jpg"><img alt="_images/deckOfCards.jpg" src="_images/deckOfCards.jpg" style="height: 300px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 12 </span><span class="caption-text">A deck of cards can be clustered into various forms of valid clusterings.</span><a class="headerlink" href="#deck-of-cards" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
+<p>To understand the nature of clustering, consider a simple dataset: a <strong>standard deck of 52 playing cards</strong>. Each card can be described using features like:</p>
+<ul class="simple">
+<li><p><strong>Suit</strong> (Hearts, Diamonds, Clubs, Spades)</p></li>
+<li><p><strong>Rank</strong> (2 through 10, Jack, Queen, King, Ace)</p></li>
+<li><p><strong>Color</strong> (Red or Black)</p></li>
+</ul>
+<p>Now imagine you’re asked to cluster this dataset into groups. What are some reasonable ways to group the cards?</p>
+<ul class="simple">
+<li><p>You could group them by <strong>suit</strong> — forming four clusters (Hearts, Diamonds, Clubs, Spades).</p></li>
+<li><p>You could group them by <strong>rank</strong> — so that all Aces are together, all 2s are together, and so on.</p></li>
+<li><p>You could group by <strong>color</strong> — two clusters: red cards and black cards.</p></li>
+<li><p>You could even define groups based on custom similarity, such as grouping all face cards together or separating prime-numbered cards.</p></li>
+</ul>
+<p>Each of these groupings is <strong>valid</strong> depending on what we consider similar or meaningful. This illustrates a core aspect in clustering: it has no universally correct answer. The grouping that we want depends on our assumptions about the ground truth clustering.</p>
+<p>Motivating examples in clustering often look like the blobs below:</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <img alt="_images/clustering_k_means_2_0.png" src="_images/clustering_k_means_2_0.png" />
 </div>
 </div>
-<p>Clustering is a Task with Multiple Valid Outcomes</p>
-<ol class="simple">
-<li><p>How many clusters do we have?</p></li>
-<li><p>Do they overlap?</p></li>
-<li><p>How are clusters characterized?
-Cluster models differ according to the answers to these questions.</p></li>
-</ol>
+<p>We can visually see that there are three clusters – three point clouds that are visibly separated from each other. However, if our data has more than two dimensions, then it becomes difficult up to impossible to detect the clusters visually. In these cases, k-means is supposed to give us the clusters, assuming the clusters are as nicely shaped as in this two-dimensional blobs example.</p>
 </section>
 <section id="formal-problem-definition">
-<h2>Formal Problem Definition<a class="headerlink" href="#formal-problem-definition" title="Permalink to this headline">#</a></h2>
+<h1>Formal Problem Definition<a class="headerlink" href="#formal-problem-definition" title="Permalink to this headline">#</a></h1>
+<p>The k-means algorithm makes specific assumptions about the clustering structure:</p>
 <ol class="simple">
-<li><p>How many clusters do we have? Let the user decide..</p></li>
-<li><p>Do they overlap? No. Every point belongs to exactly one cluster
-<div class="math notranslate nohighlight">
-\[\mathcal{C}_s\cap\mathcal{C}_t=\emptyset,\  \mathcal{C}_1\cup\ldots\cup\mathcal{C}_r=\{1,\ldots, n\}\]</div>
-
-That is,  <span class="math notranslate nohighlight">\(\{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\)</span> is a partition of <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span>.
-We denote the set of all partitions from <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span> with <span class="math notranslate nohighlight">\(\mathcal{P}_n\)</span>.</p></li>
-<li><p>How are clusters characterized? Points within a cluster are close in average:
-<div class="math notranslate nohighlight">
-\[ \frac{1}{|\mathcal{C}_s|}\sum_{i,j\in\mathcal{C}_s}\|D_{i\cdot}-D_{j\cdot}\|^2 \text{ is small.}\]</div>
-</p></li>
+<li><p>Data points are vectors in Euclidean space (i.e., numerical features) and their distance is measured by Euclidean distance,</p></li>
+<li><p>Every data point belongs to exactly one cluster,</p></li>
+<li><p>Points within one cluster are similar</p></li>
 </ol>
+<p>We denote our clustering as a series of indices-sets <span class="math notranslate nohighlight">\(\mathcal{C}_1,\ldots,\mathcal{C}_r\)</span>, where <span class="math notranslate nohighlight">\(\mathcal{C}_s\subseteq \{1,\ldots,n\}\)</span> indicates the indices of our <span class="math notranslate nohighlight">\(n\)</span> data points that belong to cluster <span class="math notranslate nohighlight">\(s\)</span>. The second assumption is then mathematically described by <span class="math notranslate nohighlight">\(\mathcal{C}_1,\ldots,\mathcal{C}_r\)</span> forming a partition of <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span>, that is
+<div class="math notranslate nohighlight">
+\[\{\mathcal{C}_s\cap\mathcal{C}_t=\emptyset,\  \mathcal{C}_1\cup\ldots\cup\mathcal{C}_r\}=\{1,\ldots, n\}.\]</div>
+
+We denote the set of all partitions from <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span> with <span class="math notranslate nohighlight">\(\mathcal{P}_n\)</span>.</p>
+<p>Point 3 states that points within a cluster are similar. We can express this assumption mathematically by stating that points within a cluster have a small (squared) Euclidean distance in average:
+<div class="math notranslate nohighlight">
+\[ \frac{1}{|\mathcal{C}_s|}\sum_{i,j\in\mathcal{C}_s}\|D_{i\cdot}-D_{j\cdot}\|^2\]</div>
+
+This allows us to formalize our k-means clustering task as follows:</p>
 <div class="tip admonition">
 <p class="admonition-title">Task (k-means)</p>
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span> and the number of clusters <span class="math notranslate nohighlight">\(r\)</span>.<br />
 <strong>Find</strong> clusters <span class="math notranslate nohighlight">\(\{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\in\mathcal{P}_n\)</span> which create a partition of <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span>, minimizing the distance between points within clusters (<strong>within cluster scatter</strong>):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4ddc0d24-1b3d-4c37-96ae-6a82a68fd779">
-<span class="eqno">(68)<a class="headerlink" href="#equation-4ddc0d24-1b3d-4c37-96ae-6a82a68fd779" title="Permalink to this equation">#</a></span>\[\begin{align}
-\min_{\{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\in\mathcal{P}_n} &amp;\ Dist(\mathcal{C}_1,\ldots,\mathcal{C}_r) = \sum_{s=1}^r\frac{1}{|\mathcal{C}_s|}\sum_{j,i\in\mathcal{C}_s}\|D_{j\cdot}-D_{i\cdot}\|^2 \label{eq:k-means}
+<div class="math notranslate nohighlight" id="equation-eq-k-means">
+<span class="eqno">(68)<a class="headerlink" href="#equation-eq-k-means" title="Permalink to this equation">#</a></span>\[\begin{align}
+\min_{\{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\in\mathcal{P}_n} &amp;\ \sum_{s=1}^r\frac{1}{|\mathcal{C}_s|}\sum_{j,i\in\mathcal{C}_s}\|D_{j\cdot}-D_{i\cdot}\|^2 \label{eq:k-means}
 \end{align}\]</div>
-<p><strong>Return</strong> the clustering <span class="math notranslate nohighlight">\(\{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\in\mathcal{P}_n\)</span></p>
+<p><strong>Return</strong> the clusters <span class="math notranslate nohighlight">\(\mathcal{C}_1,\ldots,\mathcal{C}_r\)</span></p>
 </div>
 </section>
 <section id="optimization">
-<h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
-<p>Ok, we have here now one problem.
-The standard optimization methods relying on gradients do not apply, this is a discrete optimization problem. How can we optimize the objective of <span class="math notranslate nohighlight">\(k\)</span>-means when the gradients are not defined?
-Transform the objective to get a better idea.</p>
-<p>Minimizing the Within Cluster Distance Means Minimizing the Distance of Points to their Centroid</p>
+<h1>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h1>
+<p>The objective in the k-means task is not easy to optimize. In particular the discrete nature of assigning points to clusters is problematic, since we can’t apply our numerical optimization schemes to a discrete optimization task. As so often with nasty objectives, it is also here possible to transform this objective into a form that gives a clearer idea on how to optimize it.</p>
+<p>The theorem below shows that minimizing the within cluster scatter is equivalent to minimizing the distance of points to their centroid.</p>
 <div class="proof theorem admonition" id="theorem-0">
 <p class="admonition-title"><span class="caption-number">Theorem 33 </span></p>
 <section class="theorem-content" id="proof-content">
-<p>The <span class="math notranslate nohighlight">\(k\)</span>- means objective in Eq.~\eqref{eq:k-means} is equivalent to</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-\min&amp;\sum_{s=1}^r\sum_{i\in\mathcal{C}_s} \lVert D_{i\cdot}-X_{\cdot s}^\top\rVert^2
-&amp;\text{s.t. }X_{\cdot s}=\frac{1}{|\mathcal{C}_s|}\sum_{i\in\mathcal{C}_s}D_{i\cdot}^\top,\\
-&amp;&amp;\{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\in\mathcal{P}_n
+<p>The <span class="math notranslate nohighlight">\(k\)</span>- means objective in Eq. <a class="reference internal" href="#equation-eq-k-means">(68)</a> is equivalent to</p>
+<div class="math notranslate nohighlight" id="equation-eq-k-means-centr">
+<span class="eqno">(69)<a class="headerlink" href="#equation-eq-k-means-centr" title="Permalink to this equation">#</a></span>\[\begin{align*}
+\min_{\mathcal{C}_1,\ldots,\mathcal{C}_r}&amp;\ \sum_{s=1}^r\sum_{i\in\mathcal{C}_s} \lVert D_{i\cdot}-X_{\cdot s}^\top\rVert^2
+\text{s.t. }X_{\cdot s}=\frac{1}{|\mathcal{C}_s|}\sum_{i\in\mathcal{C}_s}D_{i\cdot}^\top,\ \{\mathcal{C}_1,\ldots,\mathcal{C}_r\}\in\mathcal{P}_n
 \end{align*}\]</div>
 </section>
 </div><div class="toggle docutils container">
 <div class="proof admonition" id="proof">
-<p>Proof. The objective function in Eq.~\eqref{eq:k-means} returning the average distance of points within one cluster can be transformed as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a76b0b8e-d74e-4734-9282-bc2df8b67511">
-<span class="eqno">(69)<a class="headerlink" href="#equation-a76b0b8e-d74e-4734-9282-bc2df8b67511" title="Permalink to this equation">#</a></span>\[\begin{align}
-    Dist(\mathcal{C}_1,\ldots,\mathcal{C}_r)
-&amp;=\sum_{s=1}^r\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}{\color{magenta}\sum_{i\in\mathcal{C}_s}}\lVert {\color{magenta}D_{i\cdot}}-D_{j\cdot}\rVert^2\\ 
+<p>Proof. The objective function in Eq. <a class="reference internal" href="#equation-eq-k-means">(68)</a> returning the average distance of points within one cluster can be transformed as follows:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f2c68c7c-3974-47ed-87c8-fd268c94f056">
+<span class="eqno">(70)<a class="headerlink" href="#equation-f2c68c7c-3974-47ed-87c8-fd268c94f056" title="Permalink to this equation">#</a></span>\[\begin{align}
+   &amp;\sum_{s=1}^r\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}{\color{magenta}\sum_{i\in\mathcal{C}_s}}\lVert {\color{magenta}D_{i\cdot}}-D_{j\cdot}\rVert^2\\ 
     &amp;= \sum_{s=1}^r\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}{\color{magenta}\sum_{i\in\mathcal{C}_s}}\left(
     {\color{magenta}\lVert D_{i\cdot}\rVert^2} - 2{\color{magenta}D_{i\cdot}}D_{j\cdot}^\top +
     \lVert D_{j\cdot} \rVert^2\right)\quad\text{(binomial formula)}\\
@@ -751,15 +772,15 @@ Transform the objective to get a better idea.</p>
     &amp;=\sum_{s=1}^r\left(2{\color{magenta}\sum_{i\in\mathcal{C}_s}\lVert D_{i\cdot}\rVert^2}-2{\color{magenta}\sum_{i\in\mathcal{C}_s} D_{i\cdot}} \frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}D_{j\cdot}^\top\right) 
 \end{align}\]</div>
 <p>This transformation introduces the centroid to the objective, it is given by the term on the right:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-eb0cae2a-60bf-4a06-9015-ae15e9dc2f8f">
-<span class="eqno">(70)<a class="headerlink" href="#equation-eb0cae2a-60bf-4a06-9015-ae15e9dc2f8f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3b156df3-b573-4560-8772-fca2f7b9c702">
+<span class="eqno">(71)<a class="headerlink" href="#equation-3b156df3-b573-4560-8772-fca2f7b9c702" title="Permalink to this equation">#</a></span>\[\begin{align}
     Dist(\mathcal{C}_1,\ldots,\mathcal{C}_r)
     &amp;=2\sum_{s=1}^r\Biggl(\sum_{i\in\mathcal{C}_s}\lVert D_{i\cdot}\rVert^2-\sum_{i\in\mathcal{C}_s} D_{i\cdot} \underbrace{\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}D_{j\cdot}^\top}_{X_{\cdot s}}\Biggr)
 \end{align}\]</div>
 <p><span class="math notranslate nohighlight">\(X_{\cdot s}\)</span> is the centroid (the arithmetic mean position) of all points assigned to cluster <span class="math notranslate nohighlight">\(\mathcal{C}_s\)</span>.
 We rearrange the terms now, such that we can again apply the binomial formula for norms, where the norm is used to measure  the distance of a point in a cluster to the corresponding centroid:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f79248d7-1761-43ff-850a-7334cafa9f6c">
-<span class="eqno">(71)<a class="headerlink" href="#equation-f79248d7-1761-43ff-850a-7334cafa9f6c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a7ba84a1-6171-4120-844f-a4901107beed">
+<span class="eqno">(72)<a class="headerlink" href="#equation-a7ba84a1-6171-4120-844f-a4901107beed" title="Permalink to this equation">#</a></span>\[\begin{align}
         Dist(\mathcal{C}_1,\ldots,\mathcal{C}_r)
     &amp;=2\sum_{s=1}^r\Biggl({\color{magenta}\sum_{i\in\mathcal{C}_s}\lVert D_{i\cdot}\rVert^2}-\underbrace{\underbrace{{\color{magenta}\sum_{i\in\mathcal{C}_s} D_{i\cdot}}}_{\lvert\mathcal{C}_s\rvert X_{\cdot s}^\top} \underbrace{\frac{1}{|\mathcal{C}_s|}\sum_{j\in\mathcal{C}_s}D_{j\cdot}^\top}_{X_{\cdot s}}}_{{\color{magenta}\sum_{i\in\mathcal{C}_s}}\lVert X_{\cdot s}\rVert^2}\Biggr)\\
     &amp;=2\sum_{s=1}^r{\color{magenta}\sum_{i\in\mathcal{C}_s}} \left({\color{magenta}\lVert D_{i\cdot}\rVert^2}- 2{\color{magenta}D_{i\cdot}}X_{\cdot s} +\lVert X_{\cdot s}\rVert^2\right)\\
@@ -770,9 +791,7 @@ We rearrange the terms now, such that we can again apply the binomial formula fo
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(X_{\cdot s}\)</span> is the <strong>centroid</strong> (the arithmetic mean position) of all points assigned to cluster <span class="math notranslate nohighlight">\(\mathcal{C}_s\)</span>.</p>
-<p>Maybe it’s more easy to compute the centroids given the clusters and vice versa instead of computing clusters and centroids simultaneously?<br />
-Minimizing the Distance of Points to their Centroids<br />
-We start with some randomly sampled centroids.</p>
+<p>Minimizing the distance of points to their centroids suggests an iterative two-step procedure, where we optimize subject to the centroids in one step and the clustering in the next step. As an example, let’s consider the clustering of the three blobs data starting with some randomly sampled centroids (in magenta).</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <img alt="_images/clustering_k_means_7_0.png" src="_images/clustering_k_means_7_0.png" />
@@ -978,42 +997,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_imgd8f1a5ecf1094af4b4f1ddfc700a63a5">
+  <img id="_anim_img902118edb4124543943c58845ae5bf7f">
   <div class="anim-controls">
-    <input id="_anim_sliderd8f1a5ecf1094af4b4f1ddfc700a63a5" type="range" class="anim-slider"
+    <input id="_anim_slider902118edb4124543943c58845ae5bf7f" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="animd8f1a5ecf1094af4b4f1ddfc700a63a5.set_frame(parseInt(this.value));">
+           oninput="anim902118edb4124543943c58845ae5bf7f.set_frame(parseInt(this.value));">
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="animd8f1a5ecf1094af4b4f1ddfc700a63a5.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim902118edb4124543943c58845ae5bf7f.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="animd8f1a5ecf1094af4b4f1ddfc700a63a5.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="anim902118edb4124543943c58845ae5bf7f.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="animd8f1a5ecf1094af4b4f1ddfc700a63a5.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="anim902118edb4124543943c58845ae5bf7f.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="animd8f1a5ecf1094af4b4f1ddfc700a63a5.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="anim902118edb4124543943c58845ae5bf7f.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="animd8f1a5ecf1094af4b4f1ddfc700a63a5.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="anim902118edb4124543943c58845ae5bf7f.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="animd8f1a5ecf1094af4b4f1ddfc700a63a5.play_animation()">
+      <button title="Play" aria-label="Play" onclick="anim902118edb4124543943c58845ae5bf7f.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="animd8f1a5ecf1094af4b4f1ddfc700a63a5.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="anim902118edb4124543943c58845ae5bf7f.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="animd8f1a5ecf1094af4b4f1ddfc700a63a5.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="anim902118edb4124543943c58845ae5bf7f.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="animd8f1a5ecf1094af4b4f1ddfc700a63a5.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="anim902118edb4124543943c58845ae5bf7f.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectd8f1a5ecf1094af4b4f1ddfc700a63a5"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select902118edb4124543943c58845ae5bf7f"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_d8f1a5ecf1094af4b4f1ddfc700a63a5"
+      <input type="radio" name="state" value="once" id="_anim_radio1_902118edb4124543943c58845ae5bf7f"
              >
-      <label for="_anim_radio1_d8f1a5ecf1094af4b4f1ddfc700a63a5">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_d8f1a5ecf1094af4b4f1ddfc700a63a5"
+      <label for="_anim_radio1_902118edb4124543943c58845ae5bf7f">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_902118edb4124543943c58845ae5bf7f"
              checked>
-      <label for="_anim_radio2_d8f1a5ecf1094af4b4f1ddfc700a63a5">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_d8f1a5ecf1094af4b4f1ddfc700a63a5"
+      <label for="_anim_radio2_902118edb4124543943c58845ae5bf7f">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_902118edb4124543943c58845ae5bf7f"
              >
-      <label for="_anim_radio3_d8f1a5ecf1094af4b4f1ddfc700a63a5">Reflect</label>
+      <label for="_anim_radio3_902118edb4124543943c58845ae5bf7f">Reflect</label>
     </form>
   </div>
 </div>
@@ -1023,9 +1042,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_imgd8f1a5ecf1094af4b4f1ddfc700a63a5";
-    var slider_id = "_anim_sliderd8f1a5ecf1094af4b4f1ddfc700a63a5";
-    var loop_select_id = "_anim_loop_selectd8f1a5ecf1094af4b4f1ddfc700a63a5";
+    var img_id = "_anim_img902118edb4124543943c58845ae5bf7f";
+    var slider_id = "_anim_slider902118edb4124543943c58845ae5bf7f";
+    var loop_select_id = "_anim_loop_select902118edb4124543943c58845ae5bf7f";
     var frames = new Array(9);
 
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -4916,13 +4935,14 @@ IkkAE0IIEZH+H0r0K76ieYXyAAAAAElFTkSuQmCC\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        animd8f1a5ecf1094af4b4f1ddfc700a63a5 = new Animation(frames, img_id, slider_id, 200.0,
+        anim902118edb4124543943c58845ae5bf7f = new Animation(frames, img_id, slider_id, 200.0,
                                  loop_select_id);
     }, 0);
   })()
 </script>
 </div></div>
 </div>
+<p>This two step procedure has been proposed in <strong>1957</strong> by <strong>Stuart Lloyd</strong>, an engineer at Bell Labs, as a method for pulse-code modulation in signal processing. Interestingly, his work wasn’t widely known until it was published in a technical report in <strong>1982</strong>, and by then the algorithm had already been rediscovered multiple times under different names in various fields. In the context of clustering, it became known as the standard way to solve the k-means problem. The algorithm below details the procedure.</p>
 <div class="proof algorithm admonition" id="algorithm-1">
 <p class="admonition-title"><span class="caption-number">Algorithm 15 </span> (k-means (a.k.a. Lloyds algorithm))</p>
 <section class="algorithm-content" id="proof-content">
@@ -4947,7 +4967,6 @@ IkkAE0IIEZH+H0r0K76ieYXyAAAAAElFTkSuQmCC\
 </ol>
 </section>
 </div></section>
-</section>
 
     <script type="text/x-thebe-config">
     {

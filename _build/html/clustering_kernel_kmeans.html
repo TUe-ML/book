@@ -699,7 +699,7 @@ the kernel matrix is given by
 <p><strong>Given</strong> a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>, a feature transformation <span class="math notranslate nohighlight">\(\phi:\mathbb{R}^{d}\rightarrow \mathbb{R}^p\)</span> mapping into a <span class="math notranslate nohighlight">\(p\)</span>-dimensional feature space, where <span class="math notranslate nohighlight">\(p\in\mathbb{N}\cup\{\infty\}\)</span>, and the number of clusters <span class="math notranslate nohighlight">\(r\)</span>.<br />
 <strong>Find</strong> clusters indicated by the matrix <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span> which minimize the within cluster scatter in the transformed feature space</p>
 <div class="amsmath math notranslate nohighlight" id="equation-52092099-99f9-4a1d-99e1-93735a425de2">
-<span class="eqno">(80)<a class="headerlink" href="#equation-52092099-99f9-4a1d-99e1-93735a425de2" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(78)<a class="headerlink" href="#equation-52092099-99f9-4a1d-99e1-93735a425de2" title="Permalink to this equation">#</a></span>\[\begin{align}
 \min_{Y} \|{\bm\phi}(D)-YX^\top\|^2 \text{  s.t. } X= {\bm\phi}(D^\top) Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMPhi}
 \end{align}\]</div>
 <p><strong>Return</strong> the clustering <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span></p>
@@ -709,12 +709,12 @@ the kernel matrix is given by
 <h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
 <p>If we want to apply the kernel trick, then we need to state the kernel <span class="math notranslate nohighlight">\(k\)</span>-means objective with respect to the inner product of data points.</p>
 <div class="proof theorem admonition" id="theorem-0">
-<p class="admonition-title"><span class="caption-number">Theorem 38 </span> (<span class="math notranslate nohighlight">\(k\)</span>-means trace objective)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 39 </span> (<span class="math notranslate nohighlight">\(k\)</span>-means trace objective)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a data matrix <span class="math notranslate nohighlight">\(D\in\mathbb{R}^{n\times d}\)</span>,
 the following objectives are equivalent <span class="math notranslate nohighlight">\(k\)</span>-means objectives:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-221dce51-8c22-4739-894d-85933985f630">
-<span class="eqno">(81)<a class="headerlink" href="#equation-221dce51-8c22-4739-894d-85933985f630" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(79)<a class="headerlink" href="#equation-221dce51-8c22-4739-894d-85933985f630" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y} \lVert D-YX^\top\rVert^2 \text{  s.t. } X= D^\top Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:km}\\
 &amp;\max_{Y} \tr(Z^\top DD^\top Z)\qquad\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} \label{eq:kmeansTr}
 \end{align}\]</div>
@@ -764,12 +764,12 @@ Points within one cluster need to be similar:
 </div>
 </div>
 <div class="proof theorem admonition" id="theorem-1">
-<p class="admonition-title"><span class="caption-number">Theorem 39 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 40 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given the kernel matrix <span class="math notranslate nohighlight">\(K={\bm\phi}(D){\bm\phi}(D)^\top\)</span>,
 the following objectives are equivalent:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-af093177-1d17-4b2b-bb20-73f3099e0069">
-<span class="eqno">(82)<a class="headerlink" href="#equation-af093177-1d17-4b2b-bb20-73f3099e0069" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(80)<a class="headerlink" href="#equation-af093177-1d17-4b2b-bb20-73f3099e0069" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y} \|{\bm\phi}(D)-YX^\top\|^2 \text{  s.t. } X= {\bm\phi}(D^\top) Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMPhi1}\\
 &amp;\max_{Y} \tr(Z^\top K Z)\qquad\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} \label{eq:kernelKMtr}
 \end{align}\]</div>
@@ -777,7 +777,7 @@ the following objectives are equivalent:</p>
 </div><p>Problem: We do not know how to optimize Eq. \eqref{eq:kernelKMtr}, we only know how to optimize Eq. \eqref{eq:kernelKMPhi1}, but we do not want to compute <span class="math notranslate nohighlight">\(\phi\)</span>!</p>
 <p>Idea: We go the other way round: from the kernel matrix to the inner product.</p>
 <div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 40 </span> (Eigendecomposition of symmetric matrices)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 41 </span> (Eigendecomposition of symmetric matrices)</p>
 <section class="theorem-content" id="proof-content">
 <p>For every symmetric matrix <span class="math notranslate nohighlight">\(K=K^\top\in\mathbb{R}^{n\times n}\)</span> there exists an orthogonal matrix <span class="math notranslate nohighlight">\(V\in\mathbb{R}^{n\times n}\)</span> and a diagonal matrix <span class="math notranslate nohighlight">\(\Lambda=\diag(\lambda_1,\ldots,\lambda_n)\)</span> where <span class="math notranslate nohighlight">\(\lvert \lambda_1\rvert\geq \ldots \geq \lvert \lambda_n\rvert\)</span> such that
 <div class="math notranslate nohighlight">
@@ -788,12 +788,12 @@ the following objectives are equivalent:</p>
 <p>This is equivalent to <span class="math notranslate nohighlight">\(K\)</span> being positive semi-definite.
 Kernel matrices are positive semi-definite!</p>
 <div class="proof theorem admonition" id="theorem-3">
-<p class="admonition-title"><span class="caption-number">Theorem 41 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
+<p class="admonition-title"><span class="caption-number">Theorem 42 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a kernel matrix and its symmetric decomposition <span class="math notranslate nohighlight">\(K=AA^\top\)</span>,
 the following objectives are equivalent:</p>
 <div class="amsmath math notranslate nohighlight" id="equation-73dbcec1-be3e-412d-941c-8c8568e28206">
-<span class="eqno">(83)<a class="headerlink" href="#equation-73dbcec1-be3e-412d-941c-8c8568e28206" title="Permalink to this equation">#</a></span>\[\begin{align}
+<span class="eqno">(81)<a class="headerlink" href="#equation-73dbcec1-be3e-412d-941c-8c8568e28206" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y}\ \|A-YX^\top\|^2 &amp;\text{ s.t. } X= A^\top Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r}\label{eq:kmeansA} \\
 &amp;\max_{Y}\ \tr(Z^\top K Z)&amp;\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} 
 \end{align}\]</div>

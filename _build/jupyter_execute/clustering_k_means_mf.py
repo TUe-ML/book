@@ -1,27 +1,57 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # k-Means is MF
+# ## k-Means is MF
 
-# How good is this algorithm?
-# Does it converge? Is it just a heuristic or can we derive some quality guarantees of the result?
-# These questions can all be answered under the more general framework of matrix factorization.
+# In the previous section, we introduced the k-means algorithm and saw how it minimizes an objective that captures the within-cluster scatter. But this raises several natural questions:
 # 
-# Indicating Clusters by a Binary Matrix
-# Let $Y\in\{0,1\}^{n\times r}$ such that $Y_{is}=1$ if and only if $i\in\mathcal{C}_s$.
+# - **How good is this algorithm?**
+# - **Does it always converge?**
+# - **Is it just a heuristic, or can we derive more general guarantees?**
 # 
-# Every point belongs to exactly one cluster if and only if $$|Y_{i\cdot}|=1 \text{ for all } i\in\{1,\ldots,n\},$$
+# To answer these, we now take a step back and view k-means through the lens of the more general and powerful concept of matrix factorization. This perspective not only deepens our understanding of how k-means works, but also connects it to a broader class of unsupervised learning methods, such as truncated SVD and PCA.
 # 
-# We denote with $\mathbb{1}^{n\times r}$ the set of all binary matrices which indicate a partition of $n$ points into $r$ sets:
-# $$\mathbb{1}^{n\times r}=\{Y\in\{0,1\}^{n\times r}\vert |Y_{i\cdot}|=1 \text{ for } i\in\{1,\ldots,n\}\}$$
+# ### Reformulating k-means as MF
 # 
-# The Centroid Matrix     
-# Given a cluster indicator matrix $Y\in\mathbb{1}^{n\times r}$, the $s$th centroid is
-# \begin{align*}
-#     X_{\cdot s}&=\frac{1}{|\mathcal{C}_s|}\sum_{i\in\mathcal{C}_s}D_{i\cdot}^\top=\frac{1}{\lvert Y_{\cdot s}\rvert}\sum_{i=1}^nY_{is}D_{i\cdot}^\top 
-#     = \frac{1}{\lvert Y_{\cdot s}\rvert} D^\top Y_{\cdot s}.
-# \end{align*}
-# We can compute the matrix $X$ which gathers all centroids column-wise by
+# #### Representing Cluster Assignments as a Binary Matrix
+# 
+# We begin by formalizing the cluster assignments using a **binary indicator matrix**.
+# 
+# Let $Y \in \{0,1\}^{n \times r}$ be a matrix such that:
+# 
+# $$
+# Y_{is} = 
+# \begin{cases}
+# 1 & \text{if point } i \text{ is assigned to cluster } \mathcal{C}_s, \\
+# 0 & \text{otherwise.}
+# \end{cases}
+# $$
+# 
+# This matrix has exactly one non-zero entry per row, corresponding to each point being assigned to exactly one cluster. That is:
+# 
+# $$
+# |Y_{i\cdot}| = 1 \quad \text{for all } i \in \{1, \dots, n\}
+# $$
+# 
+# We denote by $ \mathbb{1}^{n \times r} $ the set of all such valid cluster indicator matrices:
+# 
+# $$
+# \mathbb{1}^{n \times r} = \left\{ Y \in \{0,1\}^{n \times r} \,\middle|\, |Y_{i\cdot}| = 1 \text{ for all } i \right\}
+# $$
+# 
+# 
+# #### The Centroid Matrix
+# 
+# Next, we derive the matrix of cluster centroids in terms of $Y $. Suppose we are given a data matrix $D \in \mathbb{R}^{n \times d}$, where each row $D_{i\cdot}$ represents a data point. The centroid of cluster $\mathcal{C}_s$ is the mean of all points assigned to it:
+# 
+# $$
+# X_{\cdot s} = \frac{1}{|\mathcal{C}_s|} \sum_{i \in \mathcal{C}_s} D_{i\cdot}^\top 
+# = \frac{1}{|Y_{\cdot s}|} \sum_{i=1}^n Y_{is} D_{i\cdot}^\top 
+# = \frac{1}{|Y_{\cdot s}|} D^\top Y_{\cdot s}
+# $$
+# 
+# We can collect all $r$ centroids into a single matrix $X \in \mathbb{R}^{d \times r}$, where each column $ X_{\cdot s}$ is the centroid of cluster $s$. In matrix form, this becomes:
+# 
 # \begin{align*}
 #     X &= D^\top Y 
 #     \begin{pmatrix}
@@ -31,31 +61,33 @@
 #     \end{pmatrix} 
 #     = D^\top Y (Y^\top Y)^{-1}.
 # \end{align*}
+# 
+# This formula expresses the centroids as a matrix product of the data and the cluster assignments — revealing a key insight: k-means clustering can be seen as a matrix factorization problem.
 
+# #### The k-means objective as MF
 # ````{prf:theorem} $k$-means MF objective
-# The $k$- means objective in Eq.~\eqref{eq:k-means} is equivalent to
+# The $k$- means objective in Eq. {eq}`eq:k-means` is equivalent to
 # \begin{align*}
-#     \min_Y& RSS(X,Y) = \lVert D-YX^\top\rVert^2
+#     \min_Y\ & RSS(X,Y) = \lVert D-YX^\top\rVert^2
 #     &\text{s.t. }Y\in\mathbb{1}^{n\times r},\\ 
 #     &&\quad X=D^\top Y (Y^\top Y)^{-1}
 # \end{align*}
 # ````
 # ````{toggle}
 # ```{prf:proof}
-# The matrix $Y$ is a cluster-indicator matrix, indicating a partition of the $n$ data points into $r$ sets. For every data point with index $i\in\{1,\ldots,n\}$, there exists one cluster index $s_i$, such that $Y_{i s_i}=1$ and $Y_{i s}=0$ for $s\neq s_i$ (point $i$ is assigned to cluster $s_i$). Using this notation, the objective function in Eq.~\eqref{eq:kmeansCentroid}, returning the distance of every point to its cluster centroid, is equal to
-# \begin{align}
+# The matrix $Y$ is a cluster-indicator matrix, indicating a partition of the $n$ data points into $r$ sets. For every data point with index $i\in\{1,\ldots,n\}$, there exists one cluster index $s_i$, such that $Y_{i s_i}=1$ and $Y_{i s}=0$ for $s\neq s_i$ (point $i$ is assigned to cluster $s_i$). Using this notation, the objective function in Eq. {eq}`eq:k-means_centr`, returning the distance of every point to its cluster centroid, is equal to
+# \begin{align*}
 #     {\color{magenta}\sum_{s=1}^r}\sum_{i\in{\color{magenta}\mathcal{C}_s}}\lVert D_{i\cdot}-{\color{magenta}X_{\cdot s}^\top}\rVert^2 
 #     &= \sum_{i=1}^n{\color{magenta}\sum_{s=1}^r Y_{is}} \lVert D_{i\cdot}-{\color{magenta}X_{\cdot s}^\top}\rVert^2 &\text{(use indicator matrix)}\nonumber\\
 #     &= \sum_{i=1}^n \lVert D_{i\cdot}-{\color{magenta}X_{\cdot {s_i}}^\top}\rVert^2&\text{(only $Y_{i s_i}=1$)}\nonumber\\ 
 #     &= \sum_{i=1}^n \left\lVert D_{i\cdot}-{\color{magenta}\sum_{s=1}^rY_{is}X_{\cdot s}^\top}\right\rVert^2&\text{(only $Y_{i s_i}=1$)}\nonumber\\
 #     &= \left\lVert D-{\color{magenta}\sum_{s=1}^rY_{\cdot s}X_{\cdot s}^\top}\right\rVert^2\label{eq:FroEuc}\\
 #     &= \lVert D-YX^\top\rVert^2 &\text{(outer product def. matrix product)}\nonumber.
-# \end{align}
-# Eq.~\eqref{eq:FroEuc} uses the composition of the squared Frobenius norm as a sum of the squared Euclidean vector norm over all rows.
+# \end{align*}
+# The third equation uses the composition of the squared Frobenius norm as a sum of the squared Euclidean vector norm over all rows.
 # ```
 # ````
-# The matrix $Y$ indicates the cluster assignments.
-# The matrix $X$ gathers the centroids of all clusters column-wise.
+# The matrix factorization of k-means has a very specific structure. The left matrix $Y$ is binary and every row contains exactly one entry being equal to one, and all the others are zero. That means, we can sort the rows of a data matrix, such that all points in one cluster have consecutive indices. The resulting matrix $Y$ looks as the left matrix below, there is one block of ones (black) in the first column, representing the first cluster, and then follows a block of ones in the second row, representing the second cluster and so on. The right matrix $X^\top$ indicates the centroids as the rows, each centroid has here its own color. The data matrix is then approximated over these centroids, as displayed on the right. 
 
 # ::::{grid}
 # :gutter: 1
@@ -125,10 +157,20 @@
 # :::
 # 
 # ::::
-# 
+# ```{prf:theorem}
+# The k-means objective is nonconvex.
+# ```
+# ```{prf:proof}
+# If we consider the penalized version of the k-means objective (putting the constraints in the main objective), then we get the following objective:
+# \begin{align*}
+#     \min_Y\ & RSS(X,Y) = \lVert D-Y (Y^\top Y)^{-1}Y^\top D\rVert^2 + \mathbb{1}_{Y\in\mathbb{1}^{n\times r}}
+# \end{align*}
+# This objective has a local minimum for every feasible $Y$, and inbetween the feasible points the objective returns infinity.
+# ```
 
 # ````{prf:example} k-means matrix factorization for recommender systems
-# \begin{align}
+# Since k-means is an instance of the low-rank matrix factorization universe, we can compare the factorization of k-means in the scope of the recommender example, that we used to motivate low-rank matrix factorizations. We compute a clustering of the neutral-rating imputed running example of the recommender systems section and obtain the following:
+# \begin{align*}
 #   \begin{pmatrix}
 #     5 & \mu & 1 & 1 \\
 #     \mu & 1 & 5 & \mu  \\\
@@ -150,9 +192,9 @@
 #     4.7 & 3.7 & 2.7 & 1.3\\
 #     2.3 & 1.0 & 5.0 & 3.0\\
 #   \end{pmatrix}
-# \end{align}
-# Every user's preferences are approximated by a linear combination of the rows in the second matrix:
-# \begin{align}
+# \end{align*}
+# The movie patterns are now given by the centroids, and every user belongs to exactly one movie pattern, indicates by the user pattern matrix $Y$. For example, the first user is assigned to movie pattern 1:
+# \begin{align*}
 #     \begin{pmatrix}
 #         5 & \mu & 1 & 1 
 #     \end{pmatrix}
@@ -165,8 +207,10 @@
 #     \begin{pmatrix}
 #         2.3 & 1.0 & 5.0 & 3.0
 #     \end{pmatrix}    
-# \end{align}
-# To see this, we can use the sklearn implementation of k-means for now.
+# \end{align*}
+# The k-means assignment scheme allows for a clear interpretation of the movie patterns. Each pattern indicates one user preference scheme and can hence be analyzed by itself, and not in dependence to the coefficients in $Y$ and the other movie patterns. The example above indicates two behaviours: users that like movie one and two but not so much the other movies, and users that like movie 3.       
+# 
+# The clustering above is obtained via sklearn:
 # 
 #     M = [[5,3,1,1],[2,1,5,3],[2,1,5,3],[4,3,4,2],[5,5,3,1],[3,1,5,3]]
 #     from sklearn.cluster import KMeans
@@ -175,6 +219,7 @@
 # The clustering can be obtained by `kmeans.labels_` and `kmeans.cluster_centers_`. Sklearn labels are nominally encoded, that is, the label indicates the assigned cluster by a number. Since we have a nonconvex problem, it's not guaranteed that you get the exact same clustering solution as above. As an exercise, you can try the code above and get the matrix factorization that is indicated by the clustering. 
 # ````
 
+# ### Convergence Analysis
 # Ok, so $k$-means is an instance of the rank-$r$ matrix factorization problem. Can we also characterize the global minimizers of $k$-means like we did it for the rank-r matrix factorization problem with truncated SVD? Unfortunately not. However, we can characterize the global minimizers of the objective when we fix one of the factor matrices.
 # ````{prf:theorem} Centroids as minimizers
 # Given $D\in\mathbb{R}^{n\times d}$ and $Y\in\mathbb{1}^{n\times r}$, the minimizer of the optimization problem 
@@ -211,11 +256,13 @@
 #     $$\min_Y\sum_{s=1}^r\sum_{i=1}^n Y_{is}\lVert D_{i\cdot} - X_{\cdot s}^\top\rVert^2.$$
 # ```
 # ````   
-# Lloyds' algorithm actually performs an alternating minimization, also called block coordinate descent:
+# ```{prf:corollary}
+# Lloyds' algorithm performs an alternating minimization (also called **block coordinate descent**):
 # \begin{align}
 #     X_{k+1} & \leftarrow \argmin_{X\in\mathbb{R}^{d\times r}}\lVert D-Y_kX^\top\rVert^2\\
 #     Y_{k+1} &\leftarrow \argmin_{Y\in \mathbb{1}^{n\times r}}\lVert D-YX_{k+1}^\top\rVert^2
 # \end{align}
+# ```
 # The sequence $\{(X_k,Y_k)\}$ converges, since we decrease the objective function value in every step:
 # $$RSS(X_0,Y_0)>RSS(X_1,Y_1)>RSS(X_2,Y_2)>\ldots \geq 0 .$$
 # ````{prf:theorem} Equivalent $k$-means objectives
@@ -289,10 +336,7 @@ plt.show()
 
 
 # ## Initialization
-# The $k$-means problem is NP-hard. (SVD is polynomially solvable!) 
-# $k$-means poses a nonconvex optimization problem, and every feasible cluster indicator matrix and the corresponding centroids are one local minimum.
-#     
-# Hence, finding a good initialization is important! 
+# The $k$-means problem is NP-hard, while SVD is polynomially solvable. The simple addition of binary constraints changes the complexity of the problem a lot! Although Lloyds algorithm follows a sound optimization scheme, we can observe that the k-means clustering is complex from its sensitivity to the initialization.
 
 # In[5]:
 
