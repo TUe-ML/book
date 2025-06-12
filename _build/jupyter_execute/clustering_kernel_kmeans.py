@@ -153,12 +153,12 @@ ax.set_aspect("equal")
 # #### Idea: Factorize the Kernel
 # Instead of trying to work with the feature map, we compute a factorization of the kernel in another transformed feature space, that has maximally $n$ dimensions. Since every kernel is a symmetric matrix, because the inner product is symmetric, we can apply the following fundamental result from linear algebra:
 # ```{prf:theorem} Eigendecomposition of symmetric matrices
-# For every symmetric matrix $K=K^\top\in\mathbb{R}^{n\times n}$ there exists an orthogonal matrix $V\in\mathbb{R}^{n\times n}$ and a diagonal matrix $\Lambda=\diag(\lambda_1,\ldots,\lambda_n)$ where $\lvert \lambda_1\rvert\geq \ldots \geq \lvert \lambda_n\rvert$ such that
+# For every symmetric matrix $K=K^\top\in\mathbb{R}^{n\times n}$ there exists an orthogonal matrix $V\in\mathbb{R}^{n\times n}$ and a diagonal matrix $\Lambda=\diag(\lambda_1,\ldots,\lambda_n)$ where $\lambda_1\geq \ldots \geq \lambda_n$ such that
 #     $$K=V\Lambda V^\top$$
 # ```
 # In particular, if all eigenvalues of $K$ are nonnegative, we can write 
 # $$K=A^\top A$$ 
-# where $A=V\Lambda^{1/2}$ can be seen as the matrix of embedded feature vectors - asurrogate for $\bm\phi(D)$. This is possible if and only if the eigenvalues of $K$ are nonnegative, which holds for all kernel matrices.
+# where $A=V\Lambda^{1/2}$ can be seen as the matrix of embedded feature vectors - a surrogate for $\bm\phi(D)$. This is possible if and only if the eigenvalues of $K$ are nonnegative, which holds for all kernel matrices.
 
 # ```{prf:corollary} Equivalent kernel $k$-means objectives
 # Given the kernel matrix $K={\bm\phi}(D){\bm\phi}(D)^\top$,

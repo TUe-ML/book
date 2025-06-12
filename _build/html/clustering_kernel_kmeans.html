@@ -847,7 +847,7 @@ In theory, we could apply Lloyd’s algorithm directly to the transformed data. 
 <div class="proof theorem admonition" id="theorem-1">
 <p class="admonition-title"><span class="caption-number">Theorem 40 </span> (Eigendecomposition of symmetric matrices)</p>
 <section class="theorem-content" id="proof-content">
-<p>For every symmetric matrix <span class="math notranslate nohighlight">\(K=K^\top\in\mathbb{R}^{n\times n}\)</span> there exists an orthogonal matrix <span class="math notranslate nohighlight">\(V\in\mathbb{R}^{n\times n}\)</span> and a diagonal matrix <span class="math notranslate nohighlight">\(\Lambda=\diag(\lambda_1,\ldots,\lambda_n)\)</span> where <span class="math notranslate nohighlight">\(\lvert \lambda_1\rvert\geq \ldots \geq \lvert \lambda_n\rvert\)</span> such that
+<p>For every symmetric matrix <span class="math notranslate nohighlight">\(K=K^\top\in\mathbb{R}^{n\times n}\)</span> there exists an orthogonal matrix <span class="math notranslate nohighlight">\(V\in\mathbb{R}^{n\times n}\)</span> and a diagonal matrix <span class="math notranslate nohighlight">\(\Lambda=\diag(\lambda_1,\ldots,\lambda_n)\)</span> where <span class="math notranslate nohighlight">\(\lambda_1\geq \ldots \geq \lambda_n\)</span> such that
 <div class="math notranslate nohighlight">
 \[K=V\Lambda V^\top\]</div>
 </p>
@@ -856,15 +856,15 @@ In theory, we could apply Lloyd’s algorithm directly to the transformed data. 
 <div class="math notranslate nohighlight">
 \[K=A^\top A\]</div>
 
-where <span class="math notranslate nohighlight">\(A=V\Lambda^{1/2}\)</span> can be seen as the matrix of embedded feature vectors - asurrogate for <span class="math notranslate nohighlight">\(\bm\phi(D)\)</span>. This is possible if and only if the eigenvalues of <span class="math notranslate nohighlight">\(K\)</span> are nonnegative, which holds for all kernel matrices.</p>
+where <span class="math notranslate nohighlight">\(A=V\Lambda^{1/2}\)</span> can be seen as the matrix of embedded feature vectors - a surrogate for <span class="math notranslate nohighlight">\(\bm\phi(D)\)</span>. This is possible if and only if the eigenvalues of <span class="math notranslate nohighlight">\(K\)</span> are nonnegative, which holds for all kernel matrices.</p>
 <p>We summarize this result in the following corollary.</p>
 <div class="proof corollary admonition" id="corollary-2">
 <p class="admonition-title"><span class="caption-number">Corollary 7 </span> (Equivalent kernel <span class="math notranslate nohighlight">\(k\)</span>-means objectives)</p>
 <section class="corollary-content" id="proof-content">
 <p>Given a kernel matrix and its symmetric decomposition <span class="math notranslate nohighlight">\(K=AA^\top\)</span>,
 the following objectives are equivalent:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-727dc9c1-8100-45e3-bee0-3c05c08d6a97">
-<span class="eqno">(78)<a class="headerlink" href="#equation-727dc9c1-8100-45e3-bee0-3c05c08d6a97" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-5b24ff30-d118-4711-8e9f-8fa29451d85a">
+<span class="eqno">(78)<a class="headerlink" href="#equation-5b24ff30-d118-4711-8e9f-8fa29451d85a" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;\min_{Y}\ \|A-YX^\top\|^2 &amp;\text{ s.t. } X= A^\top Y(Y^\top Y)^{-1}, Y\in\mathbb{1}^{n\times r}\label{eq:kmeansA} \\
 &amp;\max_{Y}\ \tr(Z^\top K Z)&amp;\text{ s.t. } Z= Y(Y^\top Y)^{-1/2}, Y\in\mathbb{1}^{n\times r} 
 \end{align}\]</div>
