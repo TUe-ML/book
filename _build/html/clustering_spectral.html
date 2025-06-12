@@ -606,13 +606,71 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#formal-problem-definition">
-   Formal Problem Definition
+  <a class="reference internal nav-link" href="#similarity-graph-construction">
+   Similarity Graph Construction
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#epsilon-neighborhood-graph">
+     Epsilon-Neighborhood Graph
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#k-nearest-neighbor-graph">
+     k-Nearest Neighbor Graph
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#formal-objective-definitions">
+   Formal Objective Definitions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#maximum-similarity-within-clusters">
+     Maximum Similarity Within Clusters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#minimum-cut-between-clusters">
+     Minimum Cut Between Clusters
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#optimization">
    Optimization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-graph-laplacian">
+     The Graph Laplacian
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#relationship-to-kernel-k-means">
+     Relationship to Kernel k-means
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#spectral-clustering-algorithm">
+   Spectral Clustering Algorithm
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pseudocode">
+     Pseudocode
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#application-to-the-two-circles-dataset">
+   Application to the Two Circles Dataset
   </a>
  </li>
 </ul>
@@ -635,13 +693,71 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#formal-problem-definition">
-   Formal Problem Definition
+  <a class="reference internal nav-link" href="#similarity-graph-construction">
+   Similarity Graph Construction
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#epsilon-neighborhood-graph">
+     Epsilon-Neighborhood Graph
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#k-nearest-neighbor-graph">
+     k-Nearest Neighbor Graph
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#formal-objective-definitions">
+   Formal Objective Definitions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#maximum-similarity-within-clusters">
+     Maximum Similarity Within Clusters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#minimum-cut-between-clusters">
+     Minimum Cut Between Clusters
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#optimization">
    Optimization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-graph-laplacian">
+     The Graph Laplacian
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#relationship-to-kernel-k-means">
+     Relationship to Kernel k-means
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#spectral-clustering-algorithm">
+   Spectral Clustering Algorithm
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pseudocode">
+     Pseudocode
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#application-to-the-two-circles-dataset">
+   Application to the Two Circles Dataset
   </a>
  </li>
 </ul>
@@ -654,7 +770,7 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="spectral-clustering">
+  <section id="spectral-clustering">
 <h1>Spectral Clustering<a class="headerlink" href="#spectral-clustering" title="Permalink to this headline">#</a></h1>
 <figure class="align-center" id="social-graph">
 <a class="reference internal image-reference" href="_images/facebook.jpg"><img alt="_images/facebook.jpg" src="_images/facebook.jpg" style="height: 300px;" /></a>
@@ -662,30 +778,47 @@ title="Print to PDF"
 <p><span class="caption-number">Fig. 13 </span><span class="caption-text">Graph clustering is relevant for example in social relation analysis</span><a class="headerlink" href="#social-graph" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Interpretation of data as a graph. Every data point is a node. The weight of an edge reflects the similarity between connected nodes.<br />
-Epsilon neighborhood similarity:
+<p>In many real-world scenarios, data is best described not as a list of independent examples, but as a network of relationships. A prominent example arises in social networks, where users are connected based on interactions, friendships, or shared interests. Imagine analyzing user interactions on platforms like Instagram or LinkedIn, where individuals follow each other, like posts, or exchange messages. These interactions can be naturally represented as a graph: nodes correspond to users, and edges indicate some form of connection or similarity.</p>
+<p>A common goal in analyzing such graphs is to identify communities — tightly connected groups of users that likely share common interests or roles. This task is known as graph clustering, and it helps uncover the hidden structure of the network. For instance, in a professional network like LinkedIn, clustering might reveal groups of people working in the same industry or region. On Instagram, it could identify clusters of users centered around specific topics, such as memes, politics, or influencers.</p>
+<p>Unlike traditional clustering methods that operate on vector data, graph clustering works directly with the connectivity information. One powerful approach is spectral clustering, which uses the graph’s Laplacian matrix to map nodes into a geometric space where standard clustering algorithms like k-means can be applied. In a way, spectral clustering extends the idea of kernel k-means to more general applications of similarity matrices (that are not necessarily a kernel matrix), while making the algorithm more efficient and robust.</p>
+<section id="similarity-graph-construction">
+<h2>Similarity Graph Construction<a class="headerlink" href="#similarity-graph-construction" title="Permalink to this headline">#</a></h2>
+<p>If we are not given a graph directly, we need to construct a similarity graph that captures how similar or related different data points are. This is done by defining a similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}\)</span>, where each entry <span class="math notranslate nohighlight">\(W_{ij}\)</span> indicates the similarity between data points <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>There are several common ways to define this similarity.</p>
+<section id="epsilon-neighborhood-graph">
+<h3>Epsilon-Neighborhood Graph<a class="headerlink" href="#epsilon-neighborhood-graph" title="Permalink to this headline">#</a></h3>
+<p>The <span class="math notranslate nohighlight">\(\epsilon\)</span>-neighborhood graph connects two points if their distance is below the threshold <span class="math notranslate nohighlight">\(\epsilon\)</span>:
 <div class="math notranslate nohighlight">
 \[\begin{split}W_{ij}= \begin{cases}1&amp; \text{if } \lVert D_{i\cdot}-D_{j\cdot}\rVert&lt;\epsilon\\
 0&amp; \text{otherwise}\end{cases}\end{split}\]</div>
-</p>
+
+This results in an unweighted graph that captures local neighborhoods. It’s simple, but sensitive to the choice of <span class="math notranslate nohighlight">\(\epsilon\)</span>: too small, and the graph may become disconnected; too large, and it may lose local structure. The plot below shows the <span class="math notranslate nohighlight">\(\epsilon\)</span>-neighborhood graph on the two-circles dataset.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <img alt="_images/clustering_spectral_1_0.png" src="_images/clustering_spectral_1_0.png" />
 </div>
 </div>
-<p>k-nearest neighbor similarity:
+<p>Although the hyperparameter <span class="math notranslate nohighlight">\(\epsilon\)</span> is chosen well in this example, we can observe one of the drawbacks of the <span class="math notranslate nohighlight">\(\epsilon\)</span>-neighborhood graph: it doesn’t deal well with data that hasvarying levels of similarities. The points in the inner circle are in tendency closer to each other than the points on the outer circle. Correspondingly, the inner circle points are connected by many edges, but the outer circle points are not.</p>
+</section>
+<section id="k-nearest-neighbor-graph">
+<h3>k-Nearest Neighbor Graph<a class="headerlink" href="#k-nearest-neighbor-graph" title="Permalink to this headline">#</a></h3>
+<p>Alternatively, we can connect each point to its <span class="math notranslate nohighlight">\(k\)</span> nearest neighbors. Since this may result in an asymmetric matrix, we symmetrize it:
 <div class="math notranslate nohighlight">
 \[\begin{split}N_{ij}= \begin{cases}1&amp; \text{if } D_{i\cdot} \in KNN(D_{j\cdot})\\
 0&amp; \text{otherwise}\end{cases},\quad W=\frac12(N+N^\top)\end{split}\]</div>
-</p>
+
+This method ensures that each point is connected to at least <span class="math notranslate nohighlight">\(k\)</span> neighbors, and the resulting graph reflects local density. The plot below shows the 6-nearest neighbor graph for the two circles dataset</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/clustering_spectral_3_0.png" src="_images/clustering_spectral_3_0.png" />
+<img alt="_images/clustering_spectral_4_0.png" src="_images/clustering_spectral_4_0.png" />
 </div>
 </div>
-<section id="formal-problem-definition">
-<h2>Formal Problem Definition<a class="headerlink" href="#formal-problem-definition" title="Permalink to this headline">#</a></h2>
-<p>The similarity between points is given by a weighted adjacency matrix.</p>
+<p>We see that the <span class="math notranslate nohighlight">\(k\)</span>NN graph can deal with the varying cluster densities better than the <span class="math notranslate nohighlight">\(\epsilon\)</span>-neighborhood graph: the inner and the outer circle are strongly connected. The intuitive idea for this behavior is that the really close neighbors are more likely found within a point’s cluster than in another cluster.</p>
+</section>
+</section>
+<section id="formal-objective-definitions">
+<h2>Formal Objective Definitions<a class="headerlink" href="#formal-objective-definitions" title="Permalink to this headline">#</a></h2>
+<p>Once we have a similarity matrix WW that encodes the strength of connections between nodes, we can define what it means to find “good” clusters in the graph. There are two common objectives for graph clustering. We will discuss them on the basis of an example graph given by the similarity matrix (weighted adjacency matrix)</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 W = \begin{pmatrix}
@@ -695,83 +828,113 @@ W = \begin{pmatrix}
 0 &amp; 0 &amp; 9 &amp; 0 &amp; 4 &amp; 3\\
 5 &amp; 7 &amp; 8 &amp; 4 &amp; 0 &amp; 0\\
 0 &amp; 0 &amp; 2 &amp; 3 &amp; 0 &amp; 0
-\end{pmatrix}
+\end{pmatrix}.
 \end{align*}\]</div>
+<p>The weighted adjacency matrix indicates a graph that looks as follows:</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-cbbe8e859691edb42482980a4be6e867ab91b285.svg" alt="Figure made with TikZ" /></p>
-</div><p>We compute the similarity within a cluster.</p>
+</div><section id="maximum-similarity-within-clusters">
+<h3>Maximum Similarity Within Clusters<a class="headerlink" href="#maximum-similarity-within-clusters" title="Permalink to this headline">#</a></h3>
+<p>One approach is to group nodes such that the total similarity within each cluster is maximized. Let <span class="math notranslate nohighlight">\(Y\in\mathbb{R}^{n\times r}\)</span> be a cluster indicator matrix, where each row indicates the cluster membership of a data point (exactly one nonzero entry per row). Then, the similarity within cluster <span class="math notranslate nohighlight">\(s\)</span> is computed by summing up all edge weights for nodes in cluster <span class="math notranslate nohighlight">\(\mathcal{C}_{s}\)</span>, indicated by <span class="math notranslate nohighlight">\(Y_{\cdot s}\)</span>:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-Y_{\cdot s}^\top&amp;=\begin{pmatrix}
-1&amp; 1&amp; 0&amp; 0&amp;1 &amp;0
-\end{pmatrix}\\
-Y_{\cdot s}^\top WY_{\cdot s}
-&amp;= 2(5+6+7)
+\frac{1}{\lvert \mathcal{C}_{s}\rvert}\sum_{i,j\in\mathcal{C}_s} W_{ji}
+= \frac{Y_{\cdot s}^\top W Y_{\cdot s}}{\lvert Y_{\cdot s}\rvert}.
 \end{align*}\]</div>
+<p>Summing over all clusters gives the total within-cluster similarity:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 Sim(Y;W)&amp;=\tr(Y^\top W Y(Y^\top Y)^{-1})\\
 &amp;=\sum_{s=1}^r\frac{Y_{\cdot s}^\top W Y_{\cdot s}}{\lvert Y_{\cdot s}\rvert}
 =\sum_{s=1}^r\frac{1}{\lvert \mathcal{C}_{s}\rvert}\sum_{i,j\in\mathcal{C}_s} W_{ji}
 \end{align*}\]</div>
-<div class="figure" style="text-align: center"><p><img  src="_images/tikz-272624caa14464cb9bcd576f5e8771e0b3252ddc.svg" alt="Figure made with TikZ" /></p>
-</div><p>We compute the cut of a cluster.</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-Y_{\cdot s}^\top&amp;=\begin{pmatrix}
-1&amp; 1&amp; 0&amp; 0&amp;1 &amp;0
-\end{pmatrix}\\
-Y_{\cdot s}^\top W (\vvec{1}-Y_{\cdot s})
-&amp;= 1+8+4
-\end{align*}\]</div>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-Cut(Y;W)&amp;=\tr((\vvec{1}-Y)^\top W Y(Y^\top Y)^{-1}) \\
-&amp;= \sum_{s=1}^r\frac{(\vvec{1}-Y_{\cdot s})^\top WY_{\cdot s}}{\lvert Y_{\cdot s}\rvert} 
-= \sum_{s=1}^r\frac{1}{\lvert \mathcal{C}_s\rvert}\sum_{i\notin\mathcal{C}_s}\sum_{j\in\mathcal{C}_s}W_{ij}
-\end{align*}\]</div>
-<div class="figure" style="text-align: center"><p><img  src="_images/tikz-5cc90d0122ddace51b473c92363780c14db6f748.svg" alt="Figure made with TikZ" /></p>
-</div><p>There are principally two ways to define clusters of graphs:</p>
-<ul class="simple">
-<li><p>maximize the sum of weights within clusters</p></li>
-<li><p>minimize the sum of weights between clusters</p></li>
-</ul>
+<p>The maximum similarity graph clustering problem is then given as follows.</p>
 <div class="tip admonition">
 <p class="admonition-title">Task (Maximum Similarity Graph Clustering)</p>
 <p><strong>Given</strong> a graph indicated by a symmetric, nonnegative similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}_+^{n\times n}\)</span>, and the number of clusters <span class="math notranslate nohighlight">\(r\)</span>.<br />
 <strong>Find</strong> clusters indicated by the matrix <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span> which maximize the similarity of points within a cluster</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
- \max_Y Sim(Y;W)&amp;=\tr(Y^\top W Y(Y^\top Y)^{-1}) &amp;\text{s.t. } Y\in\mathbb{1}^{n\times r}
+ \max_Y\ Sim(Y;W)&amp;=\tr(Y^\top W Y(Y^\top Y)^{-1}) &amp;\text{s.t. } Y\in\mathbb{1}^{n\times r}
 \end{align*}\]</div>
 <p><strong>Return</strong> the clustering <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span></p>
 </div>
+<div class="proof example admonition" id="example-0">
+<p class="admonition-title"><span class="caption-number">Example 23 </span></p>
+<section class="example-content" id="proof-content">
+<p>We compute the similarity within the cluster  <span class="math notranslate nohighlight">\(Y_{\cdot s}=(1, 1, 0, 0, 1, 0)\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{Y_{\cdot s}^\top WY_{\cdot s}}{\lvert Y_{\cdot s}\rvert}
+&amp;= \frac{2(5+6+7)}{3} = 12
+\end{align*}\]</div>
+<p>The graph below visualizes the points belonging to cluster <span class="math notranslate nohighlight">\(Y_{\cdot s}\)</span> with the red nodes. We see how the similarity is computed by summing up the edges connecting nodes in this cluster: 5,6, and 7. Those edge weights are added twice, because we have an undirected graph, and every edge is counted once from point <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(j\)</span>, and once from point <span class="math notranslate nohighlight">\(j\)</span> to <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-272624caa14464cb9bcd576f5e8771e0b3252ddc.svg" alt="Figure made with TikZ" /></p>
+</div></section>
+</div></section>
+<section id="minimum-cut-between-clusters">
+<h3>Minimum Cut Between Clusters<a class="headerlink" href="#minimum-cut-between-clusters" title="Permalink to this headline">#</a></h3>
+<p>An alternative is to minimize the cut, which measures how strongly clusters are connected to the rest of the graph. For a given cluster <span class="math notranslate nohighlight">\(\mathcal{C}_s\)</span>, the cut for this cluster sums up all the weight edges that would be cut if we cut out cluster <span class="math notranslate nohighlight">\(s\)</span> from the graph:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{1}{\lvert \mathcal{C}_s\rvert}\sum_{i\notin\mathcal{C}_s}\sum_{j\in\mathcal{C}_s}W_{ij} = \frac{(\vvec{1}-Y_{\cdot s})^\top WY_{\cdot s}}{\lvert Y_{\cdot s}\rvert}
+\end{align*}\]</div>
+<p>The total cut value of a clustering sums up all the weights that would be cut if we cut all clusters out of the graph:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+Cut(Y;W)&amp;=\tr((\vvec{1}-Y)^\top W Y(Y^\top Y)^{-1}) \\
+&amp;= \sum_{s=1}^r\frac{(\vvec{1}-Y_{\cdot s})^\top WY_{\cdot s}}{\lvert Y_{\cdot s}\rvert} 
+= \sum_{s=1}^r\frac{1}{\lvert \mathcal{C}_s\rvert}\sum_{i\notin\mathcal{C}_s}\sum_{j\in\mathcal{C}_s}W_{ij}
+\end{align*}\]</div>
+<p>The minimum cut graph clustering problem is then:</p>
 <div class="tip admonition">
 <p class="admonition-title">Task (Minimum Cut Graph Clustering)</p>
 <p><strong>Given</strong> a graph indicated by a symmetric, nonnegative similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}_+^{n\times n}\)</span>, and the number of clusters <span class="math notranslate nohighlight">\(r\)</span>.<br />
 <strong>Find</strong> clusters indicated by the matrix <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span> which minimize the cut of all clusters</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
- \min_YCut(Y;W)&amp;=\tr((\vvec{1}-Y)^\top W Y(Y^\top Y)^{-1}) &amp;\text{s.t. } Y\in\mathbb{1}^{n\times r}
+ \min_Y\ Cut(Y;W)&amp;=\tr((\vvec{1}-Y)^\top W Y(Y^\top Y)^{-1}) &amp;\text{s.t. } Y\in\mathbb{1}^{n\times r}
 \end{align*}\]</div>
 <p><strong>Return</strong> the clustering <span class="math notranslate nohighlight">\(Y\in\mathbb{1}^{n\times r}\)</span></p>
 </div>
+<div class="proof example admonition" id="example-1">
+<p class="admonition-title"><span class="caption-number">Example 24 </span></p>
+<section class="example-content" id="proof-content">
+<p>We compute the cut of cluster <span class="math notranslate nohighlight">\(Y_{\cdot s}=(1, 1, 0, 0, 1, 0)\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{Y_{\cdot s}^\top W (\vvec{1}-Y_{\cdot s})}{\lvert Y_{\cdot s}\rvert}
+&amp;= \frac{2(1+8+4)}{3}=8\frac{2}{3}
+\end{align*}\]</div>
+<p>The graph below visualizes the nodes of the cluster and the edges that would have to be cut when we cut out cluster <span class="math notranslate nohighlight">\(Y_{\cdot s}\)</span>. Note that we count every edge weight twice again, since we cut strictly speaking an edge from point <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(j\)</span> and also the edge from <span class="math notranslate nohighlight">\(j\)</span> to <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-5cc90d0122ddace51b473c92363780c14db6f748.svg" alt="Figure made with TikZ" /></p>
+</div></section>
+</div></section>
 </section>
 <section id="optimization">
 <h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
-<div class="proof definition admonition" id="definition-0">
+<p>The maximum similarity and minimum cut formulations give us clear goals for clustering a graph, but solving them directly is difficult due to the discrete nature of the cluster indicator matrix <span class="math notranslate nohighlight">\(Y\)</span>. Spectral clustering uses the same trick as kernel k-means to optimize the trace objective. This seems probably straightforward for the maximum similarity objective, but not so much for the minimum cut objective.</p>
+<section id="the-graph-laplacian">
+<h3>The Graph Laplacian<a class="headerlink" href="#the-graph-laplacian" title="Permalink to this headline">#</a></h3>
+<div class="proof definition admonition" id="definition-2">
 <p class="admonition-title"><span class="caption-number">Definition 36 </span> (Degree Matrix and Graph Laplacian)</p>
 <section class="definition-content" id="proof-content">
 <p>Given a graph indicated by a weighted adjacency matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}_+^{n\times n}\)</span>.<br />
 The <strong>degree matrix</strong> is the diagonal matrix having the sum of all connecting edges for each node on the diagonal: <div class="math notranslate nohighlight">
 \[I_W = \mathrm{diag}\left(\sum_{i=1}^n W_{1i},\ldots,\sum_{i=1}^n W_{ni}\right).\]</div>
 <br />
-The <strong>graph Laplacian</strong> is the matrix <div class="math notranslate nohighlight">
-\[L=W-I_W\]</div>
-.</p>
+The <strong>unnormalized graph Laplacian</strong>, also called <strong>difference Laplacian</strong> is the matrix <div class="math notranslate nohighlight">
+\[L=W-I_W.\]</div>
+</p>
 </section>
-</div><div class="proof example admonition" id="example-1">
-<p class="admonition-title"><span class="caption-number">Example 23 </span></p>
+</div><p>In practice, the weighted adjacency matrix is often normalized. The corresponding Graph Laplacian is often denoted by
+<div class="math notranslate nohighlight">
+\[ L_{sym}= I-I_W^{-1/2}WI_W^{-1/2}.\]</div>
+
+All of the following results can be shown for the symmetrically normalized graph Laplacian as well.</p>
+<div class="proof example admonition" id="example-3">
+<p class="admonition-title"><span class="caption-number">Example 25 </span></p>
 <section class="example-content" id="proof-content">
+<p>We compute the degree matrix and the graph Laplacian for our example graph</p>
 <div class="figure" style="text-align: center"><p><img  src="_images/tikz-cbbe8e859691edb42482980a4be6e867ab91b285.svg" alt="Figure made with TikZ" /></p>
 </div><div class="math notranslate nohighlight">
 \[\begin{split}I_W = 
@@ -783,24 +946,19 @@ The <strong>graph Laplacian</strong> is the matrix <div class="math notranslate 
     0 &amp; 0 &amp; 0 &amp; 0 &amp; 24 &amp; 0\\
     0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 5
 \end{pmatrix}\end{split}\]</div>
-</section>
-</div><p>We have <span class="math notranslate nohighlight">\(Y_{\cdot s}^\top WY_{\cdot s}\leq Y_{\cdot s}I_WY_{\cdot s} \)</span> where <span class="math notranslate nohighlight">\(I_W\)</span> is the degree matrix.</p>
-<p><span class="math notranslate nohighlight">\(Y_{\cdot s}^\top WY_{\cdot s}=Y_{\cdot s}^\top I_WY_{\cdot s}\)</span> if and only if <span class="math notranslate nohighlight">\(Y_{\cdot s}\)</span> indicates a connected component. This is equivalent to
-<div class="math notranslate nohighlight">
-\[Y_{\cdot s}^\top \underbrace{(I_W - W)}_{=L}Y_{\cdot s }=0\]</div>
-</p>
-<div class="proof theorem admonition" id="theorem-2">
-<p class="admonition-title"><span class="caption-number">Theorem 43 </span> (Minimum Cut and Maximum Similarity Equivalences )</p>
-<section class="theorem-content" id="proof-content">
-<p>Given a symmetric similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, the degree matrix <span class="math notranslate nohighlight">\(I_W\)</span> and the Graph Laplacian <span class="math notranslate nohighlight">\(L=I_W-W\)</span>, then the following objectives are equivalent:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-    \min_YCut(Y;W)  &amp;= \tr((\vvec{1}-Y)^\top WY(Y^\top Y)^{-1}) &amp;\text{s.t }Y\in\mathbb{1}^{n\times r} \\
-    \max_Y Sim(Y;-L) &amp;= \tr(Y^\top (-L) Y(Y^\top Y)^{-1}) &amp;\text{s.t }Y\in\mathbb{1}^{n\times r}
+L = \begin{pmatrix}
+11 &amp; -6 &amp; 0 &amp; 0 &amp; -5 &amp; 0\\
+-6 &amp; 14 &amp; -1 &amp; 0 &amp; -7 &amp; 0\\
+0 &amp; -1 &amp; 20 &amp; -9 &amp; -8 &amp; -2\\
+0 &amp; 0  &amp; -9 &amp; 16 &amp; -4 &amp; -3\\
+-5&amp; -7 &amp; -8 &amp; -4 &amp; 24 &amp; 0\\
+0 &amp; 0 &amp; -2 &amp; -3 &amp; 0 &amp; 5
+\end{pmatrix}.
 \end{align*}\]</div>
 </section>
-</div><p>The maximum similarity objective is equal to the kernel <span class="math notranslate nohighlight">\(k\)</span>-means objective. However, note that <span class="math notranslate nohighlight">\(-L\)</span> is not a kernel matrix (it’s negative semi-definite).</p>
-<div class="proof lemma admonition" id="lemma-3">
+</div><div class="proof lemma admonition" id="lemma-4">
 <p class="admonition-title"><span class="caption-number">Lemma 11 </span> (Positive Definiteness of Laplacians)</p>
 <section class="lemma-content" id="proof-content">
 <p>Given a symmetric similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, the Laplacian <span class="math notranslate nohighlight">\(L=I_W -W\)</span> is positive semi-definite.</p>
@@ -817,16 +975,17 @@ v^\top Lv &amp;= v^\top I_W v - v^\top W v
 \end{align*}\]</div>
 </div>
 </div>
-<div class="proof theorem admonition" id="theorem-4">
-<p class="admonition-title"><span class="caption-number">Theorem 44 </span> (Connected Components and Eigenvectors)</p>
+<p>The positive definiteness of the Laplacian means in particular that all eigenvalues of the graph Laplacian are positive. The smallest eigenvalue of the graph Laplacian is zero, and it has a specific relationship to the graph.</p>
+<div class="proof theorem admonition" id="theorem-5">
+<p class="admonition-title"><span class="caption-number">Theorem 41 </span> (Connected Components and Eigenvectors)</p>
 <section class="theorem-content" id="proof-content">
 <p>Given a graph indicated by the symmetric matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, then the indicator vectors of the connected components are eigenvectors of the Laplacian <span class="math notranslate nohighlight">\(L=I_W-W\)</span> to the smallest eigenvalue <span class="math notranslate nohighlight">\(0\)</span>.</p>
 </section>
 </div><div class="toggle docutils container">
 <div class="proof admonition" id="proof">
 <p>Proof. For every connected component there exists an order of columns and rows such that <span class="math notranslate nohighlight">\(W\)</span> has a block-diagonal form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7d96029e-d128-42bc-947b-78d3e2f490e1">
-<span class="eqno">(82)<a class="headerlink" href="#equation-7d96029e-d128-42bc-947b-78d3e2f490e1" title="Permalink to this equation">#</a></span>\[\begin{align} 
+<div class="amsmath math notranslate nohighlight" id="equation-be62a5cf-b5ae-4604-915e-8788f4bf3f99">
+<span class="eqno">(79)<a class="headerlink" href="#equation-be62a5cf-b5ae-4604-915e-8788f4bf3f99" title="Permalink to this equation">#</a></span>\[\begin{align} 
 Wv = 
 \left(
 \begin{array}{c:r}
@@ -856,21 +1015,83 @@ Wv =
 \end{align}\]</div>
 </div>
 </div>
-<p>The standard method to solve the minimum cut objective is called Spectral Clustering. The idea of Spectral Clustering is the same as of kernel <span class="math notranslate nohighlight">\(k\)</span>-means with few alterations. Instead of using the full eigendecomposition, Spectral Clustering uses only the first <span class="math notranslate nohighlight">\(r\)</span> meaningful eigenvectors which are not indicating the connected component.</p>
-<div class="proof algorithm admonition" id="algorithm-5">
+<p>The indication of connected components by the first eigenvector(s) of the negative graph Laplacian creates a bridge from the spectrum of the graph Laplacian to the clustering objective. For any binary cluster indicator matrix <span class="math notranslate nohighlight">\(Y_{\cdot s}\)</span> the similarity of points within that cluster are at most the sum of all the degrees of nodes in that cluster: <div class="math notranslate nohighlight">
+\[Y_{\cdot s}^\top WY_{\cdot s}\leq Y_{\cdot s}I_WY_{\cdot s} .\]</div>
+
+We have equality <span class="math notranslate nohighlight">\(Y_{\cdot s}^\top WY_{\cdot s}=Y_{\cdot s}^\top I_WY_{\cdot s}\)</span> <strong>if and only if</strong> <span class="math notranslate nohighlight">\(Y_{\cdot s}\)</span> indicates a connected component. This is equivalent to
+<div class="math notranslate nohighlight">
+\[Y_{\cdot s}^\top \underbrace{(I_W - W)}_{=L}Y_{\cdot s }=0.\]</div>
+
+This suggests that connected components are optimal clusters: they incur zero cut cost and hence minimize the minimum cut objective. However, in practice, we rarely want to recover exact connected components. Real-world graphs are often noisy, or constructed using heuristics and hyperparameters (like radius or number of neighbors). A single misplaced or missing edge can split or merge components. Therefore, connected components are typically not reliable indicators of meaningful clusters.</p>
+<p>To overcome this, we assume the graph has only one connected component (or is artificially connected using small edge weights), so that we can go beyond trivial solutions and focus on uncovering meaningful cluster structure.</p>
+<p>Spectral clustering is commonly introduced as a relaxation of the minimum cut objective. Instead of recovering the first eigenvectors of <span class="math notranslate nohighlight">\(−L\)</span>, which correspond to connected components, it uses the next <span class="math notranslate nohighlight">\(r\)</span> eigenvectors (those with the smallest non-zero eigenvalues). These eigenvectors form a continuous embedding of the data. k-means is then applied to this embedding to discretize the solution and obtain clusters. However, this interpretation only tells half the story. In this narrative, it’s not clear why k-means is used for the discretization of eigenvectors. This makes sense however, when we derive the equivalence of graph clustering approaches to kernel k-means.</p>
+</section>
+<section id="relationship-to-kernel-k-means">
+<h3>Relationship to Kernel k-means<a class="headerlink" href="#relationship-to-kernel-k-means" title="Permalink to this headline">#</a></h3>
+<p>First, we observe that the minimum cut and the maximum similarity objective are equivalent for specific choices of the adjacency matrix:</p>
+<div class="proof theorem admonition" id="theorem-6">
+<p class="admonition-title"><span class="caption-number">Theorem 42 </span> (Minimum Cut and Maximum Similarity Equivalences )</p>
+<section class="theorem-content" id="proof-content">
+<p>Given a symmetric similarity matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, the degree matrix <span class="math notranslate nohighlight">\(I_W\)</span> and the Graph Laplacian <span class="math notranslate nohighlight">\(L=I_W-W\)</span>, then the following objectives are equivalent:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \min_YCut(Y;W)  &amp;= \tr((\vvec{1}-Y)^\top WY(Y^\top Y)^{-1}) &amp;\text{ s.t }Y\in\mathbb{1}^{n\times r} \\
+    \max_Y Sim(Y;-L) &amp;= \tr(Y^\top (-L) Y(Y^\top Y)^{-1}) &amp;\text{ s.t }Y\in\mathbb{1}^{n\times r}
+\end{align*}\]</div>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. Follows from the fact that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\tr(Y^\top I_W Y(Y^\top Y)^{-1}) &amp;= \sum_{s=1}^r\sum_{i=1}^n \frac{Y_{is}\lvert W_{i\cdot}}\rvert}{\lvert Y_{\cdot s}\rvert}\\
+&amp;= \sum_{s=1}^r\sum_{i=1}^n \frac{\mathbf{1}^\top W Y_{\cdot s}}{\lvert Y_{\cdot s}\rvert}\\
+&amp;= \tr (\mathbf{1}^\top W Y(Y^\top Y)^{-1})
+\end{align*}\]</div>
+</div>
+</div>
+<p>The maximum similarity objective is equal to the kernel <span class="math notranslate nohighlight">\(k\)</span>-means objective. However, note that <span class="math notranslate nohighlight">\(-L\)</span> is not a kernel matrix (it’s negative semi-definite). But we can make <span class="math notranslate nohighlight">\(-L\)</span> into a kernel, that doesn’t change the objective.</p>
+<div class="proof corollary admonition" id="corollary-7">
+<p class="admonition-title"><span class="caption-number">Corollary 8 </span> (Graph Clustering and k-means equivalence)</p>
+<section class="corollary-content" id="proof-content">
+<p>Given a symmetric matrix <span class="math notranslate nohighlight">\(W\in\mathbb{R}^{n\times n}_+\)</span>, having the smallest eigenvalue <span class="math notranslate nohighlight">\(\lambda_{min}\)</span>. If <span class="math notranslate nohighlight">\(\lambda_{min}\)</span> is nonnegative, then the maximum similarity graph clustering objective is equivalent to the kernel k-means objective for <span class="math notranslate nohighlight">\(K=W\)</span>.<br />
+If <span class="math notranslate nohighlight">\(\lambda_{min}\)</span> is negative, then the maximum similarity graph clustering objective is equivalent to the kernel k-means objective with <span class="math notranslate nohighlight">\(K=W-\lambda_{min}I\)</span>.</p>
+</section>
+</div></section>
+</section>
+<section id="spectral-clustering-algorithm">
+<h2>Spectral Clustering Algorithm<a class="headerlink" href="#spectral-clustering-algorithm" title="Permalink to this headline">#</a></h2>
+<p>As a result, we have that the minimum cut objective is equivalent to kernel k-means with the kernel <span class="math notranslate nohighlight">\(K=-L-\lambda_{min}I\)</span>. That is, we can compute a symmetric factorization of<br />
+<div class="math notranslate nohighlight">
+\[K=-L-\lambda_{min}I = AA^\top\]</div>
+
+and apply k-means on <span class="math notranslate nohighlight">\(A\)</span> to obtain the solution. Spectral clustering introduces now two changes to the kernel k-mean method:</p>
+<ol class="simple">
+<li><p>Use only the eigenvectors <span class="math notranslate nohighlight">\(V\)</span> of <span class="math notranslate nohighlight">\(K=V\Lambda V^\top\)</span> instead of the scaled eigenvectors <span class="math notranslate nohighlight">\(V\Lambda^{1/2}\)</span>. This might be due to the fact that the equivalence stated above was not clear when spectral clustering was introduced. The eigendecomposition of <span class="math notranslate nohighlight">\(-L=V(\Lambda+\lambda_{min}I)V^\top\)</span> has only negative eigenvalues, which does not allow for the application of the square root.</p></li>
+<li><p>Use a truncated approximation of <span class="math notranslate nohighlight">\(K\approx V_{cdot \mathcal{R}}\Lambda V_{\cdot \mathcal{R}}^\top\)</span> where <span class="math notranslate nohighlight">\(\mathcal{R}={2,\ldots, r+1}\)</span> excludes the first eigenvector that indicates the connected component. The truncated eigendecomposition speeds up the process and it allows k-means to focus the clustering search to a subspace that is relevant for clustering.</p></li>
+</ol>
+<section id="pseudocode">
+<h3>Pseudocode<a class="headerlink" href="#pseudocode" title="Permalink to this headline">#</a></h3>
+<p>The pseudocode below details the method of spectral clustering.</p>
+<div class="proof algorithm admonition" id="algorithm-8">
 <p class="admonition-title"><span class="caption-number">Algorithm 17 </span> (spectral clustering)</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Input</strong>: data matrix <span class="math notranslate nohighlight">\(D\)</span>, number of clusters <span class="math notranslate nohighlight">\(r\)</span>, similarity matrix <span class="math notranslate nohighlight">\(W\)</span><br />
 <strong>Require</strong>: the similarity matrix should indicate a connected graph</p>
 <ol class="simple">
-<li><p><span class="math notranslate nohighlight">\(L\gets I_W-W\)</span> <em>(Compute Graph Laplacian - other graph Laplacians are also possible)</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(L\gets I_W-W\)</span> #<em>Compute Graph Laplacian - other graph Laplacians are also possible</em></p></li>
 <li><p><span class="math notranslate nohighlight">\((V,\Lambda) \gets\)</span> <code class="docutils literal notranslate"><span class="pre">TruncatedEigendecomposition</span></code><span class="math notranslate nohighlight">\((L,r+1)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(A\leftarrow V_{\cdot\{2,\ldots, r+1\}}\)</span> <em>(Remove connected component)</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(A\leftarrow V_{\cdot\{2,\ldots, r+1\}}\)</span> #<em>Remove connected component</em></p></li>
 <li><p><span class="math notranslate nohighlight">\((X,Y)\gets\)</span><code class="docutils literal notranslate"><span class="pre">kMeans</span></code><span class="math notranslate nohighlight">\((A,r)\)</span></p></li>
 <li><p><strong>return</strong> <span class="math notranslate nohighlight">\(Y\)</span></p></li>
 </ol>
 </section>
-</div><div class="cell docutils container">
+</div></section>
+</section>
+<section id="application-to-the-two-circles-dataset">
+<h2>Application to the Two Circles Dataset<a class="headerlink" href="#application-to-the-two-circles-dataset" title="Permalink to this headline">#</a></h2>
+<p>We have a look at the clustering obtained by spectral clustering and the embedding on the two circles dataset. The code below implements spectral clustering for the difference Laplacian. This code is not optimized for efficiency and uses here a full eigendecomposition instead of computing the truncated eigendecomposition directly (which is much faster).</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
@@ -891,18 +1112,15 @@ Wv =
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/clustering_spectral_6_0.png" src="_images/clustering_spectral_6_0.png" />
+<img alt="_images/clustering_spectral_8_0.png" src="_images/clustering_spectral_8_0.png" />
 </div>
 </div>
+<p>The plots below indicate the ground truth clustering in the original feature space and in the transformed feature space, spanned by the second and third eigenvector of <span class="math notranslate nohighlight">\(L\)</span>. Note that k-means clustering in the transformed feature space indicates directly the clustering in the original feature space.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/clustering_spectral_7_0.png" src="_images/clustering_spectral_7_0.png" />
+<img alt="_images/clustering_spectral_10_0.png" src="_images/clustering_spectral_10_0.png" />
 </div>
 </div>
-<p>In practice, the weighted adjacency matrix is often normalized. The corresponding Graph Laplacian is often denoted by
-<div class="math notranslate nohighlight">
-\[ L_{sym}= I-I_W^{-1/2}WI_W^{-1/2}\]</div>
-</p>
 </section>
 </section>
 
