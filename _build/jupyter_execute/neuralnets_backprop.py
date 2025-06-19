@@ -39,11 +39,12 @@
 # We have a look at the partial derivative of the cross entropy and apply the chain rule to _go back_ from the cross entropy loss, that is applied to the output layer, to the layer where we find the weight $W^{(\ell)}_{kj}$:
 # \begin{align*}
 # &\frac{\partial}{\partial W^{(\ell)}_{kj}} CE(y_i,f_\theta(\vvec{x}_i))\\ 
-# &=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial h^{(L)}}  \frac{\partial h^{(L)}}{\partial W^{(\ell)}_{kj}}\\
-# &=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial h^{(L)}}  \frac{\partial \phi_l(W^{(L)}h^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(\ell)}_{kj}}\\
-# &=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial h^{(L)}}  \frac{\partial \phi_L(W^{(L)}h^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(L)}h^{(L-1)}+\vvec{b}^{(L)}}\frac{\partial W^{(L)}h^{(L-1)}+\vvec{b}^{(L)}}{\partial W^{(\ell)}_{kj}}\\
+# &=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial W\vvec{h}^{(L)}+\vvec{b}} \frac{\partial W\vvec{h}^{(L)}+\vvec{b}}{\partial W^{(\ell)}_{kj}} \\
+# &=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial W\vvec{h}^{(L)}+\vvec{b}} \frac{\partial W\vvec{h}^{(L)}+\vvec{b}}{\partial \vvec{h}^{(L)}}  \frac{\partial \vvec{h}^{(L)}}{\partial W^{(\ell)}_{kj}}\\
+# &=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial W\vvec{h}^{(L)}+\vvec{b}} \frac{\partial W\vvec{h}^{(L)}+\vvec{b}}{\partial \vvec{h}^{(L)}}  \frac{\partial \phi_l(W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(\ell)}_{kj}}\\
+# &=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial W\vvec{h}^{(L)}+\vvec{b}} \frac{\partial W\vvec{h}^{(L)}+\vvec{b}}{\partial \vvec{h}^{(L)}}  \frac{\partial \phi_L(W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)}}\frac{\partial W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)}}{\partial W^{(\ell)}_{kj}}\\
 # &=\ldots\\
-# &=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial h^{(L)}}  \frac{\partial \phi_L(W^{(L)}h^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(L)}h^{(L-1)}+\vvec{b}^{(L)}}\frac{\partial W^{(L)}h^{(L-1)}+\vvec{b}^{(L)}}{\partial \vvec{h}^{(L-1)}}\cdot\ldots\cdot \frac{\partial W^{(\ell)}h^{(\ell-1)}+\vvec{b}^{(\ell)}}{\partial W^{(\ell)}_{kj}}.
+# &=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial W\vvec{h}^{(L)}+\vvec{b}} \frac{\partial W\vvec{h}^{(L)}+\vvec{b}}{\partial \vvec{h}^{(L)}}  \frac{\partial \phi_L(W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)}}\frac{\partial W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)}}{\partial \vvec{h}^{(L-1)}}\cdot\ldots\cdot \frac{\partial W^{(\ell)}\vvec{h}^{(\ell-1)}+\vvec{b}^{(\ell)}}{\partial W^{(\ell)}_{kj}}.
 # \end{align*}
 # We can see how the gradient multiplies the Jacobians of each activation and the affine function of each layer. Hence, if we know the derivatives of the activations, then we can compute the Jacobian. We also observe how we go from the output layer of the network to the front of the network where the weight $W^{(\ell)}_{kj}$ is. This is why it's called backpropagation, we propagate backwards the partial derivatives (Jacobians) of the layers and multiply them.      
 # 
@@ -51,10 +52,10 @@
 # #### Derivative of the Cross Entropy Loss
 # The cross-entropy loss has a compact representation of the derivative subject to the last hidden layer output.  
 # ```{prf:lemma}
-# The partial derivatives of the cross-entropy function, applied to a function $f(\vvec{h})=\softmax(W\vvec{h}+\vvec{b})$ that returns the softmax of an affine function 
-# $$CE(y,f(\vvec{h})) = -\log(\softmax(W\vvec{h}+\vvec{b})_y)$$
+# The partial derivatives of the cross-entropy function, applied to a function $f(\vvec{x})=\softmax(\vvec{h}(\vvec{x}))$ that returns the softmax of an affine function 
+# $$CE(y,f(\vvec{x})) = -\log(\softmax(\vvec{h})_y)$$
 # are given by 
-# $$\frac{\partial CE(y,f(\vvec{x}))}{\partial h_j} = \begin{cases}f(\vvec{h})_j -1 & \text{ if }j=y\\f(\vvec{h})_j & \text{ otherwise}\end{cases}$$
+# $$\frac{\partial CE(y,f(\vvec{x}))}{\partial h_j} = \begin{cases}f(\vvec{x})_j -1 & \text{ if }j=y\\f(\vvec{x})_j & \text{ otherwise}\end{cases}$$
 # ```
 # #### Derivatives of Affine Functions
 # We already know the Jacobian of the affine functions subject to the hidden layer outputs (see the Optimization exercises):

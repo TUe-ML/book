@@ -55,7 +55,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="SGD" href="neuralnets_sgd.html" />
+    <link rel="next" title="Training" href="neuralnets_sgd.html" />
     <link rel="prev" title="MLPs" href="neuralnets_mlps.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -327,7 +327,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_sgd.html">
-     SGD
+     Training
     </a>
    </li>
    <li class="toctree-l2">
@@ -336,8 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_architecture.html">
-     Architecture
+    <a class="reference internal" href="neuralnets_pooling.html">
+     Pooling
     </a>
    </li>
   </ul>
@@ -355,11 +355,6 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="dim_reduction_mf.html">
      Low Rank Matrix Factorization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="dim_reduction_matrix_completion.html">
-     Matrix Completion
     </a>
    </li>
    <li class="toctree-l2">
@@ -737,11 +732,12 @@ f_\theta(\vvec{x}_i) &amp; = \softmax(W\vvec{h}^{(L)}+\vvec{b}),
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 &amp;\frac{\partial}{\partial W^{(\ell)}_{kj}} CE(y_i,f_\theta(\vvec{x}_i))\\ 
-&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial h^{(L)}}  \frac{\partial h^{(L)}}{\partial W^{(\ell)}_{kj}}\\
-&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial h^{(L)}}  \frac{\partial \phi_l(W^{(L)}h^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(\ell)}_{kj}}\\
-&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial h^{(L)}}  \frac{\partial \phi_L(W^{(L)}h^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(L)}h^{(L-1)}+\vvec{b}^{(L)}}\frac{\partial W^{(L)}h^{(L-1)}+\vvec{b}^{(L)}}{\partial W^{(\ell)}_{kj}}\\
+&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial W\vvec{h}^{(L)}+\vvec{b}} \frac{\partial W\vvec{h}^{(L)}+\vvec{b}}{\partial W^{(\ell)}_{kj}} \\
+&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial W\vvec{h}^{(L)}+\vvec{b}} \frac{\partial W\vvec{h}^{(L)}+\vvec{b}}{\partial \vvec{h}^{(L)}}  \frac{\partial \vvec{h}^{(L)}}{\partial W^{(\ell)}_{kj}}\\
+&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial W\vvec{h}^{(L)}+\vvec{b}} \frac{\partial W\vvec{h}^{(L)}+\vvec{b}}{\partial \vvec{h}^{(L)}}  \frac{\partial \phi_l(W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(\ell)}_{kj}}\\
+&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial W\vvec{h}^{(L)}+\vvec{b}} \frac{\partial W\vvec{h}^{(L)}+\vvec{b}}{\partial \vvec{h}^{(L)}}  \frac{\partial \phi_L(W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)}}\frac{\partial W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)}}{\partial W^{(\ell)}_{kj}}\\
 &amp;=\ldots\\
-&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial h^{(L)}}  \frac{\partial \phi_L(W^{(L)}h^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(L)}h^{(L-1)}+\vvec{b}^{(L)}}\frac{\partial W^{(L)}h^{(L-1)}+\vvec{b}^{(L)}}{\partial \vvec{h}^{(L-1)}}\cdot\ldots\cdot \frac{\partial W^{(\ell)}h^{(\ell-1)}+\vvec{b}^{(\ell)}}{\partial W^{(\ell)}_{kj}}.
+&amp;=  \frac{\partial CE(y_i,f_\theta(\vvec{x}_i))}{\partial W\vvec{h}^{(L)}+\vvec{b}} \frac{\partial W\vvec{h}^{(L)}+\vvec{b}}{\partial \vvec{h}^{(L)}}  \frac{\partial \phi_L(W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)})}{\partial W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)}}\frac{\partial W^{(L)}\vvec{h}^{(L-1)}+\vvec{b}^{(L)}}{\partial \vvec{h}^{(L-1)}}\cdot\ldots\cdot \frac{\partial W^{(\ell)}\vvec{h}^{(\ell-1)}+\vvec{b}^{(\ell)}}{\partial W^{(\ell)}_{kj}}.
 \end{align*}\]</div>
 <p>We can see how the gradient multiplies the Jacobians of each activation and the affine function of each layer. Hence, if we know the derivatives of the activations, then we can compute the Jacobian. We also observe how we go from the output layer of the network to the front of the network where the weight <span class="math notranslate nohighlight">\(W^{(\ell)}_{kj}\)</span> is. This is why it’s called backpropagation, we propagate backwards the partial derivatives (Jacobians) of the layers and multiply them.</p>
 <p>In order to compute the partial derivatives with the chain rule, we need to know now how to compute the derivatives subject to the layer components, such that we can multiply everything well together.</p>
@@ -751,13 +747,13 @@ f_\theta(\vvec{x}_i) &amp; = \softmax(W\vvec{h}^{(L)}+\vvec{b}),
 <div class="proof lemma admonition" id="lemma-0">
 <p class="admonition-title"><span class="caption-number">Lemma 7 </span></p>
 <section class="lemma-content" id="proof-content">
-<p>The partial derivatives of the cross-entropy function, applied to a function <span class="math notranslate nohighlight">\(f(\vvec{h})=\softmax(W\vvec{h}+\vvec{b})\)</span> that returns the softmax of an affine function
+<p>The partial derivatives of the cross-entropy function, applied to a function <span class="math notranslate nohighlight">\(f(\vvec{x})=\softmax(\vvec{h}(\vvec{x}))\)</span> that returns the softmax of an affine function
 <div class="math notranslate nohighlight">
-\[CE(y,f(\vvec{h})) = -\log(\softmax(W\vvec{h}+\vvec{b})_y)\]</div>
+\[CE(y,f(\vvec{x})) = -\log(\softmax(\vvec{h})_y)\]</div>
 
 are given by
 <div class="math notranslate nohighlight">
-\[\begin{split}\frac{\partial CE(y,f(\vvec{x}))}{\partial h_j} = \begin{cases}f(\vvec{h})_j -1 &amp; \text{ if }j=y\\f(\vvec{h})_j &amp; \text{ otherwise}\end{cases}\end{split}\]</div>
+\[\begin{split}\frac{\partial CE(y,f(\vvec{x}))}{\partial h_j} = \begin{cases}f(\vvec{x})_j -1 &amp; \text{ if }j=y\\f(\vvec{x})_j &amp; \text{ otherwise}\end{cases}\end{split}\]</div>
 </p>
 </section>
 </div></section>
@@ -876,20 +872,20 @@ In practice, this doesn’t affect performance and it makes the computation of g
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 0 | Loss: 0.715 | Train Acc: 42.750%
-Iter 100 | Loss: 0.388 | Train Acc: 88.000%
-Iter 200 | Loss: 0.280 | Train Acc: 87.500%
-Iter 300 | Loss: 0.120 | Train Acc: 95.750%
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 0 | Loss: 0.827 | Train Acc: 50.000%
+Iter 100 | Loss: 0.342 | Train Acc: 87.750%
+Iter 200 | Loss: 0.280 | Train Acc: 90.250%
+Iter 300 | Loss: 0.173 | Train Acc: 92.375%
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 400 | Loss: 0.086 | Train Acc: 96.875%
-Iter 500 | Loss: 0.070 | Train Acc: 97.500%
-Iter 600 | Loss: 0.065 | Train Acc: 98.125%
-Iter 700 | Loss: 0.062 | Train Acc: 97.625%
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 400 | Loss: 0.088 | Train Acc: 96.375%
+Iter 500 | Loss: 0.067 | Train Acc: 97.500%
+Iter 600 | Loss: 0.063 | Train Acc: 97.500%
+Iter 700 | Loss: 0.059 | Train Acc: 98.000%
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 800 | Loss: 0.060 | Train Acc: 97.875%
-Iter 900 | Loss: 0.059 | Train Acc: 97.375%
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 800 | Loss: 0.057 | Train Acc: 98.250%
+Iter 900 | Loss: 0.056 | Train Acc: 97.875%
 </pre></div>
 </div>
 </div>
@@ -1012,7 +1008,7 @@ Iter 900 | Loss: 0.059 | Train Acc: 97.375%
     <a class='right-next' id="next-link" href="neuralnets_sgd.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">SGD</p>
+        <p class="prev-next-title">Training</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
