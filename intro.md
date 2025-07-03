@@ -8,7 +8,7 @@ Whether you are a novice in the field or possess some prior knowledge of machine
 
 ## Acknowledgments
 
-Some sections of this book were inspired by material developed for earlier versions of the course, co-taught with Robert Peharz and Stiven S. Dias. I gratefully acknowledge their contributions to the development of the teaching approach and content, parts of which I’ve integrated into this version. Thanks a bunch Robert and Stiven, I'd always teach a course with you again.🫶
+Some sections of this book were inspired by material developed for earlier versions of the course, co-taught with Robert Peharz and Stiven S. Dias. I gratefully acknowledge their contributions to the development of the teaching approach and materials, parts of which I've integrated into this version. Thanks a bunch Robert and Stiven, I'd always teach a course with you again.🫶
 
 
 
