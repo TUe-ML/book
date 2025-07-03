@@ -56,6 +56,9 @@
 # $$CE(y,f(\vvec{x})) = -\log(\softmax(\vvec{h})_y)$$
 # are given by 
 # $$\frac{\partial CE(y,f(\vvec{x}))}{\partial h_j} = \begin{cases}f(\vvec{x})_j -1 & \text{ if }j=y\\f(\vvec{x})_j & \text{ otherwise}\end{cases}$$
+# Hence, we have
+# $$\frac{\partial CE(y,f(\vvec{x}))}{\partial \vvec{h}} = f(\vvec{x}) -\vvec{e}_y$$
+# where $\vvec{e}_y$ is the $i$-th standard basis vector having a one at position $y$ and being zero elsewhere.
 # ```
 # #### Derivatives of Affine Functions
 # We already know the Jacobian of the affine functions subject to the hidden layer outputs (see the Optimization exercises):
@@ -63,7 +66,8 @@
 # Based on this insight, we can derive the Jacobian of the affine function subject to the bias vector:
 # $$\frac{\partial W\vvec{h} +\vvec{b}}{\partial \vvec{b} } = I.$$
 # Likewise, we can derive the Jacobian of the affine function subject to a weight matrix entry $W_{kj}$:
-# $$\frac{\partial W\vvec{h} +\vvec{b}}{\partial W_{kj}} = \begin{pmatrix}0\\\vdots\\ h_j\\ \vdots\\ 0\end{pmatrix}$$
+# $$\frac{\partial W\vvec{h} +\vvec{b}}{\partial W_{ik}} = \begin{pmatrix}0\\\vdots\\ h_k\\ \vdots\\ 0\end{pmatrix}=\vvec{e}_ih_k.$$
+# Note that the entry $h_k$ is at position $i$, not $k$ of the partial derivative.
 # #### Derivatives of Activations
 # ```{prf:lemma}
 # The (sub-)derivative of the $ReLU(x)=\max\{x,0\}$ function is

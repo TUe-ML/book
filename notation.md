@@ -7,6 +7,7 @@
 | $D\in\mathbb{R}^{n\times d}$ | $D$ is a real-valued matrix with $n$ rows and $d$ columns |
 | $D_{\cdot k}$ | Column with index $k$ (the $k$th column) of matrix $D$ |
 | $D_{i\cdot}$ | Row with index $i$ (the $i$th row) of matrix $D$ |
+| $\vvec{e}_i$ | The $i$-th standard basis vector having a one at position $i$ and zeros elsewhere |
 | $\lVert \cdot \rVert$ | A norm (depending on the context it is either standing for any norm or for the default Euclidian/Frobenius/$L_2$- norm ) |
 | $\lvert \cdot \rvert$ | The $L_1$ norm (for matrices it denotes the element-wise $L_1$ norm) |
 | $\lVert \cdot\rVert_p$ | The $L_p$ norm (it's only a proper norm for $p\geq 1$, for matrices it denotes the element-wise $L_p$ norm)|
@@ -18,5 +19,5 @@
 | $\mathrm{inf}/\mathrm{sup}$ | The infimum or supremum of a sequence/function. The infimum is like the minimum, handling a special case where the minimum is not defined. So, if you don't know what inf/sup is, then think of it as min/max.|
 | $\mathrm{diag}(x_1,\ldots,x_n)$ | The $n\times n$ diagonal matrix having the vector $\mathbf{x}$ on the diagonal. |
 | $\log$ | The natural logarithm (to the base of $e$)|
-| $\lvert \mathcal{X}\rvert | The cardinality of set $\mathcal{X}$ (the number of elements in $\mathcal{X}$)| $
+| $\lvert \mathcal{X}\rvert$ | The cardinality of set $\mathcal{X}$ (the number of elements in $\mathcal{X}$)| $
 

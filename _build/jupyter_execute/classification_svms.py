@@ -470,7 +470,7 @@ plt.show()
 # $$
 # For any given $\delta$ we can scale $\vvec{w}$ such that $\delta \lVert \vvec{w}\rVert=1$. In this case, the minimum distance of a data point to the hyperplane is $\delta = \frac{1}{\lVert\vvec{w}\rVert}$. We substitute this into our objective and get
 # \begin{align*}
-# \max_{\vvec{w},b}\frac{1}{\lVert\vvec{w}\rVert} \quad\text{ s.t. } \frac{y_i(\vvec{w}^\top\vvec{x}_i+b)}{\lVert \vvec{w}\rVert}\geq 1.
+# \max_{\vvec{w},b}\frac{1}{\lVert\vvec{w}\rVert} \quad\text{ s.t. } y_i(\vvec{w}^\top\vvec{x}_i+b)\geq 1.
 # \end{align*}
 # This objective is already pretty good but the maximum of $\frac{1}{\lVert\vvec{w}\rVert}$ is reached when $\lVert\vvec{w}\rVert\rightarrow 0$. This can result in numerical instabilities, since we don't want to divide by zero. This issue is easily solved by minimizing $\lVert\vvec{w}\rVert^2$ instead. We use the squared norm because this is easier to optimize than applying the square root from the Euclidean norm. As a result, we can conclude the following theorem, specifying the hard margin SVM objective.
 # ```{prf:theorem} Hard Margin SVM objective

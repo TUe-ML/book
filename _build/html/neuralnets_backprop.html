@@ -754,7 +754,12 @@ f_\theta(\vvec{x}_i) &amp; = \softmax(W\vvec{h}^{(L)}+\vvec{b}),
 are given by
 <div class="math notranslate nohighlight">
 \[\begin{split}\frac{\partial CE(y,f(\vvec{x}))}{\partial h_j} = \begin{cases}f(\vvec{x})_j -1 &amp; \text{ if }j=y\\f(\vvec{x})_j &amp; \text{ otherwise}\end{cases}\end{split}\]</div>
-</p>
+
+Hence, we have
+<div class="math notranslate nohighlight">
+\[\frac{\partial CE(y,f(\vvec{x}))}{\partial \vvec{h}} = f(\vvec{x}) -\vvec{e}_y\]</div>
+
+where <span class="math notranslate nohighlight">\(\vvec{e}_y\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>-th standard basis vector having a one at position <span class="math notranslate nohighlight">\(y\)</span> and being zero elsewhere.</p>
 </section>
 </div></section>
 <section id="derivatives-of-affine-functions">
@@ -769,8 +774,9 @@ Based on this insight, we can derive the Jacobian of the affine function subject
 
 Likewise, we can derive the Jacobian of the affine function subject to a weight matrix entry <span class="math notranslate nohighlight">\(W_{kj}\)</span>:
 <div class="math notranslate nohighlight">
-\[\begin{split}\frac{\partial W\vvec{h} +\vvec{b}}{\partial W_{kj}} = \begin{pmatrix}0\\\vdots\\ h_j\\ \vdots\\ 0\end{pmatrix}\end{split}\]</div>
-</p>
+\[\begin{split}\frac{\partial W\vvec{h} +\vvec{b}}{\partial W_{ik}} = \begin{pmatrix}0\\\vdots\\ h_k\\ \vdots\\ 0\end{pmatrix}=\vvec{e}_ih_k.\end{split}\]</div>
+
+Note that the entry <span class="math notranslate nohighlight">\(h_k\)</span> is at position <span class="math notranslate nohighlight">\(i\)</span>, not <span class="math notranslate nohighlight">\(k\)</span> of the partial derivative.</p>
 </section>
 <section id="derivatives-of-activations">
 <h3>Derivatives of Activations<a class="headerlink" href="#derivatives-of-activations" title="Permalink to this headline">#</a></h3>
@@ -872,20 +878,22 @@ In practice, this doesn’t affect performance and it makes the computation of g
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 0 | Loss: 0.827 | Train Acc: 50.000%
-Iter 100 | Loss: 0.342 | Train Acc: 87.750%
-Iter 200 | Loss: 0.280 | Train Acc: 90.250%
-Iter 300 | Loss: 0.173 | Train Acc: 92.375%
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 0 | Loss: 0.746 | Train Acc: 50.000%
+Iter 100 | Loss: 0.702 | Train Acc: 50.000%
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 400 | Loss: 0.088 | Train Acc: 96.375%
-Iter 500 | Loss: 0.067 | Train Acc: 97.500%
-Iter 600 | Loss: 0.063 | Train Acc: 97.500%
-Iter 700 | Loss: 0.059 | Train Acc: 98.000%
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 200 | Loss: 0.693 | Train Acc: 50.000%
+Iter 300 | Loss: 0.694 | Train Acc: 50.000%
+Iter 400 | Loss: 0.694 | Train Acc: 50.000%
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 800 | Loss: 0.057 | Train Acc: 98.250%
-Iter 900 | Loss: 0.056 | Train Acc: 97.875%
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 500 | Loss: 0.693 | Train Acc: 50.000%
+Iter 600 | Loss: 0.693 | Train Acc: 50.000%
+Iter 700 | Loss: 0.693 | Train Acc: 50.000%
+Iter 800 | Loss: 0.693 | Train Acc: 50.000%
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter 900 | Loss: 0.693 | Train Acc: 50.000%
 </pre></div>
 </div>
 </div>

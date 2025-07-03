@@ -327,7 +327,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="neuralnets_sgd.html">
-     SGD
+     Training
     </a>
    </li>
    <li class="toctree-l2">
@@ -336,8 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="neuralnets_architecture.html">
-     Architecture
+    <a class="reference internal" href="neuralnets_pooling.html">
+     Pooling
     </a>
    </li>
   </ul>
@@ -355,11 +355,6 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="dim_reduction_mf.html">
      Low Rank Matrix Factorization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="dim_reduction_matrix_completion.html">
-     Matrix Completion
     </a>
    </li>
    <li class="toctree-l2">
@@ -639,40 +634,43 @@ title="Print to PDF"
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(D_{i\cdot}\)</span></p></td>
 <td><p>Row with index <span class="math notranslate nohighlight">\(i\)</span> (the <span class="math notranslate nohighlight">\(i\)</span>th row) of matrix <span class="math notranslate nohighlight">\(D\)</span></p></td>
 </tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lVert \cdot \rVert\)</span></p></td>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\vvec{e}_i\)</span></p></td>
+<td><p>The <span class="math notranslate nohighlight">\(i\)</span>-th standard basis vector having a one at position <span class="math notranslate nohighlight">\(i\)</span> and zeros elsewhere</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lVert \cdot \rVert\)</span></p></td>
 <td><p>A norm (depending on the context it is either standing for any norm or for the default Euclidian/Frobenius/<span class="math notranslate nohighlight">\(L_2\)</span>- norm )</p></td>
 </tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lvert \cdot \rvert\)</span></p></td>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lvert \cdot \rvert\)</span></p></td>
 <td><p>The <span class="math notranslate nohighlight">\(L_1\)</span> norm (for matrices it denotes the element-wise <span class="math notranslate nohighlight">\(L_1\)</span> norm)</p></td>
 </tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lVert \cdot\rVert_p\)</span></p></td>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lVert \cdot\rVert_p\)</span></p></td>
 <td><p>The <span class="math notranslate nohighlight">\(L_p\)</span> norm (it’s only a proper norm for <span class="math notranslate nohighlight">\(p\geq 1\)</span>, for matrices it denotes the element-wise <span class="math notranslate nohighlight">\(L_p\)</span> norm)</p></td>
 </tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mathrm{tr}(\cdot)\)</span></p></td>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mathrm{tr}(\cdot)\)</span></p></td>
 <td><p>The trace function</p></td>
 </tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\nabla f\)</span></p></td>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\nabla f\)</span></p></td>
 <td><p>The gradient of <span class="math notranslate nohighlight">\(f\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\frac{\partial}{\partial x_k}f(x)\)</span></p></td>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\frac{\partial}{\partial x_k}f(x)\)</span></p></td>
 <td><p>The partial derivative of <span class="math notranslate nohighlight">\(f\)</span> subject to <span class="math notranslate nohighlight">\(x_k\)</span></p></td>
 </tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mathbf{1}\)</span></p></td>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mathbf{1}\)</span></p></td>
 <td><p>The constant one vector (for example if <span class="math notranslate nohighlight">\(\mathbf{1}\)</span> is a two-dimensional vector, then <span class="math notranslate nohighlight">\(\mathbf{1}=\begin{pmatrix}1\\1\end{pmatrix}\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\langle \cdot, \cdot \rangle\)</span></p></td>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\langle \cdot, \cdot \rangle\)</span></p></td>
 <td><p>Inner product, the vector inner product is <span class="math notranslate nohighlight">\(\langle \vvec{x},\vvec{y}\rangle = \vvec{x}^\top \vvec{y}\)</span> and the matrix inner product is <span class="math notranslate nohighlight">\(\langle X,Y\rangle = \mathrm{tr}(X^\top Y)\)</span></p></td>
 </tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mathrm{inf}/\mathrm{sup}\)</span></p></td>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mathrm{inf}/\mathrm{sup}\)</span></p></td>
 <td><p>The infimum or supremum of a sequence/function. The infimum is like the minimum, handling a special case where the minimum is not defined. So, if you don’t know what inf/sup is, then think of it as min/max.</p></td>
 </tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mathrm{diag}(x_1,\ldots,x_n)\)</span></p></td>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mathrm{diag}(x_1,\ldots,x_n)\)</span></p></td>
 <td><p>The <span class="math notranslate nohighlight">\(n\times n\)</span> diagonal matrix having the vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> on the diagonal.</p></td>
 </tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\log\)</span></p></td>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\log\)</span></p></td>
 <td><p>The natural logarithm (to the base of <span class="math notranslate nohighlight">\(e\)</span>)</p></td>
 </tr>
-<tr class="row-odd"><td><p>$\lvert \mathcal{X}\rvert</p></td>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lvert \mathcal{X}\rvert\)</span></p></td>
 <td><p>The cardinality of set <span class="math notranslate nohighlight">\(\mathcal{X}\)</span> (the number of elements in <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>)</p></td>
 </tr>
 </tbody>
