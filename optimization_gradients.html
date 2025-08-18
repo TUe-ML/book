@@ -1,0 +1,696 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Matrix Derivatives &#8212; Data Mining and Machine Learning Jupyter Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'optimization_gradients';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Exercises" href="optimization_exercises.html" />
+    <link rel="prev" title="Numerical Optimization" href="optimization_numerical.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Data Mining and Machine Learning Jupyter Book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Data Mining and Machine Learning Jupyter Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation.html">Notation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="linalg.html">Linear Algebra</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="linalg_spaces.html">Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_normed_vs.html">Normed Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="optimization.html">Optimization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="optimization_problems.html">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_convex.html">Convex Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_analytic.html">Analytic Solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_numerical.html">Numerical Optimization</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Matrix Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="regression.html">Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="regression_objective.html">Regression Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_functions.html">Regression Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_optimization.html">Minimizing the RSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_bias_var.html">The Bias-Variance Tradeoff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_sparse.html">The Sparse Regression Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_ridge.html">Ridge Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_lasso.html">Lasso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="classification.html">Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="classification_problem.html">Classification Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_knn.html">K-Nearest Neighbor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_naive_bayes.html">Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_decision_trees.html">Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_random_forests.html">Random Forests</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="classification_svms.html">Support Vector Machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_kernel_svm.html">Kernel SVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="neuralnets.html">Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_intro.html">From Linear Models to Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_mlps.html">MLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_backprop.html">Backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_sgd.html">Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_conv.html">Convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_pooling.html">Pooling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dim_reduction.html">Dimensionality Reduction Techniques</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_mf.html">Low Rank Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_pca.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="clustering.html">Clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means.html">k-Means</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means_mf.html">k-Means is MF</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_kernel_kmeans.html">Kernel k-means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_spectral.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/edit/main/optimization_gradients.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/issues/new?title=Issue%20on%20page%20%2Foptimization_gradients.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/optimization_gradients.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Matrix Derivatives</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="matrix-derivatives">
+<h1>Matrix Derivatives<a class="headerlink" href="#matrix-derivatives" title="Link to this heading">#</a></h1>
+<p>In principle, we can compute matrix derivatives using partial derivatives and familiar rules like the chain rule. However, this process can be tedious and complex. Fortunately, most of the rules you know for one-dimensional derivatives also apply to higher-order derivatives. However, unlike in one-dimensional calculus, the order of multiplication matters for matrix derivatives because matrix multiplication is generally not commutative.</p>
+<p>We’ll start by examining the dimensionalities involved in matrix derivatives. For a function <span class="math notranslate nohighlight">\(f:\mathbb{R}^{n\times d}\rightarrow \mathbb{R}\)</span> that maps matrices to real values, we can define its derivative in two ways: as the gradient or the Jacobian.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \frac{\partial f(X)}{\partial X} &amp;=
+    \begin{pmatrix}
+    \frac{\partial f(X)}{\partial X_{11}} &amp; \ldots &amp; \frac{\partial f(X)}{\partial X_{n1}}\\
+    \vdots &amp; \ddots &amp; \vdots\\ 
+    \frac{\partial f(X)}{\partial X_{1d}} &amp; \ldots &amp; \frac{\partial f(X)}{\partial X_{nd}}
+    \end{pmatrix}\in\mathbb{R}^{d\times n} &amp;\text{(Jacobian)}\\
+    \nabla{f(X)} &amp;=
+    \begin{pmatrix}
+    \frac{\partial f(X)}{\partial X_{11}} &amp; \ldots &amp; \frac{\partial f(X)}{\partial X_{1d}}\\
+    \vdots &amp; \ddots &amp; \vdots\\ 
+    \frac{\partial f(X)}{\partial X_{n1}} &amp; \ldots &amp; \frac{\partial f(X)}{\partial X_{nd}}
+    \end{pmatrix}\in\mathbb{R}^{n\times d} &amp;\text{(Gradient)}
+\end{align*}\]</div>
+<p>You might notice that the Jacobian is the transposed of the gradient, and vice versa.
+<div class="math notranslate nohighlight">
+\[\nabla_\vvec{x} \vvec{f}(\vvec{x}) = \left(\frac{\partial \vvec{f}(\vvec{x})}{\partial\vvec{x}}\right)^\top\]</div>
+
+Be aware that the notation above is not used by all authors. Some authors define the Jacobian as we define the gradient here. To remember what is what, consider the gradient descent update rule, where we subtract the scaled gradient from the iterates. For functions mapping to real values (such as loss or objective functions), the gradient must have the same dimensionality as the function’s arguments; otherwise, subtraction would not be possible.</p>
+<p>From the definition of matrix derivatives, we can also infer the definition of a vector derivative for a function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow \mathbb{R}\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \frac{\partial f(\vvec{x})}{\partial \vvec{x}} &amp;=
+    \begin{pmatrix}
+    \frac{\partial f(\vvec{x})}{\partial x_1} &amp; \ldots &amp; \frac{\partial f(\vvec{x})}{\partial x_d}
+    \end{pmatrix}\in\mathbb{R}^{1\times d} &amp; \text{(Jacobian)}\\
+    \nabla_\vvec{x} f(\vvec{x}) &amp;=
+    \begin{pmatrix}
+    \frac{\partial f(\vvec{x})}{\partial x_1} \\ \vdots \\ \frac{\partial f(\vvec{x})}{\partial x_d}
+    \end{pmatrix}\in\mathbb{R}^{d} &amp;\text{(Gradient)}
+\end{align*}\]</div>
+<p>If we have a function that maps to a vector space, then we can compute the partial derivatives for each coordimate of the function value. For example, if we have a function mapping from real values to the <span class="math notranslate nohighlight">\(c\)</span>-dimensional real-valued vector space <div class="math notranslate nohighlight">
+\[\begin{split}\vvec{f}:\mathbb{R}\rightarrow \mathbb{R}^{c},\ \vvec{f}(x)=\begin{pmatrix}f_1(x)\\\vdots\\f_c(x)\end{pmatrix},\end{split}\]</div>
+ then the Jacobian and gradient are defined as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \frac{\partial \vvec{f}(x)}{\partial x} &amp;=
+    \begin{pmatrix}
+    \frac{\partial f_1(x)}{\partial x} \\ \vdots \\ \frac{\partial f_c(x)}{\partial x}
+    \end{pmatrix} \in\mathbb{R}^{c} &amp; \text{(Jacobian)}\\
+    \nabla_x \vvec{f}(x) &amp;=
+    \begin{pmatrix}
+    \frac{\partial f_1(x)}{\partial x} &amp; \ldots &amp; \frac{\partial f_c(x)}{\partial x}
+    \end{pmatrix} \in\mathbb{R}^{1\times c} &amp;\text{(Gradient)}
+\end{align*}\]</div>
+<p>Note that the Jacobian preserves now the dimensionality of the output of the function: function vales are in <span class="math notranslate nohighlight">\(\mathbb{R}^c\)</span> and so is the Jacobian. Likewise, we can define the derivatives for a function <span class="math notranslate nohighlight">\(\vvec{f}:\mathbb{R}^d\rightarrow \mathbb{R}^{c}\)</span> from a vector space to a vector space:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \frac{\partial \vvec{f}(\vvec{x})}{\partial \vvec{x}} &amp;=
+    \begin{pmatrix}
+    \frac{\partial f_1(x)}{\partial x_1}&amp; \ldots &amp;  \frac{\partial f_1(x)}{\partial x_d}\\ 
+    \vdots &amp; \ddots &amp; \vdots \\ 
+    \frac{\partial f_c(x)}{\partial x_1} &amp;\ldots &amp; \frac{\partial f_c(x)}{\partial x_d}
+    \end{pmatrix} \in\mathbb{R}^{c\times d} &amp; \text{(Jacobian)}\\
+    \nabla_\vvec{x}\vvec{f}(\vvec{x}) &amp;=
+    \begin{pmatrix}
+    \frac{\partial f_1(x)}{\partial x_1}&amp; \ldots &amp;  \frac{\partial f_c(x)}{\partial x_1}\\ 
+    \vdots &amp; \ddots &amp; \vdots \\ 
+    \frac{\partial f_1(x)}{\partial x_d} &amp;\ldots &amp; \frac{\partial f_c(x)}{\partial x_d}
+    \end{pmatrix} \in\mathbb{R}^{d\times c} &amp;\text{(Gradient)}
+\end{align*}\]</div>
+<p>Of course we could now consider more cases, like a function mapping a matrix to a matrix. Unfortunately, from this point on, it gets really complicated. There are multiple ways to define such derivatives - as tensors or as specifically structured matrices. We’re going to keep it comparatively simple and circumvent these cases in this course.<br />
+We can now concatenate these derivatives according to linearity and the chain rule for matrix derivatives.</p>
+<div class="proof theorem admonition" id="theorem-0">
+<p class="admonition-title"><span class="caption-number">Theorem 10 </span> (The Jacobian is linear)</p>
+<section class="theorem-content" id="proof-content">
+<p>For any function whose Jacobian is defined as a matrix of partial derivatives <span class="math notranslate nohighlight">\(\frac{\partial \vvec{f}(\vvec{x})}{\partial \vvec{x}} = \begin{pmatrix}\frac{\partial f_j(\vvec{x})}{\partial x_i}\end{pmatrix}_{i,j}\)</span> for some indexes <span class="math notranslate nohighlight">\(i,j\)</span>, the Jacobian is linear:
+<div class="math notranslate nohighlight">
+\[\frac{\partial\alpha\vvec{f}(\vvec{x})+\vvec{g}(\vvec{x})}{\partial\vvec{x}}
+        =\alpha\frac{\partial\vvec{f}(\vvec{x})}{\partial\vvec{x}}+\frac{\partial\vvec{g}(\vvec{x})}{\partial\vvec{x}}\]</div>
+</p>
+</section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. The proof follows from the linearity of the partial derivatives:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial \alpha\vvec{f}(\vvec{x})+\vvec{g}(\vvec{x})}{\partial \vvec{x}} &amp;= \begin{pmatrix}\frac{\partial \alpha f_j(\vvec{x}) +g_j(\vvec{x})}{\partial x_i}\end{pmatrix}_{i,j}\\
+&amp;= \begin{pmatrix}\alpha\frac{\partial  f_j(\vvec{x})}{\partial x_i}+\frac{\partial g_j(\vvec{x})}{\partial x_i}\end{pmatrix}_{i,j}\\
+&amp;= \alpha\begin{pmatrix}\frac{\partial  f_j(\vvec{x})}{\partial x_i}\end{pmatrix}_{i,j} + \begin{pmatrix}\frac{\partial g_j(\vvec(x))}{\partial x_i}\end{pmatrix}_{i,j}\\
+&amp;=\alpha\frac{\partial\vvec{f}(\vvec{x})}{\partial\vvec{x}}+\frac{\partial\vvec{g}(\vvec{x})}{\partial\vvec{x}}
+\end{align*}\]</div>
+</div>
+<div class="proof theorem admonition" id="theorem-1">
+<p class="admonition-title"><span class="caption-number">Theorem 11 </span> (Chain Rule for the Jacobian)</p>
+<section class="theorem-content" id="proof-content">
+<p>For any continuously differentiable functions <span class="math notranslate nohighlight">\(\vvec{f}:\mathbb{R}^c\rightarrow \mathbb{R}^p\)</span> and <span class="math notranslate nohighlight">\(\vvec{g}:\mathbb{R}^d\rightarrow \mathbb{R}^c\)</span>, the Jacobian of the composition <span class="math notranslate nohighlight">\(\vvec{f}\circ\vvec{g}\)</span> is given by the chain rule:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+        \frac{\partial \vvec{f}(\vvec{g}(\vvec{x}))}{\partial\vvec{x}}
+        &amp;= \underbrace{\frac{\partial \vvec{f}(\vvec{g}(\vvec{x}))}{\partial \vvec{g}(\vvec{x})}}_{p\times c}\underbrace{\frac{\partial \vvec{g}(\vvec{x})}{\partial \vvec{x}}}_{c\times d} 
+    \end{align*}\]</div>
+</section>
+</div><div class="proof theorem admonition" id="theorem-2">
+<p class="admonition-title"><span class="caption-number">Theorem 12 </span> (Jacobian of Element-wise Functions)</p>
+<section class="theorem-content" id="proof-content">
+<p>The gradient and the Jacobian of any element-wise defined function
+<div class="math notranslate nohighlight">
+\[f(\vvec{x}) = (f(x_1),f(x_2),\ldots,f(x_d))\]</div>
+
+is the diagonal matrix
+<div class="math notranslate nohighlight">
+\[\nabla f(\vvec{x}) = \frac{\partial f(\vvec{x})}{\partial \vvec{x}}=\diag(f'(x_1),\ldots, f'(x_d)).\]</div>
+</p>
+</section>
+</div><div class="proof example admonition" id="example-3">
+<p class="admonition-title"><span class="caption-number">Example 10 </span></p>
+<section class="example-content" id="proof-content">
+<p>Consider the exponential function applied element-wise to a vector
+<div class="math notranslate nohighlight">
+\[\exp(\vvec{x}) = (\exp(x_1),\ldots,\exp(x_d)).\]</div>
+
+The gradient of this function is the diagonal matrix
+<div class="math notranslate nohighlight">
+\[\nabla \exp(\vvec{x}) = \diag(\exp(\vvec{x})).\]</div>
+</p>
+</section>
+</div></section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="optimization_numerical.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Numerical Optimization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="optimization_exercises.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Exercises</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sibylle Hess
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022. Eindhoven University of Technology.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

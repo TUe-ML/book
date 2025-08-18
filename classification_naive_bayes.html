@@ -1,0 +1,981 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Naive Bayes &#8212; Data Mining and Machine Learning Jupyter Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'classification_naive_bayes';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Decision Trees" href="classification_decision_trees.html" />
+    <link rel="prev" title="K-Nearest Neighbor" href="classification_knn.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Data Mining and Machine Learning Jupyter Book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Data Mining and Machine Learning Jupyter Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation.html">Notation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="linalg.html">Linear Algebra</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="linalg_spaces.html">Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_normed_vs.html">Normed Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="optimization.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimization_problems.html">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_convex.html">Convex Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_analytic.html">Analytic Solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_numerical.html">Numerical Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_gradients.html">Matrix Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="regression.html">Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="regression_objective.html">Regression Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_functions.html">Regression Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_optimization.html">Minimizing the RSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_bias_var.html">The Bias-Variance Tradeoff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_sparse.html">The Sparse Regression Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_ridge.html">Ridge Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_lasso.html">Lasso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="classification.html">Classification</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="classification_problem.html">Classification Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_knn.html">K-Nearest Neighbor</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_decision_trees.html">Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_random_forests.html">Random Forests</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="classification_svms.html">Support Vector Machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_kernel_svm.html">Kernel SVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="neuralnets.html">Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_intro.html">From Linear Models to Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_mlps.html">MLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_backprop.html">Backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_sgd.html">Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_conv.html">Convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_pooling.html">Pooling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dim_reduction.html">Dimensionality Reduction Techniques</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_mf.html">Low Rank Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_pca.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="clustering.html">Clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means.html">k-Means</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means_mf.html">k-Means is MF</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_kernel_kmeans.html">Kernel k-means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_spectral.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/edit/main/classification_naive_bayes.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/issues/new?title=Issue%20on%20page%20%2Fclassification_naive_bayes.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/classification_naive_bayes.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Naive Bayes</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-the-bayes-classifier">Approximating the Bayes Classifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-practice-log-probabilities">Implementation Practice: log probabilities</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomial-naive-bayes">Multinomial Naive Bayes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-practice-laplace-smoothing">Implementation Practice: Laplace Smoothing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-naive-bayes">Gaussian Naive Bayes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-boundaries">Decision Boundaries</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Training</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="naive-bayes">
+<h1>Naive Bayes<a class="headerlink" href="#naive-bayes" title="Link to this heading">#</a></h1>
+<p>The Naïve Bayes classifier is a simple yet powerful probabilistic algorithm used for classification tasks. It is based on Bayes’ Theorem and assumes that the features are conditionally independent, given the class label. Despite its simplicity, it performs well in many real-world applications, such as spam detection, sentiment analysis, and medical diagnosis.</p>
+<section id="approximating-the-bayes-classifier">
+<h2>Approximating the Bayes Classifier<a class="headerlink" href="#approximating-the-bayes-classifier" title="Link to this heading">#</a></h2>
+<p>Naïve Bayes is a probabilistic classifier, and before we delve into its mechanics, we establish first some terminology to describe the probabilties that we are dealing with.</p>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 20 </span> (Probabilistic Machine Learning Speak)</p>
+<section class="definition-content" id="proof-content">
+<p>Given two random variables <span class="math notranslate nohighlight">\(\vvec{x}\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, where <span class="math notranslate nohighlight">\(\vvec{x}\)</span> is the random variable of the observations of a dataset and <span class="math notranslate nohighlight">\(y\)</span> is the random variable of the class label. We define then the following probabilities:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(p(y\mid \vvec{x})\)</span> is the <strong>posterior probability</strong> (the probability of class <span class="math notranslate nohighlight">\(y\)</span> given observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span> )</p></li>
+<li><p><span class="math notranslate nohighlight">\(p(\vvec{x}\mid y)\)</span> is the <strong>likelihood</strong> (how likely is it to observe <span class="math notranslate nohighlight">\(\vvec{x}\)</span> in class <span class="math notranslate nohighlight">\(y\)</span>?)</p></li>
+<li><p><span class="math notranslate nohighlight">\(p(y)\)</span> is the <strong>prior probability</strong> (how often do I expect class <span class="math notranslate nohighlight">\(y\)</span> to occur in my dataset?)</p></li>
+<li><p><span class="math notranslate nohighlight">\(p(\vvec{x})\)</span> is the <strong>evidence</strong> (how probable is observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span>?)</p></li>
+</ul>
+</section>
+</div><p>The motivation for the Naive Bayes classifier is to approximate the Bayes optimal classifier <span class="math notranslate nohighlight">\(y^*=\argmax_y p^*(y\mid\vvec{x})\)</span> under simplifying assumptions. To estimate <span class="math notranslate nohighlight">\(p^*(y\mid\vvec{x})\)</span>, Naive Bayes uses the Bayes rule.</p>
+<div class="proof theorem admonition" id="bayes_rule">
+<p class="admonition-title"><span class="caption-number">Theorem 19 </span> (Bayes rule)</p>
+<section class="theorem-content" id="proof-content">
+<p>Given two random variables <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, then the Bayes rule is given as
+<div class="math notranslate nohighlight">
+\[ p(y \mid x) = \frac{p(x \mid y) \, p(y)}{p(x)}\]</div>
+</p>
+</section>
+</div><p>The Bayes rule indicates that we can compute the unkown prediction probability <span class="math notranslate nohighlight">\(p^*(y\mid \vvec{x})\)</span> by means of three probabilities: the likelihood, the prior probability and the evidence. The prior probabilities <span class="math notranslate nohighlight">\(p(y)\)</span> we can simply estimate as the fraction of observations with label <span class="math notranslate nohighlight">\(y\)</span> in the dataset. Further, we can neglect the evidence when we want to predict the posterior probability, since</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\argmax_y p(y\mid \vvec{x}) &amp;= \argmax_y p(y\mid \vvec{x})p(\vvec{x})\\
+&amp;= \argmax_y p(\vvec{x}\mid y)p(y).
+\end{align*}\]</div>
+<p>Hence, the only thing that is left to estimate is <span class="math notranslate nohighlight">\(p(\vvec{x}\mid y)\)</span>. To do so, Naive Bayes makes a simplifying assumption.</p>
+<div class="proof property admonition" id="property-2">
+<p class="admonition-title"><span class="caption-number">Property 3 </span> (Naive Bayes assumption)</p>
+<section class="property-content" id="proof-content">
+<p>We assume that all features are conditionally independent given the class <span class="math notranslate nohighlight">\(y\)</span>. In this case, we can write</p>
+<div class="math notranslate nohighlight" id="equation-naive-assumption">
+<span class="eqno">(32)<a class="headerlink" href="#equation-naive-assumption" title="Link to this equation">#</a></span>\[p({\bf x} \mid y) = p(\mathtt{x}_1 \mid y)\cdot p(\mathtt{x}_2\mid y) \ldots \cdot p(\mathtt{x}_d\mid y) .\]</div>
+</section>
+</div><p>Under this assumption, we can now define the inference (prediction step) of the Naive Bayes classifier.</p>
+</section>
+<section id="inference">
+<h2>Inference<a class="headerlink" href="#inference" title="Link to this heading">#</a></h2>
+<p>Using Bayes’ Theorem and the naive assumption, the prediction is made by choosing the class  that maximizes the posterior probability <span class="math notranslate nohighlight">\(p(y\mid x)\)</span>.</p>
+<div class="proof definition admonition" id="definition-3">
+<p class="admonition-title"><span class="caption-number">Definition 21 </span> (NB classifier)</p>
+<section class="definition-content" id="proof-content">
+<p>The naive Bayes classifier computes the probabilities that observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span> occurs together with label <span class="math notranslate nohighlight">\(y\)</span> under the naive Bayes assumption:</p>
+<div class="math notranslate nohighlight" id="equation-f-nb">
+<span class="eqno">(33)<a class="headerlink" href="#equation-f-nb" title="Link to this equation">#</a></span>\[f_{nb}(\vvec{x})_y = p(y)\prod_{k=1}^d p(\mathtt{x}_k\mid y)\]</div>
+<p>As a result, the naive Bayes classifier predicts the most likely label, given observation <span class="math notranslate nohighlight">\(\vvec{x}\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-yhat-nb">
+<span class="eqno">(34)<a class="headerlink" href="#equation-yhat-nb" title="Link to this equation">#</a></span>\[\begin{split}\begin{align*}
+\hat{y} &amp; = \argmax_y\ f_{nb}(\vvec{x})_y\\
+&amp;= \argmax_y\ p(y\mid \vvec{x})
+\end{align*}\end{split}\]</div>
+</section>
+</div><p>The inference of Naive Bayes is quick if we have already stored all the probabilities <span class="math notranslate nohighlight">\(p(\mathtt{x}_k \mid y)\)</span>.</p>
+<p>Good applications of Naive Bayes justify the assumption of conditional independence of features, given the class. This assumption is for example given in text classification. The features are here usually the word frequencies in a text document or the binary presence of words. Although word occurrences are generally not independent from each other, individual word occurrences can give strong independent signals to the classifier. Think of the word “viagra” when training a spam-detector. Also in medical diagnosis, Naive Bayes can be useful if the features are not strongly correlated. That is, a prediction of a patient condition based on a set of features like “Blood pressure”, “heart rate”, and “cholesterol levels” is not a suitable application of Naive Bayes, since these features are strongly correlated.</p>
+<section id="implementation-practice-log-probabilities">
+<h3>Implementation Practice: log probabilities<a class="headerlink" href="#implementation-practice-log-probabilities" title="Link to this heading">#</a></h3>
+<p>The classifier <span class="math notranslate nohighlight">\(f_{nb}\)</span> multiplies <span class="math notranslate nohighlight">\(d+1\)</span> probabilities that have values in <span class="math notranslate nohighlight">\([0,1]\)</span>. Especially for a high dimensional feature space (when <span class="math notranslate nohighlight">\(d\)</span> is large), the probabilities of <span class="math notranslate nohighlight">\(f_{np}\)</span> will be so close to zero that we run into numerical computation problems, such that nonzero probabilities are rounded to zero in floating-point precision. This effect is called <em>numerical underflow</em>. We can observe this effect in a minimal running example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Generate 1000 random numbers in [10^{-20},1]</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1e-20</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">product</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Product of 1000 numbers: </span><span class="si">{</span><span class="n">product</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">, is the product equal to zero? </span><span class="si">{</span><span class="n">product</span><span class="w"> </span><span class="o">==</span><span class="mi">0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Exponential notation for clarity</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Product of 1000 numbers: 0.000000e+00, is the product equal to zero? True
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can deal with underflow by computing the log-probabilities instead. After all, it doesn’t matter if we compute the prediction <span class="math notranslate nohighlight">\(y\)</span> that maximizes <span class="math notranslate nohighlight">\(p(y\mid \vvec{x})\)</span> or the <span class="math notranslate nohighlight">\(\log p(y\mid \vvec{x})\)</span>, since the logarithm is a monotonically increasing function. As a result, we compute our classifications as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \hat{y} &amp; = \argmax_y\ \log f_{nb}(\vvec{x})_y\\
+&amp;= \argmax_y\ \log(p(y)\prod_{k=1}^d p(x_k\mid y))\\
+&amp; = \argmax_y\ \log p(y) + \sum_{k=1}^d \log p(x_k\mid y)
+\end{align*}\]</div>
+<p>Using this log-probability trick, we get the following result for our minimal example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">numbers</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(-1024.7389707307761)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="multinomial-naive-bayes">
+<h2>Multinomial Naive Bayes<a class="headerlink" href="#multinomial-naive-bayes" title="Link to this heading">#</a></h2>
+<p>If we have discrete features <span class="math notranslate nohighlight">\(\mathtt{x}_k\in\mathcal{X}_k\)</span>, where <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span> is a finite set, then we can assume multinomial probabilities <span class="math notranslate nohighlight">\(p(\mathtt{x}_k\mid y)\)</span> that are approximated over the counts:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+p(\mathtt{x}_k = a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {x_i}_k = a, y_i=l \}\rvert}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert}.
+\end{align*}\]</div>
+<p>Every probability <span class="math notranslate nohighlight">\(p(\mathtt{x}_k = a\mid y=l)\)</span> is approximated as the number of observations where feature <span class="math notranslate nohighlight">\(\mathtt{x}_k\)</span> is equal to value <span class="math notranslate nohighlight">\(a\)</span> and the label is <span class="math notranslate nohighlight">\(y_i=l\)</span> over the number of observations where the label is <span class="math notranslate nohighlight">\(l\)</span>.</p>
+<section id="implementation-practice-laplace-smoothing">
+<h3>Implementation Practice: Laplace Smoothing<a class="headerlink" href="#implementation-practice-laplace-smoothing" title="Link to this heading">#</a></h3>
+<p>Using the standard estimation of multinomial probabilities has the undesirable effect that some probabilities <span class="math notranslate nohighlight">\(p(\mathtt{x}_k = a\mid y=l)\)</span> are equal to zero if the feature <span class="math notranslate nohighlight">\(\mathtt{x}_k\)</span> is never equal to value <span class="math notranslate nohighlight">\(a\)</span> in class <span class="math notranslate nohighlight">\(y\)</span>. In this case, the classifier probability <span class="math notranslate nohighlight">\(f_{nb}(\vvec{x})_y\)</span> is equal to zero for all observations <span class="math notranslate nohighlight">\(\vvec{x}\)</span> where <span class="math notranslate nohighlight">\(\mathtt{x}_k=a\)</span>. In particular if we have many classes, a high-dimensional feature space or features with a large domain (if <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span> is large), this effect might happen quite often. Laplace smoothing mitigates this effect by adding <span class="math notranslate nohighlight">\(\alpha\)</span> imaginary observations for each value of <span class="math notranslate nohighlight">\(\mathtt{x}_k\)</span> and class <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<div class="proof definition admonition" id="definition-4">
+<p class="admonition-title"><span class="caption-number">Definition 22 </span> (Laplace smoothing)</p>
+<section class="definition-content" id="proof-content">
+<p>Given a dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}\)</span> and feature <span class="math notranslate nohighlight">\(\mathtt{x}_k\)</span> attaining values in the finite set <span class="math notranslate nohighlight">\(\mathcal{X}_k\)</span>. The class-conditioned multinomial probability estimations with Laplace smoothing with variable <span class="math notranslate nohighlight">\(\alpha&gt; 0\)</span> are then given as</p>
+<div class="math notranslate nohighlight" id="equation-freq-approx3">
+<span class="eqno">(35)<a class="headerlink" href="#equation-freq-approx3" title="Link to this equation">#</a></span>\[p_\alpha(\mathtt{x}_k =a\mid y=l) = \frac{\lvert\{ 1\leq i \leq n\mid {x_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{1\leq i \leq n\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\]</div>
+</section>
+</div><p>Note that adding <span class="math notranslate nohighlight">\(\alpha \lvert\mathcal{X}_k\rvert\)</span> to the denominator makes the conditioned probability estimations with Laplace smoothing sum up to one:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{a\in \mathcal{X}_k} p_\alpha(\mathtt{x}_k =a\mid y=l) 
+&amp; = \sum_{a\in \mathcal{X}_k} \frac{\lvert\{ i\mid {x_i}_k = a, y_i=l \}\rvert+\alpha}{\lvert\{i\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\\
+&amp; =  \frac{\sum_{a\in \mathcal{X}_k}( \lvert\{ i\mid {x_i}_k = a, y_i=l \}\rvert+\alpha)}{\lvert\{i\mid y_i = l\}\rvert+\alpha \lvert\mathcal{X}_k\rvert}\\
+&amp;= 1.
+\end{align*}\]</div>
+</section>
+<section id="training">
+<h3>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h3>
+<div class="proof example admonition" id="example-5">
+<p class="admonition-title"><span class="caption-number">Example 18 </span></p>
+<section class="example-content" id="proof-content">
+<p>We consider the following toy dataset, where the task is to predict whether the email is spam, based on the words “free”, “win”, “offer” and “meeting”.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Contains “Free”?</p></th>
+<th class="head"><p>Contains “Win”?</p></th>
+<th class="head"><p>Contains “Offer”?</p></th>
+<th class="head"><p>Contains “Meeting”?</p></th>
+<th class="head"><p>Spam</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We compute the probabilities of the word “free” conditioned on whether it is in a spam email or not, using Laplace smoothing parameter <span class="math notranslate nohighlight">\(\alpha=1\)</span>. The domain of the feature “free” is “yes” and “no”, hence, <span class="math notranslate nohighlight">\(\lvert \mathcal{X}_{free}\rvert=2\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+p(free = yes\mid spam=yes) &amp;= \frac{2 +1}{3+2} = \frac{3}{5}\\
+p(free = no\mid spam=yes) &amp;= \frac{1 +1}{3+2} = \frac{2}{5}\\
+p(free = yes\mid spam=no) &amp;= \frac{1 +1}{3+2} = \frac{2}{5}\\
+p(free = no\mid spam=no) &amp;= \frac{2 +1}{3+2} = \frac{3}{5}\\
+\end{align*}\]</div>
+</section>
+</div></section>
+</section>
+<section id="gaussian-naive-bayes">
+<h2>Gaussian Naive Bayes<a class="headerlink" href="#gaussian-naive-bayes" title="Link to this heading">#</a></h2>
+<p>If feature <span class="math notranslate nohighlight">\(x_k\)</span> attains continuous values, then a popular choice is to assume a Gaussian distribution for the class-conditioned probabilities:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+p(\mathtt{x}_k = a\mid y=l) = \frac{1}{\sqrt{2\pi \sigma_{kl}^2}}\exp\left(-\frac{(a-\mu_{kl})^2}{2\sigma_{kl}^2}\right).
+\end{align*}\]</div>
+<p>The parameter <span class="math notranslate nohighlight">\(\mu_{kl}\)</span> is the estimated mean value <span class="math notranslate nohighlight">\(\sigma_{kl}\)</span> is the estimated variance of feature <span class="math notranslate nohighlight">\(\mathtt{x}_k\)</span> in class <span class="math notranslate nohighlight">\(l\)</span>.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mu_{kl} = \frac{1}{\lvert\{i\mid y_i=l\}\rvert}\sum_{i:y_i=l} {x_i}_k \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_{kl}^2 = \frac{1}{\lvert\{i\mid y_i=l\}\rvert} \sum_{i:y_i=l} ({x_i}_k-\mu_{kl})^2\)</span></p></li>
+</ul>
+<p>Note that the definition of the conditional probability for Gaussian naive Bayes is mathematically not exactly clean, since we have on the right side a probability <em>distribution</em> and not an actual probability. For practical purposes this is ok, since Naive Bayes relies on a comparison between likelihoods of feature values given a class.</p>
+<section id="decision-boundaries">
+<h3>Decision Boundaries<a class="headerlink" href="#decision-boundaries" title="Link to this heading">#</a></h3>
+<p>We plot the decision making process of Gaussian Naive Bayes below. The plot below shows the log probabilities of the joint distribution <span class="math notranslate nohighlight">\(\log p(x,y)\)</span> for each of the two classes. The more intense the color, the higher the log-probability of the corresponding class. We observe the Gaussians that are fit for each class on each axis result in an ellipse-shaped levelset.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.naive_bayes</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.inspection</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span><span class="p">,</span> <span class="n">LinearSegmentedColormap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_moons</span>
+
+
+<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+    <span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">cm_0</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">&quot;mycmap&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;#ffffff&quot;</span><span class="p">,</span><span class="s2">&quot;#a0c3ff&quot;</span><span class="p">])</span>
+<span class="n">cm_1</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">&quot;mycmap&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;#ffffff&quot;</span><span class="p">,</span> <span class="s2">&quot;#ffa1cf&quot;</span><span class="p">])</span>
+<span class="n">cmaps</span> <span class="o">=</span> <span class="p">[</span><span class="n">cm_0</span><span class="p">,</span><span class="n">cm_1</span><span class="p">]</span>
+<span class="n">cm_points</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#007bff&quot;</span><span class="p">,</span> <span class="s2">&quot;magenta&quot;</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axs</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)):</span>
+    <span class="n">gnb</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">gnb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+
+    <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">gnb</span><span class="o">.</span><span class="n">predict_joint_log_proba</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">Z</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span><span class="n">cmap</span><span class="o">=</span><span class="n">cmaps</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;scaled&#39;</span><span class="p">)</span>
+    <span class="n">scatter</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_train</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cm_points</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Two moons log p(x,y=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">) Gaussian Naive Bayes&quot;</span>
+    <span class="p">)</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="_images/18aead7f74005ff8d614427c89e6833452e89b2388828cca17cfe7ced1d3e383.png" src="_images/18aead7f74005ff8d614427c89e6833452e89b2388828cca17cfe7ced1d3e383.png" />
+</div>
+</div>
+<p>The corresponding classifier predicts the class attaining the maximum joint probability. Below, you can see the decision boundary. The classifier looks linear in this example. That is not necessarily the case, but since the joint probabilities are always ellipses, the Gaussian Naive Bayes classifier can’t model arbritary shapes in the decision boundary.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.inspection</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span><span class="p">,</span> <span class="n">LinearSegmentedColormap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_moons</span>
+
+
+
+<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+    <span class="p">)</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#a0c3ff&quot;</span><span class="p">,</span> <span class="s2">&quot;#ffa1cf&quot;</span><span class="p">])</span>
+<span class="n">cm_points</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#007bff&quot;</span><span class="p">,</span> <span class="s2">&quot;magenta&quot;</span><span class="p">])</span>
+<span class="n">gnb</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">gnb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">disp</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
+    <span class="n">gnb</span><span class="p">,</span>
+    <span class="n">X_test</span><span class="p">,</span>
+    <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
+    <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span>
+    <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_train</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cm_points</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Two moons classification Gaussian Naive Bayes</span><span class="se">\n</span><span class="s2">Test Acc </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">gnb</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">y_test</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;scaled&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="_images/6d54bfaa55bdd7fcb4983f8f01ad4917add1e73d88ef18009716d9faa5aed46f.png" src="_images/6d54bfaa55bdd7fcb4983f8f01ad4917add1e73d88ef18009716d9faa5aed46f.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="id1">
+<h2>Training<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>Naive Bayes doesn’t need training in the classical sense, but to enable a quick inference of a naive Bayes classifier, the required probabilities, respectively their parameters are stored in advance. That is, for discrete features we compute all log probabilities, and for continuous features we compute the estimation parameters <span class="math notranslate nohighlight">\(\mu_{kl}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{kl}\)</span>.</p>
+<div class="proof algorithm admonition" id="algorithm-6">
+<p class="admonition-title"><span class="caption-number">Algorithm 7 </span> (Naive Bayes (Gaussian and Multinomial))</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Input</strong>: training data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, <span class="math notranslate nohighlight">\(\alpha\)</span></p>
+<ol class="arabic simple">
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(k\in\{1,\ldots,d\}\)</span></p>
+<ol class="arabic simple">
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(\mathtt{x}_k\)</span> is a discrete feature</p>
+<ol class="arabic simple">
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(a\in\mathcal{X}_k\)</span></p>
+<ol class="arabic simple">
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(l\in\{1,\ldots, c\}\)</span></p>
+<ol class="arabic simple">
+<li><p>Store <span class="math notranslate nohighlight">\(\log p_\alpha(x_k=a\mid y=l)\)</span></p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>else</strong></p>
+<ol class="arabic simple">
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(l\in\{1,\ldots, c\}\)</span></p>
+<ol class="arabic simple">
+<li><p>Store <span class="math notranslate nohighlight">\(\mu_{kl}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{kl}\)</span>.</p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="classification_knn.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">K-Nearest Neighbor</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="classification_decision_trees.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Decision Trees</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-the-bayes-classifier">Approximating the Bayes Classifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-practice-log-probabilities">Implementation Practice: log probabilities</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomial-naive-bayes">Multinomial Naive Bayes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-practice-laplace-smoothing">Implementation Practice: Laplace Smoothing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-naive-bayes">Gaussian Naive Bayes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-boundaries">Decision Boundaries</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Training</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sibylle Hess
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022. Eindhoven University of Technology.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,746 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>From Linear Models to Neural Networks &#8212; Data Mining and Machine Learning Jupyter Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'neuralnets_intro';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MLPs" href="neuralnets_mlps.html" />
+    <link rel="prev" title="Neural Networks" href="neuralnets.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Data Mining and Machine Learning Jupyter Book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Data Mining and Machine Learning Jupyter Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation.html">Notation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="linalg.html">Linear Algebra</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="linalg_spaces.html">Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_normed_vs.html">Normed Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="optimization.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimization_problems.html">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_convex.html">Convex Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_analytic.html">Analytic Solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_numerical.html">Numerical Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_gradients.html">Matrix Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="regression.html">Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="regression_objective.html">Regression Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_functions.html">Regression Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_optimization.html">Minimizing the RSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_bias_var.html">The Bias-Variance Tradeoff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_sparse.html">The Sparse Regression Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_ridge.html">Ridge Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_lasso.html">Lasso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="classification.html">Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="classification_problem.html">Classification Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_knn.html">K-Nearest Neighbor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_naive_bayes.html">Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_decision_trees.html">Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_random_forests.html">Random Forests</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="classification_svms.html">Support Vector Machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_kernel_svm.html">Kernel SVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="neuralnets.html">Neural Networks</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">From Linear Models to Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_mlps.html">MLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_backprop.html">Backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_sgd.html">Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_conv.html">Convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_pooling.html">Pooling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dim_reduction.html">Dimensionality Reduction Techniques</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_mf.html">Low Rank Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_pca.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="clustering.html">Clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means.html">k-Means</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means_mf.html">k-Means is MF</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_kernel_kmeans.html">Kernel k-means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_spectral.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/edit/main/neuralnets_intro.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/issues/new?title=Issue%20on%20page%20%2Fneuralnets_intro.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/neuralnets_intro.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>From Linear Models to Neural Networks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-and-softmax-regression">Logistic and Softmax Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#softmax-regression-as-a-computational-graph">Softmax Regression as a Computational Graph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representation-learning">Representation Learning</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="from-linear-models-to-neural-networks">
+<h1>From Linear Models to Neural Networks<a class="headerlink" href="#from-linear-models-to-neural-networks" title="Link to this heading">#</a></h1>
+<p>At their core, neural networks are function approximators composed of layers of interconnected nodes that transform input data through weighted connections and nonlinear activations. Originally proposed in the 1950s with the perceptron, neural networks saw early promise but soon hit limitations due to their inability to solve even simple non-linear tasks.</p>
+<p>The resurgence of interest began in the 1980s with the development of backpropagation, enabling multi-layer networks to be efficiently optimized. However, they were soon overshadowed by models like the kernel SVM, which were mathematically elegant, easier to train, and delivered strong performance on small to medium datasets.</p>
+<p>Kernel methods offer strong theoretical guarantees and closed-form training objectives, but scale poorly with large datasets and require careful kernel selection. Neural networks can be seen as models that learn the feature transformation, that is implicitly provided by the kernel, themselves. Adapting both the transformation and the decision boundary simultaneously makes neural networks exceptionally powerful in high-dimensional, unstructured domains like images, audio, and text. The breakthrough came in the 2010s, fueled by larger datasets, faster GPUs, and architectural innovations (e.g., convolutional layers, residual connections), enabling deep neural networks (DNNs) to surpass traditional models on a wide range of tasks.</p>
+<p>We start now with introducing another linear classifier, that is extended to a deep neural network classifier by a preceeding feature transformation.</p>
+<section id="logistic-and-softmax-regression">
+<h2>Logistic and Softmax Regression<a class="headerlink" href="#logistic-and-softmax-regression" title="Link to this heading">#</a></h2>
+<p>Logistic regression is a binary classification model, that finds a hyperplane separating the classes (like the SVM). In contrast to the SVM, logistic regression uses the distance of a point to the separating hperplane as a confidence measure: the further a point is away from the separating hyperplane,the more confidently it is assigned to the corresponding class. The plot below indicates a separating hyperplane and the confidence assigned by logistic regression. We see that the confidence is low at the decision boundary and getting pretty high quickly when moving away from the decision boundary.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/ff5e2930cf14695c5191020e966ce212b15d77f2f343869d8fd178d7706b1642.png" src="_images/ff5e2930cf14695c5191020e966ce212b15d77f2f343869d8fd178d7706b1642.png" />
+</div>
+</div>
+<p>The confidence in logistic regression is modeled by a probability measuring how likely a sample belongs to the positive class.</p>
+<div class="math notranslate nohighlight">
+\[
+P(y=1 \mid \mathbf{x}) = \sigma(\mathbf{w}^\top \mathbf{x} + b).
+\]</div>
+<p>This probability is computed over the sigmoid function
+<div class="math notranslate nohighlight">
+\[\sigma(x) = \frac{1}{1 + \exp^{-x}}.\]</div>
+
+Recall from what we discussed regarding the SVM that <span class="math notranslate nohighlight">\(\lvert\mathbf{w}^\top \mathbf{x} + b\rvert = dist(\mathbf{x},\mathcal{H}_{\vvec{w},b})\lVert\vvec{w}\rVert\)</span> is the scaled distance of point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> to the hyperplane defined by <span class="math notranslate nohighlight">\(\vvec{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span>. The sigmoid function maps this scaled distance onto a probability between 0 and 1.
+The plot below shows the sigmoid function.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/3c66b1fee679189a8e8fa9853333139006dc55f0553c2848cc61708a1e39cc0d.png" src="_images/3c66b1fee679189a8e8fa9853333139006dc55f0553c2848cc61708a1e39cc0d.png" />
+</div>
+</div>
+<p>For multiclass classification, the softmax regression generalizes logistic regression to <span class="math notranslate nohighlight">\(c\)</span> classes by learning one hyperplane per class. The more a point lies on the positive side of a hyperplane, the more confidently it is assigned to that class. The confidence is again interpreted as a probability that a sample belongs to a class, which is now computed over the softmax function.</p>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 32 </span> (Softmax Regression)</p>
+<section class="definition-content" id="proof-content">
+<p>The <strong>softmax regression</strong> (a.k.a. multinomial logistic regression) classifier computes the probability that point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> belongs to class <span class="math notranslate nohighlight">\(y\)</span> by means of <span class="math notranslate nohighlight">\(c\)</span> hyperplanes, defined by parameters <span class="math notranslate nohighlight">\(\vvec{w}_l\)</span> and <span class="math notranslate nohighlight">\(b_l\)</span>. Gathering the <span class="math notranslate nohighlight">\(c\)</span> hyperplane defining parameters in a matrix <span class="math notranslate nohighlight">\(W\)</span>, such that <span class="math notranslate nohighlight">\(W_{l\cdot} = \vvec{w}_l^\top\)</span>, and <span class="math notranslate nohighlight">\(\vvec{b}\)</span>, then the softmax regression classifier models the probability that point <span class="math notranslate nohighlight">\(\vvec{x}\)</span> belongs to class <span class="math notranslate nohighlight">\(l\)</span> over the parameters <span class="math notranslate nohighlight">\(W\)</span> and <span class="math notranslate nohighlight">\(\vvec{b}\)</span>
+<div class="math notranslate nohighlight">
+\[
+f_{sr}(\vvec{x})_l=p(y = l \mid \mathbf{x},W,\vvec{b}) =\mathrm{softmax}(W\vvec{x}+\vvec{b})_l= \frac{\exp(\vvec{w}_l^\top \mathbf{x} + b_l)}{\sum_{j=1}^{c} \exp(\mathbf{w}_j^\top \mathbf{x} + b_j)}
+\]</div>
+</p>
+</section>
+</div><p>The softmax function <span class="math notranslate nohighlight">\(\mathrm{softmax}:\mathbb{R}^d\rightarrow [0,1]^c\)</span>, <span class="math notranslate nohighlight">\(\mathrm{softmax}(\vvec{x})_y=\frac{\exp(x_y)}{\sum_{j=1}^c\exp{x_j}}\)</span> returns a vector reflecting the confidences for each class. We can easily show the confidences sum up to one. The plot below show the confidences and the hyperplanes learned for a 3-class classification problem.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make 3-class dataset for classification</span>
+<span class="n">centers</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="n">centers</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">transformation</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">]]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">transformation</span><span class="p">)</span>
+
+<span class="n">multi_class</span>  <span class="o">=</span> <span class="s2">&quot;multinomial&quot;</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span>
+    <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;sag&quot;</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">multi_class</span><span class="o">=</span><span class="n">multi_class</span>
+<span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+
+<span class="n">coef</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">coef_</span>
+<span class="n">intercept</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">intercept_</span>
+<span class="n">plot_conf</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">,</span><span class="n">show_class_assignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">x_min</span> <span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_min</span> <span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;spring&quot;</span><span class="p">)</span>
+<span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">()</span>
+<span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_hyperplane</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">line</span><span class="p">(</span><span class="n">x0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x0</span> <span class="o">*</span> <span class="n">coef</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">intercept</span><span class="p">[</span><span class="n">c</span><span class="p">])</span> <span class="o">/</span> <span class="n">coef</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">],</span> <span class="p">[</span><span class="n">line</span><span class="p">(</span><span class="n">xmin</span><span class="p">),</span> <span class="n">line</span><span class="p">(</span><span class="n">xmax</span><span class="p">)],</span>  <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+<span class="c1">#cmap = plt.cm.get_cmap(&quot;gist_rainbow&quot;)</span>
+
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">clf</span><span class="o">.</span><span class="n">classes_</span><span class="p">:</span>
+    <span class="n">plot_hyperplane</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/tdsimao/workspace/book/.venv/lib/python3.13/site-packages/sklearn/linear_model/_logistic.py:1272: FutureWarning: &#39;multi_class&#39; was deprecated in version 1.5 and will be removed in 1.7. From then on, it will always use &#39;multinomial&#39;. Leave it to its default value to avoid this warning.
+  warnings.warn(
+</pre></div>
+</div>
+<img alt="_images/25047057d3c1b41a4ff9feed8fe5c7899fa1d0397283f40267ce4fedb9f79b6b.png" src="_images/25047057d3c1b41a4ff9feed8fe5c7899fa1d0397283f40267ce4fedb9f79b6b.png" />
+</div>
+</div>
+</section>
+<section id="training">
+<h2>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
+<div class="tip admonition" id="softmax-regr-task">
+<p class="admonition-title">Task (softmax regression)</p>
+<p><strong>Given</strong> a classification training data set that is sampled i.i.d. <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n, y_i\in\{1,\ldots,c\}\}\)</span>.</p>
+<p><strong>Find</strong> the parameters <span class="math notranslate nohighlight">\(\theta=(W,\vvec{b})\)</span> such that the posterior probabilities, that are modeled as
+<div class="math notranslate nohighlight">
+\[p(y=l\mid \vvec{x},\theta) = \softmax(W\vvec{x}+\vvec{b})_l\]</div>
+
+are maximized</p>
+<div class="math notranslate nohighlight" id="equation-eq-obj-smr">
+<span class="eqno">(51)<a class="headerlink" href="#equation-eq-obj-smr" title="Link to this equation">#</a></span>\[\begin{align*}\max_{\theta}\mathcal{L}(\theta,\mathcal{D}) = \prod_{i=1}^n p(y=y_i\mid \vvec{x}_i,\theta)\end{align*}\]</div>
+<p><strong>Return</strong> the classifier defining parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+</div>
+<p>As discussed in the scope of naive Bayes, computing the product of probabilities is generally not a good idea, because we might run into underflow. Hence, we apply again the log-probabilities trick and minimize the log-probabilities instead of the probabilities directly. We divide by the number of samples in the dataset and apply the logarithm to Eq. <a class="reference internal" href="#equation-eq-obj-smr">(51)</a> and obtain the equivalent objective</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\max_{\theta} \frac1n \log(\prod_{i=1}^n p(y=y_i\mid \vvec{x}_i,\theta)) =
+\max_{\theta} \frac1n \sum_{i=1}^n\log p(y=y_i\mid \vvec{x}_i,\theta)
+\end{align*}\]</div>
+<p>Instead of maximizing the logarithmic values, which are negative, we further multiply with minus one and obtain the following equivalent objective, introducing the cross entropy:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\min_{\theta} -\frac1n \sum_{i=1}^n\log p(y=y_i\mid \vvec{x}_i,\theta)=
+\min_{\theta} \frac1n \sum_{i=1}^nCE(y_i,p(y\mid \vvec{x}_i,\theta)).
+\end{align*}\]</div>
+<div class="proof definition admonition" id="definition-1">
+<p class="admonition-title"><span class="caption-number">Definition 33 </span> (Cross-entropy)</p>
+<section class="definition-content" id="proof-content">
+<p>The cross entropy is a function <span class="math notranslate nohighlight">\(CE:\{1,\ldots,c\}\times [0,1]^c\rightarrow \mathbb{R}_+\)</span>,
+mapping a label <span class="math notranslate nohighlight">\(y\in\{1,\ldots,c\}\)</span> and a probability vector <span class="math notranslate nohighlight">\(\vvec{z}\in[0,1]^c\)</span> to the negative logarithm of the probability vector at position <span class="math notranslate nohighlight">\(y\)</span>:
+<div class="math notranslate nohighlight">
+\[CE(y,\vvec{z}) = -\log(z_y).\]</div>
+</p>
+</section>
+</div><p>Cross entropy is a popular loss for classification tasks, since it penalizes heavily low probability predictions for the correct class. In addition, applying the logarithm to the softmax output dampenes the vanishing gradient effect that the sigmoid and softmax function are suffering from. Hence, applying Cross-Entropy as a loss helps to numerically optimize the softmax output of the softmax regression classifier.</p>
+</section>
+<section id="softmax-regression-as-a-computational-graph">
+<h2>Softmax Regression as a Computational Graph<a class="headerlink" href="#softmax-regression-as-a-computational-graph" title="Link to this heading">#</a></h2>
+<p>The plot below shows a visualization of the softmax regression model as it is common for neural networks. The affine function is visualized by the edges connecting the input layer on the left with the output layer. The output layer has <span class="math notranslate nohighlight">\(c\)</span> nodes, one for each class. Every edge has a weight that is given by the matrix <span class="math notranslate nohighlight">\(W\)</span>. For example, the edge from input node <span class="math notranslate nohighlight">\(x_i\)</span> to output class node <span class="math notranslate nohighlight">\(l\)</span> is <span class="math notranslate nohighlight">\(W_{il}\)</span>. At each output node, the weighted sum of the edge weights multiplied with the input is computed, the bias term is added and the softmax function is applied.</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-60f85c6b4ef63be8b3e131a4d29bd0fd495fba9c.png" alt="Figure made with TikZ" /></p>
+</div><p>The output of the final layer before the application of the softmax function are also called the <strong>logits</strong>. For the simple softmax regression problem, the logits are hence given by the vector <span class="math notranslate nohighlight">\(\vvec{z} = W\vvec{x}+\vvec{b}\)</span>.</p>
+</section>
+<section id="representation-learning">
+<h2>Representation Learning<a class="headerlink" href="#representation-learning" title="Link to this heading">#</a></h2>
+<p>Logistic or Softmax regression rely on linear decision boundaries. In practice, data often lies on complex, nonlinear manifolds. Hence, we apply a similar trick as we have seen in linear regression and the SVM to use a linear model for nonlinear problems by appling a feature transformation first. In regression, the feature transformation is given by the basis functions and in the SVM it is implicitly defined over the kernel. Neural networks <strong>learn the feature transformation</strong> by stacking various simple functions after one another, whose parameters are optimized jointly with the classifier’s parameters. That is we get something that looks like that:</p>
+<div class="figure" style="text-align: center"><p><img  src="_images/tikz-713fddd55a72d1485733a126a5cbb77e6e2492e8.png" alt="Figure made with TikZ" /></p>
+</div><p>On the left we see the vector <span class="math notranslate nohighlight">\(\vvec{x}\)</span> being put as input to the graph, producing an intermediate output <span class="math notranslate nohighlight">\(\phi(\vvec{x})\)</span>, that is the feature transformation that is classified with a softmax regression, creating the output of the graph. We discuss in the following how we can interpret this graph and how the feature transformation <span class="math notranslate nohighlight">\(\phi\)</span> is computed.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="neuralnets.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Neural Networks</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="neuralnets_mlps.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MLPs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-and-softmax-regression">Logistic and Softmax Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#softmax-regression-as-a-computational-graph">Softmax Regression as a Computational Graph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representation-learning">Representation Learning</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sibylle Hess
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022. Eindhoven University of Technology.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

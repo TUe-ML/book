@@ -1,0 +1,976 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Exercises &#8212; Data Mining and Machine Learning Jupyter Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'linalg_exercises';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Optimization" href="optimization.html" />
+    <link rel="prev" title="Normed Vector Spaces" href="linalg_normed_vs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Data Mining and Machine Learning Jupyter Book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Data Mining and Machine Learning Jupyter Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation.html">Notation</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="linalg.html">Linear Algebra</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="linalg_spaces.html">Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_normed_vs.html">Normed Vector Spaces</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="optimization.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimization_problems.html">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_convex.html">Convex Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_analytic.html">Analytic Solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_numerical.html">Numerical Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_gradients.html">Matrix Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="regression.html">Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="regression_objective.html">Regression Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_functions.html">Regression Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_optimization.html">Minimizing the RSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_bias_var.html">The Bias-Variance Tradeoff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_sparse.html">The Sparse Regression Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_ridge.html">Ridge Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_lasso.html">Lasso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="classification.html">Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="classification_problem.html">Classification Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_knn.html">K-Nearest Neighbor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_naive_bayes.html">Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_decision_trees.html">Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_random_forests.html">Random Forests</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="classification_svms.html">Support Vector Machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_kernel_svm.html">Kernel SVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="neuralnets.html">Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_intro.html">From Linear Models to Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_mlps.html">MLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_backprop.html">Backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_sgd.html">Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_conv.html">Convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_pooling.html">Pooling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dim_reduction.html">Dimensionality Reduction Techniques</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_mf.html">Low Rank Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_pca.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="clustering.html">Clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means.html">k-Means</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means_mf.html">k-Means is MF</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_kernel_kmeans.html">Kernel k-means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_spectral.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/edit/main/linalg_exercises.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/issues/new?title=Issue%20on%20page%20%2Flinalg_exercises.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/linalg_exercises.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Exercises</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-algebra-trivia">Linear Algebra Trivia</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Exercises</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="exercises">
+<h1>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h1>
+<section id="linear-algebra-trivia">
+<h2>Linear Algebra Trivia<a class="headerlink" href="#linear-algebra-trivia" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p><span class="math notranslate nohighlight">\(A\in\mathbb{R}^{n\times r}\)</span>, <span class="math notranslate nohighlight">\(B\in\mathbb{R}^{m\times r}\)</span>, which product is well-defined?<br />
+A.  <span class="math notranslate nohighlight">\(BA\)</span><br />
+B.  <span class="math notranslate nohighlight">\(A^\top B\)</span><br />
+C.  <span class="math notranslate nohighlight">\(AB^\top\)</span></p>
+<div class="toggle docutils container">
+<p>The correct solution is C. <span class="math notranslate nohighlight">\(AB^\top\)</span>, the connecting dimension is <span class="math notranslate nohighlight">\(r\)</span>.</p>
+</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(A\in\mathbb{R}^{n\times r}\)</span>, <span class="math notranslate nohighlight">\(B\in\mathbb{R}^{m\times r}\)</span>, what is equal to <span class="math notranslate nohighlight">\((AB^\top)^\top ?\)</span><br />
+A. <span class="math notranslate nohighlight">\(A^\top B\)</span><br />
+B. <span class="math notranslate nohighlight">\(B^\top A^\top\)</span><br />
+C. <span class="math notranslate nohighlight">\(BA^\top\)</span></p>
+<div class="toggle docutils container">
+<p>The correct solution is C. <span class="math notranslate nohighlight">\(BA^\top\)</span>, we have <span class="math notranslate nohighlight">\((AB^\top)^\top = {B^\top}^\top A^\top = BA^\top\)</span>.</p>
+</div>
+</li>
+<li><p>What is the matrix product computed by <span class="math notranslate nohighlight">\(C_{ji}=\sum_{s=1}^rA_{is}B_{js} ?\)</span><br />
+A. <span class="math notranslate nohighlight">\(C=AB^\top\)</span><br />
+B. <span class="math notranslate nohighlight">\(C=B^\top A\)</span><br />
+C. <span class="math notranslate nohighlight">\(C=BA^\top\)</span></p>
+<div class="toggle docutils container">
+<p>The correct solution is C. <span class="math notranslate nohighlight">\(BA^\top\)</span>, we have
+<span class="math notranslate nohighlight">\(C_{ji}=\sum_{s=1}^rA_{is}B_{js} = \sum_{s=1}^rB_{js}A_{is} = B_{j\cdot}A_{i\cdot}^\top\)</span>, hence <span class="math notranslate nohighlight">\(C=BA^\top\)</span>.</p>
+</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(A,B\in\mathbb{R}^{n\times n}\)</span> have an inverse <span class="math notranslate nohighlight">\(A^{-1},B^{-1}\)</span>, what is generally <strong>not</strong> equal to <span class="math notranslate nohighlight">\(AA^{-1}B\)</span>?<br />
+A. <span class="math notranslate nohighlight">\(A^{-1}BA\)</span><br />
+B. <span class="math notranslate nohighlight">\(B\)</span><br />
+C. <span class="math notranslate nohighlight">\(BB^{-1}B\)</span></p>
+<div class="toggle docutils container">
+<p>The correct answer is A. <span class="math notranslate nohighlight">\(A^{-1}BA\)</span>, since the matrix product between the matrices <span class="math notranslate nohighlight">\(A^{-1}\)</span> and <span class="math notranslate nohighlight">\(BA\)</span> is generally not commutative. Answers B. and C. are correct because
+<div class="math notranslate nohighlight">
+\[AA^{-1}B = IB =B = BB^{-1}B.\]</div>
+</p>
+</div>
+</li>
+<li><p>Let <span class="math notranslate nohighlight">\(v,w\in\mathbb{R}^{d}\)</span>, <span class="math notranslate nohighlight">\(\alpha\in\mathbb{R}\)</span>, then <span class="math notranslate nohighlight">\(\lVert\alpha v + w\rVert\leq\)</span><br />
+A. <span class="math notranslate nohighlight">\(\alpha\lVert v+w\rVert\)</span><br />
+B. <span class="math notranslate nohighlight">\(\lvert\alpha\rvert\lVert v\rVert+\lVert w\rVert\)</span><br />
+C. <span class="math notranslate nohighlight">\(\alpha\lVert v\rVert+\lVert w\rVert\)</span></p>
+<div class="toggle docutils container">
+<p>The correct answer is B. <span class="math notranslate nohighlight">\(\lvert\alpha\rvert\lVert v\rVert+\lVert w\rVert\)</span>, because</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\lVert\alpha v + w\rVert&amp;\leq \lVert\alpha v\rVert + \lVert w\rVert  &amp;\text{(triangle inequality)}\\
+&amp; = \lvert\alpha\rvert\lVert v\rVert + \lVert w\rVert  &amp;\text{(homogenity)}.
+\end{align*}\]</div>
+</div>
+</li>
+<li><p>Let <span class="math notranslate nohighlight">\(A,B\in\mathbb{R}^{n\times r}\)</span>, <span class="math notranslate nohighlight">\(\alpha\in\mathbb{R}\)</span>, then <span class="math notranslate nohighlight">\(\lVert A\rVert\leq\)</span>
+A. <span class="math notranslate nohighlight">\(\lVert A-B\rVert + \lVert B\rVert\)</span>
+B. <span class="math notranslate nohighlight">\(\alpha\lVert\frac{1}{\alpha}A\rVert\)</span>
+C. <span class="math notranslate nohighlight">\(\lVert A\rVert^2\)</span></p>
+<div class="toggle docutils container">
+<p>The correct answer is A. <span class="math notranslate nohighlight">\(\lVert A-B\rVert + \lVert B\rVert\)</span>, because</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\lVert A\rVert\leq \lVert A-B+B\rVert \leq \lVert A -B \rVert +\lVert B\rVert,
+\end{align*}\]</div>
+<p>where the last inequality derives from the triangle inequality. Answer B. is nott correct because the inequalitty does not hold for negative <span class="math notranslate nohighlight">\(\alpha\)</span> and C. is not correct for matrices <span class="math notranslate nohighlight">\(A\)</span> having small entries (for example take the <span class="math notranslate nohighlight">\(1\times 1\)</span> matrix A=(0.1), then <span class="math notranslate nohighlight">\(\lVert A\rVert = 0.1 &gt; 0.1^2\)</span>).</p>
+</div>
+</li>
+<li><p>Let <span class="math notranslate nohighlight">\(A,B\in\mathbb{R}^{n\times n}\)</span>, <span class="math notranslate nohighlight">\(A\)</span> is orthogonal, what is <strong>not</strong> equal to <span class="math notranslate nohighlight">\(\tr(ABA^\top)\)</span>?<br />
+A. <span class="math notranslate nohighlight">\(\tr(A^\top BA)\)</span><br />
+B. <span class="math notranslate nohighlight">\(\tr(B)\)</span><br />
+C. <span class="math notranslate nohighlight">\(\tr(ABA)\)</span></p>
+<div class="toggle docutils container">
+<p>The correct answer is C. <span class="math notranslate nohighlight">\(\tr(ABA)\)</span>. The other answers are not correct because the cycling property of the trace yields <span class="math notranslate nohighlight">\(\tr(ABA^\top)  = \tr(BA^\top A)\)</span>, and</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\tr(ABA^\top) &amp; = \tr(BA^\top A) = \tr(BI) =\tr(B) &amp; \text{(orthogonality of $A$)}\\
+&amp; = \tr(IB) = \tr(AA^\top B) = \tr(A^\top B A). &amp;\text{(cycling property and orthogonality)}
+\end{align*}\]</div>
+</div>
+</li>
+</ol>
+</section>
+<section id="id1">
+<h2>Exercises<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Compute the matrix product <span class="math notranslate nohighlight">\(AB\)</span> inner-product-wise and outer-product-wise</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A=\begin{pmatrix} 1 &amp; 2 &amp; 0 \\
+0 &amp; 2&amp; 4\end{pmatrix},\quad B=\begin{pmatrix} 0 &amp; 2 \\
+3 &amp;1 \\
+1 &amp; 2\end{pmatrix}.
+\end{align*}\]</div>
+<div class="toggle docutils container">
+<p>Computing the matrix product <em>inner product wise</em>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+AB = 
+\begin{pmatrix}
+    1\cdot 0 + 2\cdot3+0\cdot 1 &amp; 1\cdot2+2\cdot1 + 0\cdot 2\\
+    0\cdot 0 + 2\cdot3+4\cdot 1 &amp; 0\cdot2+2\cdot1 + 4\cdot 2
+\end{pmatrix}
+=
+\begin{pmatrix}
+    6 &amp; 4\\
+    10 &amp; 10
+\end{pmatrix}
+\end{align*}\]</div>
+<p>Computing the matrix product <em>outer product wise</em>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+AB &amp;= 
+\begin{pmatrix}1 \\0\end{pmatrix}\begin{pmatrix}0&amp;2\end{pmatrix} +
+\begin{pmatrix}2 \\2\end{pmatrix}\begin{pmatrix}3&amp;1\end{pmatrix} +
+\begin{pmatrix}0 \\4\end{pmatrix}\begin{pmatrix}1&amp;2\end{pmatrix} \\
+&amp;=
+\begin{pmatrix}1\cdot 0 &amp;  1\cdot 2\\0\cdot 0 &amp; 0\cdot 2\end{pmatrix} +
+\begin{pmatrix}2\cdot 3 &amp; 2\cdot 1 \\2\cdot 3 &amp; 2\cdot 1\end{pmatrix} +
+\begin{pmatrix}0\cdot 1&amp;0\cdot2 \\4\cdot1&amp;4\cdot2\end{pmatrix}\\
+&amp;=
+\begin{pmatrix}0 &amp;  2\\0 &amp; 0\end{pmatrix} +
+\begin{pmatrix}6 &amp; 2 \\6 &amp; 2\end{pmatrix} +
+\begin{pmatrix}0&amp;0 \\4&amp;8\end{pmatrix}\\
+&amp;= \begin{pmatrix}6&amp;4\\ 10 &amp;10\end{pmatrix}
+\end{align*}\]</div>
+</div>
+</li>
+<li><p>You have observations of <span class="math notranslate nohighlight">\(5\)</span> symptoms of a disease for three patients represented in the binary matrix
+<div class="math notranslate nohighlight">
+\[\begin{split} A = \begin{pmatrix}
+1 &amp; 0 &amp; 1 &amp; 1 &amp; 0\\
+1 &amp; 1 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0 &amp; 0 &amp; 1\end{pmatrix}\end{split}\]</div>
+
+Compute the matrix <span class="math notranslate nohighlight">\(AA^\top\)</span> and <span class="math notranslate nohighlight">\(A^\top A\)</span> and interpret the result with regard to the scenario.</p>
+<div class="toggle docutils container">
+<p>The matrix represents a data table of the following format, where <span class="math notranslate nohighlight">\(\mathtt{S}_i\)</span> denotes the feature of sympton <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(\mathtt{P}\)</span> stands for patient ID:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{P}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{S}_1\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{S}_2\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{S}_3\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{S}_4\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{S}_5\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The matrix products</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    AA^\top &amp;= 
+    \begin{pmatrix}
+        3 &amp; 1 &amp; 0\\
+        1 &amp; 2 &amp; 1\\
+        0 &amp; 1 &amp; 2
+    \end{pmatrix},
+    &amp; A^\top A &amp;=
+    \begin{pmatrix}
+        2 &amp; 1 &amp; 1 &amp; 1 &amp; 0\\
+        1 &amp; 2 &amp; 0 &amp; 0 &amp; 1\\
+        1 &amp; 0 &amp; 1 &amp; 1 &amp; 0\\
+        1 &amp; 0 &amp; 1 &amp; 1 &amp; 0\\
+        0 &amp; 1 &amp; 0 &amp; 0 &amp; 1
+    \end{pmatrix}
+\end{align*}\]</div>
+<p>contrast either the features or the patients. That is, the representation of the matrix product in the table format would look as follows:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(AA^\top\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{P}_1\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{P}_2\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{P}_3\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mathtt{P}_1\)</span></p></td>
+<td><p>3</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mathtt{P}_1\)</span></p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mathtt{P}_1\)</span></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(A^\top A\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{S}_1\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{S}_2\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{S}_3\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{S}_4\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathtt{S}_5\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mathtt{S}_1\)</span></p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mathtt{S}_2\)</span></p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mathtt{S}_3\)</span></p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mathtt{S}_4\)</span></p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mathtt{S}_5\)</span></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The table of <span class="math notranslate nohighlight">\(AA^\top\)</span> denotes in entry <span class="math notranslate nohighlight">\(jl\)</span> the number of symptoms patient <span class="math notranslate nohighlight">\(j\)</span> and patient <span class="math notranslate nohighlight">\(l\)</span> have in common. The table of <span class="math notranslate nohighlight">\(A^\top A\)</span> denotes in entry <span class="math notranslate nohighlight">\(ik\)</span> the number of patients which exibit symptoms <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(k\)</span>.</p>
+</div>
+</li>
+<li><p>Find a matrix/vector notation to compute the vector of average feature values for a matrix <span class="math notranslate nohighlight">\(A\in\mathbb{R}^{n\times d}\)</span>, representing <span class="math notranslate nohighlight">\(n\)</span> observations of <span class="math notranslate nohighlight">\(d\)</span> features. Make an example for your computation.</p>
+<div class="toggle docutils container">
+<p>The vector representing the average for every feature value is computed by <span class="math notranslate nohighlight">\(\bm{\mu} = \frac{1}{n} A^\top \mathbf{1}\)</span> where <span class="math notranslate nohighlight">\(\mathbf{1}\)</span> is the <span class="math notranslate nohighlight">\(n\)</span>-dimensional one-vector, having all values equal to one. This is the case, because we have according to the definition of matrix multiplications by the row-times-column column scheme:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \bm{\mu}^\top = \frac{1}{n}\mathbf{1}^\top A = \frac1n \begin{pmatrix}\mathbf{1}^\top A_{\cdot 1} &amp;\ldots &amp; \mathbf{1}^\top A_{\cdot d}\end{pmatrix},
+\end{align*}\]</div>
+<p>that is, for <span class="math notranslate nohighlight">\(1\leq j \leq n\)</span> we have that the <span class="math notranslate nohighlight">\(i\)</span>-th entry of <span class="math notranslate nohighlight">\(\bm \mu\)</span> is given as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \bm\mu_{i} = \frac1n \mathbf{1}^\top A_{\cdot i} = \frac1n \sum_{j=1}^n 1\cdot A_{ji}= \frac1n \sum_{j=1}^n A_{ji},
+\end{align*}\]</div>
+<p>which is equal to the average value for feature <span class="math notranslate nohighlight">\(i\)</span>.</p>
+</div>
+</li>
+<li><p>Every system of linear equations can be written as a matrix equation <span class="math notranslate nohighlight">\(A\vvec{x}=\vvec{y}\)</span>. Given the following system of linear equations, what would be the matrix <span class="math notranslate nohighlight">\(A\)</span> and vector <span class="math notranslate nohighlight">\(\vvec{y}\)</span> such that the system of linear equations is equivalent to solving <span class="math notranslate nohighlight">\(A\vvec{x}=\vvec{y}\)</span>?
+\begin{align}
+2x_1 &amp;+&amp; 3x_2 &amp;&amp; &amp;=&amp;4\
+x_1  &amp;-&amp; 2x_2 &amp;+&amp; x_3 &amp;=&amp; 3\
+-x_1 &amp;+&amp; 2x_2 &amp;+&amp; 3x_3 &amp;=&amp; 1
+\end{align}.
+Can you solve the system of linear equations by using the inverse of <span class="math notranslate nohighlight">\(A\)</span> (<code class="docutils literal notranslate"><span class="pre">np.linalg.inv(A)</span></code>)?</p>
+<div class="toggle docutils container">
+<p>You can easily verify that the equation <span class="math notranslate nohighlight">\(A\vvec{x}=\vvec{y}\)</span> is equivalent to the above system of equations when using</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    A &amp;= 
+    \begin{pmatrix}
+        2 &amp; 3 &amp; 0\\
+        1 &amp; -2 &amp; 1\\
+        -1 &amp; 2 &amp; 3
+    \end{pmatrix},
+    &amp;y &amp;= 
+    \begin{pmatrix}
+        4 \\
+        3 \\
+        1 
+    \end{pmatrix}.
+\end{align*}\]</div>
+<p>We can solve the system of linear equations by multiplying with <span class="math notranslate nohighlight">\(A^{-1}\)</span> from left:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    A\vvec{x}=\vvec{y} \Leftrightarrow A^{-1}A\vvec{x}=A^{-1}\vvec{y} \Leftrightarrow \vvec{x}=A^{-1}\vvec{y}
+\end{align*}\]</div>
+<p>That is, the solution is given by <span class="math notranslate nohighlight">\(\vvec{x}=A^{-1}\vvec{y}\)</span>. This is of course only possible if <span class="math notranslate nohighlight">\(A\)</span> is invertible. In Python, we can solve the system of linear equations as follows:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import numpy as np
+A = np.array([[2,3,0],[1,-2,1],[-1,2,3]])
+y = np.array([4,3,1])
+print(&quot;x=&quot;,np.linalg.inv(A)@y) 
+</pre></div>
+</div>
+<p>Alternatively, we can use the following function to solve a system of linear equations:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>print(&quot;x=&quot;,np.linalg.solve(A,y))
+</pre></div>
+</div>
+</div>
+</li>
+<li><p>Show that <span class="math notranslate nohighlight">\(\lVert A - B \rVert^2 = -2\tr(AB^\top) + 2n \)</span> for orthogonal matrices <span class="math notranslate nohighlight">\(A,B\in\mathbb{R}^{n\times n}\)</span>.</p>
+<div class="toggle docutils container">
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(A,B\in\mathbb{R}^{n\times n}\)</span> be orthogonal matrices. Orthogonal matrices satisfy the property <span class="math notranslate nohighlight">\(AA^\top =A^\top A=I\)</span> and <span class="math notranslate nohighlight">\(BB^\top =B^\top B=I\)</span>. Thus, we have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \lVert A-B\rVert^2 &amp;= \lVert A\rVert^2 -2\tr(AB^\top) + \lVert B\rVert^2 &amp;\text{(binomial formula for matrix norms)}\\
+    &amp;= \tr(A^\top A) -2\tr(AB^\top) +\tr(B^\top B) &amp;\text{(definition of elementwise matrix $L_2$-norm)}\\
+    &amp;= \tr(I) -2\tr(AB^\top) +\tr(I) &amp;\text{(orthogonality of $A$ and $B$)}\\
+    &amp;= -2\tr(AB^\top) +2n, 
+\end{align*}\]</div>
+<p>because <span class="math notranslate nohighlight">\(\tr(I) = \underbrace{1 +\ldots +1}_{n \text{ times}} =n\)</span>. This concludes the proof.</p>
+</div>
+</li>
+<li><p>Show that the following norms are orthogonal invariant</p>
+<ul class="simple">
+<li><p>the vector <span class="math notranslate nohighlight">\(L_2\)</span>-norm</p></li>
+<li><p>the Frobenius norm (matrix <span class="math notranslate nohighlight">\(L_2\)</span>-norm)</p></li>
+<li><p>the operator norm</p></li>
+</ul>
+<div class="toggle docutils container">
+<p>A norm is orthogonal invariant if multiplying the argument with an orthogonal matrix from the left does not change the value of the norm. Let <span class="math notranslate nohighlight">\(A\)</span> be a <span class="math notranslate nohighlight">\((n\times n)\)</span> orthogonal matrix. For the <span class="math notranslate nohighlight">\(L_2\)</span>-norm of a vector <span class="math notranslate nohighlight">\(\vvec{v}\in\mathbb{R}^n\)</span> we have:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \lVert A\vvec{v} \rVert^2 &amp;= (A\vvec{v})^\top A\vvec{v} &amp; \text{(Definition)}\\ 
+    &amp;= \vvec{v}^\top A^\top A\vvec{v}\\ 
+    &amp;= \vvec{v}^\top \vvec{v} &amp;(A^\top A =I)\\
+    &amp;= \lVert\vvec{v}\rVert^2
+\end{align*}\]</div>
+<p>For the <span class="math notranslate nohighlight">\(L_2\)</span>-norm of a <span class="math notranslate nohighlight">\((n\times d)\)</span> matrix <span class="math notranslate nohighlight">\(AD\)</span> we have:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \lVert AD \rVert^2 &amp;= \tr((AD)^\top AD) &amp;\text{(Definition)}\\ 
+    &amp;= \tr(D^\top A^\top AD) &amp;\\ 
+    &amp;= \tr(D^\top D) &amp; (A^\top A=I)\\
+    &amp;= \lVert D\rVert^2 &amp;
+\end{align*}\]</div>
+<p>For the operator norm of the matrix <span class="math notranslate nohighlight">\(AD\)</span>, we have:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \lVert AD \rVert_{op} &amp;= \max_{\vvec{x}:\lVert\vvec{x}\rVert=1}\lVert AD\vvec{x}\rVert &amp;\text{(Definition)}\\ 
+    &amp;= \max_{\vvec{x}:\lVert\vvec{x}\rVert=1}\lVert D\vvec{x}\rVert &amp; \text{(orthogonal invariance of $L_2$ vector norm)}\\ 
+    &amp;= \lVert D\rVert_{op} &amp;
+\end{align*}\]</div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="linalg_normed_vs.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Normed Vector Spaces</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="optimization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Optimization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-algebra-trivia">Linear Algebra Trivia</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Exercises</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sibylle Hess
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022. Eindhoven University of Technology.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

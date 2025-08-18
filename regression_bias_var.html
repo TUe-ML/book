@@ -1,0 +1,1035 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>The Bias-Variance Tradeoff &#8212; Data Mining and Machine Learning Jupyter Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'regression_bias_var';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The Sparse Regression Task" href="regression_sparse.html" />
+    <link rel="prev" title="Minimizing the RSS" href="regression_optimization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Data Mining and Machine Learning Jupyter Book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Data Mining and Machine Learning Jupyter Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation.html">Notation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="linalg.html">Linear Algebra</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="linalg_spaces.html">Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_normed_vs.html">Normed Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="optimization.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimization_problems.html">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_convex.html">Convex Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_analytic.html">Analytic Solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_numerical.html">Numerical Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_gradients.html">Matrix Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="regression.html">Regression</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="regression_objective.html">Regression Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_functions.html">Regression Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_optimization.html">Minimizing the RSS</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">The Bias-Variance Tradeoff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_sparse.html">The Sparse Regression Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_ridge.html">Ridge Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_lasso.html">Lasso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="classification.html">Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="classification_problem.html">Classification Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_knn.html">K-Nearest Neighbor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_naive_bayes.html">Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_decision_trees.html">Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_random_forests.html">Random Forests</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="classification_svms.html">Support Vector Machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_kernel_svm.html">Kernel SVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="neuralnets.html">Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_intro.html">From Linear Models to Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_mlps.html">MLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_backprop.html">Backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_sgd.html">Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_conv.html">Convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_pooling.html">Pooling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dim_reduction.html">Dimensionality Reduction Techniques</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_mf.html">Low Rank Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_pca.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="clustering.html">Clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means.html">k-Means</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means_mf.html">k-Means is MF</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_kernel_kmeans.html">Kernel k-means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_spectral.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/edit/main/regression_bias_var.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/issues/new?title=Issue%20on%20page%20%2Fregression_bias_var.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/regression_bias_var.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>The Bias-Variance Tradeoff</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-with-a-test-set-the-practice">Evaluation with a Test Set: the Practice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-with-a-test-set-the-theory">Evaluation with a Test Set: the Theory</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-targets-as-random-variables">Regression Targets as Random Variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">The Bias-Variance Tradeoff</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-validation">Cross-Validation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="the-bias-variance-tradeoff">
+<h1>The Bias-Variance Tradeoff<a class="headerlink" href="#the-bias-variance-tradeoff" title="Link to this heading">#</a></h1>
+<p>In the previous subsection we have seen that the regression objective of minimizing the RSS has some reallly nice properties: we can determine the global optimum in an analytic way (by means of a formula). However, the initial goal of regression was to find the true feature-target relationship from the data. We want to find the <em>true</em> regression function. The question is now how we can evaluate our regression model towards our goal, when we don’t know what the true regression function is.</p>
+<p>Let us take a step back and create an example where we do know the true regression function. To do so, we generate  a synthetic dataset from the function <span class="math notranslate nohighlight">\(f^*(x) = \cos(1.5\pi x)\)</span> (which we define as our true regression function) and some noise. We plot first our true regression function:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">f_true</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f_true</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="_images/b413c8cdd7030f59355b834cc96eb5bcfa66b260d86b81192f7c6158dadab41e.png" src="_images/b413c8cdd7030f59355b834cc96eb5bcfa66b260d86b81192f7c6158dadab41e.png" />
+</div>
+</div>
+<p>To create the synthetic dataset, we sample some data points from the interval <span class="math notranslate nohighlight">\([0,1]\)</span> and add some noise on the target values <span class="math notranslate nohighlight">\(y= f^*(x)+\epsilon\)</span>. We sample the noise from a Gaussian normal distribution <span class="math notranslate nohighlight">\(\epsilon\sim\mathcal{N}(0,\sigma)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span> <span class="c1"># set the seed of the random generator for reproducibility</span>
+<span class="n">n</span><span class="o">=</span><span class="mi">20</span> <span class="c1"># the number of data points</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.15</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="c1"># sample n data points from a uniform distribution</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">f_true</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">sigma</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f_true</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="c1">#plot the data points</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/43f4587e7f400d591d501c66dfcc3b42b877f12b4ef21567ea96573d85197620.png" src="_images/43f4587e7f400d591d501c66dfcc3b42b877f12b4ef21567ea96573d85197620.png" />
+</div>
+</div>
+<p>Now we have a synthetic dataset, given by the data matrix <code class="docutils literal notranslate"><span class="pre">D</span></code> and target vector <code class="docutils literal notranslate"><span class="pre">y</span></code>. We fit to this dataset  polynomial functions of varying degrees <span class="math notranslate nohighlight">\(k\in\{1,4,16\}\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolynomialFeatures</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">]:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span> <span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">poly</span> <span class="o">=</span> <span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1">#design matrix for polynomal of degree k</span>
+    <span class="n">β</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="nd">@X</span><span class="o">+</span><span class="mf">1e-20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="nd">@y</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f_true</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="nd">@β</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;hotpink&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.3</span><span class="p">,</span><span class="mf">1.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;k=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+    <span class="n">p</span><span class="o">+=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/697c3e1b0d8073017a8448dc97a18495588237d13c6d8339cb104762705971e5.png" src="_images/697c3e1b0d8073017a8448dc97a18495588237d13c6d8339cb104762705971e5.png" />
+</div>
+</div>
+<p>We can see that the found regression function is quite sensitive to the degree of the polynomial. Choosing <span class="math notranslate nohighlight">\(k=1\)</span> results in a too simple model, choosing <span class="math notranslate nohighlight">\(k=4\)</span> results in a regression function which is close to the true regression function and choosing <span class="math notranslate nohighlight">\(k=14\)</span> adapts very well to the data, but the difference to <span class="math notranslate nohighlight">\(f^*\)</span> is quite big, especcially in those areas where we have only few observations (<span class="math notranslate nohighlight">\(x\geq 0.6\)</span>). But how can we determine the correct degree <span class="math notranslate nohighlight">\(k\)</span> in practice, when we can’t compare with the true regression function?</p>
+<section id="evaluation-with-a-test-set-the-practice">
+<h2>Evaluation with a Test Set: the Practice<a class="headerlink" href="#evaluation-with-a-test-set-the-practice" title="Link to this heading">#</a></h2>
+<p>Since we don’t know the true regression function in practical applications, we resort to test the models ability to generalize.
+The idea is that a model which is close to the true regression function, should be able to predict <span class="math notranslate nohighlight">\(y\)</span> for <em>unobserved</em> <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
+<p><strong>Idea</strong>: Hold out a test set, indicated by <span class="math notranslate nohighlight">\(\mathcal{T}\subseteq\mathcal{D}\)</span> from the <span class="math notranslate nohighlight">\(n\)</span> training data points and compute the error on the test data.</p>
+<p>The <strong>Mean Squared Error (MSE)</strong> returns the average squared prediction error:
+<div class="math notranslate nohighlight">
+\[ MSE(\bm{\beta}, \mathcal{T})= \frac{1}{\lvert \mathcal{T}\rvert}\sum_{(\vvec{x},y)\in\mathcal{T}}(y-\bm{\phi}(\vvec{x})^\top \bm{\beta})^2\]</div>
+</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="n">D_train</span><span class="p">,</span> <span class="n">D_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">D_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">D_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(14,) (6,)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">mse</span><span class="p">(</span><span class="n">y_1</span><span class="p">,</span><span class="n">y_2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">y_1</span><span class="o">-</span><span class="n">y_2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">]:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span> <span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">poly</span> <span class="o">=</span> <span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">D_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1">#design matrix for polynomal of degree k</span>
+    <span class="n">X_test</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">D_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">β</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">T</span><span class="nd">@X_train</span><span class="p">,</span> <span class="n">X_train</span><span class="o">.</span><span class="n">T</span><span class="nd">@y_train</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f_true</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="nd">@β</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;hotpink&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.3</span><span class="p">,</span><span class="mf">1.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;k=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;, MSE:&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mse</span><span class="p">(</span><span class="n">X_test</span><span class="nd">@β</span><span class="p">,</span><span class="n">y_test</span><span class="p">),</span><span class="mi">2</span><span class="p">)))</span>
+    <span class="n">p</span><span class="o">+=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/c8585607027cc19abf2de157fb0480219bc0ca7cd231ca99f71fc53d8de6d8b1.png" src="_images/c8585607027cc19abf2de157fb0480219bc0ca7cd231ca99f71fc53d8de6d8b1.png" />
+</div>
+</div>
+<p>The example shows a case where the test MSE fails to identify the suitable model choice (<span class="math notranslate nohighlight">\(k=4\)</span>). The model with <span class="math notranslate nohighlight">\(k=16\)</span> obtains here the lowest MSE. Although this is not always the case (in fact, the MSE results are quite sensitive to the <code class="docutils literal notranslate"><span class="pre">random_state</span></code> of the train and test split), it may happen. The question is if there are maybe some theoretical insights into MSE, which help us estimate which components influence the test-MSE and how we can make the test-process more reliable.</p>
+</section>
+<section id="evaluation-with-a-test-set-the-theory">
+<h2>Evaluation with a Test Set: the Theory<a class="headerlink" href="#evaluation-with-a-test-set-the-theory" title="Link to this heading">#</a></h2>
+<p>In theory, the test-MSE results from the following process:</p>
+<ol class="arabic simple">
+<li><p>sample the (finite) training data <span class="math notranslate nohighlight">\(\mathcal{D}_j\subset\mathbb{R}^{1\times d}\times \mathbb{R}\)</span></p></li>
+<li><p>learn a model <span class="math notranslate nohighlight">\(f_{\mathcal{D}_j}(\mathbf{x})=\bm{\phi}(\mathbf{x})^\top \bm{\beta}_j\)</span> based on the training data,</p></li>
+<li><p>sample a (finite) test set <span class="math notranslate nohighlight">\(\mathcal{T}_j\subset\mathbb{R}^{1\times d}\times \mathbb{R}\)</span></p></li>
+<li><p>compute <span class="math notranslate nohighlight">\(MSE_j\)</span></p></li>
+</ol>
+<p>If we repeat this sampling process <span class="math notranslate nohighlight">\(k\)</span> times, obtaining scores <span class="math notranslate nohighlight">\(MSE_1,\ldots,MSE_k\)</span>, we could approximate the <strong>Expected squared Prediction Error</strong> (EPE). The expected squared prediction error returns the squared error of a model <span class="math notranslate nohighlight">\(f(x)\)</span> and target <span class="math notranslate nohighlight">\(y\)</span>, where <span class="math notranslate nohighlight">\(f\)</span> is derived from training data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>.</p>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 14 </span> (EPE)</p>
+<section class="definition-content" id="proof-content">
+<p>The Expected squared Prediction Error (EPE) is the expected error
+<div class="math notranslate nohighlight">
+\[\mathbb{E}_{\mathbf{x},y,\mathcal{D}}[(y-f_\mathcal{D}(\mathbf{x}))^2],\]</div>
+
+over three random variables:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\vvec{x}\)</span> is the random variable of a feature vector in the test set.</p></li>
+<li><p><span class="math notranslate nohighlight">\(y\)</span> is the random variable of the target of <span class="math notranslate nohighlight">\(\vvec{x}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{D}\)</span> is the random variable of the training data.</p></li>
+</ul>
+</section>
+</div><p>We can approximate the EPE with our sample MSEs:</p>
+<div class="math notranslate nohighlight" id="equation-eq-mse-approx">
+<span class="eqno">(13)<a class="headerlink" href="#equation-eq-mse-approx" title="Link to this equation">#</a></span>\[\frac1k\sum_{j=1}^k MSE_j=\frac1k\sum_{j=1}^k\frac{1}{\lvert\mathcal{T}_j\rvert}\sum_{(\mathbf{x},y)\in\mathcal{T}_j}(y-f_j(\mathbf{x}))^2\approx\mathbb{E}_{\mathbf{x},y,\mathcal{D}}[(y-f_\mathcal{D}(\mathbf{x}))^2].\]</div>
+<p>The EPE is a theoretical construct. In practice, we have only on dataset. For the approximation of EPE, we would need multiple independently drawn datasets. Still, it makes sense to analyze the EPE to identify the characteristics that define theoretically guaranteed well performing models. We consider then how we can anlayze said properties in the real world.</p>
+<section id="regression-targets-as-random-variables">
+<h3>Regression Targets as Random Variables<a class="headerlink" href="#regression-targets-as-random-variables" title="Link to this heading">#</a></h3>
+<p>The target values <span class="math notranslate nohighlight">\(y\)</span> are not assumed to yield the true regression values per se. We can assume that the targets exhibit a natural amount of variance, reflecting random processes that influence the target. For example, target values such as the outside temperature fluctuate, even when it is measured every year at the same spot and the same time. Likewise, house prices are dependent on personal impressions on how much a house is worth, that can not reasonably be modeled in an observable feature space.</p>
+<div class="proof property admonition" id="prop:target_distr">
+<p class="admonition-title"><span class="caption-number">Property 1 </span> (Target Value Distribution)</p>
+<section class="property-content" id="proof-content">
+<p>Given the <em>true</em> regression function <span class="math notranslate nohighlight">\(f^*\)</span> and observation <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>, we assume that the target value is generated as
+<div class="math notranslate nohighlight">
+\[ y_i = f^*(\mathbf{x}_i)+\epsilon_i,\]</div>
+
+where <span class="math notranslate nohighlight">\(\epsilon_i\)</span> is an i.i.d. (independent and identically distributed) sample of a random variable <span class="math notranslate nohighlight">\(\epsilon\)</span> with mean <span class="math notranslate nohighlight">\(\mu=0\)</span> and variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>.
+As a result, the targets are samples of the random variable <span class="math notranslate nohighlight">\(y=f^*(\vvec{x})+\epsilon\)</span> such that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \mathbb{E}_y[y\vert \mathbf{x}] = f^*(\mathbf{x}) &amp;&amp;
+    Var_y(y\vert \mathbf{x}) = \mathbb{E}_y[(y-f^*(\mathbf{x}))^2\vert \mathbf{x}] = \sigma^2
+\end{align*}\]</div>
+</section>
+</div><p>We sample some training data with Gaussian noise, to observe the effect of <span class="math notranslate nohighlight">\(\sigma\)</span>.
+The plot below indicates samples generated by the following procedure:</p>
+<ol class="arabic simple">
+<li><p>Sample <span class="math notranslate nohighlight">\(x_{i}\in[0,1]\)</span> for <span class="math notranslate nohighlight">\(1\leq i \leq n\)</span></p></li>
+<li><p>Sample <span class="math notranslate nohighlight">\(\epsilon_i\)</span> from <span class="math notranslate nohighlight">\(\mathcal{N}(0,\sigma^2)\)</span></p></li>
+<li><p>Set <span class="math notranslate nohighlight">\(y_i=f^*(x_{i})+\epsilon_i\)</span></p></li>
+</ol>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">sigma</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.4</span><span class="p">]:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">f_true</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">sigma</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f_true</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="c1">#plot the data points</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;sigma=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
+    <span class="n">p</span><span class="o">+=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="_images/dda09a7dbb5d3d385d601d7b3156ebcd13c3c8206f706d137880aeb1020cdb76.png" src="_images/dda09a7dbb5d3d385d601d7b3156ebcd13c3c8206f706d137880aeb1020cdb76.png" />
+</div>
+</div>
+<p>The plot on the left is generated with a low variance (<span class="math notranslate nohighlight">\(\sigma=0.1\)</span>) and the plot on the right is generated with a larger variance (<span class="math notranslate nohighlight">\(\sigma=0.4\)</span>). Correspondingly, the target values with a low variance are closer to the true regression function than those with a bigger variance. It seems as if the true regression function is more easy to observe from the data in the left plot. Does that mean that it’s easier to approximate the true regression function if the variance is low? Surprisingly, that is not the case, as we will observe via the bias-variance trade-off.</p>
+</section>
+</section>
+<section id="id1">
+<h2>The Bias-Variance Tradeoff<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>The Bias-Variance Tradeoff describes the fit of a regression model to the true regression model by means of its bias and variance.
+<div class="math notranslate nohighlight">
+\[ \mathbb{E}_{\mathbf{x},y,\mathcal{D}}[(y-f_\mathcal{D}(\mathbf{x}))^2]=\mathbb{E}_\mathbf{x}[\mathbb{E}_{y,\mathcal{D}}[(y-f_\mathcal{D}(\mathbf{x}))^2\vert \mathbf{x}]]\]</div>
+</p>
+<div class="proof theorem admonition" id="theorem-2">
+<p class="admonition-title"><span class="caption-number">Theorem 15 </span></p>
+<section class="theorem-content" id="proof-content">
+<p>Assuming that <a class="reference internal" href="#prop:target_distr">Property 1</a> holds, the EPE for any observation <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> can be deconstructed into three parts:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \mathbb{E}_{y,\mathcal{D}}[(y-f_\mathcal{D}(\mathbf{x}_0))^2]  
+    = \sigma^2 &amp;+\underbrace{(f^*(\mathbf{x}_0)-\mathbb{E}_\mathcal{D}[f_\mathcal{D}(\mathbf{x}_0)])^2}_{bias^2}\\ &amp;+\underbrace{\mathbb{E}_\mathcal{D}[(\mathbb{E}_\mathcal{D}[f_\mathcal{D}(\mathbf{x}_0)]-f_\mathcal{D}(\mathbf{x}_0))^2}_{variance}] 
+\end{align*}\]</div>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. We add and subtract <span class="math notranslate nohighlight">\(f^*(x_0)\)</span> in the squared error term of EPE, apply the binomial formula and the linearity of the expected value to get</p>
+<div class="math notranslate nohighlight" id="equation-eq-bias-var1">
+<span class="eqno">(14)<a class="headerlink" href="#equation-eq-bias-var1" title="Link to this equation">#</a></span>\[\begin{split}\begin{align}
+\mathbb{E}_{y,\mathcal{D}}&amp;[(y-f_\mathcal{D}(\mathbf{x}))^2]\\
+=&amp;\mathbb{E}_{y,\mathcal{D}}[(y-f^*(x_0)+f^*(x_0)-f_\mathcal{D}(x_0))^2] \\
+=&amp;\mathbb{E}_{y,\mathcal{D}}[(y-f^*(x_0))^2+2(y-f^*(x_0))(f^*(x_0)-f_\mathcal{D}(x_0))+(f^*(x_0)-f_\mathcal{D}(x_0))^2]\\
+=&amp;\mathbb{E}_{y,\mathcal{D}}[(y-f^*(x_0))^2]
++2\mathbb{E}_{y,\mathcal{D}}[(y-f^*(x_0))(f^*(x_0)-f_\mathcal{D}(x_0))] 
++\mathbb{E}_{y,\mathcal{D}}[(f^*(x_0)-f_\mathcal{D}(x_0))^2]
+\end{align}\end{split}\]</div>
+<p>The term on the left is the variance of the target value:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{E}_{y,\mathcal{D}}[(y-f^*(x_0))^2] = \mathbb{E}_{y}[(y-f^*(x_0))^2] = \sigma^2.
+\end{align*}\]</div>
+<p>The first equality holds here because the term in the expectation doesn’t depend on <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, and the last equality follows from <a class="reference internal" href="#prop:target_distr">Property 1</a>.
+The second term is equal to zero, since the random variable <span class="math notranslate nohighlight">\(y\)</span> is independently drawn, and hence we can apply the expected value on each product term, giving</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+2\mathbb{E}_{y,\mathcal{D}}[(y-f^*(x_0))(f^*(x_0)-f_\mathcal{D}(x_0))] = 2\mathbb{E}_{y}[(y-f^*(x_0))]\mathbb{E}_{\mathcal{D}}[(f^*(x_0)-f_\mathcal{D}(x_0))] = 0.
+\end{align*}\]</div>
+<p>The product above is zero, since the expected value of <span class="math notranslate nohighlight">\(y\)</span> is <span class="math notranslate nohighlight">\(f^*(x_0)\)</span>, and hence <span class="math notranslate nohighlight">\(\mathbb{E}_{y}[(y-f^*(x_0))]=0\)</span>. The rightmost term in Equation <a class="reference internal" href="#equation-eq-bias-var1">(14)</a> does only depend on the training data random variable now, and we expand it by adding and subtracting the expected value of the model output and applying again the binomial formula and the linearity of the expected value.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{E}_{y,\mathcal{D}}&amp;[(f^*(x_0)-f_\mathcal{D}(x_0))^2] \\
+=&amp; \mathbb{E}_{\mathcal{D}}[(f^*(x_0)-\mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x_0)]+\mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x_0)]-f_\mathcal{D}(x_0))^2]\\
+=&amp; \mathbb{E}_{\mathcal{D}}[(f^*(x_0)-\mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x_0)])^2] +2\mathbb{E}_{\mathcal{D}}[(f_{\mathcal{D}}(x_0)-\mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x_0)])(\mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x_0)]-f_\mathcal{D}(x_0))] + \mathbb{E}_{\mathcal{D}}[(\mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x_0)]-f_\mathcal{D}(x_0))^2]
+\end{align*}\]</div>
+<p>The term on the left is the squared bias, the outer expected value operator doesn’t do anything, because the argument is not dependent on a random variable anymore, and can be omitted. The rightmost term is the variance of the model. The middle term is again zero, because the left product term is a constant and can be multiplied outside of the expected value operator, yielding</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+2\mathbb{E}_{\mathcal{D}}&amp;[(f^*(x_0)-\mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x_0)])(\mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x_0)]-f_\mathcal{D}(x_0))]\\ 
+=&amp; 2(f^*(x_0)-\mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x_0)])\mathbb{E}_{\mathcal{D}}[(\mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x_0)]-f_\mathcal{D}(x_0))]\\
+=&amp; 2(f^*(x_0)-\mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x_0)])(\mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x_0)]- \mathbb{E}_{\mathcal{D}}[f_\mathcal{D}(x_0)])]\\
+=&amp;0.
+\end{align*}\]</div>
+</div>
+</div>
+<p>Hence, the expected squared prediction error is minimized for functions (models) having a <em>low variance</em> and <em>low bias</em>. We illustrate the effect by our running example. The true regression function is again <span class="math notranslate nohighlight">\(f^*(x) = \cos(1.5\pi x)\)</span> and the training set <span class="math notranslate nohighlight">\(\mathcal{D}_j\)</span> is sampled i.i.d. from the interval <span class="math notranslate nohighlight">\([0,3]\)</span> for each model <span class="math notranslate nohighlight">\(f_{\mathcal{D}_j}\)</span>. We obtain five regression models for three polynomial function classes: affine functions (polynomials of degree <span class="math notranslate nohighlight">\(k=1\)</span>), polynomials of degree <span class="math notranslate nohighlight">\(k=4\)</span> and polynomials of degree <span class="math notranslate nohighlight">\(k=16\)</span>. The obtained regression models <span class="math notranslate nohighlight">\(f_\mathcal{D}\)</span> are plotted below.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">n</span><span class="o">=</span><span class="mi">30</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">]:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span> <span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">poly</span> <span class="o">=</span> <span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f_true</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="c1"># sample n data points from a uniform distribution</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">f_true</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="c1"># sample the target values</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1">#design matrix for polynomal of degree k</span>
+        <span class="n">β</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="nd">@X</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="nd">@y</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="nd">@β</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;hotpink&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.3</span><span class="p">,</span><span class="mf">1.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;k=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+    <span class="n">p</span><span class="o">+=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="_images/5ee99aee3307964a3a65d4e2c612b9fa93d16e499e1dceff01d32c7a591ba52c.png" src="_images/5ee99aee3307964a3a65d4e2c612b9fa93d16e499e1dceff01d32c7a591ba52c.png" />
+</div>
+</div>
+<p>We observe that the functions on the left are too simple - affine functions can’t model the curvature of the true regression function. The affine functions show a low variance, they all go roughly from the top left to the bottom right. The functions in the middle (<span class="math notranslate nohighlight">\(k=4\)</span>) are all similar (low variance) and fit well to the true regression function (low bias). The functions on the right (<span class="math notranslate nohighlight">\(k=16\)</span>) follow the shape of the true regression function (low bias) but some of the lines differ a lot from the others (high variance). The bias of the higher degree models is not easy to see here, so we provide an additional visualization below. We recall that the bias represents the distance of the mean function value <span class="math notranslate nohighlight">\(\mathbb{E}_\mathcal{D}[f_\mathcal{D}(\mathbf{x}_0)]\)</span> and the true regression function. We illustrate the bias by plotting the mean of 500 regression models below in orange. Hence, the orange line approximates the mean function value <span class="math notranslate nohighlight">\(\mathbb{E}_\mathcal{D}[f_\mathcal{D}(\mathbf{x}_0)]\)</span>.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">]:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span> <span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">poly</span> <span class="o">=</span> <span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">y_bias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">nr_models</span><span class="o">=</span><span class="mi">500</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nr_models</span><span class="p">):</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="c1"># sample n data points from a uniform distribution</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">f_true</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="c1"># sample the target values</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1">#design matrix for polynomal of degree k</span>
+        <span class="n">β</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="nd">@X</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="nd">@y</span><span class="p">)</span> <span class="c1"># learn the regression paarmeetr vector</span>
+        <span class="n">y_bias</span> <span class="o">+=</span> <span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="nd">@β</span> <span class="c1"># aggregate over the regression function values</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f_true</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;$f^*$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y_bias</span><span class="o">/</span><span class="n">nr_models</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$approx. \mathbb</span><span class="si">{E}</span><span class="s2">_{\mathcal</span><span class="si">{D}</span><span class="s2">}[f_{\mathcal</span><span class="si">{D}</span><span class="s2">}(x)]$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.3</span><span class="p">,</span><span class="mf">1.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;k=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+    <span class="n">line</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="n">label</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">+=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:15: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+&lt;&gt;:15: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+/var/folders/__/yt6jwp9d3gz1hjldtp6lhvxh0000gn/T/ipykernel_74080/1611877748.py:15: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+  plt.plot(x,y_bias/nr_models, color=&#39;tab:orange&#39;, label=&quot;$approx. \mathbb{E}_{\mathcal{D}}[f_{\mathcal{D}}(x)]$&quot;)
+</pre></div>
+</div>
+<img alt="_images/dc5e1828ad1cd995a52111b6a8cfbe84a437a8a441398278cf63d3d39e5311d2.png" src="_images/dc5e1828ad1cd995a52111b6a8cfbe84a437a8a441398278cf63d3d39e5311d2.png" />
+</div>
+</div>
+<p>We can see that the polynomials of a degree <span class="math notranslate nohighlight">\(k\geq 4\)</span> approximate the true regression function well <strong>in average</strong>. This indicates a small bias. For <span class="math notranslate nohighlight">\(k=16\)</span> we see stark differences to the true regression function at the ends of the interval <span class="math notranslate nohighlight">\([-0.1,1.1]\)</span> in which we sample our data points, but this effect will diminish if the number of trained models goes to infinity. Especially at the interval ends, data might be sparse and the model is unguided, resulting in graphs that diverge quickly from the data distribution. Only the underfitting model using <span class="math notranslate nohighlight">\(k=1\)</span> is not able to reflect the true regression curve. We observe the approximated bias as the distance between the orange and the blue curve for each value on the horizontal axis.</p>
+<p>In summary, we have discussed that the EPE is composed of three parts: the variance in the data (that we can’t influence), the squared bias (the squared distance of the expected model prediction to the true regression function) and the variance of the models. Those concepts are connected with the terms of under- and overfitting. An underfitting model has a high bias and a low variance, and an overfitting model has a high variance and a low bias. The models that we want are in the middle between under- and overfitting, achieving a low variance and bias.</p>
+</section>
+<section id="cross-validation">
+<h2>Cross-Validation<a class="headerlink" href="#cross-validation" title="Link to this heading">#</a></h2>
+<p>Now that we know what we expect in theory from a well-fitting model, we can think about applying this knowledge to practical model evaluations. A widely applied method that intends to mimick the evaluation process of generating multiple test-set MSEs to approximate the EPE is <strong>cross validation</strong>.</p>
+<div class="proof algorithm admonition" id="algorithm-3">
+<p class="admonition-title"><span class="caption-number">Algorithm 5 </span> (<span class="math notranslate nohighlight">\(k\)</span>-fold CV)</p>
+<section class="algorithm-content" id="proof-content">
+<ol class="arabic simple">
+<li><p>Divide the data set into <span class="math notranslate nohighlight">\(k\)</span> disjunctive chunks, containing the data point indices <div class="math notranslate nohighlight">
+\[\{1,\ldots,n\}=\mathcal{I}=\mathcal{I}_1\cup\ldots \cup\mathcal{I}_k,\  \mathcal{I}_j\cap\mathcal{I}_l=\emptyset \text{ for } j\neq l\]</div>
+</p></li>
+<li><p><strong>For</strong> <span class="math notranslate nohighlight">\(j\in\{1,\ldots,k\}\)</span></p>
+<ol class="arabic simple">
+<li><p>Obtain model <span class="math notranslate nohighlight">\(f_{j}(\mathbf{x})=\bm{\phi}(\mathbf{x})^\top \bm{\beta}_j\)</span> on the training data <span class="math notranslate nohighlight">\(\mathcal{I}\setminus\mathcal{I}_j\)</span></p></li>
+<li><p>Obtain the test-MSE <span class="math notranslate nohighlight">\(MSE_j\)</span> on test set <span class="math notranslate nohighlight">\(\mathcal{I}_j\)</span></p></li>
+</ol>
+</li>
+<li><p><strong>Return</strong> <span class="math notranslate nohighlight">\(\frac{1}{k}\sum_{j=1}^k MSE_j\)</span></p></li>
+</ol>
+</section>
+</div><p>The k-fold cross validation computes the <strong>cross-validation MSE</strong>, given as
+<div class="math notranslate nohighlight">
+\[\frac1k\sum_{j=1}^k MSE(\bm{\beta}_j,\mathcal{I}_j)= \frac1k\sum_{j=1}^k\frac{1}{\lvert\mathcal{I}_j\rvert}\sum_{i\in\mathcal{I}_j}(y_i-f_j(\vvec{x}_i))^2\]</div>
+</p>
+<p>The cross-validation MSE seems to look like the average MSE from Equation <a class="reference internal" href="#equation-eq-mse-approx">(13)</a> approximating the EPE. However, the training data of the cross-validation MSE is not sampled independently, because each of the folds depends on the others. In fact, the cross-validated MSE is a biased estimator of the EPE (any statistical estimator like the regression models follow the bias-variance tradeoff).</p>
+<p>We’ll have a look now at a 3-fold cross validation for a Polynomial regression model with degree <span class="math notranslate nohighlight">\(k=16\)</span>. We’ll use the sklearn <span class="math notranslate nohighlight">\(k\)</span>-fold split and print the indices of the train and test set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">=</span><span class="mi">20</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="c1"># sample n data points from a uniform distribution</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">f_true</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">KFold</span>
+<span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">D</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;train:&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">train</span><span class="p">),</span> <span class="s2">&quot; </span><span class="se">\t</span><span class="s2">test:&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>train:[ 0  1  2  4  5  7  9 10 12 13 14 15 16]  	test:[ 3  6  8 11 17 18 19]
+train:[ 1  3  4  5  6  7  8 11 13 15 17 18 19]  	test:[ 0  2  9 10 12 14 16]
+train:[ 0  2  3  6  8  9 10 11 12 14 16 17 18 19]  	test:[ 1  4  5  7 13 15]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we compute the cross-validated MSE.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">PolynomialFeatures</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">mse_array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">D</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span> <span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">D_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">train</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">train</span><span class="p">]</span>
+    <span class="n">D_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">test</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">test</span><span class="p">]</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">D_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1">#design matrix for polynomal of degree k</span>
+    <span class="n">X_test</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">D_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">β</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">T</span><span class="nd">@X_train</span><span class="p">,</span> <span class="n">X_train</span><span class="o">.</span><span class="n">T</span><span class="nd">@y_train</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f_true</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="nd">@β</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;hotpink&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.3</span><span class="p">,</span><span class="mf">1.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;k=16, MSE:&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mse</span><span class="p">(</span><span class="n">X_test</span><span class="nd">@β</span><span class="p">,</span><span class="n">y_test</span><span class="p">),</span><span class="mi">2</span><span class="p">)))</span>
+    <span class="n">mse_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mse</span><span class="p">(</span><span class="n">X_test</span><span class="nd">@β</span><span class="p">,</span><span class="n">y_test</span><span class="p">),</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">p</span><span class="o">+=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/7a09cad6ae1c94ba1270b452519a63762e4587781fd44abf1fec0d5d7c5e229d.png" src="_images/7a09cad6ae1c94ba1270b452519a63762e4587781fd44abf1fec0d5d7c5e229d.png" />
+</div>
+</div>
+<p>The 3-fold CV-MSE is then given as the mean of the MSE values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mse_array</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(3069.8799999999997)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="regression_optimization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Minimizing the RSS</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="regression_sparse.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">The Sparse Regression Task</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-with-a-test-set-the-practice">Evaluation with a Test Set: the Practice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-with-a-test-set-the-theory">Evaluation with a Test Set: the Theory</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-targets-as-random-variables">Regression Targets as Random Variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">The Bias-Variance Tradeoff</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-validation">Cross-Validation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sibylle Hess
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022. Eindhoven University of Technology.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

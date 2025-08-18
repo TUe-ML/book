@@ -1,0 +1,1114 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proof Index &#8212; Data Mining and Machine Learning Jupyter Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'prf-prf';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+    <script>
+      DOCUMENTATION_OPTIONS.COLLAPSE_INDEX = true;
+    </script>
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Data Mining and Machine Learning Jupyter Book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Data Mining and Machine Learning Jupyter Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation.html">Notation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="linalg.html">Linear Algebra</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="linalg_spaces.html">Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_normed_vs.html">Normed Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="optimization.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimization_problems.html">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_convex.html">Convex Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_analytic.html">Analytic Solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_numerical.html">Numerical Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_gradients.html">Matrix Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="regression.html">Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="regression_objective.html">Regression Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_functions.html">Regression Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_optimization.html">Minimizing the RSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_bias_var.html">The Bias-Variance Tradeoff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_sparse.html">The Sparse Regression Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_ridge.html">Ridge Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_lasso.html">Lasso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="classification.html">Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="classification_problem.html">Classification Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_knn.html">K-Nearest Neighbor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_naive_bayes.html">Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_decision_trees.html">Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_random_forests.html">Random Forests</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="classification_svms.html">Support Vector Machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_kernel_svm.html">Kernel SVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="neuralnets.html">Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_intro.html">From Linear Models to Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_mlps.html">MLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_backprop.html">Backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_sgd.html">Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_conv.html">Convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_pooling.html">Pooling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dim_reduction.html">Dimensionality Reduction Techniques</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_mf.html">Low Rank Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_pca.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="clustering.html">Clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means.html">k-Means</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means_mf.html">k-Means is MF</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_kernel_kmeans.html">Kernel k-means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_spectral.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/issues/new?title=Issue%20on%20page%20%2Fprf-prf.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+   <h1>Proof Index</h1>
+
+   <div class="modindex-jumpbox">
+   <a href="#cap-algorithm-0"><strong>algorithm-0</strong></a> | 
+   <a href="#cap-algorithm-1"><strong>algorithm-1</strong></a> | 
+   <a href="#cap-algorithm-2"><strong>algorithm-2</strong></a> | 
+   <a href="#cap-algorithm-3"><strong>algorithm-3</strong></a> | 
+   <a href="#cap-algorithm-4"><strong>algorithm-4</strong></a> | 
+   <a href="#cap-algorithm-5"><strong>algorithm-5</strong></a> | 
+   <a href="#cap-algorithm-6"><strong>algorithm-6</strong></a> | 
+   <a href="#cap-algorithm-7"><strong>algorithm-7</strong></a> | 
+   <a href="#cap-algorithm-8"><strong>algorithm-8</strong></a> | 
+   <a href="#cap-bayes_optimal_classifier"><strong>bayes_optimal_classifier</strong></a> | 
+   <a href="#cap-bayes_rule"><strong>bayes_rule</strong></a> | 
+   <a href="#cap-constr_objective"><strong>constr_objective</strong></a> | 
+   <a href="#cap-convex_function"><strong>convex_function</strong></a> | 
+   <a href="#cap-convex_set"><strong>convex_set</strong></a> | 
+   <a href="#cap-corollary-1"><strong>corollary-1</strong></a> | 
+   <a href="#cap-corollary-2"><strong>corollary-2</strong></a> | 
+   <a href="#cap-corollary-5"><strong>corollary-5</strong></a> | 
+   <a href="#cap-corollary-7"><strong>corollary-7</strong></a> | 
+   <a href="#cap-corollary-8"><strong>corollary-8</strong></a> | 
+   <a href="#cap-definition-0"><strong>definition-0</strong></a> | 
+   <a href="#cap-definition-1"><strong>definition-1</strong></a> | 
+   <a href="#cap-definition-2"><strong>definition-2</strong></a> | 
+   <a href="#cap-definition-3"><strong>definition-3</strong></a> | 
+   <a href="#cap-definition-4"><strong>definition-4</strong></a> | 
+   <a href="#cap-definition-5"><strong>definition-5</strong></a> | 
+   <a href="#cap-definition-6"><strong>definition-6</strong></a> | 
+   <a href="#cap-dt_split"><strong>dt_split</strong></a> | 
+   <a href="#cap-dt_training"><strong>dt_training</strong></a> | 
+   <a href="#cap-dual_problem"><strong>dual_problem</strong></a> | 
+   <a href="#cap-ex_vector_space"><strong>ex_vector_space</strong></a> | 
+   <a href="#cap-example-0"><strong>example-0</strong></a> | 
+   <a href="#cap-example-1"><strong>example-1</strong></a> | 
+   <a href="#cap-example-2"><strong>example-2</strong></a> | 
+   <a href="#cap-example-3"><strong>example-3</strong></a> | 
+   <a href="#cap-example-4"><strong>example-4</strong></a> | 
+   <a href="#cap-example-5"><strong>example-5</strong></a> | 
+   <a href="#cap-example-6"><strong>example-6</strong></a> | 
+   <a href="#cap-example_reg_p_larger_n"><strong>example_reg_p_larger_n</strong></a> | 
+   <a href="#cap-expl_fonc"><strong>expl_fonc</strong></a> | 
+   <a href="#cap-first_pca"><strong>first_pca</strong></a> | 
+   <a href="#cap-lagrangian"><strong>lagrangian</strong></a> | 
+   <a href="#cap-lemma-0"><strong>lemma-0</strong></a> | 
+   <a href="#cap-lemma-1"><strong>lemma-1</strong></a> | 
+   <a href="#cap-lemma-10"><strong>lemma-10</strong></a> | 
+   <a href="#cap-lemma-4"><strong>lemma-4</strong></a> | 
+   <a href="#cap-lemma-6"><strong>lemma-6</strong></a> | 
+   <a href="#cap-lemma-7"><strong>lemma-7</strong></a> | 
+   <a href="#cap-lemma-8"><strong>lemma-8</strong></a> | 
+   <a href="#cap-lemma-9"><strong>lemma-9</strong></a> | 
+   <a href="#cap-minimizers"><strong>minimizers</strong></a> | 
+   <a href="#cap-objective"><strong>objective</strong></a> | 
+   <a href="#cap-observation-0"><strong>observation-0</strong></a> | 
+   <a href="#cap-observation-2"><strong>observation-2</strong></a> | 
+   <a href="#cap-observation-3"><strong>observation-3</strong></a> | 
+   <a href="#cap-other_pcs"><strong>other_pcs</strong></a> | 
+   <a href="#cap-pca_obj_prod"><strong>pca_obj_prod</strong></a> | 
+   <a href="#cap-pca_var_prod"><strong>pca_var_prod</strong></a> | 
+   <a href="#cap-prop:target_distr"><strong>prop:target_distr</strong></a> | 
+   <a href="#cap-property-2"><strong>property-2</strong></a> | 
+   <a href="#cap-theorem-0"><strong>theorem-0</strong></a> | 
+   <a href="#cap-theorem-1"><strong>theorem-1</strong></a> | 
+   <a href="#cap-theorem-2"><strong>theorem-2</strong></a> | 
+   <a href="#cap-theorem-3"><strong>theorem-3</strong></a> | 
+   <a href="#cap-theorem-4"><strong>theorem-4</strong></a> | 
+   <a href="#cap-theorem-5"><strong>theorem-5</strong></a> | 
+   <a href="#cap-theorem-6"><strong>theorem-6</strong></a> | 
+   <a href="#cap-theorem-7"><strong>theorem-7</strong></a> | 
+   <a href="#cap-thm_convex"><strong>thm_convex</strong></a> | 
+   <a href="#cap-thm_kmeans_tr"><strong>thm_kmeans_tr</strong></a> | 
+   <a href="#cap-true_classifier_error"><strong>true_classifier_error</strong></a>
+   </div>
+
+   <table class="indextable modindextable">
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-algorithm-0"><td></td><td>
+       <strong>algorithm-0</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_numerical.html#algorithm-0"><code class="xref">algorithm-0</code></a> <em>(optimization_numerical)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-algorithm-1"><td></td><td>
+       <strong>algorithm-1</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_lasso.html#algorithm-1"><code class="xref">algorithm-1</code></a> <em>(regression_lasso)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-algorithm-2"><td></td><td>
+       <strong>algorithm-2</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="classification_random_forests.html#algorithm-2"><code class="xref">algorithm-2</code></a> <em>(classification_random_forests)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-algorithm-3"><td></td><td>
+       <strong>algorithm-3</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_bias_var.html#algorithm-3"><code class="xref">algorithm-3</code></a> <em>(regression_bias_var)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-algorithm-4"><td></td><td>
+       <strong>algorithm-4</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="dim_reduction_mf.html#algorithm-4"><code class="xref">algorithm-4</code></a> <em>(dim_reduction_mf)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-algorithm-5"><td></td><td>
+       <strong>algorithm-5</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="dim_reduction_pca.html#algorithm-5"><code class="xref">algorithm-5</code></a> <em>(dim_reduction_pca)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-algorithm-6"><td></td><td>
+       <strong>algorithm-6</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_numerical.html#algorithm-6"><code class="xref">algorithm-6</code></a> <em>(optimization_numerical)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-algorithm-7"><td></td><td>
+       <strong>algorithm-7</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_numerical.html#algorithm-7"><code class="xref">algorithm-7</code></a> <em>(optimization_numerical)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-algorithm-8"><td></td><td>
+       <strong>algorithm-8</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="clustering_spectral.html#algorithm-8"><code class="xref">algorithm-8</code></a> <em>(clustering_spectral)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-bayes_optimal_classifier"><td></td><td>
+       <strong>bayes_optimal_classifier</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="classification_problem.html#bayes_optimal_classifier"><code class="xref">bayes_optimal_classifier</code></a> <em>(classification_problem)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-bayes_rule"><td></td><td>
+       <strong>bayes_rule</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="classification_naive_bayes.html#bayes_rule"><code class="xref">bayes_rule</code></a> <em>(classification_naive_bayes)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-constr_objective"><td></td><td>
+       <strong>constr_objective</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_problems.html#constr_objective"><code class="xref">constr_objective</code></a> <em>(optimization_problems)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-convex_function"><td></td><td>
+       <strong>convex_function</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_convex.html#convex_function"><code class="xref">convex_function</code></a> <em>(optimization_convex)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-convex_set"><td></td><td>
+       <strong>convex_set</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_convex.html#convex_set"><code class="xref">convex_set</code></a> <em>(optimization_convex)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-corollary-1"><td></td><td>
+       <strong>corollary-1</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_ridge.html#corollary-1"><code class="xref">corollary-1</code></a> <em>(regression_ridge)</em></td><td>
+       <em>corollary</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-corollary-2"><td></td><td>
+       <strong>corollary-2</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="neuralnets_backprop.html#corollary-2"><code class="xref">corollary-2</code></a> <em>(neuralnets_backprop)</em></td><td>
+       <em>corollary</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-corollary-5"><td></td><td>
+       <strong>corollary-5</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_numerical.html#corollary-5"><code class="xref">corollary-5</code></a> <em>(optimization_numerical)</em></td><td>
+       <em>corollary</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-corollary-7"><td></td><td>
+       <strong>corollary-7</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="clustering_spectral.html#corollary-7"><code class="xref">corollary-7</code></a> <em>(clustering_spectral)</em></td><td>
+       <em>corollary</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-corollary-8"><td></td><td>
+       <strong>corollary-8</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="classification_svms.html#corollary-8"><code class="xref">corollary-8</code></a> <em>(classification_svms)</em></td><td>
+       <em>corollary</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-definition-0"><td></td><td>
+       <strong>definition-0</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_bias_var.html#definition-0"><code class="xref">definition-0</code></a> <em>(regression_bias_var)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-definition-1"><td></td><td>
+       <strong>definition-1</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="neuralnets_intro.html#definition-1"><code class="xref">definition-1</code></a> <em>(neuralnets_intro)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-definition-2"><td></td><td>
+       <strong>definition-2</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_numerical.html#definition-2"><code class="xref">definition-2</code></a> <em>(optimization_numerical)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-definition-3"><td></td><td>
+       <strong>definition-3</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="classification_random_forests.html#definition-3"><code class="xref">definition-3</code></a> <em>(classification_random_forests)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-definition-4"><td></td><td>
+       <strong>definition-4</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="classification_naive_bayes.html#definition-4"><code class="xref">definition-4</code></a> <em>(classification_naive_bayes)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-definition-5"><td></td><td>
+       <strong>definition-5</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="linalg_normed_vs.html#definition-5"><code class="xref">definition-5</code></a> <em>(linalg_normed_vs)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-definition-6"><td></td><td>
+       <strong>definition-6</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="linalg_normed_vs.html#definition-6"><code class="xref">definition-6</code></a> <em>(linalg_normed_vs)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-dt_split"><td></td><td>
+       <strong>dt_split</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="classification_decision_trees.html#dt_split"><code class="xref">dt_split</code></a> <em>(classification_decision_trees)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-dt_training"><td></td><td>
+       <strong>dt_training</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="classification_decision_trees.html#dt_training"><code class="xref">dt_training</code></a> <em>(classification_decision_trees)</em></td><td>
+       <em>algorithm</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-dual_problem"><td></td><td>
+       <strong>dual_problem</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_problems.html#dual_problem"><code class="xref">dual_problem</code></a> <em>(optimization_problems)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-ex_vector_space"><td></td><td>
+       <strong>ex_vector_space</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="linalg_spaces.html#ex_vector_space"><code class="xref">ex_vector_space</code></a> <em>(linalg_spaces)</em></td><td>
+       <em>example</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-example-0"><td></td><td>
+       <strong>example-0</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_functions.html#example-0"><code class="xref">example-0</code></a> <em>(regression_functions)</em></td><td>
+       <em>example</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-example-1"><td></td><td>
+       <strong>example-1</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_functions.html#example-1"><code class="xref">example-1</code></a> <em>(regression_functions)</em></td><td>
+       <em>example</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-example-2"><td></td><td>
+       <strong>example-2</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_functions.html#example-2"><code class="xref">example-2</code></a> <em>(regression_functions)</em></td><td>
+       <em>example</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-example-3"><td></td><td>
+       <strong>example-3</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_functions.html#example-3"><code class="xref">example-3</code></a> <em>(regression_functions)</em></td><td>
+       <em>example</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-example-4"><td></td><td>
+       <strong>example-4</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_functions.html#example-4"><code class="xref">example-4</code></a> <em>(regression_functions)</em></td><td>
+       <em>example</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-example-5"><td></td><td>
+       <strong>example-5</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_functions.html#example-5"><code class="xref">example-5</code></a> <em>(regression_functions)</em></td><td>
+       <em>example</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-example-6"><td></td><td>
+       <strong>example-6</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="classification_svms.html#example-6"><code class="xref">example-6</code></a> <em>(classification_svms)</em></td><td>
+       <em>example</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-example_reg_p_larger_n"><td></td><td>
+       <strong>example_reg_p_larger_n</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_optimization.html#example_reg_p_larger_n"><code class="xref">example_reg_p_larger_n</code></a> <em>(regression_optimization)</em></td><td>
+       <em>example</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-expl_fonc"><td></td><td>
+       <strong>expl_fonc</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_analytic.html#expl_fonc"><code class="xref">expl_fonc</code></a> <em>(optimization_analytic)</em></td><td>
+       <em>example</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-first_pca"><td></td><td>
+       <strong>first_pca</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="dim_reduction_pca.html#first_pca"><code class="xref">first_pca</code></a> <em>(dim_reduction_pca)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-lagrangian"><td></td><td>
+       <strong>lagrangian</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_problems.html#lagrangian"><code class="xref">lagrangian</code></a> <em>(optimization_problems)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-lemma-0"><td></td><td>
+       <strong>lemma-0</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_ridge.html#lemma-0"><code class="xref">lemma-0</code></a> <em>(regression_ridge)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-lemma-1"><td></td><td>
+       <strong>lemma-1</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="neuralnets_backprop.html#lemma-1"><code class="xref">lemma-1</code></a> <em>(neuralnets_backprop)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-lemma-10"><td></td><td>
+       <strong>lemma-10</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_convex.html#lemma-10"><code class="xref">lemma-10</code></a> <em>(optimization_convex)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-lemma-4"><td></td><td>
+       <strong>lemma-4</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="clustering_spectral.html#lemma-4"><code class="xref">lemma-4</code></a> <em>(clustering_spectral)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-lemma-6"><td></td><td>
+       <strong>lemma-6</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_convex.html#lemma-6"><code class="xref">lemma-6</code></a> <em>(optimization_convex)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-lemma-7"><td></td><td>
+       <strong>lemma-7</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_convex.html#lemma-7"><code class="xref">lemma-7</code></a> <em>(optimization_convex)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-lemma-8"><td></td><td>
+       <strong>lemma-8</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_convex.html#lemma-8"><code class="xref">lemma-8</code></a> <em>(optimization_convex)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-lemma-9"><td></td><td>
+       <strong>lemma-9</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_convex.html#lemma-9"><code class="xref">lemma-9</code></a> <em>(optimization_convex)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-minimizers"><td></td><td>
+       <strong>minimizers</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_problems.html#minimizers"><code class="xref">minimizers</code></a> <em>(optimization_problems)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-objective"><td></td><td>
+       <strong>objective</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_problems.html#objective"><code class="xref">objective</code></a> <em>(optimization_problems)</em></td><td>
+       <em>definition</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-observation-0"><td></td><td>
+       <strong>observation-0</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="dim_reduction_pca.html#observation-0"><code class="xref">observation-0</code></a> <em>(dim_reduction_pca)</em></td><td>
+       <em>observation</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-observation-2"><td></td><td>
+       <strong>observation-2</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_optimization.html#observation-2"><code class="xref">observation-2</code></a> <em>(regression_optimization)</em></td><td>
+       <em>observation</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-observation-3"><td></td><td>
+       <strong>observation-3</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_optimization.html#observation-3"><code class="xref">observation-3</code></a> <em>(regression_optimization)</em></td><td>
+       <em>observation</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-other_pcs"><td></td><td>
+       <strong>other_pcs</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="dim_reduction_pca.html#other_pcs"><code class="xref">other_pcs</code></a> <em>(dim_reduction_pca)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-pca_obj_prod"><td></td><td>
+       <strong>pca_obj_prod</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="dim_reduction_pca.html#pca_obj_prod"><code class="xref">pca_obj_prod</code></a> <em>(dim_reduction_pca)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-pca_var_prod"><td></td><td>
+       <strong>pca_var_prod</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="dim_reduction_pca.html#pca_var_prod"><code class="xref">pca_var_prod</code></a> <em>(dim_reduction_pca)</em></td><td>
+       <em>lemma</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-prop:target_distr"><td></td><td>
+       <strong>prop:target_distr</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_bias_var.html#prop:target_distr"><code class="xref">prop:target_distr</code></a> <em>(regression_bias_var)</em></td><td>
+       <em>property</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-property-2"><td></td><td>
+       <strong>property-2</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="classification_problem.html#property-2"><code class="xref">property-2</code></a> <em>(classification_problem)</em></td><td>
+       <em>property</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-theorem-0"><td></td><td>
+       <strong>theorem-0</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_optimization.html#theorem-0"><code class="xref">theorem-0</code></a> <em>(regression_optimization)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-theorem-1"><td></td><td>
+       <strong>theorem-1</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_gradients.html#theorem-1"><code class="xref">theorem-1</code></a> <em>(optimization_gradients)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-theorem-2"><td></td><td>
+       <strong>theorem-2</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_ridge.html#theorem-2"><code class="xref">theorem-2</code></a> <em>(regression_ridge)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-theorem-3"><td></td><td>
+       <strong>theorem-3</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_numerical.html#theorem-3"><code class="xref">theorem-3</code></a> <em>(optimization_numerical)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-theorem-4"><td></td><td>
+       <strong>theorem-4</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="regression_optimization.html#theorem-4"><code class="xref">theorem-4</code></a> <em>(regression_optimization)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-theorem-5"><td></td><td>
+       <strong>theorem-5</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_convex.html#theorem-5"><code class="xref">theorem-5</code></a> <em>(optimization_convex)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-theorem-6"><td></td><td>
+       <strong>theorem-6</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="dim_reduction_pca.html#theorem-6"><code class="xref">theorem-6</code></a> <em>(dim_reduction_pca)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-theorem-7"><td></td><td>
+       <strong>theorem-7</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="linalg_normed_vs.html#theorem-7"><code class="xref">theorem-7</code></a> <em>(linalg_normed_vs)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-thm_convex"><td></td><td>
+       <strong>thm_convex</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="optimization_convex.html#thm_convex"><code class="xref">thm_convex</code></a> <em>(optimization_convex)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-thm_kmeans_tr"><td></td><td>
+       <strong>thm_kmeans_tr</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="clustering_kernel_kmeans.html#thm_kmeans_tr"><code class="xref">thm_kmeans_tr</code></a> <em>(clustering_kernel_kmeans)</em></td><td>
+       <em>theorem</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-true_classifier_error"><td></td><td>
+       <strong>true_classifier_error</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="classification_problem.html#true_classifier_error"><code class="xref">true_classifier_error</code></a> <em>(classification_problem)</em></td><td>
+       <em>definition</em></td></tr>
+   </table>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sibylle Hess
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022. Eindhoven University of Technology.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

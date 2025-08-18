@@ -1,0 +1,883 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Random Forests &#8212; Data Mining and Machine Learning Jupyter Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'classification_random_forests';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Support Vector Machines" href="classification_svms.html" />
+    <link rel="prev" title="Decision Trees" href="classification_decision_trees.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Data Mining and Machine Learning Jupyter Book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Data Mining and Machine Learning Jupyter Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation.html">Notation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="linalg.html">Linear Algebra</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="linalg_spaces.html">Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_normed_vs.html">Normed Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="optimization.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimization_problems.html">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_convex.html">Convex Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_analytic.html">Analytic Solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_numerical.html">Numerical Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_gradients.html">Matrix Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="regression.html">Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="regression_objective.html">Regression Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_functions.html">Regression Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_optimization.html">Minimizing the RSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_bias_var.html">The Bias-Variance Tradeoff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_sparse.html">The Sparse Regression Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_ridge.html">Ridge Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_lasso.html">Lasso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="classification.html">Classification</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="classification_problem.html">Classification Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_knn.html">K-Nearest Neighbor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_naive_bayes.html">Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_decision_trees.html">Decision Trees</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Random Forests</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="classification_svms.html">Support Vector Machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_kernel_svm.html">Kernel SVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="neuralnets.html">Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_intro.html">From Linear Models to Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_mlps.html">MLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_backprop.html">Backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_sgd.html">Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_conv.html">Convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_pooling.html">Pooling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dim_reduction.html">Dimensionality Reduction Techniques</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_mf.html">Low Rank Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_pca.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="clustering.html">Clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means.html">k-Means</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means_mf.html">k-Means is MF</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_kernel_kmeans.html">Kernel k-means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_spectral.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/edit/main/classification_random_forests.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/issues/new?title=Issue%20on%20page%20%2Fclassification_random_forests.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/classification_random_forests.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Random Forests</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Random Forests</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bootstrapping">Bootstrapping</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#out-of-bag-error-estimate">Out Of Bag Error Estimate</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-boundary">Decision boundary</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="random-forests">
+<h1>Random Forests<a class="headerlink" href="#random-forests" title="Link to this heading">#</a></h1>
+<p>The performance of a decision tree depends on its structure, that is determined by a greedy method, for example with the CART algorithm. The greedy selection of the best split tends to overfit on the training data, as greedy methods quickly get lost in details since they operate only on local views of the data. We can overcome the tendency to overfit by choosing an early stopping criterion, but we can do even better by combining various overfitting trees into an ensemble – called a random forest. The disadvantage is that we lose the interpretability of a single tree, but on the other hand, we obtain one of the strongest classifiers to this date.</p>
+<p>The theoretical motivation for the random forest is the bias-variance tradeoff for classification (to be discussed in detail in <a class="reference internal" href="classification_evaluation.html#class-evaluation"><span class="std std-ref">Bias Variance Tradeoff</span></a>). Similar to the bias-variance tradeoff in regression, a complex model tends to overfit and consequently has a high variance and low bias. In turn, a simple model has a high bias and low variance. If we now train a couple of overfitting decision trees, for example by setting the stopping criteria pretty lax, such that we get big trees, and if we aggregate the results of those trees, then we get an low bias, low variance classifier.</p>
+<section id="inference">
+<h2>Inference<a class="headerlink" href="#inference" title="Link to this heading">#</a></h2>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 25 </span> (Random Forest)</p>
+<section class="definition-content" id="proof-content">
+<p>A Random Forest classifier is an ensemble of <span class="math notranslate nohighlight">\(m\)</span> decision trees <span class="math notranslate nohighlight">\(f_{dt1},\ldots,f_{dtm}\)</span> that aggregates predictions of single trees via a majority vote. Let <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})\in\{0,1\}^c\)</span> denote the one-hot encoded argmax function (also called hardmax), such that <span class="math notranslate nohighlight">\(\mathbb{1}(\vvec{p})_y=1\)</span> if and only if <span class="math notranslate nohighlight">\(y = \argmax_{1\leq l\leq c} p_l\)</span>. We define then the random forest classifier as
+<div class="math notranslate nohighlight">
+\[ f_{rf}(\vvec{x})= \frac{1}{m}\sum_{j=1}^m \mathbb{1}(f_{dtj}(\vvec{x})).\]</div>
+
+As a result, the random forest predicts the class that wins the majority vote of all decision trees.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\hat{y} &amp; = \argmax_y\ f_{rf}(\vvec{x})_y\\
+&amp;= \mathrm{mode}(\{\hat{y}_{dtj}\mid 1\leq j\leq m\})
+\end{align*}\]</div>
+</section>
+</div><p>The inference of a radom forest is a simple majority vote of the decision trees. For any ensemble of classifiers, predicting the class over a majority vote, we can derive an error bound that details which characteristics of the base classifiers make a strong ensemble. The error bound considers each tree the outcome of a random variable <span class="math notranslate nohighlight">\(\omega\)</span>, that describes the training set of the tree and other random elements that made the tree how it is.</p>
+<div class="proof theorem admonition" id="theorem-1">
+<p class="admonition-title"><span class="caption-number">Theorem 20 </span> (expected prediction error bound)</p>
+<section class="theorem-content" id="proof-content">
+<p>Let</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+s(\vvec{x},y) = \argmax_{l\neq y} p_\omega(\hat{y}_\omega(\vvec{x})=l)
+\end{align*}\]</div>
+<p>be the most frequently predicted label that is not the actual label of the random forest.
+We define the margin function of a random forest as
+<div class="math notranslate nohighlight">
+\[m(\vvec{x},y) = p_\omega(f(\vvec{x};\omega)=y)-\max_{l\neq y}p_\omega(f(\vvec{x};\omega)=l),\]</div>
+
+and the margin function of a tree specified by <span class="math notranslate nohighlight">\(\omega\)</span> as
+<div class="math notranslate nohighlight">
+\[m_\omega(\vvec{x},y)= L_{01}(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y))-L_{01}(\hat{y}_\omega(\vvec{x}),y).\]</div>
+
+Further we define the strength of a random forest as the expected margin
+<span class="math notranslate nohighlight">\(\mu(m) = \mathbb{E}_{\vvec{x},y}m(\vvec{x},y)\)</span>.
+Assuming that the expected margin is nonnegative (<span class="math notranslate nohighlight">\(\mu\geq 0\)</span>), then the expected prediction error of a random forest is bounded by
+<div class="math notranslate nohighlight">
+\[EPE = p\left(y\neq \hat{y}_{\omega}(\vvec{x})\right) \leq \bar{\rho}(m_\omega,m_\hat{\omega})\frac{1-\mu(m)^2}{\mu(m)^2},\]</div>
+
+where
+<div class="math notranslate nohighlight">
+\[\bar{\rho}(m_\omega,m_\hat{\omega}) = \frac{\rho(m_\omega,m_\hat{\omega})\sigma(m_\omega)\sigma(m_\hat{\omega})}{\mathbb{E}_{\omega,\hat{\omega}}[\sigma(m_\omega)\sigma(m_\hat{\omega})]}\]</div>
+
+is the mean Pearson correlation coefficient of two i.i.d. sampled trees specified by <span class="math notranslate nohighlight">\(\omega\)</span> and <span class="math notranslate nohighlight">\(\hat{\omega}\)</span>.</p>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. If the margin is negative, then the prediction of the random forest is not correct. Hence, we can write that the expected prediction error is the probability that the margin is negative</p>
+<div class="math notranslate nohighlight" id="equation-eq-epe-margin">
+<span class="eqno">(37)<a class="headerlink" href="#equation-eq-epe-margin" title="Link to this equation">#</a></span>\[\begin{split}\begin{align*}
+EPE &amp;= p_{\vvec{x},y}(m(\vvec{x},y)&lt;0)\\
+&amp;= p_{\vvec{x},y}(m(\vvec{x},y)-\mu(m) &lt; -\mu(m))\\
+&amp;= p_{\vvec{x},y}(\mu(m) - m(\vvec{x},y) &gt; \mu(m))
+\end{align*}\end{split}\]</div>
+<p>We can apply Chebychev’s inequality to the probability above. Chebychev’s inequality states that
+<div class="math notranslate nohighlight">
+\[p(\lvert x-\mu\rvert\geq w)\leq \frac{\sigma^2}{w^2},\]</div>
+
+where <span class="math notranslate nohighlight">\(\mu\)</span> is the expected value and <span class="math notranslate nohighlight">\(\sigma^2\)</span> is the variance of random variable <span class="math notranslate nohighlight">\(x\)</span>.
+We apply this to  Eq. <a class="reference internal" href="#equation-eq-epe-margin">(37)</a></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+EPE&amp;\leq  p_{\vvec{x},y}(\lvert\mu(m) - m(\vvec{x},y)\rvert &gt; \mu(m))
+\leq \frac{\sigma^2(m)}{\mu(m)^2}.
+\end{align*}\]</div>
+<p>Hence, the EPE is bounded above by the variance of the margin divided my the strength of the classifier. Since the variance of the margin does not have a good interpretation with regard to a random forest, we derive now a bound for the variance.</p>
+<p>We rewrite the margin of the random forest in dependence of the margin of the trees as</p>
+<div class="math notranslate nohighlight" id="equation-eq-margin-raw">
+<span class="eqno">(38)<a class="headerlink" href="#equation-eq-margin-raw" title="Link to this equation">#</a></span>\[\begin{split}\begin{align*}
+m(\vvec{x},y)&amp;= p_\omega(L_{01}(\hat{y}_\omega(\vvec{x}),y)=0) - p_\omega(L_{01}(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y))=0)\\
+&amp;=\mathbb{E}_\omega[L_{01}(\hat{y}_\omega(\vvec{x}), s(\vvec{x},y)) - L_{01}(\hat{y}_\omega(\vvec{x}),y)],
+\end{align*}\end{split}\]</div>
+<p>where the last equation derives from the linearity of the expected value and the fact that the expected value of binary random variable is equal to the probability that the binary random variable is equal to one.
+From Eq. <a class="reference internal" href="#equation-eq-margin-raw">(38)</a> follows that the expected value of the tree margin function over <span class="math notranslate nohighlight">\(\omega\)</span> is the margin function <span class="math notranslate nohighlight">\(\mathbb{E}_\omega[m_\omega(\vvec{x},y)]=m(\vvec{x},y)\)</span>.
+We can now write the variance of the margin with respect to single trees as</p>
+<div class="math notranslate nohighlight" id="equation-eq-var-omega">
+<span class="eqno">(39)<a class="headerlink" href="#equation-eq-var-omega" title="Link to this equation">#</a></span>\[\begin{split}\begin{align*}
+\sigma^2(m) &amp;= \mathbb{E}_{\vvec{x},y}[(m(\vvec{x},y)-\mu(m))^2]\\
+&amp;= \mathbb{E}_{\vvec{x},y}[(\mathbb{E}_\omega[m_\omega(\vvec{x},y)-\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)])^2].
+\end{align*}\end{split}\]</div>
+<p>Since we have for any variable of function <span class="math notranslate nohighlight">\(h_\omega\)</span>, and i.i.d. random variables <span class="math notranslate nohighlight">\(\omega\)</span> and <span class="math notranslate nohighlight">\(\hat{\omega}\)</span>
+<div class="math notranslate nohighlight">
+\[(\mathbb{E}_\omega[h_\omega])^2 =\mathbb{E}_\omega[h_\omega]\mathbb{E}_\hat{\omega}[h_\hat{\omega}] = \mathbb{E}_{\omega,\hat{\omega}}[h_\omega h_\hat{\omega}], \]</div>
+
+we can write Eq. <a class="reference internal" href="#equation-eq-var-omega">(39)</a> as</p>
+<div class="math notranslate nohighlight" id="equation-eq-var2">
+<span class="eqno">(40)<a class="headerlink" href="#equation-eq-var2" title="Link to this equation">#</a></span>\[\begin{split}\begin{align*}
+\sigma^2(m) &amp;= \mathbb{E}_{\vvec{x},y} \mathbb{E}_{\omega,\hat{\omega}}\left[(m_\omega(\vvec{x},y)-\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)])(m_\hat{\omega}(\vvec{x},y)-\mathbb{E}_{\vvec{x},y}[m_\hat{\omega}(\vvec{x},y)])\right] \\
+&amp;= \mathbb{E}_{\omega,\hat{\omega}}[\rho(m_\omega,m_\hat{\omega})\sigma(m_\omega)\sigma(m_\hat{\omega})]
+\end{align*}\end{split}\]</div>
+<p>The last equation derives from the fact that the inner expected value subject to <span class="math notranslate nohighlight">\(\omega,\hat{\omega}\)</span> is the covariance of <span class="math notranslate nohighlight">\(m_\omega\)</span> and <span class="math notranslate nohighlight">\(m_{\hat{\omega}}\)</span>. The covariance can be expressed as the Pearson correlation coefficient multiplied with the corresponding standard deviations. Dividing and multiplying Eq. <a class="reference internal" href="#equation-eq-var2">(40)</a> with <span class="math notranslate nohighlight">\(\mathbb{E}_\omega[\sigma_\omega]^2 = \mathbb{E}_{\omega,\hat{\omega}}[\sigma(m_\omega) \sigma(m_\hat{\omega})]\)</span> yields</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sigma^2(m) 
+&amp;= \bar{\rho}(m_\omega,m_\hat{\omega})\mathbb{E}_\omega[\sigma(m_\omega)]^2\leq \mathbb{E}_\omega[\sigma^2(m_\omega)]
+\end{align*}\]</div>
+<p>where the last inequality stems from Jenssens inequality applied to the convex function <span class="math notranslate nohighlight">\(x^2\)</span>.</p>
+<div class="math notranslate nohighlight" id="equation-eq-var3">
+<span class="eqno">(41)<a class="headerlink" href="#equation-eq-var3" title="Link to this equation">#</a></span>\[\begin{split}\begin{align*}
+\mathbb{E}_\omega[\sigma^2(m_\omega)] &amp;= \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2] - \mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]^2\right]\\
+&amp;= \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2]\right] - \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]^2\right]
+\end{align*}\end{split}\]</div>
+<p>We apply again Jenssens inequality and get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]^2\right]\geq \mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)]\right]^2 = \mu(m)^2
+\end{align*}\]</div>
+<p>Further, we have <span class="math notranslate nohighlight">\(\mathbb{E}_\omega\left[\mathbb{E}_{\vvec{x},y}[m_\omega(\vvec{x},y)^2]\right]\leq 1\)</span> because <span class="math notranslate nohighlight">\(m_\omega(\vvec{x},y)\in\{-1,0,1\}\)</span>. As a result, we can bound Eq. <a class="reference internal" href="#equation-eq-var3">(41)</a> as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{E}_\omega[\sigma^2(m_\omega)] &amp;\leq 1-\mu(m)^2.
+\end{align*}\]</div>
+<p>This concludes our result.</p>
+</div>
+</div>
+<p>The theorem, published in <span id="id1">[<a class="reference internal" href="bibliography.html#id2" title="Leo Breiman. Random forests. Machine learning, 45:5–32, 2001.">1</a>]</span>, identifies two properties of the decision trees that bound the EPE of a random forest:</p>
+<ul class="simple">
+<li><p>The strength of the random forest classifier <span class="math notranslate nohighlight">\(\mu(m)=\mathbb{E}_{\vvec{x},y}\mathbb{E}_\omega[m_\omega(\vvec{x},y)]\)</span>: the higher the expected margin of the decision trees, the better. A high margin indicates that the random forest confidently predicts the correct classes.</p></li>
+<li><p>The correlation between the trees: the lower the correlation is between trees, the better. Note that the correlation is measured in the prediction confidences of the tree for all classes.</p></li>
+</ul>
+<p>The main implication of the EPE bound is that we do not necessarily need an ensemble of highly accurate (high strength) decision trees to make a strong random forest, but that we can also lower the error bound by learning trees that do not correlate much, but make in average still good predictions. This incentivizes strategies to increase the diversity of trees in a random forest.</p>
+</section>
+<section id="training">
+<h2>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
+<p>The training procedure of the random forest follows the theoretical motivations for strong ensemble learners. The rough procedure is to sample training data from the given dataset, learn trees that overfit on the dataset samples, and to incorporate further measures to decrease the correlation of trees. For example, by considering for each split only on a sampled subset of the features.
+In detail, the learning algorithm for random forests look as follows.</p>
+<div class="proof algorithm admonition" id="algorithm-2">
+<p class="admonition-title"><span class="caption-number">Algorithm 10 </span> (Random Forest Training)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Input</strong>: training data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, number of features <span class="math notranslate nohighlight">\(\hat{d}&lt;d\)</span></p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{DT}\gets\emptyset\)</span> # Initialize the set of trees</p></li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(j\in\{1,\ldots, m\}\)</span></p>
+<ol class="arabic simple">
+<li><p>Draw a bootstrap sample <span class="math notranslate nohighlight">\(\mathcal{D}_j\)</span> from <span class="math notranslate nohighlight">\(\mathcal{D}\)</span></p></li>
+<li><p>Train the decision tree <span class="math notranslate nohighlight">\(f_{dtj}\)</span> on <span class="math notranslate nohighlight">\(\mathcal{D}_j\)</span> with the following specifications:</p>
+<ul class="simple">
+<li><p>Set as stopping criterion that the minimum number of samples per split is one (train untill maximum depth is reached).</p></li>
+<li><p>Select for each split randomly <span class="math notranslate nohighlight">\(\hat{d}\)</span> features that are considered for finding the best split</p></li>
+</ul>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{DT}\gets \mathcal{DT}\cup\{f_{dtj}\}\)</span></p></li>
+</ol>
+</li>
+</ol>
+</section>
+</div><p>Random forests use a specific sampling procedure to imitate various training datasets from one given training dataset. The employed sampling technique is called <strong>bootstrapping</strong>.</p>
+<section id="bootstrapping">
+<h3>Bootstrapping<a class="headerlink" href="#bootstrapping" title="Link to this heading">#</a></h3>
+<p>Bootstrapping is similar to the dataset division known from cross valiadation, only that in bootstrapping the generated datasets overlap, that is, various data points are present in multiple dataset samples.</p>
+<div class="proof definition admonition" id="definition-3">
+<p class="admonition-title"><span class="caption-number">Definition 26 </span> (Bootstrapping)</p>
+<section class="definition-content" id="proof-content">
+<p>Given a dataset <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\vvec{x}_i,y_i)\mid 1\leq i\leq n\}\)</span> containing <span class="math notranslate nohighlight">\(n\)</span> datapoints. A bootstrap sample <span class="math notranslate nohighlight">\(\mathcal{D}_j=\{(\vvec{x}_{i_b},y_{i_b})\mid 1\leq b\leq n\}\subseteq\mathcal{D}\)</span> gathers <span class="math notranslate nohighlight">\(n\)</span> uniformly distributed samples (<span class="math notranslate nohighlight">\(i_b \sim\mathcal{U}\{1, \dots, n\}\)</span>) from <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>. Hence, <span class="math notranslate nohighlight">\(\mathcal{D}_j\)</span> may contain various duplicates of data points.</p>
+</section>
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It’s common to define datasets as mathematical sets, as we have done in this book. However, a mathematical set has no duplicates in general. Datasets on the other hand may contain duplicate data points and in bootstrapping samples this is most often the case. Hence, in order to not get confused, you can also imagine a dataset as a set of thrupels <span class="math notranslate nohighlight">\((i,\vvec{x}_i,y_i)\)</span> where <span class="math notranslate nohighlight">\(i\)</span> is an index that is uniquely assigned to each datapoint. We just omit the index from our dataset notation to shorten it.</p>
+</div>
+<p>Let’s write a simple example demonstrating what bootstrap samples look like:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Original dataset</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Number of bootstrap samples</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># feel free to increase this</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original data D&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Bootstrap samples:&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="c1"># Sample with replacement</span>
+    <span class="n">bootstrap_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;D</span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">bootstrap_sample</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original data D [1 2 3 4 5]
+
+Bootstrap samples:
+D1: [2 1 4 1 3]
+D2: [4 3 1 3 2]
+D3: [4 2 2 4 4]
+D4: [4 5 5 4 4]
+D5: [4 1 2 3 5]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We see how some data points are duplicates in the bootstrap samples and other are not occurring at all. A data point is not chosen for a bootstrap sample with probability <span class="math notranslate nohighlight">\((1-\frac1n)^n\)</span> (<span class="math notranslate nohighlight">\(n\)</span> times, the data point hasn’t been selected, which has a probability of <span class="math notranslate nohighlight">\(1-\frac1n\)</span>). If <span class="math notranslate nohighlight">\(n\rightarrow \infty\)</span> we have <span class="math notranslate nohighlight">\((1-\frac1n)^n\rightarrow \exp(-1)\approx 1/3\)</span>. Hence, very roughly one third of all datapoints is missing from one bootstrap sample (in a big dataset).</p>
+</section>
+</section>
+<section id="out-of-bag-error-estimate">
+<h2>Out Of Bag Error Estimate<a class="headerlink" href="#out-of-bag-error-estimate" title="Link to this heading">#</a></h2>
+<p>Although random forests are generally very robust, they can be somewhat sensitive to setting the parameter <span class="math notranslate nohighlight">\(\hat{d}\)</span>. Considering only a small subset of variables for each split reduces correlation (good) but can also reduce the strength of the trees (bad). In contrast, if you choose a high number of variables considered in each split, then the correlation is probably high (bad), but the strength might be increased (good). The number of features can be determined in random forests by means of the Out Of Bag (OOB) error estimate, which works similar to cross validation.</p>
+<p>Each bootstrap dataset <span class="math notranslate nohighlight">\(\mathcal{D}_j\)</span> generates a test set <span class="math notranslate nohighlight">\(\mathcal{T}_j=\mathcal{D}\setminus \mathcal{D}_j\)</span> containing those datapoints the tree hasn’t been trained on. Similarly to cross-validation, we can use the repeated splits into train and testset to obtain a fairly good estimate of the EPE. The Out Of Bag (OOB) error rate averages the random forest predictions, using for each prediction only those trees that haven’t seen the data point in training:
+<div class="math notranslate nohighlight">
+\[OOB = \frac1n\sum_{i=1}^n L_{01}(\mathrm{mode}(\{\hat{y}_{dtj}\mid (\vvec{x}_i,y_i)\in\mathcal{T}_j\}),y_i) \]</div>
+
+Since a third of the data points is not chosen for a bootstrap sample, we have for large datasets approximately <span class="math notranslate nohighlight">\(\frac n3\)</span> data points in each test set.</p>
+<p>Using the OOB, instead of cross-validation, is favorable for decision trees, since it makes efficient use of the created dataset splits during random forest training.</p>
+</section>
+</section>
+<section id="decision-boundary">
+<h1>Decision boundary<a class="headerlink" href="#decision-boundary" title="Link to this heading">#</a></h1>
+<p>We plot the decision boundary of a random forest for the two moons classification dataset. Below, we train 10 decision trees, considering only one randomly sampled feature for each split (since the dimensionality of the data is two, we can’t go higher if we want to restrict the number of features considered for each split).  We observe how the majority vote between the trees fracture the decision boundary in the area between the moons. The decision boundary indicates to us that the random forest is able to capture much more complex decision boundaries than a single tree. However, in this case, we do observe some overfitting areas where the decision boundary is adapting a lot to the points that reach into the other class. However, if you increase the number of trees in the forest, this behavior diminishes and the decision boundary becomes more smooth (in tendency).</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.inspection</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span><span class="p">,</span> <span class="n">LinearSegmentedColormap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_moons</span>
+
+
+<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#a0c3ff&quot;</span><span class="p">,</span> <span class="s2">&quot;#ffa1cf&quot;</span><span class="p">])</span>
+<span class="n">cm_points</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;#007bff&quot;</span><span class="p">,</span> <span class="s2">&quot;magenta&quot;</span><span class="p">])</span>
+<span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_features</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">oob_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">disp</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
+    <span class="n">rf</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">,</span>
+    <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
+    <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span>
+    <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cm_points</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">ax_</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Two moons classification Random Forest</span><span class="se">\n</span><span class="s2">OOB Acc </span><span class="si">{</span><span class="n">rf</span><span class="o">.</span><span class="n">oob_score_</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;scaled&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="_images/6c4027b22871ebce3bd223a29e5762222d4f695a870c0e53284f26484ee944a5.png" src="_images/6c4027b22871ebce3bd223a29e5762222d4f695a870c0e53284f26484ee944a5.png" />
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="classification_decision_trees.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Decision Trees</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="classification_svms.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Support Vector Machines</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Random Forests</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bootstrapping">Bootstrapping</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#out-of-bag-error-estimate">Out Of Bag Error Estimate</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-boundary">Decision boundary</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sibylle Hess
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022. Eindhoven University of Technology.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

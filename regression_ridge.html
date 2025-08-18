@@ -1,0 +1,894 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Ridge Regression &#8212; Data Mining and Machine Learning Jupyter Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"diag": "\\mathrm{diag}", "tr": "\\mathrm{tr}", "argmin": "\\mathrm{arg\\,min}", "argmax": "\\mathrm{arg\\,max}", "sign": "\\mathrm{sign}", "softmax": "\\mathrm{softmax}", "vvec": ["\\mathbf{#1}", 1], "bm": ["{\\boldsymbol #1}", 1], "concat": "\\mathbin{{+}\\mspace{-8mu}{+}}"}, "preamble": "\\usepackage{arydshln}"}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'regression_ridge';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Lasso" href="regression_lasso.html" />
+    <link rel="prev" title="The Sparse Regression Task" href="regression_sparse.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Data Mining and Machine Learning Jupyter Book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Data Mining and Machine Learning Jupyter Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Data Mining and Machine Learning Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notation.html">Notation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="linalg.html">Linear Algebra</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="linalg_spaces.html">Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_normed_vs.html">Normed Vector Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="optimization.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimization_problems.html">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_convex.html">Convex Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_analytic.html">Analytic Solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_numerical.html">Numerical Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_gradients.html">Matrix Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="regression.html">Regression</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="regression_objective.html">Regression Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_functions.html">Regression Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_optimization.html">Minimizing the RSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_bias_var.html">The Bias-Variance Tradeoff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_sparse.html">The Sparse Regression Task</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Ridge Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_lasso.html">Lasso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="classification.html">Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="classification_problem.html">Classification Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_knn.html">K-Nearest Neighbor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_naive_bayes.html">Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_decision_trees.html">Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_random_forests.html">Random Forests</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="classification_svms.html">Support Vector Machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_kernel_svm.html">Kernel SVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_evaluation.html">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classification_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="neuralnets.html">Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_intro.html">From Linear Models to Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_mlps.html">MLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_backprop.html">Backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_sgd.html">Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_conv.html">Convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuralnets_pooling.html">Pooling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dim_reduction.html">Dimensionality Reduction Techniques</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_mf.html">Low Rank Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_pca.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dim_reduction_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="clustering.html">Clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means.html">k-Means</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_k_means_mf.html">k-Means is MF</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="clustering_kernel_kmeans.html">Kernel k-means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_spectral.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering_exercises.html">Exercises</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/edit/main/regression_ridge.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/tue-ml/book/issues/new?title=Issue%20on%20page%20%2Fregression_ridge.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/regression_ridge.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Ridge Regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization">Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-the-regularization-weight">Effect of the Regularization Weight</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-we-shouldn-t-penalize-the-bias-term">Why we shouldn’t penalize the bias term</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ridge-regression">
+<h1>Ridge Regression<a class="headerlink" href="#ridge-regression" title="Link to this heading">#</a></h1>
+<p>Ridge Regression describes an <span class="math notranslate nohighlight">\(L_2\)</span>-penalized regression task.</p>
+<div class="tip admonition" id="ridge-task">
+<p class="admonition-title">Task (Ridge Regression)</p>
+<p><strong>Given</strong> a dataset of <span class="math notranslate nohighlight">\(n\)</span> observations</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}\mathcal{D}=\left\{(\vvec{x}_i,y_i)\vert \vvec{x}_i\in\mathbb{R}^{d}, y_i\in\mathbb{R}, 1\leq i \leq n\right\},\end{equation*}  \]</div>
+<p>the design matrix <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{n\times p}\)</span>, where <span class="math notranslate nohighlight">\(X_{i\cdot}=\bm\phi(\vvec{x}_i)^\top\)</span> and a regularization weight <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span>.<br />
+<strong>Find</strong> the regression vector <span class="math notranslate nohighlight">\(\bm\beta\)</span>, solving the following objective</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d7fa28fe-cbb5-4f78-8ef5-fb04df8f8381">
+<span class="eqno">(21)<a class="headerlink" href="#equation-d7fa28fe-cbb5-4f78-8ef5-fb04df8f8381" title="Permalink to this equation">#</a></span>\[\begin{align}
+    \min_{\bm\beta\in\mathbb{R}^p} RSS_{L_2}(\bm{\beta})&amp;= \lVert \vvec{y}-X\bm\beta\rVert^2 +\lambda \lVert\bm{\beta}\rVert^2. 
+\end{align}      \]</div>
+<p><strong>Return</strong> the predictor function <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(f(\vvec{x})=\bm\phi(\vvec{x})^\top\bm\beta\)</span></p>
+</div>
+<section id="optimization">
+<h2>Optimization<a class="headerlink" href="#optimization" title="Link to this heading">#</a></h2>
+<p>First of all, we observe that the ridge regression objective is convex. The objective function <span class="math notranslate nohighlight">\(RSS_{L_2}\)</span> is convex as it is the nonnegatively weighted sum of convex functions. The feasible set is the set <span class="math notranslate nohighlight">\(\mathbb{R}^p\)</span>, which is convex as well. Hence, the whole objective is a convex, unconstrained optimization problem. That means that every stationary point of the objective function is a minimizer. We can compute the stationary points as follows:</p>
+<div class="math notranslate nohighlight" id="equation-eq-ridge">
+<span class="eqno">(22)<a class="headerlink" href="#equation-eq-ridge" title="Link to this equation">#</a></span>\[\begin{split}\begin{align*}
+    &amp;\nabla_{\bm{\beta}} RSS_{L_2}(\bm{\beta})= -2X^\top(\vvec{y}-X\bm{\beta}) +2\lambda\bm{\beta} =0 \\
+    \Leftrightarrow\quad &amp; (X^\top X+\lambda I){\bm{\beta}} = X^\top \vvec{y}
+\end{align*}\end{split}\]</div>
+<p>How does this change the standard set of regression solutions?</p>
+</section>
+<section id="effect-of-the-regularization-weight">
+<h2>Effect of the Regularization Weight<a class="headerlink" href="#effect-of-the-regularization-weight" title="Link to this heading">#</a></h2>
+<p>The following lemma indicates that the solutions of Ridge Regression computed above are always unique (exactly one regression vector <span class="math notranslate nohighlight">\(\beta\)</span> solves the ridge regression objective).</p>
+<div class="proof lemma admonition" id="lemma-0">
+<p class="admonition-title"><span class="caption-number">Lemma 6 </span></p>
+<section class="lemma-content" id="proof-content">
+<p>For any matrix <span class="math notranslate nohighlight">\(X\in\mathbb{R}^{n\times d}\)</span>, the matrix <span class="math notranslate nohighlight">\(X^\top X+\lambda I\)</span> is invertible for all <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span></p>
+</section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. Let <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\)</span> be the singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span>, then</p>
+<div class="amsmath math notranslate nohighlight" id="equation-0e14e3ab-3978-4601-9d13-0691140a4c3e">
+<span class="eqno">(23)<a class="headerlink" href="#equation-0e14e3ab-3978-4601-9d13-0691140a4c3e" title="Permalink to this equation">#</a></span>\[\begin{align}
+    X^\top X+\lambda I 
+    &amp;= V(\Sigma^\top\Sigma +\lambda I )V^\top
+\end{align}\]</div>
+<p>The matrix <span class="math notranslate nohighlight">\(\Sigma^\top\Sigma +\lambda I\)</span> is invertible, as it is a diagonal matrix where each value on the diagonal is at least as large as <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span>. Hence, the matrix <span class="math notranslate nohighlight">\(X^\top X+\lambda I\)</span> is invertible and the inverse is <span class="math notranslate nohighlight">\(V(\Sigma^\top\Sigma +\lambda I )^{-1}V^\top\)</span>.</p>
+</div>
+<p>As a result, we can multiply with <span class="math notranslate nohighlight">\((X^\top X+\lambda I)^{-1}\)</span> from the left in Eq. <a class="reference internal" href="#equation-eq-ridge">(22)</a> and obtain the ridge regression solver.</p>
+<div class="proof corollary admonition" id="corollary-1">
+<p class="admonition-title"><span class="caption-number">Corollary 2 </span></p>
+<section class="corollary-content" id="proof-content">
+<p>The solution to the <a class="reference internal" href="#ridge-task"><span class="std std-ref">Ridge Regression</span></a> task, is given by
+<div class="math notranslate nohighlight">
+\[\bm\beta_{L_2} = (X^\top X+\lambda I)^{-1}X^\top \vvec{y}\]</div>
+</p>
+</section>
+</div><p>So, for any regularization weight <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span> we have a unique regression solver, but for <span class="math notranslate nohighlight">\(\lambda=0\)</span> we can get infinitely many solutions. Yet, what kind of solution do we get for really small <span class="math notranslate nohighlight">\(\lambda\)</span>? Is there one solution of the infinitely many that is somewhat better than the others? We can answer this question indeed with “yes”, as the following theorem shows.</p>
+<div class="proof theorem admonition" id="theorem-2">
+<p class="admonition-title"><span class="caption-number">Theorem 16 </span></p>
+<section class="theorem-content" id="proof-content">
+<p>Let <span class="math notranslate nohighlight">\(X=U\Sigma V^\top\in\mathbb{R}^{n\times p}\)</span> be the SVD of the design matrix of the <a class="reference internal" href="#ridge-task"><span class="std std-ref">Ridge Regression</span></a> task. If only <span class="math notranslate nohighlight">\(r&lt;p\)</span> singular values of <span class="math notranslate nohighlight">\(X\)</span> are nonzero (<span class="math notranslate nohighlight">\(X\)</span> has a rank of <span class="math notranslate nohighlight">\(r\)</span>), then the global minimizer <span class="math notranslate nohighlight">\(\bm{\beta}_{L_2}\)</span> converges for decreasing regularization weights <span class="math notranslate nohighlight">\(\lambda\rightarrow 0\)</span> to</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \bm\beta_{L_2} &amp;= (X^\top X+\lambda I)^{-1}X^\top \vvec{y} 
+    &amp;\rightarrow V\begin{pmatrix}\Sigma_r^{-1} U_r^\top \vvec{y}\\ \mathbf{0}\end{pmatrix} 
+\end{align*}\]</div>
+<p><span class="math notranslate nohighlight">\(\Sigma_r\)</span> denotes here the matrix containing only the first <span class="math notranslate nohighlight">\(r\)</span> rows and columns of the singular values matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> and <span class="math notranslate nohighlight">\(U_r\)</span> denotes the matrix containing the first <span class="math notranslate nohighlight">\(r\)</span> left singular vectors (the first <span class="math notranslate nohighlight">\(r\)</span> columns of <span class="math notranslate nohighlight">\(U\)</span>).</p>
+</section>
+</div><div class="toggle docutils container">
+<div class="proof admonition" id="proof">
+<p>Proof. We substitute <span class="math notranslate nohighlight">\(X\)</span> with its SVD in Eq. <a class="reference internal" href="#equation-eq-ridge">(22)</a> yielding the ridge regression solutions.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+(X^\top X+\lambda I){\bm{\beta}} &amp;= X^\top \vvec{y}\\
+\Leftrightarrow (V\Sigma^\top\Sigma V^\top+\lambda I){\bm{\beta}} &amp;= V\Sigma^\top U^\top \vvec{y}\\
+\Leftrightarrow V(\Sigma^\top\Sigma +\lambda I)V^\top{\bm{\beta}} &amp;= V\Sigma^\top U^\top \vvec{y}\\
+    \Leftrightarrow {\bm{\beta}}&amp;= V(\Sigma^\top\Sigma +\lambda I )^{-1}\Sigma^\top U^\top \vvec{y}
+\end{align*}\]</div>
+<p>We use the notation of Observation <a class="reference internal" href="regression_optimization.html#obs-sigma-r"><span class="std std-ref"> (Singular value matrix of rank r)</span></a> to compute</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    (\Sigma^\top\Sigma +\lambda I )^{-1}\Sigma^\top &amp;= 
+    \left(
+    \begin{array}{c;{2pt/2pt}c}
+    \begin{matrix}
+    \frac{1}{\sigma^2_1+\lambda} &amp; \ldots &amp; 0  \\
+    \vdots  &amp; \ddots  &amp; \vdots \\
+    0 &amp; \ldots   &amp; \frac{1}{\sigma^2_r+\lambda} 
+    \end{matrix} &amp; \vvec{0} \\
+    \vvec{0} &amp;
+    \begin{matrix}
+     \frac1\lambda &amp;&amp;\\
+     &amp;  \ddots &amp; \\
+     &amp;  &amp; \frac1\lambda
+    \end{matrix}
+    \end{array}
+    \right)
+    \left(
+    \begin{array}{c;{2pt/2pt}c}
+    \begin{matrix}
+        \sigma_1 &amp; \ldots &amp; 0  \\
+        \vdots  &amp; \ddots  &amp; \vdots \\
+        0 &amp; \ldots   &amp; \sigma_r\\
+        \\
+        &amp; \mathbf{0} &amp;\\
+        \\
+    \end{matrix}
+    &amp; \mathbf{0}
+    \end{array}
+    \right)\\
+    &amp;= \left(
+    \begin{array}{c;{2pt/2pt}c}
+    \begin{matrix}
+    \frac{\sigma_1}{\sigma^2_1+\lambda} &amp; \ldots &amp; 0  \\
+    \vdots  &amp; \ddots  &amp; \vdots \\
+    0 &amp; \ldots   &amp; \frac{\sigma_r}{\sigma^2_r+\lambda} 
+    \end{matrix} &amp; \vvec{0} \\
+    \vvec{0} &amp; \vvec{0}
+    \end{array}
+    \right).
+\end{align*}\]</div>
+<p>Hence, the lower <span class="math notranslate nohighlight">\(p-r\)</span> rows of <span class="math notranslate nohighlight">\((\Sigma^\top\Sigma +\lambda I )^{-1}\Sigma^\top U^\top \vvec{y}\)</span> are equal to zero, returning
+<div class="math notranslate nohighlight">
+\[\begin{split}\bm\beta=V \begin{pmatrix}\diag(\frac{\sigma_1}{sigma_1^2 + \lambda},\ldots, \frac{\sigma_r}{sigma_r^2 + \lambda}) U_r^\top \vvec{y}\\ \mathbf{0}\end{pmatrix}. \end{split}\]</div>
+
+For <span class="math notranslate nohighlight">\(\lambda\rightarrow 0\)</span>, the diagonal matrix above converges to <span class="math notranslate nohighlight">\(\Sigma_r^{-1}\)</span>.</p>
+</div>
+</div>
+<p>Let’s look again at the plot of <a class="reference internal" href="regression_optimization.html#example_reg_p_larger_n">Example 17</a>. The regression function that we learn has four parameters, but we have only three data points. Hence, we have <span class="math notranslate nohighlight">\(p-r=1\)</span> and our regression solution vectors are computed as <span class="math notranslate nohighlight">\(\beta=V\mathbf{w}\)</span> where <span class="math notranslate nohighlight">\(\vvec{w}=\begin{pmatrix}\Sigma_r^{-1} U_r^\top \vvec{y}\\ w_4\end{pmatrix}\)</span> and <span class="math notranslate nohighlight">\(w_4\in\mathbb{R}\)</span>. If <span class="math notranslate nohighlight">\(w_4=0\)</span>, then the resulting <span class="math notranslate nohighlight">\(\beta\)</span> is the one that ridge regression converges to when <span class="math notranslate nohighlight">\(\lambda\rightarrow 0\)</span>. We plot now the resulting regression functions, depending on the value of <span class="math notranslate nohighlight">\(w_4\)</span> and get the following:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ϕ</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">X</span><span class="o">=</span><span class="n">ϕ</span><span class="p">(</span><span class="n">D</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">U</span><span class="p">,</span><span class="n">σs</span><span class="p">,</span><span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">V</span><span class="o">=</span><span class="n">Vt</span><span class="o">.</span><span class="n">T</span>
+<span class="n">Σ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">σs</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">Σ_pseudoinv</span> <span class="o">=</span> <span class="n">Σ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">Σ_pseudoinv</span><span class="p">[</span><span class="n">Σ</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">Σ</span><span class="p">[</span><span class="n">Σ</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">Σ_pseudoinv</span><span class="o">.</span><span class="n">T</span><span class="nd">@U</span><span class="o">.</span><span class="n">T</span><span class="nd">@y</span>
+<span class="k">for</span> <span class="n">w_4</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">40</span><span class="p">]:</span>
+    <span class="n">w</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">w_4</span>
+    <span class="n">β</span> <span class="o">=</span> <span class="n">V</span><span class="nd">@w</span>
+    <span class="n">f_x</span> <span class="o">=</span> <span class="n">ϕ</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="nd">@β</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f_x</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;w_4=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">w_4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/__/yt6jwp9d3gz1hjldtp6lhvxh0000gn/T/ipykernel_74100/1543070169.py:6: DeprecationWarning: `row_stack` alias is deprecated. Use `np.vstack` directly.
+  return np.row_stack((np.ones(x.shape[0]),x, x**2, x**3))
+</pre></div>
+</div>
+<img alt="_images/5e56158e40c90251fb403e8559d7975da5e9c0a30ff12898fe26ad85baee3f22.png" src="_images/5e56158e40c90251fb403e8559d7975da5e9c0a30ff12898fe26ad85baee3f22.png" />
+</div>
+</div>
+<p>We observe that the regression function for <span class="math notranslate nohighlight">\(w_4=0\)</span> is not as curvy as the other ones. Generally, the higher the value of <span class="math notranslate nohighlight">\(w_4\)</span>, the steeper are the slopes of the regression function. We can imagine that the rather erratic functions arising from high values in the parameter <span class="math notranslate nohighlight">\(w_4\)</span> are not desirable, as it result in a high variance among the models, depending on the training data. As a result, ridge regression gives us an idea which function we should choose when the regression objective has infinitely many solutions.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
+<p>Let’s use again <a class="reference internal" href="regression_optimization.html#example_reg_p_larger_n">Example 17</a>, but now we apply ridge regression with varying regularization weights. We implement a ridge regression solver, returning the regression parameter vector <span class="math notranslate nohighlight">\(\beta_{L_2}\)</span> for a given design matrix <span class="math notranslate nohighlight">\(X\)</span>, target vector <span class="math notranslate nohighlight">\(\vvec{y}\)</span> and regularization weight <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">β_ridge</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">λ</span><span class="p">):</span>
+    <span class="n">p</span><span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="nd">@X</span> <span class="o">+</span> <span class="n">λ</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">p</span><span class="p">))</span><span class="nd">@X</span><span class="o">.</span><span class="n">T</span><span class="nd">@y</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we plot the ridge regression functions for varying regularization weights.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ϕ</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">X</span><span class="o">=</span><span class="n">ϕ</span><span class="p">(</span><span class="n">D</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">λ</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]:</span>
+    <span class="n">β</span> <span class="o">=</span> <span class="n">β_ridge</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">λ</span><span class="p">)</span>
+    <span class="n">f_x</span> <span class="o">=</span> <span class="n">ϕ</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="nd">@β</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f_x</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;f_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">λ</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> <span class="c1"># horizontal lines</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> <span class="c1"># vertical lines</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/__/yt6jwp9d3gz1hjldtp6lhvxh0000gn/T/ipykernel_74100/1663639134.py:3: DeprecationWarning: `row_stack` alias is deprecated. Use `np.vstack` directly.
+  return np.row_stack((np.ones(x.shape[0]),x, x**2, x**3))
+</pre></div>
+</div>
+<img alt="_images/bd6087e21bab37852a6685becd99651b6b239b8db672b1026c303730dee36838.png" src="_images/bd6087e21bab37852a6685becd99651b6b239b8db672b1026c303730dee36838.png" />
+</div>
+</div>
+<p>We see that the functions become with increasing penalization weight more “flat”. This is of course what we would have expected. With increasing penalization weight <span class="math notranslate nohighlight">\(\lambda\)</span>, the minimization of the norm <span class="math notranslate nohighlight">\(\lVert\beta\rVert^2\)</span> becomes more important than the fit to the data expressed by the <span class="math notranslate nohighlight">\(RSS\)</span>. But is this plot really showing you what you expected in terms of a simple function fitting to the data? After all, the idea of Ridge Regression is to regularize the learned function by putting a dampener on the coefficients of the basis functions. That is, we wanted to make the regression function more simple while still having a good fit to the data. But the regression function with high penalization weight <span class="math notranslate nohighlight">\(\lambda=100\)</span> is not fitting the data very well and neither does it look simple (it is curving to weirdly, basically inversely to the curvature of the data points).</p>
+</section>
+<section id="why-we-shouldn-t-penalize-the-bias-term">
+<h2>Why we shouldn’t penalize the bias term<a class="headerlink" href="#why-we-shouldn-t-penalize-the-bias-term" title="Link to this heading">#</a></h2>
+<p>The example shows (and it should be clear from the objective) that we obtain for a very high value of <span class="math notranslate nohighlight">\(\lambda\)</span> in the ridge regression objective a ridge regression vector <span class="math notranslate nohighlight">\(\beta_{L_2}\)</span> close to zero. That means that the resulting regression function <span class="math notranslate nohighlight">\(f(x)=\phi(x)^\top \beta\)</span> approximates the constant zero function when <span class="math notranslate nohighlight">\(\lambda\rightarrow \infty\)</span>. However, whether we have an affine basis function <span class="math notranslate nohighlight">\(f(\mathbf{x})=\beta_d x_d+\ldots \beta_1 x_1 + \beta_0\)</span> or polynomial ones <span class="math notranslate nohighlight">\(f(x)=\beta_2x^2+ \beta_2 x + \beta_0\)</span>, it doesn’t make much sense to penalize nonzero values of the bias term <span class="math notranslate nohighlight">\(\beta_0\)</span>. That is because the centering of the target vector can then make a big difference in the outcome of the found regression term. Let us consider the previous example, but now we center <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>That is, we use now a polynomial regression function <span class="math notranslate nohighlight">\(f(x)=\beta_2x^2 + \beta_1 x + b\)</span>, where <span class="math notranslate nohighlight">\(b\)</span> is the mean target value of <span class="math notranslate nohighlight">\(y\)</span>. We fit the regression function on the centered target values and then translate the regression function such that it approximates the original targets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ϕ</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span><span class="p">))</span> <span class="c1">#we exclude the bias term from the design matrix</span>
+<span class="n">X</span><span class="o">=</span><span class="n">ϕ</span><span class="p">(</span><span class="n">D</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="n">b</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">y_centered</span> <span class="o">=</span> <span class="n">y</span><span class="o">-</span> <span class="n">b</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">λ</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">]:</span>
+    <span class="n">β</span> <span class="o">=</span> <span class="n">β_ridge</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y_centered</span><span class="p">,</span> <span class="n">λ</span><span class="p">)</span>
+    <span class="n">f_x</span> <span class="o">=</span> <span class="n">ϕ</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="nd">@β</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f_x</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;f_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">λ</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> <span class="c1"># horizontal lines</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> <span class="c1"># vertical lines</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/__/yt6jwp9d3gz1hjldtp6lhvxh0000gn/T/ipykernel_74100/935638417.py:3: DeprecationWarning: `row_stack` alias is deprecated. Use `np.vstack` directly.
+  return np.row_stack((x, x**2, x**3)) #we exclude the bias term from the design matrix
+</pre></div>
+</div>
+<img alt="_images/7a8571aabe4f45a9116ee81beec76783b02f9040b56a13215c20308a2f669e5c.png" src="_images/7a8571aabe4f45a9116ee81beec76783b02f9040b56a13215c20308a2f669e5c.png" />
+</div>
+</div>
+<p>We see that the regression functions are now closer to the training data points, even for quite high penalization weights <span class="math notranslate nohighlight">\(\lambda&gt;100\)</span>. The regression functions also look now more simple while still fitting to the data.<br />
+We indicate the ridge regression parameters in numbers for varying regularization weights below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">λ</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">]:</span>
+    <span class="n">β</span> <span class="o">=</span> <span class="n">β_ridge</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y_centered</span><span class="p">,</span> <span class="n">λ</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">λ</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">β</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.001 	 [-1.411  1.295 -0.213]
+1 	 [-0.074  0.499 -0.107]
+10 	 [ 0.101  0.243 -0.062]
+100 	 [ 0.027  0.052 -0.019]
+1000 	 [ 0.003  0.005 -0.008]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We see that the resulting ridge regression parameters approximate zero for high values of <span class="math notranslate nohighlight">\(\lambda\)</span>, but they don’t become actually zero. If we look back at the orginal motivation for applying the <span class="math notranslate nohighlight">\(L_2\)</span>-norm regularization, the goal to obtain sparse regression vectors and to obtain a feature selection, then we observe that ridge regression can not deliver in that use case. However, we do observe a regularizing effect in the sense that very big regularization weights get penalized by the <span class="math notranslate nohighlight">\(L_2\)</span>-norm regularization term.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="regression_sparse.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">The Sparse Regression Task</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="regression_lasso.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lasso</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization">Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-the-regularization-weight">Effect of the Regularization Weight</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-we-shouldn-t-penalize-the-bias-term">Why we shouldn’t penalize the bias term</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sibylle Hess
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022. Eindhoven University of Technology.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
