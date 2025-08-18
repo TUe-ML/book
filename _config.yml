@@ -86,4 +86,11 @@ proof:
     - remark
     - assumption
 
-  
+exclude_patterns:
+  - .venv/ 
+  - venv/ 
+  - env/ 
+  - .env/ 
+  - "*.venv"  
+  - __pycache__/ 
+  - "*.pyc"
