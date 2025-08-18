@@ -34,4 +34,9 @@ you should find the website in `_build/html`
 
 - copy changes to github pages 
 
-`ghp-import -n -p -f _build/html`
+`ghp-import -o -n -p -f _build/html`
+
+- `-n` Include a .nojekyll file in the branch.
+- `-p` Push the branch to origin/{branch} after committing.
+- `-f` Force the push to the repository.
+- `-o` Force new commit without parent history.
