@@ -20,7 +20,7 @@ Introductory Course to Data Mining and Machine Learning
 `pip install -r requirements.txt`
 
 
--- build everything from scratch
+- build everything from scratch
 
 `jupyter-book build --all ./`
 
