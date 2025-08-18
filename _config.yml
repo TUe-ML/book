@@ -94,3 +94,4 @@ exclude_patterns:
   - "*.venv"  
   - __pycache__/ 
   - "*.pyc"
+  - .github
