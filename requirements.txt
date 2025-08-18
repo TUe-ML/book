@@ -2,3 +2,12 @@ jupyter-book
 matplotlib
 numpy
 JSAnimation
+sphinx-proof
+sphinxcontrib-tikz
+numpy
+scipy
+matplotlib
+myst_nb
+scikit-learn
+pandas
+JSAnimation
