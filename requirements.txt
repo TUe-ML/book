@@ -11,3 +11,4 @@ myst_nb
 scikit-learn
 pandas
 JSAnimation
+ghp-import
