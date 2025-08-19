@@ -23,12 +23,12 @@ jobs:
         python-version: '3.11'
         cache: pip # Implicitly uses requirements.txt for cache key
     - name: Install TeXLive
-      # Actually pick a version, do not point on master, or the build won't be reproducible
       uses: DanySK/setup-texlive-action@master
-    - name: Install xetex
-      # makes
+    - name: Install xelatex
       run: sudo apt-get install -y texlive-xetex
-    - name: Install dependencies
+    - name: Install pdftoppm
+      run: sudo apt-get install -y poppler-utils
+    - name: Install python dependencies
       run: pip install -r requirements.txt
 
     # (optional) Cache your executed notebooks between runs
