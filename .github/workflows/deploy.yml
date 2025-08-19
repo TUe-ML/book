@@ -24,11 +24,12 @@ jobs:
         cache: pip # Implicitly uses requirements.txt for cache key
     - name: Install TeXLive
       uses: DanySK/setup-texlive-action@master
-    - name: Install xelatex
-      run: sudo apt-get install -y texlive-xetex
-    - name: Install pdftoppm
-      run: sudo apt-get install -y poppler-utils
-    - name: Install python dependencies
+    - name: install and cache packages for xelatex pdftoppm pnmtopng
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: texlive-xetex poppler-utils pnmtopng
+        version: 1.0
+    - name: Install Python dependencies
       run: pip install -r requirements.txt
 
     # (optional) Cache your executed notebooks between runs
