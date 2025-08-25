@@ -10,6 +10,9 @@ chapters:
   - file: linalg_spaces
   - file: linalg_normed_vs
   - file: linalg_exercises
+- file: preprocessing
+  sections:
+  - file: preprocessing_exercises
 - file: optimization
   sections:
   - file: optimization_problems
