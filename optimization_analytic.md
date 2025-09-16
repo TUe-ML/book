@@ -1,8 +1,19 @@
 ## Analytic Solutions
-You probably know from your highschool math classes that every local minimizer $x_0$ of a function $f:\mathbb{R}\rightarrow\mathbb{R}$ is a stationary point: $\frac{d}{dx}f(x_0)=0$. This is known as the first order necessary condition. This property is easily understood, considering that the derivative indicates the slope of a function at a specified point. If we have a real-valued minimizer, then the slope is zero at that minimizer. If the slope would be positive, then we can go to the left to decrease the function value further, and if the slope is negative, we can go to the right. By means of this property, we can identify all the candidates that could be minimizers. Maximizers and saddle points are stationary points too. With the second order necessary condition, we can filter further the minimizers from the pool of candidates. The second order necessary condition states that at a minimizer the second derivative is nonnegative $\frac{d^2}{dx^2}f(x_0)\geq 0$. The second derivative is the slope of the slope. If we have a minimizer, then the slope increases: first we go down, and then we go up. Hence, we need that the slope of the slope does at least not decrease. 
+You probably know from your high school math classes that every local minimizer $x_0$ of a function $f:\mathbb{R}\rightarrow\mathbb{R}$ is a stationary point: $\frac{d}{dx}f(x_0)=0$. This is known as the first-order necessary condition. 
+This property is easily understood, considering that the derivative indicates the slope of a function at a specified point. 
+If we have a real-valued minimizer, then the slope is zero at that minimizer. 
+If the slope was positive, then we could go to the left to decrease the function value further, and if the slope was negative, we could go to the right. 
+By means of this property, we can identify all the candidates that could be minimizers. 
+Maximizers and saddle points are stationary points too. 
+With the second-order necessary condition, we can further filter the minimizers from the pool of candidates. 
+The second-order necessary condition states that at a minimizer the second derivative is nonnegative $\frac{d^2}{dx^2}f(x_0)\geq 0$. 
+The second derivative is the slope of the slope. 
+If we have a minimizer, then the slope increases: first, we go down, and then we go up. Hence, we need the slope of the slope to at least not decrease. 
 
 ````{prf:example}
-Let's have a look at a seemingly simple example. The function $f(x) = \frac14x^4 + \frac13x^3 -x^2$ is plotted below and we see that there are two minimizers $x_1=-2$ and $x_2=1$. The question is just if those are all minimizers, or if there is another one beyond the scope of what is plotted here.
+Let's have a look at a seemingly simple example. 
+The function $f(x) = \frac14x^4 + \frac13x^3 -x^2$ is plotted below, and we see that there are two minimizers $x_1=-2$ and $x_2=1$.
+The question is: are those all the minimizers, or is there another one beyond the scope of what is plotted here?
 ```{tikz}
 \begin{axis}[width=.8\textwidth,xlabel=$x$,ylabel=$y$,axis lines = center, 
 domain=-3:2,yticklabels={,,},xticklabels={,,}]
@@ -198,6 +209,4 @@ which is the case for $\lambda_1=0$ and $\lambda_2=2$. To get the solution of ou
 w_1^* &= \frac12\lambda_2^* = 1\\
 w_2^* &= \frac12\lambda_1^* +\frac12\lambda_2^* = 1
 \end{align*}
-
-
 ````
