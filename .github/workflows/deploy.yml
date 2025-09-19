@@ -27,7 +27,7 @@ jobs:
     - name: install and cache packages for xelatex pdftoppm pnmtopng pdf2svg
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
-        packages: texlive-xetex poppler-utils pnmtopng pdf2svg
+        packages: texlive-pictures texlive-latex-extra texlive-xetex poppler-utils pnmtopng pdf2svg
         version: 1.0
     - name: Install Python dependencies
       run: pip install -r requirements.txt
