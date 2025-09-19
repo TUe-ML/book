@@ -1,4 +1,5 @@
-## Analytic Solutions
+## Analytic Solutions 
+
 You probably know from your high school math classes that every local minimizer $x_0$ of a function $f:\mathbb{R}\rightarrow\mathbb{R}$ is a stationary point: $\frac{d}{dx}f(x_0)=0$. This is known as the first-order necessary condition. 
 This property is easily understood, considering that the derivative indicates the slope of a function at a specified point. 
 If we have a real-valued minimizer, then the slope is zero at that minimizer. 
@@ -20,13 +21,14 @@ domain=-3:2,yticklabels={,,},xticklabels={,,}]
 \addplot[blue,thick]
 {x^4/2 + 2*x^3/3 - 2*x^2};
 \end{axis}
-```
-To find all the minimizers of the function, we apply the first and second order necessary condition. We compute the first and second derivative.
+``` 
+To find all the minimizers of the function, we apply the first and second-order necessary conditions. 
+We compute the first and second derivatives:
 \begin{align*}
     \frac{d}{dx} f(x) &= x^3 + x^2 -2x \\
     \frac{d^2}{dx^2}f(x) & = 3x^2 + 2x -2
 \end{align*}
-Now we solve the equation setting the first derivative to zero and get three stationary points:
+Now, we solve the equation by setting the first derivative to zero, which gives us three stationary points:
 $$\frac{d}{dx} f(x) =0 \quad \Leftrightarrow \quad x_1=-2, x_2 = 0, x_3=1$$
 Given the plot, we already know which of these are minimizers, but to conclude our example, we apply the second order sufficient condition to identify the local minimizers $x_1=-2$ and $x_3=1$.
 
