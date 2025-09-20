@@ -24,11 +24,8 @@ jobs:
         cache: pip # Implicitly uses requirements.txt for cache key
     - name: Install TeXLive
       uses: DanySK/setup-texlive-action@master
-    - name: install and cache packages for xelatex pdftoppm pnmtopng pdf2svg
-      uses: awalsh128/cache-apt-pkgs-action@latest
-      with:
-        packages: texlive-pictures texlive-latex-extra texlive-xetex poppler-utils pnmtopng pdf2svg
-        version: 1.0
+    - name: Install sphinxcontrib-tikz dependencies
+      run: sudo apt-get install -y pdf2svg texlive-xetex
     - name: Install Python dependencies
       run: pip install -r requirements.txt
 
