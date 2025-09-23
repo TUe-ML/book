@@ -1,3 +1,4 @@
+# collection of macros in yml format (currently not used in the book)
 math:
   '\diag': '\mathrm{diag}'
   '\tr': '\mathrm{tr}'
