@@ -14,17 +14,17 @@
     - **a.** Which patterns of movie preferences can you detect in the matrix $D$?
     - **b.** Can you denote a rank-2 factorization of $D$ which reflects the assignment of users  to the patterns you found?
     - **c.** Compute a rank-2 truncated SVD of $D$. Do the movie patterns denoted by the SVD  solution reflect the patterns you identified?
+
     ::::{admonition} Solution.
     :class: dropdown
     **a.** The matrix has two obvious movie patterns.
     - The first pattern is $(5,5,1,1)$, indicating that movie 1 and 2 is liked (rated with 5/5 stars) and the last two movies are not liked (rated with 1 of 5 stars).
     - The second pattern is $(1,1,5,5)$,  indicating that the first two movies are not liked  and the last two are liked.  
-   The last user likes all movies, which could be understood like he belongs to both patterns.
+    The last user likes all movies, which could be understood like he belongs to both patterns.
    
-   **b.** In fact, we can write the matrix $D$ as the following rank-2 MF:
+    **b.** In fact, we can write the matrix $D$ as the following rank-2 MF:
     :::{math}
     :label: eq:patternDecomp
-    \begin{align*}
     D\approx\begin{pmatrix}
         5 & 5 & 1 & 1\\
     5 & 5 & 1 & 1\\
@@ -45,16 +45,14 @@
         5 & 5 & 1 & 1\\
     1 & 1 & 5 & 5
     \end{pmatrix}.
-    \end{align*}
     :::
 
     :::{note}
-   This particular factorization will not yet be found by SVD, since the rows in the second factor matrix are not orthogonal.
-   :::
+    This particular factorization will not yet be found by SVD, since the rows in the second factor matrix are not orthogonal.
+    :::
 
     **c.** The truncated SVD yields:
     :::{math}
-    \begin{align*}
      U_{\cdot \{1,2\}} \Sigma_{\{1,2\}\{1,2\}} V_{\cdot \{1,2\}}^\top=
     \begin{pmatrix}
     0.4 & -0.4\\
@@ -72,10 +70,9 @@
     0.6 & 0.6 & 0.4 & 0.4\\
     -0.4 & -0.4 & 0.6 & 0.6
     \end{pmatrix}
-    \end{align*}
     :::
     
-    We  see that the decomposition of SVD is quite different  from the one in Eq. {ref}`eq:patternDecomp`. The first pattern $V_{\cdot 1}$ indicates more general information of the data, like movie popularity. Since there are more users who like movies 1 and 2 than users who like movies 3 and 4, movies 1 and 2 get a slightly higher score of 0.6 (vs. 0.4) in the first pattern $V_{\cdot 1}$. The second pattern $V_{\cdot 2}$ indicates the duality in taste of movies  1,2 and 3,4 by the sign (-0.4 vs. 0.6). Likewise, we recognize the difference between users in the matrix $U$. There are three user patterns: $(0.4, -0.4)$, $(0.3,0.5)$ and $(0.6,0.1)$.  
+    We  see that the decomposition of SVD is quite different from the one in Eq. {eq}`eq:patternDecomp`. The first pattern $V_{\cdot 1}$ indicates more general information of the data, like movie popularity. Since there are more users who like movies 1 and 2 than users who like movies 3 and 4, movies 1 and 2 get a slightly higher score of 0.6 (vs. 0.4) in the first pattern $V_{\cdot 1}$. The second pattern $V_{\cdot 2}$ indicates the duality in taste of movies  1,2 and 3,4 by the sign (-0.4 vs. 0.6). Likewise, we recognize the difference between users in the matrix $U$. There are three user patterns: $(0.4, -0.4)$, $(0.3,0.5)$ and $(0.6,0.1)$.  
     ::::
 3. Consider the movie recommendation matrix from the lecture, whose missing values are imputed with the mean value of $\mu=3$:
     \begin{align*}
@@ -166,22 +163,22 @@
     :class: dropdown
     The constraint $Z^\top Z=I$ implies that the entry $s,t$ for $1\leq s,t\leq r$ of $Z^\top Z$ is equal to zero if $s\neq t$ and equal to one otherwise. We have
     :::{math}
-        Z^\top Z &=I\nonumber\\
+        Z^\top Z &=I \\
         \Leftrightarrow (Z^\top Z)_{s,t}=Z_{\cdot s}^\top Z_{\cdot t}&=\begin{cases}
     0& \text{if } s\neq t\\
     1& \text{otherwise}
-    \end{cases}\nonumber\\
+    \end{cases}
     :::
     :::{math}
     :label: eq:ortho
-    Z_{\cdot s}^\top Z_{\cdot t}&= 0 &\text{for } 1\leq s\neq t\leq r
+    Z_{\cdot s}^\top Z_{\cdot t} = 0 \quad\text{ for } 1\leq s\neq t\leq r
     :::
     :::{math}
     :label: eq:unit
-    Z_{\cdot s}^\top Z_{\cdot s} = \lVert Z_{\cdot s}\rVert^2 &=1 &\text{for }1\leq s\leq r
+    Z_{\cdot s}^\top Z_{\cdot s} = \lVert Z_{\cdot s}\rVert^2 =1 \quad\text{ for }1\leq s\leq r
     :::
    
-    From Eq.{ref}`eq:ortho` follows that the columns of $Z$ are orthogonal and from Eq.{ref}`eq:unit` follows that the columns of $Z$ have a Euclidean norm of one.
+    From Eq.{eq}`eq:ortho` follows that the columns of $Z$ are orthogonal and from Eq.{eq}`eq:unit` follows that the columns of $Z$ have a Euclidean norm of one.
     ::::
 3. We define a new feature $\mathtt{F}_3 = \mathtt{F}_1 + 2\mathtt{F}_2$, given the following data:
    
