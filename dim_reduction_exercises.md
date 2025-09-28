@@ -11,13 +11,20 @@
     5 & 5 & 5 & 5
     \end{pmatrix}
     \end{align*}
-    1. Which patterns of movie preferences can you detect in the matrix $D$?
-    2. Can you denote a rank-2 factorization of $D$ which reflects the assignment of users  to the patterns you found?
-    3. Compute a rank-2 truncated SVD of $D$. Do the movie patterns denoted by the SVD  solution reflect the patterns you identified?
-    :::{admonition} Solution.
+    - **a.** Which patterns of movie preferences can you detect in the matrix $D$?
+    - **b.** Can you denote a rank-2 factorization of $D$ which reflects the assignment of users  to the patterns you found?
+    - **c.** Compute a rank-2 truncated SVD of $D$. Do the movie patterns denoted by the SVD  solution reflect the patterns you identified?
+    ::::{admonition} Solution.
     :class: dropdown
-    The matrix has two obvious movie patterns. The first pattern is $(5,5,1,1)$, indicating that movie 1 and 2 is liked (rated with 5/5 stars) and the last two movies are not liked (rated with 1 of 5 stars). The second pattern is $(1,1,5,5)$,  indicating that the first two movies are not liked  and the last two are liked. The last user likes all movies, which could be understood like he belongs to  both patterns. In fact, we can write the matrix $D$ as the following rank-2 MF:
-    \begin{align}
+    **a.** The matrix has two obvious movie patterns.
+    - The first pattern is $(5,5,1,1)$, indicating that movie 1 and 2 is liked (rated with 5/5 stars) and the last two movies are not liked (rated with 1 of 5 stars).
+    - The second pattern is $(1,1,5,5)$,  indicating that the first two movies are not liked  and the last two are liked.  
+   The last user likes all movies, which could be understood like he belongs to both patterns.
+   
+   **b.** In fact, we can write the matrix $D$ as the following rank-2 MF:
+    :::{math}
+    :label: eq:patternDecomp
+    \begin{align*}
     D\approx\begin{pmatrix}
         5 & 5 & 1 & 1\\
     5 & 5 & 1 & 1\\
@@ -37,11 +44,16 @@
     \begin{pmatrix}
         5 & 5 & 1 & 1\\
     1 & 1 & 5 & 5
-    \end{pmatrix}. \label{eq:patternDecomp}
-    \end{align}
-    This particular factorization will yet not be found by SVD, since the rows in the second factor matrix are  not  orthogonal. 
+    \end{pmatrix}.
+    \end{align*}
+    :::
 
-    The truncated SVD yields:
+    :::{note}
+   This particular factorization will not yet be found by SVD, since the rows in the second factor matrix are not orthogonal.
+   :::
+
+    **c.** The truncated SVD yields:
+    :::{math}
     \begin{align*}
      U_{\cdot \{1,2\}} \Sigma_{\{1,2\}\{1,2\}} V_{\cdot \{1,2\}}^\top=
     \begin{pmatrix}
@@ -61,9 +73,11 @@
     -0.4 & -0.4 & 0.6 & 0.6
     \end{pmatrix}
     \end{align*}
-    We  see that the decomposition of SVD is quite different  from the one in Eq.~\eqref{eq:patternDecomp}. The first pattern $V_{\cdot 1}$ indicates more general information of the data, like movie popularity. Since there are more users who like movies 1 and 2 than users who like movies 3 and 4, movies 1 and 2 get a slightly higher score of 0.6 (vs. 0.4) in the first pattern $V_{\cdot 1}$. The second pattern $V_{\cdot 2}$ indicates the duality in taste of movies  1,2 and 3,4 by the sign (-0.4 vs. 0.6). Likewise, we recognize the difference between users in the matrix $U$. There are three user patterns: $(0.4, -0.4)$, $(0.3,0.5)$ and $(0.6,0.1)$.  
     :::
-2. Consider the movie recommendation matrix from the lecture, whose missing values are imputed with the mean value of $\mu=3$:
+    
+    We  see that the decomposition of SVD is quite different  from the one in Eq. {ref}`eq:patternDecomp`. The first pattern $V_{\cdot 1}$ indicates more general information of the data, like movie popularity. Since there are more users who like movies 1 and 2 than users who like movies 3 and 4, movies 1 and 2 get a slightly higher score of 0.6 (vs. 0.4) in the first pattern $V_{\cdot 1}$. The second pattern $V_{\cdot 2}$ indicates the duality in taste of movies  1,2 and 3,4 by the sign (-0.4 vs. 0.6). Likewise, we recognize the difference between users in the matrix $U$. There are three user patterns: $(0.4, -0.4)$, $(0.3,0.5)$ and $(0.6,0.1)$.  
+    ::::
+3. Consider the movie recommendation matrix from the lecture, whose missing values are imputed with the mean value of $\mu=3$:
     \begin{align*}
          D=\begin{pmatrix}
         5 & \mu & 1 & 1 \\
@@ -120,7 +134,7 @@
     \end{align*}
     The imputed mean values are almost perfectly approximated and can this factorization can hence not be used to provide recommendations.
     :::
-3. Show that the minimum approximation error of a rank-$r$ matrix factorization of the data $D\in\mathbb{R}^{n\times d}$ is equal to the sum of the $\min\{n,d\}-r$ smallest singular values of $D$:
+4. Show that the minimum approximation error of a rank-$r$ matrix factorization of the data $D\in\mathbb{R}^{n\times d}$ is equal to the sum of the $\min\{n,d\}-r$ smallest singular values of $D$:
     $$\sigma^2_{r+1}+\ldots+\sigma^2_{\min\{n,d\}}=\min_{X,Y}\lVert D -YX^\top\rVert^2 \quad \text{s.t. } X\in\mathbb{R}^{d\times r},Y\in\mathbb{R}^{n\times r}.$$
     
     :::{admonition} Solution.
@@ -148,21 +162,28 @@
     :::
 ## PCA
 1. Show that the constraint $Z^\top Z=I$ for $Z\in\mathbb{R}^{n\times r}$, $r<n$ which is imposed for the objective of PCA implies that $Z$ has orthogonal columns which all have a Euclidean norm of one.
-    :::{admonition} Solution.
+    ::::{admonition} Solution.
     :class: dropdown
     The constraint $Z^\top Z=I$ implies that the entry $s,t$ for $1\leq s,t\leq r$ of $Z^\top Z$ is equal to zero if $s\neq t$ and equal to one otherwise. We have
-    \begin{align}
+    :::{math}
         Z^\top Z &=I\nonumber\\
         \Leftrightarrow (Z^\top Z)_{s,t}=Z_{\cdot s}^\top Z_{\cdot t}&=\begin{cases}
     0& \text{if } s\neq t\\
     1& \text{otherwise}
     \end{cases}\nonumber\\
-    Z_{\cdot s}^\top Z_{\cdot t}&= 0 &\text{for } 1\leq s\neq t\leq r \label{eq:ortho}\\
-    Z_{\cdot s}^\top Z_{\cdot s} = \lVert Z_{\cdot s}\rVert^2 &=1 &\text{for }1\leq s\leq r \label{eq:unit}
-    \end{align}
-    From Eq.~\eqref{eq:ortho} follows that the columns of $Z$ are orthogonal and from Eq.~\eqref{eq:unit} follows that the columns of $Z$ have a Euclidean norm of one.
     :::
-2. We define a new feature $\mathtt{F}_3 = \mathtt{F}_1 + 2\mathtt{F}_2$, given the following data:
+    :::{math}
+    :label: eq:ortho
+    Z_{\cdot s}^\top Z_{\cdot t}&= 0 &\text{for } 1\leq s\neq t\leq r
+    :::
+    :::{math}
+    :label: eq:unit
+    Z_{\cdot s}^\top Z_{\cdot s} = \lVert Z_{\cdot s}\rVert^2 &=1 &\text{for }1\leq s\leq r
+    :::
+   
+    From Eq.{ref}`eq:ortho` follows that the columns of $Z$ are orthogonal and from Eq.{ref}`eq:unit` follows that the columns of $Z$ have a Euclidean norm of one.
+    ::::
+3. We define a new feature $\mathtt{F}_3 = \mathtt{F}_1 + 2\mathtt{F}_2$, given the following data:
    
    |$\mathtt{F}_1$ | $\mathtt{F}_2$|
    |---------------|---------------|
@@ -229,7 +250,7 @@
         $$\sigma_{\mathtt{F}_3}^2 = \frac1n\lVert (D-\mathbf{1}\mu_{\mathtt{F}}^\top )\tilde{\alpha}\rVert^2 = (3^2  + 5^2 + 4^2 +2^2)/5/4 = 2.7$$
         4. We compute the direction of maximum variance in the data by the SVD of the centered data matrix. The first right singular vector $V_{\cdot 1}=(0.27, -0.96)$ of the centered data matrix denotes the direction of maximum variance (the first principle component) and the squared first singular value divided by the number of samples denotes the variance $\sigma_{\mathtt{F}_{V_{\cdot 1}}}^2 = 4.85$ (all values are rounded to two decimal points).
     :::
-3. Given a data matrix $D\in\mathbb{R}^{n\times d}$, Show that every right singular vector $V_{\cdot k}$ of the centered data matrix $C=D -\vvec{1}{\bm \mu_\mathtt{F}^\top }$ indicates a new feature $\mathtt{F}_{V_{\cdot k}}= V_{1k}\mathtt{F}_1 + \ldots + V_{dk}\mathtt{F}_d$ whose sample variance is given by the corresponding squared singular value divided by the number of samples $\sigma_k^2/n$.
+4. Given a data matrix $D\in\mathbb{R}^{n\times d}$, Show that every right singular vector $V_{\cdot k}$ of the centered data matrix $C=D -\vvec{1}{\bm \mu_\mathtt{F}^\top }$ indicates a new feature $\mathtt{F}_{V_{\cdot k}}= V_{1k}\mathtt{F}_1 + \ldots + V_{dk}\mathtt{F}_d$ whose sample variance is given by the corresponding squared singular value divided by the number of samples $\sigma_k^2/n$.
     :::{admonition} Solution.
     :class: dropdown
     We have derived in the lecture that the sample variance of a feature defined by $\mathtt{F}_{\alpha}= \alpha_1\mathtt{F}_1 + \ldots + \alpha_d\mathtt{F}_d$ is given by 
@@ -257,7 +278,7 @@
      &=\frac1n \sigma_k^2. &(\sigma_k = \Sigma_{kk})
     \end{align*} 
     :::
-4. Given an $n\times d$ data matrix $D$, gathering $n$ observations of $d$ features $\mathtt{F}_1,\ldots,\mathtt{F}_d$. We define a new feature $\displaystyle\mathtt{F}_{d+1}= \sum_{k=1}^d \alpha_k\mathtt{F}_k$.
+5. Given an $n\times d$ data matrix $D$, gathering $n$ observations of $d$ features $\mathtt{F}_1,\ldots,\mathtt{F}_d$. We define a new feature $\displaystyle\mathtt{F}_{d+1}= \sum_{k=1}^d \alpha_k\mathtt{F}_k$.
     1. Show that the sample mean of the new feature can be computed by the matrix-vector product ${\bm \mu_{\mathtt{F}_{d+1}}=\bm \mu_\mathtt{F}^\top \alpha}$, where $\bm \mu_\mathtt{F}^\top = \begin{pmatrix}
     \mu_{\mathtt{F}_1} &\ldots & \mu_{\mathtt{F}_d}\end{pmatrix}$ gathers the sample means of all other features.
     2. Show that the sample variance of the new feature can be computed as $\sigma_{\mathtt{F}_{d+1}}^2 = \frac1n\left\lVert \left(D -\vvec{1}{\bm \mu_\mathtt{F}^\top }\right){\bm\alpha}\right\rVert^2$.
