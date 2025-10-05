@@ -64,3 +64,6 @@ chapters:
   - file: clustering_spectral
   - file: clustering_exercises
 - file: bibliography
+- file: demos
+  sections:
+  - file: dim_reduction_mf_non_convex_example
