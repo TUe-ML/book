@@ -1,6 +1,6 @@
 # Exercises
 ## SVD
-1. Let's have a look at a very simple movie ratings matrix of six users and four movies:
+1. Let's have a look at a simple movie ratings matrix of six users and four movies:
     \begin{align*}
     D=\begin{pmatrix}
         5 & 5 & 1 & 1\\
@@ -12,7 +12,7 @@
     \end{pmatrix}
     \end{align*}
     - **a.** Which patterns of movie preferences can you detect in the matrix $D$?
-    - **b.** Can you denote a rank-2 factorization of $D$ which reflects the assignment of users  to the patterns you found?
+    - **b.** Can you denote a rank-2 factorization of $D$ which reflects the assignment of users to the patterns you found?
     - **c.** Compute a rank-2 truncated SVD of $D$. Do the movie patterns denoted by the SVD  solution reflect the patterns you identified?
 
     ::::{admonition} Solution.
@@ -74,7 +74,7 @@
     
     We  see that the decomposition of SVD is quite different from the one in Eq. {eq}`eq:patternDecomp`. The first pattern $V_{\cdot 1}$ indicates more general information of the data, like movie popularity. Since there are more users who like movies 1 and 2 than users who like movies 3 and 4, movies 1 and 2 get a slightly higher score of 0.6 (vs. 0.4) in the first pattern $V_{\cdot 1}$. The second pattern $V_{\cdot 2}$ indicates the duality in taste of movies  1,2 and 3,4 by the sign (-0.4 vs. 0.6). Likewise, we recognize the difference between users in the matrix $U$. There are three user patterns: $(0.4, -0.4)$, $(0.3,0.5)$ and $(0.6,0.1)$.  
     ::::
-3. Consider the movie recommendation matrix from the lecture, whose missing values are imputed with the mean value of $\mu=3$:
+4. Consider the movie recommendation matrix from the lecture, whose missing values are imputed with the mean value of $\mu=3$:
     \begin{align*}
          D=\begin{pmatrix}
         5 & \mu & 1 & 1 \\
@@ -131,7 +131,7 @@
     \end{align*}
     The imputed mean values are almost perfectly approximated and can this factorization can hence not be used to provide recommendations.
     :::
-4. Show that the minimum approximation error of a rank-$r$ matrix factorization of the data $D\in\mathbb{R}^{n\times d}$ is equal to the sum of the $\min\{n,d\}-r$ smallest singular values of $D$:
+5. Show that the minimum approximation error of a rank-$r$ matrix factorization of the data $D\in\mathbb{R}^{n\times d}$ is equal to the sum of the $\min\{n,d\}-r$ smallest singular values of $D$:
     $$\sigma^2_{r+1}+\ldots+\sigma^2_{\min\{n,d\}}=\min_{X,Y}\lVert D -YX^\top\rVert^2 \quad \text{s.t. } X\in\mathbb{R}^{d\times r},Y\in\mathbb{R}^{n\times r}.$$
     
     :::{admonition} Solution.
@@ -158,27 +158,31 @@
     \end{align*}
     :::
 ## PCA
-1. Show that the constraint $Z^\top Z=I$ for $Z\in\mathbb{R}^{n\times r}$, $r<n$ which is imposed for the objective of PCA implies that $Z$ has orthogonal columns which all have a Euclidean norm of one.
+1. Show that the constraint $Z^\top Z=I$, where $Z\in\mathbb{R}^{n\times r}$ and $r<n$, which is imposed for the objective of PCA, implies that $Z$ has orthogonal columns, and all columns have a Euclidean norm of one.
     ::::{admonition} Solution.
     :class: dropdown
+
     The constraint $Z^\top Z=I$ implies that the entry $s,t$ for $1\leq s,t\leq r$ of $Z^\top Z$ is equal to zero if $s\neq t$ and equal to one otherwise. We have
     :::{math}
         Z^\top Z &=I \\
-        \Leftrightarrow (Z^\top Z)_{s,t}=Z_{\cdot s}^\top Z_{\cdot t}&=\begin{cases}
-    0& \text{if } s\neq t\\
-    1& \text{otherwise}
-    \end{cases}
+        \Leftrightarrow (Z^\top Z)_{s,t}=Z_{\cdot s}^\top Z_{\cdot t}
+       &=\begin{cases}
+        0& \text{if } s\neq t\\
+        1& \text{otherwise}
+        \end{cases}
     :::
+    This way, we conclude that two different columns $Z_{\cdot s}^\top$ and $Z_{\cdot t} $ we have:
     :::{math}
     :label: eq:ortho
     Z_{\cdot s}^\top Z_{\cdot t} = 0 \quad\text{ for } 1\leq s\neq t\leq r
     :::
+
     :::{math}
     :label: eq:unit
     Z_{\cdot s}^\top Z_{\cdot s} = \lVert Z_{\cdot s}\rVert^2 =1 \quad\text{ for }1\leq s\leq r
     :::
    
-    From Eq.{eq}`eq:ortho` follows that the columns of $Z$ are orthogonal and from Eq.{eq}`eq:unit` follows that the columns of $Z$ have a Euclidean norm of one.
+    From Eq.{eq}`eq:ortho` follows that the columns of $Z$ are orthogonal, and from Eq.{eq}`eq:unit` follows that the columns of $Z$ have an Euclidean norm of one.
     ::::
 3. We define a new feature $\mathtt{F}_3 = \mathtt{F}_1 + 2\mathtt{F}_2$, given the following data:
    
