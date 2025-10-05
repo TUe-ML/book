@@ -71,7 +71,7 @@ sphinx:
     tikz_tikzlibraries: calc, angles, intersections, arrows.meta, matrix, decorations.pathreplacing, positioning, shapes.geometric, fit, pgfplots.groupplots, pgfplots.fillbetween, 3d, decorations.text, shapes.arrows, backgrounds
     tikz_latex_preamble: \usepackage{pgfplotstable}
     html_js_files:
-    - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
+      - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
     suppress_warnings: ["mystnb.unknown_mime_type"]
   extra_extensions:
     - sphinx_proof
