@@ -1,21 +1,7 @@
----
-math:
-  '\diag': '\mathrm{diag}'
-  '\tr': '\mathrm{tr}'
-  '\argmin': '\mathrm{arg\\,min}'
-  '\argmax': '\mathrm{arg\\,max}'
-  '\sign': '\mathrm{sign}'
-  '\softmax': '\mathrm{softmax}'
-  '\concat': '\mathbin{{+}\mspace{-8mu}{+}}'
-  '\vvec': '\mathbf{ #1 }'
-  '\bm': '{\boldsymbol #1 }'
----
-
-(class_exercises)=
 # Exercises
 1. Show that for any p.s.d. and symmetric matrix $Q\in\mathbb{R}^{d\times d},\ Q^\top=Q$ the function $f(\vvec{x})=\vvec{x}^\top Q\vvec{x}$ is convex. Recall that a positive semidefinite matrix (p.s.d.) $Q$ satisfies $\vvec{x}^\top Q\vvec{x}\geq 0$ for all $\vvec{x}\in\mathbb{R}^d.$
 
-````{toggle}
+````{dropdown}Solution
 The proof is very similar to the one showing that $\lVert\vvec{x}\rVert^2=\vvec{x}^\top I\vvec{x}$ is convex. Let $\alpha\in[0,1]$, then the definition of a convex function
 $$f(\alpha\vvec{x}+(1-\alpha)\vvec{z})\leq \alpha f(\vvec{x})+(1-\alpha)f(\vvec{z})$$
 is satisfied for the function above if

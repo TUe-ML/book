@@ -1,11 +1,13 @@
 # collection of macros in yml format (currently not used in the book)
-math:
-  '\diag': '\mathrm{diag}'
-  '\tr': '\mathrm{tr}'
-  '\argmin': '\mathrm{arg\\,min}'
-  '\argmax': '\mathrm{arg\\,max}'
-  '\sign': '\mathrm{sign}'
-  '\softmax': '\mathrm{softmax}'
-  '\concat': '\mathbin{{+}\mspace{-8mu}{+}}'
-  '\vvec': '\mathbf{ #1 }'
-  '\bm': '{\boldsymbol #1 }'
+version: 1
+project:
+  math:
+    '\diag': '\mathrm{diag}'
+    '\tr': '\mathrm{tr}'
+    '\argmin': '\mathrm{arg\\,min}'
+    '\argmax': '\mathrm{arg\\,max}'
+    '\sign': '\mathrm{sign}'
+    '\softmax': '\mathrm{softmax}'
+    '\concat': '\mathbin{{+}\mspace{-8mu}{+}}'
+    '\vvec': '\mathbf{ #1 }'
+    '\bm': '{\boldsymbol #1 }'

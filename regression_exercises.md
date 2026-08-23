@@ -12,7 +12,7 @@
     That is, you will have to create the design matrix and compute the global optimizer(s) $\beta$ of the regression objective. You can and probably should use Python to solve the system of linear equations to get $\beta$, but it's a good exercise  to compute the design matrix by hand. Plot the regression function.
     1. Fit an affine function to the data 
         \begin{align*} f(x) = \beta_1 x + \beta_0.\end{align*}
-        ````{toggle}      
+        ````{dropdown}Solution
         Affine functions are decomposed into an inner product of a basis function and the regression parameter vector $\bm\beta$ by
         
         \begin{align*}
@@ -89,7 +89,7 @@
         \begin{align*}
             f(x) = \beta_2 x^2 + \beta_1x + \beta_0.
         \end{align*}
-        ````{toggle}
+        ````{dropdown}Solution
         The feature transformation for a polynomial of degree 2 is here defined as
         $$\phi_{p2}(x)=\begin{pmatrix}
         1\\x \\\ x^2
@@ -150,7 +150,7 @@
             f(x)= \beta_1\exp(-(x-5)^2)+\beta_2\exp(-(x-3)^2)+\beta_3\exp(-(x-1)^2).
         \end{align*}
         The mean values $\mu$, which have to be specified when we choose a Gaussian basis function, are here equal to the three given feature values in the data. This strategy is also often used in practice. 
-        ````{toggle}
+        ````{dropdown}Solution
         The feature transformation when using Gaussian basis functions as stated above is given by
         $$\phi_{G3}(x)=\begin{pmatrix}
         \exp(-(x-5)^2)\\\exp(-(x-3)^2) \\\ \exp(-(x-1)^2)
@@ -202,7 +202,7 @@
     4. Fit a polynomial of degree $k=3$:
         $$f(x) = \beta_0 +\beta_1 x+ \beta_2x^2 + \beta_3x^3.$$
         Note that this results in an underdetermined system, you will hence get a set of regression solvers.
-        ````{toggle}
+        ````{dropdown}Solution
         The feature transformation for a polynomial of degree 3 is defined as
         $$\phi_{p3}(x)=\begin{pmatrix}
         1\\x \\\ x^2 \\ x^3
@@ -275,37 +275,11 @@
         Substituting $\beta_2$ into the second equation yields $\beta_1 = 3.5 +23\beta_3 $ and substituting $\beta_1$ and $\beta_2$ into the first equation yields $\beta_0 = \frac{1}{8}-15\beta_3$. Hence, the set of all regression solvers is given by 
         $$\left\{\beta = \begin{pmatrix}\frac{1}{8}-15\beta_3\\3.5 +23\beta_3\\-\frac{5}{8} -9\beta_3\\\beta_3 \end{pmatrix} \mid \beta_3\in\mathbb{R} \right\}$$
         The plot below indicates the regression models for three values of $\beta_3$.
-        ```{tikz}
-        \begin{tikzpicture}
-        \begin{axis}[
-        width=.8\textwidth,
-        xlabel=$x_1$, % label x axis
-        ylabel=$y$, % label y axis
-        axis lines=left, %set the position of the axes
-        xmin=0, xmax=7, % set the min and max values of the x-axis
-        domain=0:6,
-        ymax=12, % set the min and max values of the y-axis
-        legend pos=outer north east]
-        \addplot+[only marks, black, mark = *] 
-        coordinates {
-        (5,2)
-        (3,5)
-        (1,3)
-        };
-        \addlegendentry{Data Points}
-        \addplot+[magenta,thick,smooth, mark=none]
-        {x^3-(5/8+9)*x^2+(7/2+23)*x+1/8-15};
-        \addlegendentry{$\beta_3=1$}
-        \addplot+[blue,thick,smooth, mark=none]
-        {x^3/2-(5/8+9/2)*x^2+(7/2+23/2)*x+1/8-15/2};
-        \addlegendentry{$\beta_3=0.5$}
-        \addplot+[green,thick,smooth, mark=none]
-        {x^3/4-(5/8+9/4)*x^2+(7/2+23/4)*x+1/8-15/4};
-        \addlegendentry{$\beta_3=0.25$}
-        \end{axis}
-        \end{tikzpicture}
+        ```{figure} images/regression/regression_polynomial_third_degree.svg
+        :alt: Plot with the regression models for three values of $\beta_3$
+        :width: 500px
+        :align: center
         ```
-
         ````
 2. Consider the following true regression function: $$f^*(x) = \tan(\pi x).$$ Imagine you fit three regression models on i.i.d. data samples $\mathcal{D}_1, \mathcal{D}_2, \mathcal{D}_3$ and obtain the following models:
     \begin{align*}
@@ -313,11 +287,10 @@
         f_{\mathcal{D}_2}(x) &= 3x + 0.1\\
         f_{\mathcal{D}_3}(x) &= 5x + 0.2
     \end{align*}
-
     Compute for $x_0 = 0.1$ the sample 
     * bias$^2$ and 
     * variance.
-    ````{toggle}
+    ````{dropdown}Solution
     We have $f^*(x_0) = f^*(0) = \tan(0) = 0$. The regression models return
     \begin{align*}
     f_{\mathcal{D}_1}(x_0) &= f_{\mathcal{D}_1}(0) = 0.2 \\
@@ -335,5 +308,3 @@
     &= \frac{2}{3}(0.1)^2 = 0.0067
     \end{align*}
     ````
-
- 
