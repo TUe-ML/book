@@ -204,3 +204,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+_svg_files

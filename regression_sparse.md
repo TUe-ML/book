@@ -48,7 +48,6 @@ The plots below visualize the (relaxed) feasible sets of the sparse regression t
 ````{tikz}
 % Unit circle plot style
 \pgfplotsset{unit circle/.style={width=4.5cm,height=4.5cm,axis lines=middle,xtick=\empty,ytick=\empty,axis equal,enlargelimits,xmax=1.5,ymax=1.5,xmin=-1.5,ymin=-1.5,domain=0:pi/2}}
-
 %\begin{document}
     \begin{tikzpicture}
     \coordinate (prev); % Store previous plot position

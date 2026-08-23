@@ -50,8 +50,8 @@ Let $X=U\Sigma V^\top\in\mathbb{R}^{n\times p}$ be the SVD of the design matrix 
 \end{align*}
 $\Sigma_r$ denotes here the matrix containing only the first $r$ rows and columns of the singular values matrix $\Sigma$ and $U_r$ denotes the matrix containing the first $r$ left singular vectors (the first $r$ columns of $U$).
 ```
-````{toggle}
 ```{prf:proof}
+:class: dropdown
 We substitute $X$ with its SVD in Eq. {eq}`eq:ridge` yielding the ridge regression solutions.
 \begin{align*}
 (X^\top X+\lambda I){\bm{\beta}} &= X^\top \vvec{y}\\
@@ -63,7 +63,7 @@ We use the notation of Observation {ref}`obs:sigma_r` to compute
 \begin{align*}
     (\Sigma^\top\Sigma +\lambda I )^{-1}\Sigma^\top &= 
     \left(
-    \begin{array}{c;{2pt/2pt}c}
+    \begin{array}{c|c}
     \begin{matrix}
     \frac{1}{\sigma^2_1+\lambda} & \ldots & 0  \\
     \vdots  & \ddots  & \vdots \\
@@ -78,7 +78,7 @@ We use the notation of Observation {ref}`obs:sigma_r` to compute
     \end{array}
     \right)
     \left(
-    \begin{array}{c;{2pt/2pt}c}
+    \begin{array}{c|c}
     \begin{matrix}
         \sigma_1 & \ldots & 0  \\
         \vdots  & \ddots  & \vdots \\
@@ -91,7 +91,7 @@ We use the notation of Observation {ref}`obs:sigma_r` to compute
     \end{array}
     \right)\\
     &= \left(
-    \begin{array}{c;{2pt/2pt}c}
+    \begin{array}{c|c}
     \begin{matrix}
     \frac{\sigma_1}{\sigma^2_1+\lambda} & \ldots & 0  \\
     \vdots  & \ddots  & \vdots \\
@@ -105,5 +105,4 @@ Hence, the lower $p-r$ rows of $(\Sigma^\top\Sigma +\lambda I )^{-1}\Sigma^\top 
 $$\bm\beta=V \begin{pmatrix}\diag(\frac{\sigma_1}{sigma_1^2 + \lambda},\ldots, \frac{\sigma_r}{sigma_r^2 + \lambda}) U_r^\top \vvec{y}\\ \mathbf{0}\end{pmatrix}. $$
 For $\lambda\rightarrow 0$, the diagonal matrix above converges to $\Sigma_r^{-1}$.
 ```
-````
 Let's look again at the plot of {prf:ref}`example_reg_p_larger_n`. The regression function that we learn has four parameters, but we have only three data points. Hence, we have $p-r=1$ and our regression solution vectors are computed as $\beta=V\mathbf{w}$ where $\vvec{w}=\begin{pmatrix}\Sigma_r^{-1} U_r^\top \vvec{y}\\ w_4\end{pmatrix}$ and $w_4\in\mathbb{R}$. If $w_4=0$, then the resulting $\beta$ is the one that ridge regression converges to when $\lambda\rightarrow 0$. We plot now the resulting regression functions, depending on the value of $w_4$ and get the following:  

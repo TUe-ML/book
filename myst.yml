@@ -1,0 +1,21 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+extends:
+  - ./math.yml  # Use the relative path to your file
+project:
+  id: dbb58f76-97c4-4d1a-8270-3f417f8fb246
+  # title:
+  # description:
+  # keywords: []
+  # authors: []
+  github: https://github.com/TUe-ML/book
+  # To autogenerate a Table of Contents, run "jupyter book init --write-toc"
+  plugins:
+  # - plugins/myst_solution.mjs
+  - type: executable
+    path: plugins/myst_tikz.py
+site:
+  template: book-theme
+  # options:
+  #   favicon: favicon.ico
+  #   logo: site_logo.png
