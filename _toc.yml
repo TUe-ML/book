@@ -32,6 +32,10 @@ chapters:
   - file: regression_ridge
   - file: regression_lasso
   - file: regression_exercises
+- file: evaluation
+  sections:
+  - file: evaluation_metrics
+  - file: evaluation_exercises
 - file: classification
   sections :
   - file: classification_problem
@@ -41,7 +45,6 @@ chapters:
   - file: classification_random_forests
   - file: classification_svms
   - file: classification_kernel_svm
-  - file: classification_evaluation
   - file: classification_exercises
 - file: neuralnets
   sections:
