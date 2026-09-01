@@ -275,10 +275,35 @@
         Substituting $\beta_2$ into the second equation yields $\beta_1 = 3.5 +23\beta_3 $ and substituting $\beta_1$ and $\beta_2$ into the first equation yields $\beta_0 = \frac{1}{8}-15\beta_3$. Hence, the set of all regression solvers is given by 
         $$\left\{\beta = \begin{pmatrix}\frac{1}{8}-15\beta_3\\3.5 +23\beta_3\\-\frac{5}{8} -9\beta_3\\\beta_3 \end{pmatrix} \mid \beta_3\in\mathbb{R} \right\}$$
         The plot below indicates the regression models for three values of $\beta_3$.
-        ```{figure} images/regression/regression_polynomial_third_degree.svg
-        :alt: Plot with the regression models for three values of $\beta_3$
-        :width: 500px
-        :align: center
+        ```{tikz}
+        \begin{tikzpicture}
+        \begin{axis}[
+        width=.8\textwidth,
+        xlabel=$x_1$, % label x axis
+        ylabel=$y$, % label y axis
+        axis lines=left, %set the position of the axes
+        xmin=0, xmax=7, % set the min and max values of the x-axis
+        domain=0:6,
+        ymax=12, % set the min and max values of the y-axis
+        legend pos=outer north east]
+        \addplot+[only marks, black, mark = *] 
+        coordinates {
+        (5,2)
+        (3,5)
+        (1,3)
+        };
+        \addlegendentry{Data Points}
+        \addplot+[magenta,thick,smooth, mark=none]
+        {x^3-(5/8+9)*x^2+(7/2+23)*x+1/8-15};
+        \addlegendentry{$\beta_3=1$}
+        \addplot+[blue,thick,smooth, mark=none]
+        {x^3/2-(5/8+9/2)*x^2+(7/2+23/2)*x+1/8-15/2};
+        \addlegendentry{$\beta_3=0.5$}
+        \addplot+[green,thick,smooth, mark=none]
+        {x^3/4-(5/8+9/4)*x^2+(7/2+23/4)*x+1/8-15/4};
+        \addlegendentry{$\beta_3=0.25$}
+        \end{axis}
+        \end{tikzpicture}
         ```
         ````
 2. Consider the following true regression function: $$f^*(x) = \tan(\pi x).$$ Imagine you fit three regression models on i.i.d. data samples $\mathcal{D}_1, \mathcal{D}_2, \mathcal{D}_3$ and obtain the following models:
