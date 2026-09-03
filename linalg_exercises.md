@@ -66,8 +66,10 @@ C. $\alpha\lVert v\rVert+\lVert w\rVert$
 The correct answer is B. $\lvert\alpha\rvert\lVert v\rVert+\lVert w\rVert$, because 
 ```{math}
 :enumerated: false
+\begin{align*}
 \lVert\alpha v + w\rVert&\leq \lVert\alpha v\rVert + \lVert w\rVert  &\text{(triangle inequality)}\\
 & = \lvert\alpha\rvert\lVert v\rVert + \lVert w\rVert  &\text{(homogenity)}.
+\end{align*}
 ```
 ````
 ````{exercise}
@@ -100,8 +102,10 @@ C. $\tr(ABA)$
 The correct answer is C. $\tr(ABA)$. The other answers are not correct because the cycling property of the trace yields $\tr(ABA^\top)  = \tr(BA^\top A)$, and
 :::{math}
 :enumerated: false
+\begin{align*}
 \tr(ABA^\top) & = \tr(BA^\top A) = \tr(BI) =\tr(B) & \text{(orthogonality of $A$)}\\
 & = \tr(IB) = \tr(AA^\top B) = \tr(A^\top B A). &\text{(cycling property and orthogonality)}
+\end{align*}
 :::
 ````
 
@@ -168,7 +172,8 @@ Compute the matrix product $AB$ inner-product-wise and outer-product-wise
 Computing the matrix product _inner product wise_:
 ```{math}
 :enumerated: false
-AB &= 
+\begin{align*}
+AB &=
 \begin{pmatrix}
     1\cdot 0 + 2\cdot3+0\cdot 1 & 1\cdot2+2\cdot1 + 0\cdot 2\\
     0\cdot 0 + 2\cdot3+4\cdot 1 & 0\cdot2+2\cdot1 + 4\cdot 2
@@ -178,10 +183,12 @@ AB &=
     6 & 4\\
     10 & 10
 \end{pmatrix}
+\end{align*}
 ```
 Computing the matrix product _outer product wise_:
 ```{math}
 :enumerated: false
+\begin{align*}
 AB &= 
 \begin{pmatrix}1 \\0\end{pmatrix}\begin{pmatrix}0&2\end{pmatrix} +
 \begin{pmatrix}2 \\2\end{pmatrix}\begin{pmatrix}3&1\end{pmatrix} +
@@ -195,6 +202,7 @@ AB &=
 \begin{pmatrix}6 & 2 \\6 & 2\end{pmatrix} +
 \begin{pmatrix}0&0 \\4&8\end{pmatrix}\\
 &= \begin{pmatrix}6&4\\ 10 &10\end{pmatrix}
+\end{align*}
 ```
 ````
 
@@ -220,6 +228,7 @@ The matrix represents a data table of the following format, where $\mathtt{S}_i$
 The matrix products 
 ```{math}
 :enumerated: false
+\begin{align*}
     AA^\top &= 
     \begin{pmatrix}
         3 & 1 & 0\\
@@ -234,6 +243,7 @@ The matrix products
         1 & 0 & 1 & 1 & 0\\
         0 & 1 & 0 & 0 & 1
     \end{pmatrix}
+\end{align*}
 ```
 contrast either the features or the patients. That is, the representation of the matrix product in the table format would look as follows:
     
@@ -278,9 +288,11 @@ which is equal to the average value for feature $i$.
 Every system of linear equations can be written as a matrix equation $A\vvec{x}=\vvec{y}$. Given the following system of linear equations, what would be the matrix $A$ and vector $\vvec{y}$ such that the system of linear equations is equivalent to solving $A\vvec{x}=\vvec{y}$? 
 ```{math}
 :enumerated: false
+\begin{align*}
     2x_1 &+& 3x_2 && &=&4\\
     x_1  &-& 2x_2 &+& x_3 &=& 3\\
     -x_1 &+& 2x_2 &+& 3x_3 &=& 1.
+\end{align*}
 ```
 Can you solve the system of linear equations by using the inverse of $A$ (`np.linalg.inv(A)`)?  
 ````
@@ -289,6 +301,7 @@ Can you solve the system of linear equations by using the inverse of $A$ (`np.li
 You can easily verify that the equation $A\vvec{x}=\vvec{y}$ is equivalent to the above system of equations when using
 ```{math}
 :enumerated: false
+\begin{align*}
     A &= 
     \begin{pmatrix}
         2 & 3 & 0\\
@@ -301,6 +314,7 @@ You can easily verify that the equation $A\vvec{x}=\vvec{y}$ is equivalent to th
         3 \\
         1 
     \end{pmatrix}.
+\end{align*}
 ```
     
 We can solve the system of linear equations by multiplying with $A^{-1}$ from left:
@@ -334,10 +348,12 @@ Show that $\lVert A - B \rVert^2 = -2\tr(AB^\top) + 2n $ for orthogonal matrices
 _Proof:_ Let $A,B\in\mathbb{R}^{n\times n}$ be orthogonal matrices. Orthogonal matrices satisfy the property $AA^\top =A^\top A=I$ and $BB^\top =B^\top B=I$. Thus, we have
 ```{math}
 :enumerated: false
+\begin{align*}
     \lVert A-B\rVert^2 &= \lVert A\rVert^2 -2\tr(AB^\top) + \lVert B\rVert^2 &\text{(binomial formula for matrix norms)}\\
     &= \tr(A^\top A) -2\tr(AB^\top) +\tr(B^\top B) &\text{(definition of elementwise matrix $L_2$-norm)}\\
     &= \tr(I) -2\tr(AB^\top) +\tr(I) &\text{(orthogonality of $A$ and $B$)}\\
     &= -2\tr(AB^\top) +2n, 
+\end{align*}
 ```
 because $\tr(I) = \underbrace{1 +\ldots +1}_{n \text{ times}} =n$. This concludes the proof.
 ````
@@ -354,24 +370,30 @@ Show that the following norms are orthogonal invariant
 A norm is orthogonal invariant if multiplying the argument with an orthogonal matrix from the left does not change the value of the norm. Let $A$ be a $(n\times n)$ orthogonal matrix. For the $L_2$-norm of a vector $\vvec{v}\in\mathbb{R}^n$ we have:
 ```{math}
 :enumerated: false
+\begin{align*}
     \lVert A\vvec{v} \rVert^2 &= (A\vvec{v})^\top A\vvec{v} & \text{(Definition)}\\ 
     &= \vvec{v}^\top A^\top A\vvec{v}\\ 
     &= \vvec{v}^\top \vvec{v} &(A^\top A =I)\\
     &= \lVert\vvec{v}\rVert^2
+\end{align*}
 ```
 For the $L_2$-norm of a $(n\times d)$ matrix $AD$ we have:
 ```{math}
 :enumerated: false
+\begin{align*}
     \lVert AD \rVert^2 &= \tr((AD)^\top AD) &\text{(Definition)}\\ 
     &= \tr(D^\top A^\top AD) &\\ 
     &= \tr(D^\top D) & (A^\top A=I)\\
     &= \lVert D\rVert^2 &
+\end{align*}
 ```
 For the operator norm of the matrix $AD$, we have:
 ```{math}
 :enumerated: false
+\begin{align*}
     \lVert AD \rVert_{op} &= \max_{\vvec{x}:\lVert\vvec{x}\rVert=1}\lVert AD\vvec{x}\rVert &\text{(Definition)}\\ 
     &= \max_{\vvec{x}:\lVert\vvec{x}\rVert=1}\lVert D\vvec{x}\rVert & \text{(orthogonal invariance of $L_2$ vector norm)}\\ 
     &= \lVert D\rVert_{op} &
+\end{align*}
 ```
 ````
