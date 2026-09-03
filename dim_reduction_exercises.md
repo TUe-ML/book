@@ -164,12 +164,14 @@
 
     The constraint $Z^\top Z=I$ implies that the entry $s,t$ for $1\leq s,t\leq r$ of $Z^\top Z$ is equal to zero if $s\neq t$ and equal to one otherwise. We have
     :::{math}
+    \begin{align*}
         Z^\top Z &=I \\
         \Leftrightarrow (Z^\top Z)_{s,t}=Z_{\cdot s}^\top Z_{\cdot t}
        &=\begin{cases}
         0& \text{if } s\neq t\\
         1& \text{otherwise}
         \end{cases}
+    \end{align*}
     :::
     This way, we conclude that two different columns $Z_{\cdot s}^\top$ and $Z_{\cdot t} $ we have:
     :::{math}
@@ -293,6 +295,7 @@
         the sample mean can be computed by:
         :::{math}
         :label: eq:munewF
+        \begin{align*}
         \mu_{\mathtt{F}_{d+1}} &= \frac1n \sum_{i=1}^n D_{i d+1} &\text{(Definition sample mean)}\nonumber\\
         &= \frac1n\vvec{1}^\top D_{\cdot d+1} & (\mathbf{1}\in\{1\}^n \text{ is constant one vector})\nonumber\\
         &= \frac1n\vvec{1}^\top D{\bm\alpha} & \nonumber\\
@@ -300,14 +303,17 @@
         \mu_{\mathtt{F}_1} &\ldots & \mu_{\mathtt{F}_d}
         \end{pmatrix} {\bm\alpha} &\text{(Computation of mean)}\nonumber\\
         &= {\bm \mu_\mathtt{F}^\top \alpha}
+        \end{align*}
         :::
         where the third equality comes from Eq.{eq}`eq:DnewF`.
     3. The sample variance is computed as follows:
         :::{math}
+        \begin{align*}
         \sigma_{\mathtt{F}_{d+1}}^2 &=\frac1n\sum_{i=1}^n (D_{id+1}-\mu_{\mathtt{F}_{d+1}})^2 &\text{(Definition sample variance)}\\
         &=\frac1n\Vert D_{\cdot d+1} - \vvec{1}\mu_{\mathtt{F}_{d+1}}\rVert^2 & (\text{Definition Euclidean norm, }\mathbf{1}\in\{1\}^n)\\
         &=\frac1n\left\lVert D{\bm\alpha} -\vvec{1}{\bm \mu_\mathtt{F}^\top \alpha}\right\rVert^2 & \\
         &=\frac1n\left\lVert \left(D -\vvec{1}{\bm \mu_\mathtt{F}^\top }\right){\bm\alpha}\right\rVert^2
+        \end{align*}
         :::
         where the third equality comes from Eq.{eq}`eq:munewF`.
     ::::
