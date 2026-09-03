@@ -1,15 +1,3 @@
----
-math:
-  '\diag': '\mathrm{diag}'
-  '\tr': '\mathrm{tr}'
-  '\argmin': '\mathrm{arg\\,min}'
-  '\argmax': '\mathrm{arg\\,max}'
-  '\sign': '\mathrm{sign}'
-  '\softmax': '\mathrm{softmax}'
-  '\concat': '\mathbin{{+}\mspace{-8mu}{+}}'
-  '\vvec': '\mathbf{ #1 }'
-  '\bm': '{\boldsymbol #1 }'
----
 # Exercises
 
 ## Linear Algebra Trivia
