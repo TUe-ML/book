@@ -34,6 +34,7 @@ chapters:
   - file: regression_sparse
   - file: regression_ridge
   - file: regression_lasso
+  - file: regression_regularization_exercises
 - file: evaluation
   sections:
   - file: evaluation_metrics
