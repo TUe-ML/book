@@ -2,6 +2,51 @@
 # Exercises
 
 
+## Evaluating a Regression Model from an Actual-vs-Predicted Plot
+Consider a machine learning model that predicts the prices of houses based on various features
+such as size, number of bedrooms, and location. The graph below shows the actual prices of houses
+($y$-axis) versus the predicted prices by the model ($x$-axis) for a test dataset of 20 houses.
+
+```{figure} images/regression/exercises_actual_vs_predicted.png
+---
+width: 420px
+name: fig-regression-actual-vs-predicted
+align: center
+---
+Actual vs. predicted house prices for 20 test houses.
+```
+
+Which of the following metrics can be directly derived from the given graph to evaluate the
+model's performance?
+
+Group of answer choices
+- Mean Absolute Error (MAE)
+- Precision
+- Accuracy
+- R-squared (R²)
+
+````{dropdown} Solution
+**Mean Absolute Error (MAE) — yes.** For every point in the plot we can read off both the actual
+value $y_i$ and the predicted value $\hat y_i$ (its vertical distance from the diagonal $y=\hat y$
+line is exactly the absolute error $\lvert y_i-\hat y_i\rvert$). Averaging these 20 absolute
+errors gives the MAE directly from the plotted data.
+
+**R-squared (R²) — yes.** R² is computed from the same actual/predicted pairs (it compares the
+residual sum of squares around the diagonal to the total sum of squares of the actual values
+around their mean), so it is equally derivable from this data. Visually, the more tightly the
+points cluster around the diagonal $y=\hat y$ line, the higher the R².
+
+**Precision — no.** Precision is defined for classification (the fraction of predicted-positive
+instances that are actually positive). House price prediction here is a regression task with
+continuous predictions, not class labels, so precision is not defined for this output without
+first imposing an arbitrary classification threshold, which the graph does not provide.
+
+**Accuracy — no.** For the same reason, accuracy (fraction of exactly correct predictions) is a
+classification metric. Since the predictions are continuous prices, expecting them to exactly
+match the actual price is not a meaningful notion of "correctness" here, so accuracy cannot be
+derived from this graph either.
+````
+
 ## ROC Curves
 The graph below shows the receiver operating characteristic (ROC) curve for a logistic regression model that classifies whether an email is spam or not spam.
 
