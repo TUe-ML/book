@@ -26,12 +26,14 @@ chapters:
   - file: regression_objective
   - file: regression_functions
   - file: regression_optimization
-  - file: regression_overparameterized
   - file: regression_bias_var
+  - file: regression_exercises
+- file: regression_regularization
+  sections:
+  - file: regression_overparameterized
   - file: regression_sparse
   - file: regression_ridge
   - file: regression_lasso
-  - file: regression_exercises
 - file: evaluation
   sections:
   - file: evaluation_metrics
