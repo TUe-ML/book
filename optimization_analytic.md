@@ -1,4 +1,4 @@
-## Analytic Solutions 
+# Analytic Solutions 
 
 You probably know from your high school math classes that every local minimizer $x_0$ of a function $f:\mathbb{R}\rightarrow\mathbb{R}$ is a stationary point: $\frac{d}{dx}f(x_0)=0$. This is known as the first-order necessary condition. 
 This property is easily understood, considering that the derivative indicates the slope of a function at a specified point. 
