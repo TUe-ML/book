@@ -72,3 +72,4 @@ chapters:
 - file: demos
   sections:
   - file: dim_reduction_mf_non_convex_example
+  - file: demo_regression
