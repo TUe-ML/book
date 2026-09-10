@@ -2,6 +2,7 @@ jsanimation==0.1
 jupyter-book
 matplotlib==3.10.5
 matplotlib-inline==0.1.7
+ipywidgets
 # myst-nb==1.3.0
 numpy==2.3.2
 pandas==2.3.1
