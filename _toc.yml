@@ -74,3 +74,6 @@ chapters:
   - file: dim_reduction_mf_non_convex_example
   - file: demo_rss
   - file: demo_regression
+  - file: demo_n_larger_than_p
+  - file: demo_regularization_l1_l2
+  - file: demo_regularization_ridge_demo
