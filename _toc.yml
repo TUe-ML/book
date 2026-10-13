@@ -57,6 +57,7 @@ chapters:
   - file: neuralnets_sgd
   - file: neuralnets_conv
   - file: neuralnets_pooling
+  - file: neuralnets_implementation_exercises
 - file: dim_reduction
   sections:
   - file: dim_reduction_mf
