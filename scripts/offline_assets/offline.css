@@ -1,0 +1,40 @@
+/* Styles for the file:// copy produced by scripts/make_offline.py. */
+
+/* The downloads menu needs the JS app; its targets are not part of the copy. */
+.myst-fm-downloads-dropdown { display: none !important; }
+
+/* Sidebar toggled by the menu button on narrow screens. */
+body.offline-sidebar-open .myst-primary-sidebar {
+  display: flex !important;
+  background: var(--myst-bg, #fff);
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.3);
+}
+html.dark body.offline-sidebar-open .myst-primary-sidebar { background: #1c1c1c; }
+body.offline-sidebar-open .myst-primary-sidebar-pointer { display: flex !important; }
+
+/* Search dialog. */
+.offline-search {
+  position: fixed; inset: 0; z-index: 100;
+  display: none; justify-content: center; align-items: flex-start;
+  padding-top: 10vh; background: rgba(0, 0, 0, 0.5);
+}
+.offline-search-box {
+  width: min(680px, 92vw); max-height: 75vh; display: flex; flex-direction: column;
+  background: #fff; color: #111; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+html.dark .offline-search-box { background: #222; color: #eee; }
+.offline-search-box input {
+  font: inherit; font-size: 1.1rem; padding: 0.9rem 1rem; border: 0;
+  border-bottom: 1px solid #ccc; outline: none; background: transparent; color: inherit;
+}
+html.dark .offline-search-box input { border-color: #444; }
+.offline-search-box ul { list-style: none; margin: 0; padding: 0.25rem 0; overflow-y: auto; }
+.offline-search-box li a {
+  display: block; padding: 0.6rem 1rem; color: inherit; text-decoration: none;
+}
+.offline-search-box li a:hover, .offline-search-box li a:focus { background: rgba(37, 99, 235, 0.12); }
+.offline-search-title { font-weight: 600; }
+.offline-search-path { font-size: 0.8rem; opacity: 0.7; }
+.offline-search-snippet { font-size: 0.85rem; opacity: 0.85; margin-top: 0.15rem; }
+.offline-search-empty { padding: 0.8rem 1rem; opacity: 0.7; }
